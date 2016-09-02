@@ -1,18 +1,58 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
-public class Gameboard extends JPanel {
+public class Gameboard extends JPanel implements KeyListener {
 	private final int tileSize = 20;
 	private int[][] map;
 	private int mapWidth, mapHeight;
+
+	private Cursor cursor;
 
 	public Gameboard(int width, int height) {
 		mapWidth = width;
 		mapHeight = height;
 
 		map = new int[mapWidth][mapHeight];
+
+		cursor = new Cursor(0, 0, tileSize);
+
+		addKeyListener(this);
+
+		repaint();
 	}
+
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_UP) {
+			if (cursor.getY() > 0) {
+				cursor.moveUp();
+			}
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			if (cursor.getY() < (mapHeight - 1) * tileSize) {
+				cursor.moveDown();
+			}
+			cursor.moveDown();
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			if (cursor.getX() > 0) {
+				cursor.moveLeft();
+			}
+		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			if (cursor.getX() < (mapHeight - 1) * tileSize) {
+				cursor.moveRight();
+			}
+			cursor.moveRight();
+		}
+
+		System.out.println("Getting here " + e.getKeyCode());
+
+		repaint();
+	}
+
+	public void keyReleased(KeyEvent e) {}
+
+	public void keyTyped(KeyEvent e) {}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -22,6 +62,8 @@ public class Gameboard extends JPanel {
 				paintArea(g, x * tileSize, y * tileSize, map[x][y]);
 			}
 		}
+
+		cursor.paint(g);
 	}
 
 	private void paintArea(Graphics g, int x, int y, int number) {

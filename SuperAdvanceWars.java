@@ -1,10 +1,18 @@
 import javax.swing.JFrame;
 
 public class SuperAdvanceWars extends JFrame {
+	private Gameboard board;
+
 	public SuperAdvanceWars() {
-		setSize(300, 200);
+		board = new Gameboard(10, 10);
+
+		add(board);
+
+		setSize(300, 300);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
+
+		board.requestFocus();
 	}
 
 	public static void main(String[] args) {
