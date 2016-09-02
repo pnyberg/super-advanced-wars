@@ -33,7 +33,6 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (cursor.getY() < (mapHeight - 1) * tileSize) {
 				cursor.moveDown();
 			}
-			cursor.moveDown();
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			if (cursor.getX() > 0) {
 				cursor.moveLeft();
@@ -42,7 +41,6 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (cursor.getX() < (mapHeight - 1) * tileSize) {
 				cursor.moveRight();
 			}
-			cursor.moveRight();
 		}
 
 		System.out.println("Getting here " + e.getKeyCode());
