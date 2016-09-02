@@ -2,11 +2,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.LinkedList;
 import javax.swing.JPanel;
 
 public class Gameboard extends JPanel implements KeyListener {
 	private final int tileSize = 20;
 	private int[][] map;
+	private LinkedList<Infantry> troops;
+
 	private int mapWidth, mapHeight;
 
 	private Cursor cursor;
@@ -16,12 +19,14 @@ public class Gameboard extends JPanel implements KeyListener {
 		mapHeight = height;
 
 		map = new int[mapWidth][mapHeight];
+		troops = new LinkedList<Infantry>();
 
 		cursor = new Cursor(0, 0, tileSize);
 
 		addKeyListener(this);
 
 		initMap();
+		initTroops();
 
 		repaint();
 	}
@@ -67,8 +72,6 @@ public class Gameboard extends JPanel implements KeyListener {
 		map[5][7] = 1;
 		map[7][7] = 5;
 
-//		map[][] = ;
-
 		for (int i = 8 ; i < mapWidth ; i++) {
 			for (int n = 2 ; n < 8 ; n++) {
 				map[i][n] = 4;
@@ -80,6 +83,11 @@ public class Gameboard extends JPanel implements KeyListener {
 				map[i][n] = 4;
 			}
 		}
+	}
+
+	public void initTroops() {
+		troops.add(new Infantry(2, 2, Color.red));
+		troops.add(new Infantry(7, 7, Color.orange));
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -117,6 +125,10 @@ public class Gameboard extends JPanel implements KeyListener {
 			for (int x = 0 ; x < mapWidth ; x++) {
 				paintArea(g, x * tileSize, y * tileSize, map[x][y]);
 			}
+		}
+
+		for (Infantry inf : troops) {
+			inf.paint(g);
 		}
 
 		cursor.paint(g);
