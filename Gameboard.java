@@ -21,7 +21,65 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		addKeyListener(this);
 
+		initMap();
+
 		repaint();
+	}
+
+	public void initMap() {
+		for (int n = 0 ; n < 2 ; n++) {
+			for (int i = 0 ; i < mapWidth ; i++) {
+				map[i][n] = 4;
+			}
+		}
+
+		for (int i = 0 ; i < 2 ; i++) {
+			for (int n = 2 ; n < 8 ; n++) {
+				map[i][n] = 4;
+			}
+		}
+
+		map[2][2] = 5;
+		map[4][2] = 1;
+		map[5][2] = 1;
+		map[6][2] = 3;
+		map[7][2] = 3;
+
+		map[2][3] = 1;
+		map[7][3] = 3;
+
+		map[2][4] = 1;
+		map[4][4] = 2;
+		map[5][4] = 2;
+		map[7][4] = 1;
+
+		map[2][5] = 1;
+		map[4][5] = 2;
+		map[5][5] = 2;
+		map[7][5] = 1;
+
+		map[2][6] = 3;
+		map[7][6] = 1;
+
+		map[2][7] = 3;
+		map[3][7] = 3;
+		map[4][7] = 1;
+		map[5][7] = 1;
+		map[7][7] = 5;
+
+//		map[][] = ;
+
+		for (int i = 8 ; i < mapWidth ; i++) {
+			for (int n = 2 ; n < 8 ; n++) {
+				map[i][n] = 4;
+			}
+		}
+
+		for (int n = 8 ; n < mapHeight ; n++) {
+			for (int i = 0 ; i < mapWidth ; i++) {
+				map[i][n] = 4;
+			}
+		}
 	}
 
 	public void keyPressed(KeyEvent e) {
