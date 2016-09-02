@@ -109,7 +109,9 @@ public class Gameboard extends JPanel implements KeyListener {
 			}
 		}
 
-		System.out.println("Getting here " + e.getKeyCode());
+		if (e.getKeyCode() == KeyEvent.VK_A) {
+			System.out.println("Pressing");
+		}
 
 		repaint();
 	}
