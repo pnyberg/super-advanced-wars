@@ -2,50 +2,52 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Cursor {
-	private int x, y, tileSize;
+	private int x, y;
 	private final Color color;
 
-	public Cursor(int x, int y, int tileSize) {
+	public Cursor(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.tileSize = tileSize;
 
 		color = Color.red;
 	}
 
 	public void moveUp() {
-		y -= tileSize;
+		y--;
 	}
 
 	public void moveDown() {
-		y += tileSize;
+		y++;
 	}
 
 	public void moveLeft() {
-		x -= tileSize;
+		x--;
 	}
 
 	public void moveRight() {
-		x += tileSize;
+		x++;
 	}
 
-	public void paint(Graphics g) {
-		int smallPiece = 2;
-		int bigPiece = 6;
+	public void paint(Graphics g, int tileSize) {
+		int smallPiece = tileSize / 20 + 1;
+		int bigPiece = smallPiece * 3;
+
+		int posX = x * tileSize;
+		int posY = y * tileSize;
 
 		g.setColor(color);
 
-		g.fillRect(x, y, smallPiece, bigPiece);
-		g.fillRect(x, y, bigPiece, smallPiece);
+		g.fillRect(posX, posY, smallPiece, bigPiece);
+		g.fillRect(posX, posY, bigPiece, smallPiece);
 
-		g.fillRect(x + tileSize - smallPiece, y, smallPiece, bigPiece);
-		g.fillRect(x + tileSize - bigPiece, y, bigPiece, smallPiece);
+		g.fillRect(posX + tileSize - smallPiece, posY, smallPiece, bigPiece);
+		g.fillRect(posX + tileSize - bigPiece, posY, bigPiece, smallPiece);
 
-		g.fillRect(x, y + tileSize - bigPiece, smallPiece, bigPiece);
-		g.fillRect(x, y + tileSize - smallPiece, bigPiece, smallPiece);
+		g.fillRect(posX, posY + tileSize - bigPiece, smallPiece, bigPiece);
+		g.fillRect(posX, posY + tileSize - smallPiece, bigPiece, smallPiece);
 
-		g.fillRect(x + tileSize - smallPiece, y + tileSize - bigPiece, smallPiece, bigPiece);
-		g.fillRect(x + tileSize - bigPiece, y + tileSize - smallPiece, bigPiece, smallPiece);
+		g.fillRect(posX + tileSize - smallPiece, posY + tileSize - bigPiece, smallPiece, bigPiece);
+		g.fillRect(posX + tileSize - bigPiece, posY + tileSize - smallPiece, bigPiece, smallPiece);
 	}
 
 	public int getX() {

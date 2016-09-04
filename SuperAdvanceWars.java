@@ -8,7 +8,7 @@ public class SuperAdvanceWars extends JFrame {
 
 		add(board);
 
-		setSize(300, 300);
+		setSize(500, 500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 

@@ -1,33 +1,43 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Infantry {
-	private int tileSize = 20;
-
-	private int x, y;
-	private Color color;
-
-	private int movement;
-	private int movementType;
-
+public class Infantry extends Unit {
 	public Infantry(int x, int y, Color color) {
-		this.x = x;
-		this.y = y;
-		this.color = color;
+		super(x, y, color);
 
 		movement = 3;
-		movementType = 1; // infantry
+		movementType = Unit.INFANTRY; // infantry
 	}
 
-	public void paint(Graphics g) {
-		g.setColor(color);
-		g.fillOval(x * tileSize + 7, y * tileSize + 2, 6, 6);
-		g.setColor(Color.black);
-		g.drawOval(x * tileSize + 7, y * tileSize + 2, 6, 6);
-		g.drawLine(x * tileSize + 10, y * tileSize + 8, x * tileSize + 10, y * tileSize + 16);
+	public void paint(Graphics g, int tileSize) {
+		int headSize = tileSize / 2 - 4;
+		int headAlignX = tileSize / 4 + 2;
+		int headAlignY = tileSize / 10;
+		int bodyAlignX = tileSize / 2;
+		int bodyAlignY = headSize + headAlignY;
+		int bodyEndY = 3 * tileSize / 4;
+		int feetLevel = tileSize - 2;
+		int armAlignY = bodyAlignY + 2;
+		int leftArmAlign = tileSize / 4;
+		int rightArmEnd = 3 * tileSize / 4;
+		int leftLegAlign = tileSize / 4 + 1;
+		int rightLegEnd = 3 * tileSize / 4 - 1;
 
-		g.drawLine(x * tileSize + 5, y * tileSize + 10, x * tileSize + 15, y * tileSize + 10);
-		g.drawLine(x * tileSize + 6, y * tileSize + 19, x * tileSize + 10, y * tileSize + 16);
-		g.drawLine(x * tileSize + 10, y * tileSize + 16, x * tileSize + 14, y * tileSize + 19);
+		g.setColor(color);
+
+		// head
+		g.fillOval(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
+		g.setColor(Color.black);
+		g.drawOval(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
+
+		// body
+		g.drawLine(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, x * tileSize + bodyAlignX, y * tileSize + bodyEndY);
+
+		// arms
+		g.drawLine(x * tileSize + leftArmAlign, y * tileSize + armAlignY, x * tileSize + rightArmEnd, y * tileSize + armAlignY);
+
+		// legs
+		g.drawLine(x * tileSize + leftLegAlign, y * tileSize + feetLevel, x * tileSize + bodyAlignX, y * tileSize + bodyEndY);
+		g.drawLine(x * tileSize + bodyAlignX, y * tileSize + bodyEndY, x * tileSize + rightLegEnd, y * tileSize + feetLevel);
 	}
 }
