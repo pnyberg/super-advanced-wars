@@ -142,12 +142,15 @@ public class Gameboard extends JPanel implements KeyListener {
 				if (chosenUnit != null) {
 					unitChosen = true;
 					findPossibleMovementLocations(chosenUnit);
+
+					arrowPoints.add(new Point(cursorX, cursorY));
 				}
 			} else if (movementMap[cursorX][cursorY]) {
 				chosenUnit.moveTo(cursorX, cursorY);
 				unitChosen = false;
 				chosenUnit = null;
 				movementMap = new boolean[mapWidth][mapHeight];
+				arrowPoints.clear();
 			}
 		}
 
@@ -253,7 +256,44 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	public void addArrowPoint(int newX, int newY) {
+		int newLast = -1;
 
+		for (int i = 0 ; i < arrowPoints.size() ; i++) {
+			int arrowX = arrowPoints.get(i).getX();
+			int arrowY = arrowPoints.get(i).getY();
+
+			if (arrowX == newX && arrowY == newY) {
+				newLast = i;
+				break;
+			}
+		}
+
+		if (newLast > -1) {
+			for (int i = arrowPoints.size() - 1 ; i > newLast ; i--) {
+				arrowPoints.remove(i);
+			}
+		} else if (movementMap[newX][newY]) {
+			arrowPoints.add(new Point(newX, newY));
+
+			// @TODO: if movement is changed due to for example mountains, what happens?
+			if (arrowPoints.size() - 1 > chosenUnit.getMovement()) {
+				// recount path
+			} else if (newPointNotConnectedToPreviousPoint()) {
+				// recount path
+				// @TODO: add what happens when you make a "jump" between accepted locations
+			}
+		}
+	}
+
+	public boolean newPointNotConnectedToPreviousPoint() {
+		int size = arrowPoints.size();
+
+		int x1 = arrowPoints.get(size - 2).getX();
+		int y1 = arrowPoints.get(size - 2).getY();
+		int x2 = arrowPoints.get(size - 1).getX();
+		int y2 = arrowPoints.get(size - 1).getY();
+
+		return Math.abs(x1 - x2) + Math.abs(y1 - y2) > 1;
 	}
 
 	public void keyReleased(KeyEvent e) {}
@@ -333,38 +373,44 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	public void paintArrow(Graphics g, int tileSize) {
+		if (arrowPoints.size() < 2) {
+			return;
+		}
+
 		for (int i = 1 ; i < arrowPoints.size() ; i++) {
-			int x1 = arrowPoints.get(i - 1).getX() + tileSize / 2;
-			int y1 = arrowPoints.get(i - 1).getY() + tileSize / 2;
-			int x2 = arrowPoints.get(i).getX() + tileSize / 2;
-			int y2 = arrowPoints.get(i).getY() + tileSize / 2;
+			int x1 = arrowPoints.get(i - 1).getX() * tileSize + tileSize / 2;
+			int y1 = arrowPoints.get(i - 1).getY() * tileSize + tileSize / 2;
+			int x2 = arrowPoints.get(i).getX() * tileSize + tileSize / 2;
+			int y2 = arrowPoints.get(i).getY() * tileSize + tileSize / 2;
 
 			g.setColor(Color.red);
 			g.drawLine(x1, y1, x2, y2);
+
+			System.out.println(x1 + "," + y1 + " - " + x2 + "," + y2);
 		}
 
 		int size = arrowPoints.size();
 
-		int xNext = arrowPoints.get(size - 2).getX();
-		int yNext = arrowPoints.get(size - 2).getY();
-		int xLast = arrowPoints.get(size - 1).getX();
-		int yLast = arrowPoints.get(size - 1).getY();
+		int xNext = arrowPoints.get(size - 2).getX() * tileSize;
+		int yNext = arrowPoints.get(size - 2).getY() * tileSize;
+		int xLast = arrowPoints.get(size - 1).getX() * tileSize;
+		int yLast = arrowPoints.get(size - 1).getY() * tileSize;
 
 		if (xNext == xLast) {
 			if (yNext < yLast) {
-				g.drawLine(xLast - 3, yLast - 3, xLast, yLast);
-				g.drawLine(xLast + 3, yLast - 3, xLast, yLast);
+				g.drawLine(xLast - 3 + tileSize / 2, yLast - 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
+				g.drawLine(xLast + 3 + tileSize / 2, yLast - 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
 			} else {
-				g.drawLine(xLast - 3, yLast + 3, xLast, yLast);
-				g.drawLine(xLast + 3, yLast + 3, xLast, yLast);
+				g.drawLine(xLast - 3 + tileSize / 2, yLast + 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
+				g.drawLine(xLast + 3 + tileSize / 2, yLast + 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
 			}
 		} else {
 			if (xNext < xLast) {
-				g.drawLine(xLast - 3, yLast - 3, xLast, yLast);
-				g.drawLine(xLast - 3, yLast + 3, xLast, yLast);
+				g.drawLine(xLast - 3 + tileSize / 2, yLast - 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
+				g.drawLine(xLast - 3 + tileSize / 2, yLast + 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
 			} else {
-				g.drawLine(xLast + 3, yLast - 3, xLast, yLast);
-				g.drawLine(xLast + 3, yLast + 3, xLast, yLast);
+				g.drawLine(xLast + 3 + tileSize / 2, yLast - 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
+				g.drawLine(xLast + 3 + tileSize / 2, yLast + 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
 			}
 		}
 	}
