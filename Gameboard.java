@@ -108,34 +108,37 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	public void keyPressed(KeyEvent e) {
+		int cursorX = cursor.getX();
+		int cursorY = cursor.getY();
+
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			if (cursor.getY() > 0) {
+			if (cursorY > 0) {
 				cursor.moveUp();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			if (cursor.getY() < (mapHeight - 1) * tileSize) {
+			if (cursorY < (mapHeight - 1) * tileSize) {
 				cursor.moveDown();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			if (cursor.getX() > 0) {
+			if (cursorX > 0) {
 				cursor.moveLeft();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (cursor.getX() < (mapHeight - 1) * tileSize) {
+			if (cursorX < (mapHeight - 1) * tileSize) {
 				cursor.moveRight();
 			}
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_A) {
 			if (!unitChosen) {
-				chosenUnit = getUnit(cursor.getX(), cursor.getY());
+				chosenUnit = getUnit(cursorX, cursorY);
 
 				if (chosenUnit != null) {
 					unitChosen = true;
 					findPossibleMovementLocations(chosenUnit);
 				}
-			} else {
-				chosenUnit.moveTo(cursor.getX(), cursor.getY());
+			} else if (movementMap[cursorX][cursorY]) {
+				chosenUnit.moveTo(cursorX, cursorY);
 				unitChosen = false;
 				chosenUnit = null;
 				movementMap = new boolean[mapWidth][mapHeight];
