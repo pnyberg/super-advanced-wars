@@ -22,6 +22,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	private int mapWidth, mapHeight;
 
 	private Cursor cursor;
+	private LinkedList<Point> arrowPoints;
 
 	private boolean unitChosen;
 	private Unit chosenUnit;
@@ -36,6 +37,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		troops = new LinkedList<Unit>();
 
 		cursor = new Cursor(0, 0);
+		arrowPoints = new LinkedList<Point>();
 
 		unitChosen = false;
 		chosenUnit = null;
@@ -113,18 +115,22 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
 			if (cursorY > 0) {
+				addArrowPoint(cursorX, cursorY - 1);
 				cursor.moveUp();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			if (cursorY < (mapHeight - 1) * tileSize) {
+				addArrowPoint(cursorX, cursorY + 1);
 				cursor.moveDown();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			if (cursorX > 0) {
+				addArrowPoint(cursorX - 1, cursorY);
 				cursor.moveLeft();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			if (cursorX < (mapHeight - 1) * tileSize) {
+				addArrowPoint(cursorX + 1, cursorY);
 				cursor.moveRight();
 			}
 		}
@@ -145,13 +151,15 @@ public class Gameboard extends JPanel implements KeyListener {
 			}
 		}
 
+		if (e.getKeyCode() == KeyEvent.VK_B) {
+			// pressing B, does nothing atm
+		}
+
 		repaint();
 	}
 
 	public Unit getUnit(int x, int y) {
-		System.out.println("cursor: " + x + "," + y);
 		for (Unit unit : troops) {
-			System.out.println("unit: " + unit.getX() + "," + unit.getY());
 			if (unit.getX() == x && unit.getY() == y) {
 				return unit;
 			}
@@ -168,7 +176,6 @@ public class Gameboard extends JPanel implements KeyListener {
 		movementMap[x][y] = true;
 
 		checkPath(x + 1, y, movementSteps, movementType);
-		System.out.println("Lol");
 		checkPath(x, y + 1, movementSteps, movementType);
 		checkPath(x - 1, y, movementSteps, movementType);
 		checkPath(x, y - 1, movementSteps, movementType);
@@ -245,6 +252,10 @@ public class Gameboard extends JPanel implements KeyListener {
 		return 1;
 	}
 
+	public void addArrowPoint(int newX, int newY) {
+
+	}
+
 	public void keyReleased(KeyEvent e) {}
 
 	public void keyTyped(KeyEvent e) {}
@@ -259,38 +270,46 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 
 		for (Unit unit : troops) {
-			unit.paint(g, tileSize);
+			if (unit != chosenUnit) {
+				unit.paint(g, tileSize);
+			}
+		}
+
+		if (unitChosen) {
+			paintArrow(g, tileSize);
+
+			chosenUnit.paint(g, tileSize);
 		}
 
 		cursor.paint(g, tileSize);
 	}
 
-	private void paintArea(Graphics g, int x, int y, int number) {
-		if (number == 0) {
+	private void paintArea(Graphics g, int x, int y, int areaNumber) {
+		if (areaNumber == 0) {
 			if (movementMap[x][y]) {
 				g.setColor(Color.lightGray);
 			} else {
 				g.setColor(Color.gray);
 			}
-		} else if (number == 1) {
+		} else if (areaNumber == 1) {
 			if (movementMap[x][y]) {
 				g.setColor(new Color(255,250,205)); // lighter yellow
 			} else {
 				g.setColor(new Color(204,204,0)); // darker yellow
 			}
-		} else if (number == 2) {
+		} else if (areaNumber == 2) {
 			if (movementMap[x][y]) {
 				g.setColor(new Color(50,205,50)); // limegreen
 			} else {
 				g.setColor(new Color(0,128,0)); // green
 			}
-		} else if (number == 3) {
+		} else if (areaNumber == 3) {
 			if (movementMap[x][y]) {
 				g.setColor(new Color(205,133,63)); // lighter brown
 			} else {
 				g.setColor(new Color(142,101,64)); // brown
 			}
-		} else if (number == 4) {
+		} else if (areaNumber == 4) {
 			if (movementMap[x][y]) {
 				g.setColor(new Color(30,144,255)); // lighter blue
 			} else {
@@ -307,9 +326,46 @@ public class Gameboard extends JPanel implements KeyListener {
 		g.setColor(Color.black);
 		g.drawRect(paintX, paintY, tileSize, tileSize);
 
-		if (number == 5) {
+		if (areaNumber == 5) {
 			g.drawLine(paintX, paintY, paintX + tileSize, paintY + tileSize);
 			g.drawLine(paintX, paintY + tileSize, paintX + tileSize, paintY);
+		}
+	}
+
+	public void paintArrow(Graphics g, int tileSize) {
+		for (int i = 1 ; i < arrowPoints.size() ; i++) {
+			int x1 = arrowPoints.get(i - 1).getX() + tileSize / 2;
+			int y1 = arrowPoints.get(i - 1).getY() + tileSize / 2;
+			int x2 = arrowPoints.get(i).getX() + tileSize / 2;
+			int y2 = arrowPoints.get(i).getY() + tileSize / 2;
+
+			g.setColor(Color.red);
+			g.drawLine(x1, y1, x2, y2);
+		}
+
+		int size = arrowPoints.size();
+
+		int xNext = arrowPoints.get(size - 2).getX();
+		int yNext = arrowPoints.get(size - 2).getY();
+		int xLast = arrowPoints.get(size - 1).getX();
+		int yLast = arrowPoints.get(size - 1).getY();
+
+		if (xNext == xLast) {
+			if (yNext < yLast) {
+				g.drawLine(xLast - 3, yLast - 3, xLast, yLast);
+				g.drawLine(xLast + 3, yLast - 3, xLast, yLast);
+			} else {
+				g.drawLine(xLast - 3, yLast + 3, xLast, yLast);
+				g.drawLine(xLast + 3, yLast + 3, xLast, yLast);
+			}
+		} else {
+			if (xNext < xLast) {
+				g.drawLine(xLast - 3, yLast - 3, xLast, yLast);
+				g.drawLine(xLast - 3, yLast + 3, xLast, yLast);
+			} else {
+				g.drawLine(xLast + 3, yLast - 3, xLast, yLast);
+				g.drawLine(xLast + 3, yLast + 3, xLast, yLast);
+			}
 		}
 	}
 }
