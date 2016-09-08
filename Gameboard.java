@@ -106,6 +106,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 	public void initTroops() {
 		troops.add(new Infantry(2, 2, Color.red));
+		troops.add(new Mech(3, 3, Color.red));
 		troops.add(new Infantry(7, 7, Color.orange));
 	}
 
@@ -217,21 +218,36 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (movementType == Unit.INFANTRY) {
 				return true;
 			}
+			if (movementType == Unit.MECH) {
+				return true;
+			}
 		} else if (terrainType == PLAIN) {
 			if (movementType == Unit.INFANTRY) {
+				return true;
+			}
+			if (movementType == Unit.MECH) {
 				return true;
 			}
 		} else if (terrainType == WOOD) {
 			if (movementType == Unit.INFANTRY) {
 				return true;
 			}
+			if (movementType == Unit.MECH) {
+				return true;
+			}
 		} else if (terrainType == MOUNTAIN) {
 			if (movementType == Unit.INFANTRY) {
+				return true;
+			}
+			if (movementType == Unit.MECH) {
 				return true;
 			}
 		} else if (terrainType == SEA) {
 		} else if (terrainType == CITY) {
 			if (movementType == Unit.INFANTRY) {
+				return true;
+			}
+			if (movementType == Unit.MECH) {
 				return true;
 			}
 		}
@@ -275,12 +291,73 @@ public class Gameboard extends JPanel implements KeyListener {
 		} else if (movementMap[newX][newY]) {
 			arrowPoints.add(new Point(newX, newY));
 
-			// @TODO: if movement is changed due to for example mountains, what happens?
-			if (arrowPoints.size() - 1 > chosenUnit.getMovement()) {
-				// recount path
-			} else if (newPointNotConnectedToPreviousPoint()) {
-				// recount path
+			if (newPointNotConnectedToPreviousPoint()) {
+				recountPath(newX, newY);
 				// @TODO: add what happens when you make a "jump" between accepted locations
+			}
+
+			// @TODO: if movement is changed due to for example mountains, what happens?
+			while (invalidCurrentPath()) {
+				recountPath(newX, newY);
+			}
+		}
+	}
+
+	public boolean invalidCurrentPath() {
+		int maximumMovement = chosenUnit.getMovement();
+		int movementType = chosenUnit.getMovementType();
+
+		int currentMovementValue = 0;
+
+		for (int i = 1 ; i < arrowPoints.size() ; i++) {
+			int x = arrowPoints.get(i).getX();
+			int y = arrowPoints.get(i).getY();
+			currentMovementValue += movementCost(x, y, movementType);
+		}
+
+		return currentMovementValue > maximumMovement;
+	}
+
+	public void recountPath(int newX, int newY) {
+		int mainX = chosenUnit.getX();
+		int mainY = chosenUnit.getY();
+		int movementType = chosenUnit.getMovementType();
+
+		int diffX = newX - mainX;
+		int diffY = newY - mainY;
+
+		arrowPoints.clear();
+		arrowPoints.add(new Point(mainX, mainY));
+
+
+		while(Math.abs(diffX) > 0 || Math.abs(diffY) > 0) {
+			int prevX = arrowPoints.getLast().getX();
+			int prevY = arrowPoints.getLast().getY();
+
+			if (prevX == newX && prevY == newY) {
+				break;
+			}
+
+			int xAxle;
+			if (Math.abs(diffX) > 0 && Math.abs(diffY) > 0) {
+				xAxle = (int)(Math.random() * 10) % 2;
+			} else if (Math.abs(diffX) > 0) {
+				xAxle = 1;
+			} else {
+				xAxle = 0;
+			}
+
+			if (xAxle == 1) {
+				int diff = diffX / Math.abs(diffX);
+				arrowPoints.add(new Point(prevX + diff, prevY));
+				System.out.println(prevX + diff + "," + prevY + " -> " + diff);
+				int movementCost = movementCost(prevX + diff, prevY, movementType);
+				diffX -= diff * movementCost;
+			} else { // yAxel
+				int diff = diffY / Math.abs(diffY);
+				arrowPoints.add(new Point(prevX, prevY + diff));
+				int movementCost = movementCost(prevX, prevY + diff, movementType);
+				diffY -= diff * movementCost;
 			}
 		}
 	}
@@ -385,8 +462,6 @@ public class Gameboard extends JPanel implements KeyListener {
 
 			g.setColor(Color.red);
 			g.drawLine(x1, y1, x2, y2);
-
-			System.out.println(x1 + "," + y1 + " - " + x2 + "," + y2);
 		}
 
 		int size = arrowPoints.size();
