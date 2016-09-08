@@ -6,7 +6,7 @@ public class Mech extends Unit {
 		super(x, y, color);
 
 		movement = 2;
-		movementType = Unit.MECH; // infantry
+		movementType = Unit.MECH;
 	}
 
 	public void paint(Graphics g, int tileSize) {
@@ -30,6 +30,9 @@ public class Mech extends Unit {
 		// rocket
 		g.setColor(Color.gray);
 		g.fillRect(x * tileSize + rocketAlignX, y * tileSize + rocketAlignY, rocketWidth, rocketHeight);
+
+		g.setColor(Color.black);
+		g.drawRect(x * tileSize + rocketAlignX, y * tileSize + rocketAlignY, rocketWidth, rocketHeight);
 
 		// head
 		g.setColor(color);
