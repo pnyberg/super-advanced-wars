@@ -107,6 +107,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	public void initTroops() {
 		troops.add(new Infantry(2, 2, Color.red));
 		troops.add(new Mech(3, 3, Color.red));
+		troops.add(new Tank(4, 4, Color.red));
 		troops.add(new Infantry(7, 7, Color.orange));
 	}
 
@@ -221,6 +222,9 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (movementType == Unit.MECH) {
 				return true;
 			}
+			if (movementType == Unit.BAND) {
+				return true;
+			}
 		} else if (terrainType == PLAIN) {
 			if (movementType == Unit.INFANTRY) {
 				return true;
@@ -228,11 +232,17 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (movementType == Unit.MECH) {
 				return true;
 			}
+			if (movementType == Unit.BAND) {
+				return true;
+			}
 		} else if (terrainType == WOOD) {
 			if (movementType == Unit.INFANTRY) {
 				return true;
 			}
 			if (movementType == Unit.MECH) {
+				return true;
+			}
+			if (movementType == Unit.BAND) {
 				return true;
 			}
 		} else if (terrainType == MOUNTAIN) {
@@ -250,6 +260,9 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (movementType == Unit.MECH) {
 				return true;
 			}
+			if (movementType == Unit.BAND) {
+				return true;
+			}
 		}
 
 		return false;
@@ -260,6 +273,9 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		if (terrainType == PLAIN) {
 		} else if (terrainType == WOOD) {
+			if (movementType == Unit.BAND) {
+				return 2;
+			}
 		} else if (terrainType == MOUNTAIN) {
 			if (movementType == Unit.INFANTRY) {
 				return 2;
@@ -318,6 +334,10 @@ public class Gameboard extends JPanel implements KeyListener {
 		return currentMovementValue > maximumMovement;
 	}
 
+	// @TODO: what happens if a tank want to go round a wood (U-movement) = will givet endless loop
+	// @TODO: also, if (+2,0) is wood, (+3,0) is wood, if (+2,+1) is wood, (+3,+1) is wood and the 
+	//        rest is road, what happens if you try to move the cursor from (+4,+2)->(+4,+1)->(+3,+1)
+	//        result: will get stuck
 	public void recountPath(int newX, int newY) {
 		int mainX = chosenUnit.getX();
 		int mainY = chosenUnit.getY();
