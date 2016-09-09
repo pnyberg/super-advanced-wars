@@ -7,6 +7,7 @@ public class Mech extends Unit {
 
 		movement = 2;
 		movementType = Unit.MECH;
+		attackType = Unit.DIRECT_ATTACK;
 	}
 
 	public void paint(Graphics g, int tileSize) {

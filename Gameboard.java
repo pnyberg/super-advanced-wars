@@ -32,6 +32,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 	private int[][] map;
 	private boolean[][] movementMap;
+	private boolean[][] rangeMap;
 
 	private ArrayList<Unit> troops1;
 	private ArrayList<Unit> troops2;
@@ -43,7 +44,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	private ArrayList<Point> arrowPoints;
 
 	private boolean unitChosen;
-	private Unit chosenUnit;
+	private Unit chosenUnit, rangeUnit;
 
 	public Gameboard(int width, int height) {
 		mapWidth = width;
@@ -51,6 +52,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		map = new int[mapWidth][mapHeight];
 		movementMap = new boolean[mapWidth][mapHeight];
+		rangeMap = new boolean[mapWidth][mapHeight];
 
 		troops1 = new ArrayList<Unit>();
 		troops2 = new ArrayList<Unit>();
@@ -60,6 +62,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		unitChosen = false;
 		chosenUnit = null;
+		rangeUnit = null;
 
 		addKeyListener(this);
 
@@ -186,6 +189,16 @@ public class Gameboard extends JPanel implements KeyListener {
 				chosenUnit = null;
 				movementMap = new boolean[mapWidth][mapHeight];
 				arrowPoints.clear();
+			} else {
+				rangeUnit = getUnit(cursorX, cursorY);
+
+				if (rangeUnit != null) {
+					if (rangeUnit.getAttackType() == Unit.DIRECT_ATTACK) {
+						findPossibleAttackLocations(rangeUnit);
+					} else if (rangeUnit.getAttackType() == Unit.DIRECT_ATTACK) {
+						// TODO
+					}
+				}
 			}
 			// pressing B, does nothing atm
 		}
@@ -373,10 +386,36 @@ public class Gameboard extends JPanel implements KeyListener {
 		return false;
 	}
 
+	public void findPossibleAttackLocations(Unit chosenUnit) {
+		findPossibleMovementLocations(chosenUnit);
+
+		for (int n = 0 ; n < mapHeight ; n++) {
+			for (int i = 0 ; i < mapWidth ; i++) {
+				if (movementMap[i][n]) {
+					if (i > 0) {
+						rangeMap[i - 1][n] = true;
+					}
+					if (i < (mapWidth - 1)) {
+						rangeMap[i + 1][n] = true;
+					}
+					if (n > 0) {
+						rangeMap[i][n - 1] = true;
+					}
+					if (n < (mapHeight - 1)) {
+						rangeMap[i][n + 1] = true;
+					}
+				}
+			}
+		}
+
+		movementMap = new boolean[mapWidth][mapHeight];
+	}
+
 	private int movementCost(int x, int y, int movementType) {
 		int terrainType = map[x][y];
 
-		if (terrainType == PLAIN) {
+		if (terrainType == ROAD) {
+		} else if (terrainType == PLAIN) {
 			if (movementType == Unit.TIRE) {
 				return 2;
 			}
@@ -393,6 +432,9 @@ public class Gameboard extends JPanel implements KeyListener {
 			}
 		} else if (terrainType == SEA) {
 		} else if (terrainType == CITY) {
+		} else if (terrainType == PORT) {
+		} else if (terrainType == AIRPORT) {
+		} else if (terrainType == FACTORY) {
 		}
 
 		return 1;
@@ -505,7 +547,15 @@ public class Gameboard extends JPanel implements KeyListener {
 		return Math.abs(x1 - x2) + Math.abs(y1 - y2) > 1;
 	}
 
-	public void keyReleased(KeyEvent e) {}
+	public void keyReleased(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_B) {
+			if (rangeUnit != null) {
+				rangeUnit = null;
+				rangeMap = new boolean[mapWidth][mapHeight];
+				repaint();
+			}
+		}
+	}
 
 	public void keyTyped(KeyEvent e) {}
 
@@ -536,6 +586,8 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 
 		cursor.paint(g, tileSize);
+
+		paintRange(g, tileSize);
 	}
 
 	private void paintArea(Graphics g, int x, int y, int areaNumber) {
@@ -580,7 +632,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		g.setColor(Color.black);
 		g.drawRect(paintX, paintY, tileSize, tileSize);
 
-		if (areaNumber == 5) {
+		if (areaNumber == 5 && !rangeMap[x][y]) {
 			g.drawLine(paintX, paintY, paintX + tileSize, paintY + tileSize);
 			g.drawLine(paintX, paintY + tileSize, paintX + tileSize, paintY);
 		}
@@ -623,6 +675,22 @@ public class Gameboard extends JPanel implements KeyListener {
 			} else {
 				g.drawLine(xLast + 3 + tileSize / 2, yLast - 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
 				g.drawLine(xLast + 3 + tileSize / 2, yLast + 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
+			}
+		}
+	}
+
+	private void paintRange(Graphics g, int tileSize) {
+		for (int n = 0 ; n < mapHeight ; n++) {
+			for (int i = 0 ; i < mapWidth ; i++) {
+				if (rangeMap[i][n]) {
+					int paintX = i * tileSize;
+					int paintY = n * tileSize;
+
+					g.setColor(Color.red);
+					g.fillRect(paintX, paintY, tileSize, tileSize);
+					g.setColor(Color.black);
+					g.drawRect(paintX, paintY, tileSize, tileSize);
+				}
 			}
 		}
 	}

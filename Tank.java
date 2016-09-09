@@ -7,6 +7,7 @@ public class Tank extends Unit {
 
 		movement = 6;
 		movementType = Unit.BAND;
+		attackType = Unit.DIRECT_ATTACK;
 	}
 
 	public void paint(Graphics g, int tileSize) {

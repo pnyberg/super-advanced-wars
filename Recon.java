@@ -7,6 +7,7 @@ public class Recon extends Unit {
 
 		movement = 8;
 		movementType = Unit.TIRE;
+		attackType = Unit.DIRECT_ATTACK;
 	}
 
 	public void paint(Graphics g, int tileSize) {

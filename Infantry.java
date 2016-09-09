@@ -6,7 +6,8 @@ public class Infantry extends Unit {
 		super(x, y, color);
 
 		movement = 3;
-		movementType = Unit.INFANTRY; // infantry
+		movementType = Unit.INFANTRY;
+		attackType = Unit.DIRECT_ATTACK;
 	}
 
 	public void paint(Graphics g, int tileSize) {

@@ -7,11 +7,16 @@ public abstract class Unit {
 								BAND = 2,
 								TIRE = 3;
 
+	public static final int 	NONE = 0,
+								DIRECT_ATTACK = 1,
+								INDIRECT_ATTACK = 2;
+
 	protected int x, y;
 	protected Color color;
 
 	protected int movement;
 	protected int movementType;
+	protected int attackType;
 
 	public Unit(int x, int y, Color color) {
 		this.x = x;
@@ -38,6 +43,10 @@ public abstract class Unit {
 
 	public int getMovementType() {
 		return movementType;
+	}
+
+	public int getAttackType() {
+		return attackType;
 	}
 
 	public abstract void paint(Graphics g, int tileSize);
