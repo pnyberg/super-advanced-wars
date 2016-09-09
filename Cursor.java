@@ -28,6 +28,11 @@ public class Cursor {
 		x++;
 	}
 
+	public void setPosition(int newX, int newY) {
+		x = newX;
+		y = newY;
+	}
+
 	public void paint(Graphics g, int tileSize) {
 		int smallPiece = tileSize / 20 + 1;
 		int bigPiece = smallPiece * 3;

@@ -2,27 +2,45 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 
+/**
+ * TODO-list
+ * - capting
+ * - FOG
+ * - attacking
+ * - range-combat
+ * - heroes
+ * - sides
+ * - not crashing
+ *
+ * @TODO: substitute ArrayList with HashMap for better performance
+ */
 public class Gameboard extends JPanel implements KeyListener {
 	private final int 	ROAD = 0,
 						PLAIN = 1,
 						WOOD = 2,
 						MOUNTAIN = 3,
 						SEA = 4,
-						CITY = 5;
+						CITY = 5,
+						PORT = 6,
+						AIRPORT = 7,
+						FACTORY = 8;
 
 	private final int tileSize = 40;
 
 	private int[][] map;
 	private boolean[][] movementMap;
-	private LinkedList<Unit> troops;
+
+	private ArrayList<Unit> troops1;
+	private ArrayList<Unit> troops2;
+	private int teamNumber = 0;
 
 	private int mapWidth, mapHeight;
 
 	private Cursor cursor;
-	private LinkedList<Point> arrowPoints;
+	private ArrayList<Point> arrowPoints;
 
 	private boolean unitChosen;
 	private Unit chosenUnit;
@@ -34,10 +52,11 @@ public class Gameboard extends JPanel implements KeyListener {
 		map = new int[mapWidth][mapHeight];
 		movementMap = new boolean[mapWidth][mapHeight];
 
-		troops = new LinkedList<Unit>();
+		troops1 = new ArrayList<Unit>();
+		troops2 = new ArrayList<Unit>();
 
 		cursor = new Cursor(0, 0);
-		arrowPoints = new LinkedList<Point>();
+		arrowPoints = new ArrayList<Point>();
 
 		unitChosen = false;
 		chosenUnit = null;
@@ -50,7 +69,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		repaint();
 	}
 
-	public void initMap() {
+	private void initMap() {
 		for (int n = 0 ; n < 2 ; n++) {
 			for (int i = 0 ; i < mapWidth ; i++) {
 				map[i][n] = SEA;
@@ -104,11 +123,13 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 	}
 
-	public void initTroops() {
-		troops.add(new Infantry(2, 2, Color.red));
-		troops.add(new Mech(3, 3, Color.red));
-		troops.add(new Tank(4, 4, Color.red));
-		troops.add(new Infantry(7, 7, Color.orange));
+	private void initTroops() {
+		troops1.add(new Infantry(2, 2, Color.red));
+		troops1.add(new Mech(3, 3, Color.red));
+		troops1.add(new Tank(4, 4, Color.red));
+		troops1.add(new Recon(5, 5, Color.red));
+
+		troops2.add(new Infantry(7, 7, Color.orange));
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -148,23 +169,37 @@ public class Gameboard extends JPanel implements KeyListener {
 					arrowPoints.add(new Point(cursorX, cursorY));
 				}
 			} else if (movementMap[cursorX][cursorY]) {
-				chosenUnit.moveTo(cursorX, cursorY);
+				if (!areaOccupiedByFriendly(cursorX, cursorY, teamNumber)) {
+					chosenUnit.moveTo(cursorX, cursorY);
+					unitChosen = false;
+					chosenUnit = null;
+					movementMap = new boolean[mapWidth][mapHeight];
+					arrowPoints.clear();
+				}
+			}
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_B) {
+			if (chosenUnit != null) {
+				cursor.setPosition(chosenUnit.getX(), chosenUnit.getY());
 				unitChosen = false;
 				chosenUnit = null;
 				movementMap = new boolean[mapWidth][mapHeight];
 				arrowPoints.clear();
 			}
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_B) {
 			// pressing B, does nothing atm
 		}
 
 		repaint();
 	}
 
-	public Unit getUnit(int x, int y) {
-		for (Unit unit : troops) {
+	private Unit getUnit(int x, int y) {
+		for (Unit unit : troops1) {
+			if (unit.getX() == x && unit.getY() == y) {
+				return unit;
+			}
+		}
+		for (Unit unit : troops2) {
 			if (unit.getX() == x && unit.getY() == y) {
 				return unit;
 			}
@@ -172,7 +207,26 @@ public class Gameboard extends JPanel implements KeyListener {
 		return null;
 	}
 
-	public void findPossibleMovementLocations(Unit chosenUnit) {
+	private boolean areaOccupiedByFriendly(int x, int y, int team) {
+		if (team == 0) {
+			for (Unit unit : troops1) {
+				if (unit.getX() == x && unit.getY() == y && unit != chosenUnit) {
+					return true;
+				}
+			}
+		} else if (team == 1) {
+			for (Unit unit : troops2) {
+				if (unit.getX() == x && unit.getY() == y && unit != chosenUnit) {
+					return true;
+				}
+			}
+		}
+		// currentyl no third team available
+
+		return false;
+	}
+
+	private void findPossibleMovementLocations(Unit chosenUnit) {
 		int x = chosenUnit.getX();
 		int y = chosenUnit.getY();
 		int movementSteps = chosenUnit.getMovement();
@@ -186,7 +240,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		checkPath(x, y - 1, movementSteps, movementType);
 	}
 
-	public void checkPath(int x, int y, int movementSteps, int movementType) {
+	private void checkPath(int x, int y, int movementSteps, int movementType) {
 		if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight) {
 			return;
 		}
@@ -212,7 +266,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	/***
 	 * Used to check if a positions can be moved to by a specific movement-type
 	 ***/
-	public boolean allowedMovementPosition(int x, int y, int movementType) {
+	private boolean allowedMovementPosition(int x, int y, int movementType) {
 		int terrainType = map[x][y];
 
 		if (terrainType == ROAD) {
@@ -225,6 +279,9 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (movementType == Unit.BAND) {
 				return true;
 			}
+			if (movementType == Unit.TIRE) {
+				return true;
+			}
 		} else if (terrainType == PLAIN) {
 			if (movementType == Unit.INFANTRY) {
 				return true;
@@ -235,6 +292,9 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (movementType == Unit.BAND) {
 				return true;
 			}
+			if (movementType == Unit.TIRE) {
+				return true;
+			}
 		} else if (terrainType == WOOD) {
 			if (movementType == Unit.INFANTRY) {
 				return true;
@@ -243,6 +303,9 @@ public class Gameboard extends JPanel implements KeyListener {
 				return true;
 			}
 			if (movementType == Unit.BAND) {
+				return true;
+			}
+			if (movementType == Unit.TIRE) {
 				return true;
 			}
 		} else if (terrainType == MOUNTAIN) {
@@ -263,18 +326,66 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (movementType == Unit.BAND) {
 				return true;
 			}
+			if (movementType == Unit.TIRE) {
+				return true;
+			}
+		} else if (terrainType == PORT) {
+			if (movementType == Unit.INFANTRY) {
+				return true;
+			}
+			if (movementType == Unit.MECH) {
+				return true;
+			}
+			if (movementType == Unit.BAND) {
+				return true;
+			}
+			if (movementType == Unit.TIRE) {
+				return true;
+			}
+		} else if (terrainType == AIRPORT) {
+			if (movementType == Unit.INFANTRY) {
+				return true;
+			}
+			if (movementType == Unit.MECH) {
+				return true;
+			}
+			if (movementType == Unit.BAND) {
+				return true;
+			}
+			if (movementType == Unit.TIRE) {
+				return true;
+			}
+		} else if (terrainType == FACTORY) {
+			if (movementType == Unit.INFANTRY) {
+				return true;
+			}
+			if (movementType == Unit.MECH) {
+				return true;
+			}
+			if (movementType == Unit.BAND) {
+				return true;
+			}
+			if (movementType == Unit.TIRE) {
+				return true;
+			}
 		}
 
 		return false;
 	}
 
-	public int movementCost(int x, int y, int movementType) {
+	private int movementCost(int x, int y, int movementType) {
 		int terrainType = map[x][y];
 
 		if (terrainType == PLAIN) {
+			if (movementType == Unit.TIRE) {
+				return 2;
+			}
 		} else if (terrainType == WOOD) {
 			if (movementType == Unit.BAND) {
 				return 2;
+			}
+			if (movementType == Unit.TIRE) {
+				return 3;
 			}
 		} else if (terrainType == MOUNTAIN) {
 			if (movementType == Unit.INFANTRY) {
@@ -287,7 +398,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		return 1;
 	}
 
-	public void addArrowPoint(int newX, int newY) {
+	private void addArrowPoint(int newX, int newY) {
 		int newLast = -1;
 
 		for (int i = 0 ; i < arrowPoints.size() ; i++) {
@@ -319,7 +430,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 	}
 
-	public boolean invalidCurrentPath() {
+	private boolean invalidCurrentPath() {
 		int maximumMovement = chosenUnit.getMovement();
 		int movementType = chosenUnit.getMovementType();
 
@@ -338,7 +449,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	// @TODO: also, if (+2,0) is wood, (+3,0) is wood, if (+2,+1) is wood, (+3,+1) is wood and the 
 	//        rest is road, what happens if you try to move the cursor from (+4,+2)->(+4,+1)->(+3,+1)
 	//        result: will get stuck
-	public void recountPath(int newX, int newY) {
+	private void recountPath(int newX, int newY) {
 		int mainX = chosenUnit.getX();
 		int mainY = chosenUnit.getY();
 		int movementType = chosenUnit.getMovementType();
@@ -351,8 +462,9 @@ public class Gameboard extends JPanel implements KeyListener {
 
 
 		while(Math.abs(diffX) > 0 || Math.abs(diffY) > 0) {
-			int prevX = arrowPoints.getLast().getX();
-			int prevY = arrowPoints.getLast().getY();
+			int last = arrowPoints.size() - 1;
+			int prevX = arrowPoints.get(last).getX();
+			int prevY = arrowPoints.get(last).getY();
 
 			if (prevX == newX && prevY == newY) {
 				break;
@@ -382,7 +494,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 	}
 
-	public boolean newPointNotConnectedToPreviousPoint() {
+	private boolean newPointNotConnectedToPreviousPoint() {
 		int size = arrowPoints.size();
 
 		int x1 = arrowPoints.get(size - 2).getX();
@@ -406,7 +518,12 @@ public class Gameboard extends JPanel implements KeyListener {
 			}
 		}
 
-		for (Unit unit : troops) {
+		for (Unit unit : troops1) {
+			if (unit != chosenUnit) {
+				unit.paint(g, tileSize);
+			}
+		}
+		for (Unit unit : troops2) {
 			if (unit != chosenUnit) {
 				unit.paint(g, tileSize);
 			}
@@ -469,7 +586,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 	}
 
-	public void paintArrow(Graphics g, int tileSize) {
+	private void paintArrow(Graphics g, int tileSize) {
 		if (arrowPoints.size() < 2) {
 			return;
 		}
