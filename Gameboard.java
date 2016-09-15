@@ -26,7 +26,8 @@ public class Gameboard extends JPanel implements KeyListener {
 						CITY = 5,
 						PORT = 6,
 						AIRPORT = 7,
-						FACTORY = 8;
+						FACTORY = 8,
+						REEF = 9;
 
 	private final int tileSize = 40;
 
@@ -124,6 +125,11 @@ public class Gameboard extends JPanel implements KeyListener {
 				map[i][n] = SEA;
 			}
 		}
+
+		map[9][0] = REEF;
+		map[1][1] = REEF;
+		map[8][8] = REEF;
+		map[0][9] = REEF;
 	}
 
 	private void initTroops() {
@@ -140,29 +146,29 @@ public class Gameboard extends JPanel implements KeyListener {
 		int cursorY = cursor.getY();
 
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			if (cursorY > 0) {
+			if (cursorY > 0 && rangeUnit == null) {
 				addArrowPoint(cursorX, cursorY - 1);
 				cursor.moveUp();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			if (cursorY < (mapHeight - 1) * tileSize) {
+			if (cursorY < (mapHeight - 1) * tileSize && rangeUnit == null) {
 				addArrowPoint(cursorX, cursorY + 1);
 				cursor.moveDown();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			if (cursorX > 0) {
+			if (cursorX > 0 && rangeUnit == null) {
 				addArrowPoint(cursorX - 1, cursorY);
 				cursor.moveLeft();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (cursorX < (mapHeight - 1) * tileSize) {
+			if (cursorX < (mapHeight - 1) * tileSize && rangeUnit == null) {
 				addArrowPoint(cursorX + 1, cursorY);
 				cursor.moveRight();
 			}
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_A) {
-			if (!unitChosen) {
+			if (!unitChosen && rangeUnit == null) {
 				chosenUnit = getUnit(cursorX, cursorY);
 
 				if (chosenUnit != null) {
@@ -171,7 +177,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 					arrowPoints.add(new Point(cursorX, cursorY));
 				}
-			} else if (movementMap[cursorX][cursorY]) {
+			} else if (movementMap[cursorX][cursorY] && rangeUnit == null) {
 				if (!areaOccupiedByFriendly(cursorX, cursorY, teamNumber)) {
 					chosenUnit.moveTo(cursorX, cursorY);
 					unitChosen = false;
@@ -195,7 +201,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				if (rangeUnit != null) {
 					if (rangeUnit.getAttackType() == Unit.DIRECT_ATTACK) {
 						findPossibleAttackLocations(rangeUnit);
-					} else if (rangeUnit.getAttackType() == Unit.DIRECT_ATTACK) {
+					} else if (rangeUnit.getAttackType() == Unit.INDIRECT_ATTACK) {
 						// TODO
 					}
 				}
@@ -568,6 +574,16 @@ public class Gameboard extends JPanel implements KeyListener {
 			}
 		}
 
+		if (unitChosen) {
+			paintArrow(g, tileSize);
+
+			chosenUnit.paint(g, tileSize);
+		}
+
+		cursor.paint(g, tileSize);
+
+		paintRange(g, tileSize);
+
 		for (Unit unit : troops1) {
 			if (unit != chosenUnit) {
 				unit.paint(g, tileSize);
@@ -578,51 +594,47 @@ public class Gameboard extends JPanel implements KeyListener {
 				unit.paint(g, tileSize);
 			}
 		}
-
-		if (unitChosen) {
-			paintArrow(g, tileSize);
-
-			chosenUnit.paint(g, tileSize);
-		}
-
-		cursor.paint(g, tileSize);
-
-		paintRange(g, tileSize);
 	}
 
 	private void paintArea(Graphics g, int x, int y, int areaNumber) {
-		if (areaNumber == 0) {
+		if (areaNumber == ROAD) {
 			if (movementMap[x][y]) {
 				g.setColor(Color.lightGray);
 			} else {
 				g.setColor(Color.gray);
 			}
-		} else if (areaNumber == 1) {
+		} else if (areaNumber == PLAIN) {
 			if (movementMap[x][y]) {
 				g.setColor(new Color(255,250,205)); // lighter yellow
 			} else {
 				g.setColor(new Color(204,204,0)); // darker yellow
 			}
-		} else if (areaNumber == 2) {
+		} else if (areaNumber == WOOD) {
 			if (movementMap[x][y]) {
 				g.setColor(new Color(50,205,50)); // limegreen
 			} else {
 				g.setColor(new Color(0,128,0)); // green
 			}
-		} else if (areaNumber == 3) {
+		} else if (areaNumber == MOUNTAIN) {
 			if (movementMap[x][y]) {
 				g.setColor(new Color(205,133,63)); // lighter brown
 			} else {
 				g.setColor(new Color(142,101,64)); // brown
 			}
-		} else if (areaNumber == 4) {
+		} else if (areaNumber == SEA) {
 			if (movementMap[x][y]) {
 				g.setColor(new Color(30,144,255)); // lighter blue
 			} else {
 				g.setColor(Color.blue);
 			}
-		} else {
+		} else if (areaNumber == CITY) {
 			g.setColor(Color.white);
+		} else if (areaNumber == REEF) {
+			if (movementMap[x][y]) {
+				g.setColor(new Color(30,144,255)); // lighter blue
+			} else {
+				g.setColor(Color.blue);
+			}
 		}
 
 		int paintX = x * tileSize;
@@ -632,9 +644,12 @@ public class Gameboard extends JPanel implements KeyListener {
 		g.setColor(Color.black);
 		g.drawRect(paintX, paintY, tileSize, tileSize);
 
-		if (areaNumber == 5 && !rangeMap[x][y]) {
+		if (areaNumber == CITY && !rangeMap[x][y]) {
 			g.drawLine(paintX, paintY, paintX + tileSize, paintY + tileSize);
 			g.drawLine(paintX, paintY + tileSize, paintX + tileSize, paintY);
+		} else if (areaNumber == REEF && !rangeMap[x][y]) {
+			g.fillRect(paintX + tileSize / 4, paintY + tileSize / 4, tileSize / 4, tileSize / 4);
+			g.fillRect(paintX + 5 * tileSize / 8, paintY + 5 * tileSize / 8, tileSize / 4, tileSize / 4);
 		}
 	}
 
