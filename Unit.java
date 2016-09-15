@@ -2,11 +2,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public abstract class Unit {
+	// Movement-type
 	public static final int 	INFANTRY = 0,
 								MECH = 1,
 								BAND = 2,
 								TIRE = 3;
 
+	// Attack-type
 	public static final int 	NONE = 0,
 								DIRECT_ATTACK = 1,
 								INDIRECT_ATTACK = 2;

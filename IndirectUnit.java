@@ -1,14 +1,11 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class IndirectUnit extends Unit {
+public abstract class IndirectUnit extends Unit {
 	protected int minimumRange, maximumRange;
 
-	public IndirectUnit(int x, int y, Color color, int minimumRange, int maximumRange) {
+	public IndirectUnit(int x, int y, Color color) {
 		super(x, y, color);
-
-		this.minimumRange = minimumRange;
-		this.maximumRange = maximumRange;
 
 		attackType = Unit.INDIRECT_ATTACK;
 	}

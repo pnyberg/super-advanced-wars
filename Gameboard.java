@@ -137,6 +137,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		troops1.add(new Mech(3, 3, Color.red));
 		troops1.add(new Tank(4, 4, Color.red));
 		troops1.add(new Recon(5, 5, Color.red));
+		troops1.add(new Artillery(5, 2, Color.red));
 
 		troops2.add(new Infantry(7, 7, Color.orange));
 	}
@@ -202,11 +203,10 @@ public class Gameboard extends JPanel implements KeyListener {
 					if (rangeUnit.getAttackType() == Unit.DIRECT_ATTACK) {
 						findPossibleAttackLocations(rangeUnit);
 					} else if (rangeUnit.getAttackType() == Unit.INDIRECT_ATTACK) {
-						// TODO
+						createRangeAttackLocations(rangeUnit);
 					}
 				}
 			}
-			// pressing B, does nothing atm
 		}
 
 		repaint();
@@ -392,7 +392,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		return false;
 	}
 
-	public void findPossibleAttackLocations(Unit chosenUnit) {
+	private void findPossibleAttackLocations(Unit chosenUnit) {
 		findPossibleMovementLocations(chosenUnit);
 
 		for (int n = 0 ; n < mapHeight ; n++) {
@@ -415,6 +415,35 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 
 		movementMap = new boolean[mapWidth][mapHeight];
+	}
+
+	private void createRangeAttackLocations(Unit chosenUnit) {
+		IndirectUnit unit = (IndirectUnit)chosenUnit;
+
+		int unitX = unit.getX();
+		int unitY = unit.getY();
+		int minRange = unit.getMinRange();
+		int maxRange = unit.getMaxRange();
+
+		for (int y = unitY - maxRange ; y <= (unitY + maxRange) ; y++) {
+			if (y < 0) {
+				continue;
+			} else if (y >= mapHeight) {
+				break;
+			}
+			for (int x = unitX - maxRange ; x <= (unitX + maxRange) ; x++) {
+				if (x < 0) {
+					continue;
+				} else if (x >= mapWidth) {
+					break;
+				}
+
+				int distanceFromUnit = Math.abs(unitX - x) + Math.abs(unitY - y);
+				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
+					rangeMap[x][y] = true;
+				}
+			}
+		}
 	}
 
 	private int movementCost(int x, int y, int movementType) {
