@@ -12,18 +12,18 @@ public class Rocket extends IndirectUnit {
 	}
 
 	public void paint(Graphics g, int tileSize) {
-		int cx1 = x * tileSize + tileSize / 8;
-		int cy1 = y * tileSize + tileSize / 4;
-		int cx2 = x * tileSize + tileSize / 4;
-		int cy2 = y * tileSize + tileSize / 8;
-		int cx3 = x * tileSize + 3 * tileSize / 4 + 3;
-		int cy3 = y * tileSize + 2 * tileSize / 5 + 3;
-		int cx4 = x * tileSize + 2 * tileSize / 4 + 3;
-		int cy4 = y * tileSize + tileSize / 2 + 3;
+		int cx1 = x * tileSize + tileSize / 10 + 2;
+		int cy1 = y * tileSize + tileSize / 4 + 2;
+		int cx2 = x * tileSize + tileSize / 3 - 1;
+		int cy2 = y * tileSize + tileSize / 10 - 1;
+		int cx3 = x * tileSize + 4 * tileSize / 5 + 4;
+		int cy3 = y * tileSize + 2 * tileSize / 5 - 2;
+		int cx4 = x * tileSize + 3 * tileSize / 4 + 2;
+		int cy4 = y * tileSize + tileSize / 2 + 5;
 
-		int bodyWidth = 2 * tileSize / 5 + 1;
+		int bodyWidth = 2 * tileSize / 5 + 5;
 		int bodyHeight = tileSize / 4 + 3;
-		int bodyAlignX = tileSize / 3 - 1;
+		int bodyAlignX = tileSize / 3 - 3;
 		int bodyAlignY = 7 * tileSize / 20 + 3;
 
 		// body
