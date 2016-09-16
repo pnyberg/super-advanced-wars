@@ -10,10 +10,9 @@ import javax.swing.JPanel;
  * - capting
  * - FOG
  * - attacking
- * - range-combat
  * - heroes
  * - sides
- * - not crashing
+ * - not crashing on recalculating route
  *
  * @TODO: substitute ArrayList with HashMap for better performance
  */
@@ -148,22 +147,22 @@ public class Gameboard extends JPanel implements KeyListener {
 		int cursorY = cursor.getY();
 
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			if (cursorY > 0 && rangeUnit == null) {
+			if (cursorY > 0) {
 				addArrowPoint(cursorX, cursorY - 1);
 				cursor.moveUp();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			if (cursorY < (mapHeight - 1) * tileSize && rangeUnit == null) {
+			if (cursorY < (mapHeight - 1)) {
 				addArrowPoint(cursorX, cursorY + 1);
 				cursor.moveDown();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			if (cursorX > 0 && rangeUnit == null) {
+			if (cursorX > 0) {
 				addArrowPoint(cursorX - 1, cursorY);
 				cursor.moveLeft();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (cursorX < (mapHeight - 1) * tileSize && rangeUnit == null) {
+			if (cursorX < (mapWidth - 1)) {
 				addArrowPoint(cursorX + 1, cursorY);
 				cursor.moveRight();
 			}
@@ -610,10 +609,6 @@ public class Gameboard extends JPanel implements KeyListener {
 			chosenUnit.paint(g, tileSize);
 		}
 
-		if (rangeUnit == null) {
-			cursor.paint(g, tileSize);
-		}
-
 		paintRange(g, tileSize);
 
 		for (Unit unit : troops1) {
@@ -626,6 +621,8 @@ public class Gameboard extends JPanel implements KeyListener {
 				unit.paint(g, tileSize);
 			}
 		}
+
+		cursor.paint(g, tileSize);
 	}
 
 	private void paintArea(Graphics g, int x, int y, int areaNumber) {
