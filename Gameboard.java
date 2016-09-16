@@ -138,6 +138,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		troops1.add(new Recon(5, 5, Color.red));
 		troops1.add(new Artillery(5, 2, Color.red));
 		troops1.add(new Rocket(2, 5, Color.red));
+		troops1.add(new Battleship(1, 3, Color.red));
 
 		troops2.add(new Infantry(7, 7, Color.orange));
 	}

@@ -12,10 +12,12 @@ public class Artillery extends IndirectUnit {
 	}
 
 	public void paint(Graphics g, int tileSize) {
-		int cx1 = x * tileSize + tileSize / 8;
-		int cy1 = y * tileSize + tileSize / 4;
-		int cx2 = x * tileSize + tileSize / 4;
-		int cy2 = y * tileSize + tileSize / 8;
+		int cx1 = x * tileSize + 3 * tileSize / 4;
+		int cy1 = y * tileSize + tileSize / 8;
+
+		int cx2 = x * tileSize + 7 * tileSize / 8;
+		int cy2 = y * tileSize + tileSize / 4;
+
 		int cx3 = x * tileSize + 3 * tileSize / 4 - 3;
 		int cy3 = y * tileSize + 7 * tileSize / 20 + 3;
 		int cx4 = x * tileSize + tileSize / 4 + 5;

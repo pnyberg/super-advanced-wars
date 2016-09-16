@@ -6,7 +6,9 @@ public abstract class Unit {
 	public static final int 	INFANTRY = 0,
 								MECH = 1,
 								BAND = 2,
-								TIRE = 3;
+								TIRE = 3,
+								SHIP = 4,
+								TRANSPORT = 5;
 
 	// Attack-type
 	public static final int 	NONE = 0,
