@@ -152,29 +152,35 @@ public class Gameboard extends JPanel implements KeyListener {
 		int cursorY = cursor.getY();
 
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			if (cursorY > 0) {
+			if (cursorY > 0 && !menu.isVisible()) {
 				addArrowPoint(cursorX, cursorY - 1);
 				cursor.moveUp();
+			} else if (menu.isVisible()) {
+				menu.moveArrowUp();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			if (cursorY < (mapHeight - 1)) {
+			if (cursorY < (mapHeight - 1) && !menu.isVisible()) {
 				addArrowPoint(cursorX, cursorY + 1);
 				cursor.moveDown();
+			} else if (menu.isVisible()) {
+				menu.moveArrowDown();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			if (cursorX > 0) {
+			if (cursorX > 0 && !menu.isVisible()) {
 				addArrowPoint(cursorX - 1, cursorY);
 				cursor.moveLeft();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (cursorX < (mapWidth - 1)) {
+			if (cursorX < (mapWidth - 1) && !menu.isVisible()) {
 				addArrowPoint(cursorX + 1, cursorY);
 				cursor.moveRight();
 			}
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_A) {
-			if (!unitChosen && rangeUnit == null) {
+			if (menu.isVisible()) {
+				// @TODO: menu-option
+			} else if (!unitChosen && rangeUnit == null) {
 				chosenUnit = getUnit(cursorX, cursorY);
 
 				if (chosenUnit != null) {
@@ -201,6 +207,8 @@ public class Gameboard extends JPanel implements KeyListener {
 				chosenUnit = null;
 				movementMap = new boolean[mapWidth][mapHeight];
 				arrowPoints.clear();
+			} else if (menu.isVisible()) {
+				menu.closeMenu();
 			} else {
 				rangeUnit = getUnit(cursorX, cursorY);
 
@@ -251,7 +259,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 			}
 		}
-		// currentyl no third team available
+		// currently no third team available
 
 		return false;
 	}
