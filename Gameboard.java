@@ -43,7 +43,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	private Cursor cursor;
 	private ArrayList<Point> arrowPoints;
 
-	private Menu menu;
+	private MapMenu menu;
 
 	private boolean unitChosen;
 	private Unit chosenUnit, rangeUnit;
@@ -62,7 +62,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		cursor = new Cursor(0, 0);
 		arrowPoints = new ArrayList<Point>();
 
-		menu = new Menu(tileSize);
+		menu = new MapMenu(tileSize);
 
 		unitChosen = false;
 		chosenUnit = null;
