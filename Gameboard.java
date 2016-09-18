@@ -43,6 +43,8 @@ public class Gameboard extends JPanel implements KeyListener {
 	private Cursor cursor;
 	private ArrayList<Point> arrowPoints;
 
+	private Menu menu;
+
 	private boolean unitChosen;
 	private Unit chosenUnit, rangeUnit;
 
@@ -59,6 +61,8 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		cursor = new Cursor(0, 0);
 		arrowPoints = new ArrayList<Point>();
+
+		menu = new Menu(tileSize);
 
 		unitChosen = false;
 		chosenUnit = null;
@@ -207,6 +211,12 @@ public class Gameboard extends JPanel implements KeyListener {
 						createRangeAttackLocations(rangeUnit);
 					}
 				}
+			}
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_S) {
+			if (chosenUnit == null) {
+				menu.openMenu(cursor.getX(), cursor.getY());
 			}
 		}
 
@@ -623,7 +633,12 @@ public class Gameboard extends JPanel implements KeyListener {
 			}
 		}
 
-		cursor.paint(g, tileSize);
+		// when the menu is open the cursor is hidden
+		if (menu.isVisible()) {
+			menu.paint(g);
+		} else {
+			cursor.paint(g, tileSize);
+		}
 	}
 
 	private void paintArea(Graphics g, int x, int y, int areaNumber) {
