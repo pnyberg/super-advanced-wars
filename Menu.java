@@ -60,6 +60,8 @@ public abstract class Menu {
 	}
 
 	protected void paintMenuBackground(Graphics g) {
+		updateNumberOfRows();
+
 		int menuWidth = (tileSize * 5 / 3);
 		int menuHeight = 10 + numberOfRows * menuRowHeight;
 		int arrowWidth = tileSize / 2;
