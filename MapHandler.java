@@ -130,6 +130,12 @@ public class MapHandler {
 				return true;
 			}
 		} else if (terrainType == SEA) {
+			if (movementType == Unit.SHIP) {
+				return true;
+			}
+			if (movementType == Unit.TRANSPORT) {
+				return true;
+			}
 		} else if (terrainType == CITY) {
 			if (movementType == Unit.INFANTRY) {
 				return true;
@@ -154,6 +160,12 @@ public class MapHandler {
 				return true;
 			}
 			if (movementType == Unit.TIRE) {
+				return true;
+			}
+			if (movementType == Unit.SHIP) {
+				return true;
+			}
+			if (movementType == Unit.TRANSPORT) {
 				return true;
 			}
 		} else if (terrainType == AIRPORT) {
