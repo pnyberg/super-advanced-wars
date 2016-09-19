@@ -157,6 +157,7 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (cursorY > 0 && !mapMenu.isVisible() && !unitMenu.isVisible()) {
 				addArrowPoint(cursorX, cursorY - 1);
 				cursor.moveUp();
+				updateUnitPosition(cursorX, cursorY - 1);
 			} else if (mapMenu.isVisible()) {
 				mapMenu.moveArrowUp();
 			} else if (unitMenu.isVisible()) {
@@ -166,6 +167,7 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (cursorY < (mapHeight - 1) && !mapMenu.isVisible() && !unitMenu.isVisible()) {
 				addArrowPoint(cursorX, cursorY + 1);
 				cursor.moveDown();
+				updateUnitPosition(cursorX, cursorY + 1);
 			} else if (mapMenu.isVisible()) {
 				mapMenu.moveArrowDown();
 			} else if (unitMenu.isVisible()) {
@@ -175,11 +177,13 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (cursorX > 0 && !mapMenu.isVisible() && !unitMenu.isVisible()) {
 				addArrowPoint(cursorX - 1, cursorY);
 				cursor.moveLeft();
+				updateUnitPosition(cursorX - 1, cursorY);
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			if (cursorX < (mapWidth - 1) && !mapMenu.isVisible() && !unitMenu.isVisible()) {
 				addArrowPoint(cursorX + 1, cursorY);
 				cursor.moveRight();
+				updateUnitPosition(cursorX + 1, cursorY);
 			}
 		}
 
@@ -211,13 +215,15 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		if (e.getKeyCode() == KeyEvent.VK_B) {
 			if (chosenUnit != null) {
-				cursor.setPosition(chosenUnit.getX(), chosenUnit.getY());
-				unitChosen = false;
-				chosenUnit = null;
-				movementMap = new boolean[mapWidth][mapHeight];
-				arrowPoints.clear();
 				if (unitMenu.isVisible()) {
 					unitMenu.closeMenu();
+				} else {
+					cursor.setPosition(arrowPoints.get(0).getX(), arrowPoints.get(0).getY());
+					chosenUnit.moveTo(arrowPoints.get(0).getX(), arrowPoints.get(0).getY());
+					unitChosen = false;
+					chosenUnit = null;
+					movementMap = new boolean[mapWidth][mapHeight];
+					arrowPoints.clear();						
 				}
 			} else if (mapMenu.isVisible()) {
 				mapMenu.closeMenu();
@@ -257,13 +263,18 @@ public class Gameboard extends JPanel implements KeyListener {
 		return null;
 	}
 
+	private void updateUnitPosition(int newX, int newY) {
+		if (movementMap[newX][newY]) {
+			chosenUnit.moveTo(newX, newY);
+		}
+	}
+
 	private void handleOpenUnitMenu(int cursorX, int cursorY, int teamNumber) {
 		if (!areaOccupiedByFriendly(cursorX, cursorY, teamNumber)) {
 			unitMenu.unitMayWait();
 			unitMenu.openMenu(cursorX, cursorY);
 		}
 	}
-
 
 	private boolean areaOccupiedByFriendly(int x, int y, int team) {
 		if (team == 0) {
