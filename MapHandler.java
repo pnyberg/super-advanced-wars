@@ -1,6 +1,11 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
+/**
+ * Handles the map
+ * - contains movementcost and movementability (should perhaps be put in RouteHandler?)
+ */
 public class MapHandler {
 	public static final int 	ROAD = 0,
 								PLAIN = 1,
@@ -15,9 +20,87 @@ public class MapHandler {
 
 	public static final int tileSize = 40;
 
-	private static int[][] map;
+	private static int[][] map, movementCostMatrix;
+	private static boolean[][] moveabilityCostMatrix;
+	private static ArrayList<Unit> troops1, troops2;
 
-	public static void initMap(int mapWidth, int mapHeight) {
+	public static void initMapHandler(int mapWidth, int mapHeight) {
+		initMovementCostMatrix();
+		initMoveabilityMatrix();
+		initMap(mapWidth, mapHeight);
+		initTroops();
+	}
+
+	private static void initMovementCostMatrix() {
+		// number of types of units x number of types of terrain
+		movementCostMatrix = new int[6][10];
+
+		for (int unitIndex = 0 ; unitIndex < movementCostMatrix.length ; unitIndex++) {
+			for (int terrainIndex = 0 ; terrainIndex < movementCostMatrix[0].length ; terrainIndex++) {
+				movementCostMatrix[unitIndex][terrainIndex] = 1;
+			}
+		}
+
+		movementCostMatrix[Unit.TIRE][PLAIN] = 2;
+		movementCostMatrix[Unit.BAND][WOOD] = 2;
+		movementCostMatrix[Unit.TIRE][WOOD] = 3;
+		movementCostMatrix[Unit.INFANTRY][WOOD] = 2;
+		movementCostMatrix[Unit.SHIP][REEF] = 2;
+		movementCostMatrix[Unit.TRANSPORT][REEF] = 2;
+	}
+
+	private static void initMoveabilityMatrix() {
+		// number of types of units x number of types of terrain
+		moveabilityCostMatrix = new boolean[6][10];
+
+		moveabilityCostMatrix[Unit.INFANTRY][ROAD] = true;
+		moveabilityCostMatrix[Unit.MECH][ROAD] = true;
+		moveabilityCostMatrix[Unit.BAND][ROAD] = true;
+		moveabilityCostMatrix[Unit.TIRE][ROAD] = true;
+
+		moveabilityCostMatrix[Unit.INFANTRY][PLAIN] = true;
+		moveabilityCostMatrix[Unit.MECH][PLAIN] = true;
+		moveabilityCostMatrix[Unit.BAND][PLAIN] = true;
+		moveabilityCostMatrix[Unit.TIRE][PLAIN] = true;
+
+		moveabilityCostMatrix[Unit.INFANTRY][WOOD] = true;
+		moveabilityCostMatrix[Unit.MECH][WOOD] = true;
+		moveabilityCostMatrix[Unit.BAND][WOOD] = true;
+		moveabilityCostMatrix[Unit.TIRE][WOOD] = true;
+
+		moveabilityCostMatrix[Unit.INFANTRY][MOUNTAIN] = true;
+		moveabilityCostMatrix[Unit.MECH][MOUNTAIN] = true;
+
+		moveabilityCostMatrix[Unit.SHIP][SEA] = true;
+		moveabilityCostMatrix[Unit.TRANSPORT][SEA] = true;
+
+		moveabilityCostMatrix[Unit.SHIP][REEF] = true;
+		moveabilityCostMatrix[Unit.TRANSPORT][REEF] = true;
+
+		moveabilityCostMatrix[Unit.INFANTRY][CITY] = true;
+		moveabilityCostMatrix[Unit.MECH][CITY] = true;
+		moveabilityCostMatrix[Unit.BAND][CITY] = true;
+		moveabilityCostMatrix[Unit.TIRE][CITY] = true;
+
+		moveabilityCostMatrix[Unit.INFANTRY][PORT] = true;
+		moveabilityCostMatrix[Unit.MECH][PORT] = true;
+		moveabilityCostMatrix[Unit.BAND][PORT] = true;
+		moveabilityCostMatrix[Unit.TIRE][PORT] = true;
+		moveabilityCostMatrix[Unit.SHIP][PORT] = true;
+		moveabilityCostMatrix[Unit.TRANSPORT][PORT] = true;
+
+		moveabilityCostMatrix[Unit.INFANTRY][AIRPORT] = true;
+		moveabilityCostMatrix[Unit.MECH][AIRPORT] = true;
+		moveabilityCostMatrix[Unit.BAND][AIRPORT] = true;
+		moveabilityCostMatrix[Unit.TIRE][AIRPORT] = true;
+
+		moveabilityCostMatrix[Unit.INFANTRY][FACTORY] = true;
+		moveabilityCostMatrix[Unit.MECH][FACTORY] = true;
+		moveabilityCostMatrix[Unit.BAND][FACTORY] = true;
+		moveabilityCostMatrix[Unit.TIRE][FACTORY] = true;
+	}
+
+	private static void initMap(int mapWidth, int mapHeight) {
 		map = new int[mapWidth][mapHeight];
 
 		for (int n = 0 ; n < 2 ; n++) {
@@ -78,173 +161,58 @@ public class MapHandler {
 		map[0][9] = REEF;
 	}
 
+	private static void initTroops() {
+		troops1 = new ArrayList<Unit>();
+		troops2 = new ArrayList<Unit>();
+
+		troops1.add(new Infantry(2, 2, Color.red));
+		troops1.add(new Mech(3, 3, Color.red));
+		troops1.add(new Tank(4, 4, Color.red));
+		troops1.add(new Recon(5, 5, Color.red));
+		troops1.add(new Artillery(5, 2, Color.red));
+		troops1.add(new Rocket(2, 5, Color.red));
+		troops1.add(new Battleship(1, 3, Color.red));
+
+		troops2.add(new Infantry(7, 7, Color.orange));
+	}
+
 	/***
 	 * Used to check if a positions can be moved to by a specific movement-type
 	 ***/
 	public static boolean allowedMovementPosition(int x, int y, int movementType) {
 		int terrainType = map[x][y];
 
-		if (terrainType == ROAD) {
-			if (movementType == Unit.INFANTRY) {
-				return true;
-			}
-			if (movementType == Unit.MECH) {
-				return true;
-			}
-			if (movementType == Unit.BAND) {
-				return true;
-			}
-			if (movementType == Unit.TIRE) {
-				return true;
-			}
-		} else if (terrainType == PLAIN) {
-			if (movementType == Unit.INFANTRY) {
-				return true;
-			}
-			if (movementType == Unit.MECH) {
-				return true;
-			}
-			if (movementType == Unit.BAND) {
-				return true;
-			}
-			if (movementType == Unit.TIRE) {
-				return true;
-			}
-		} else if (terrainType == WOOD) {
-			if (movementType == Unit.INFANTRY) {
-				return true;
-			}
-			if (movementType == Unit.MECH) {
-				return true;
-			}
-			if (movementType == Unit.BAND) {
-				return true;
-			}
-			if (movementType == Unit.TIRE) {
-				return true;
-			}
-		} else if (terrainType == MOUNTAIN) {
-			if (movementType == Unit.INFANTRY) {
-				return true;
-			}
-			if (movementType == Unit.MECH) {
-				return true;
-			}
-		} else if (terrainType == SEA) {
-			if (movementType == Unit.SHIP) {
-				return true;
-			}
-			if (movementType == Unit.TRANSPORT) {
-				return true;
-			}
-		} else if (terrainType == REEF) {
-			if (movementType == Unit.SHIP) {
-				return true;
-			}
-			if (movementType == Unit.TRANSPORT) {
-				return true;
-			}
-		} else if (terrainType == CITY) {
-			if (movementType == Unit.INFANTRY) {
-				return true;
-			}
-			if (movementType == Unit.MECH) {
-				return true;
-			}
-			if (movementType == Unit.BAND) {
-				return true;
-			}
-			if (movementType == Unit.TIRE) {
-				return true;
-			}
-		} else if (terrainType == PORT) {
-			if (movementType == Unit.INFANTRY) {
-				return true;
-			}
-			if (movementType == Unit.MECH) {
-				return true;
-			}
-			if (movementType == Unit.BAND) {
-				return true;
-			}
-			if (movementType == Unit.TIRE) {
-				return true;
-			}
-			if (movementType == Unit.SHIP) {
-				return true;
-			}
-			if (movementType == Unit.TRANSPORT) {
-				return true;
-			}
-		} else if (terrainType == AIRPORT) {
-			if (movementType == Unit.INFANTRY) {
-				return true;
-			}
-			if (movementType == Unit.MECH) {
-				return true;
-			}
-			if (movementType == Unit.BAND) {
-				return true;
-			}
-			if (movementType == Unit.TIRE) {
-				return true;
-			}
-		} else if (terrainType == FACTORY) {
-			if (movementType == Unit.INFANTRY) {
-				return true;
-			}
-			if (movementType == Unit.MECH) {
-				return true;
-			}
-			if (movementType == Unit.BAND) {
-				return true;
-			}
-			if (movementType == Unit.TIRE) {
-				return true;
-			}
-		}
-
-		return false;
+		return moveabilityCostMatrix[movementType][terrainType];
 	}
 
 	public static int movementCost(int x, int y, int movementType) {
 		int terrainType = map[x][y];
 
-		if (terrainType == ROAD) {
-		} else if (terrainType == PLAIN) {
-			if (movementType == Unit.TIRE) {
-				return 2;
-			}
-		} else if (terrainType == WOOD) {
-			if (movementType == Unit.BAND) {
-				return 2;
-			}
-			if (movementType == Unit.TIRE) {
-				return 3;
-			}
-		} else if (terrainType == MOUNTAIN) {
-			if (movementType == Unit.INFANTRY) {
-				return 2;
-			}
-		} else if (terrainType == SEA) {
-		} else if (terrainType == REEF) {
-			if (movementType == Unit.SHIP) {
-				return 2;
-			}
-			if (movementType == Unit.TRANSPORT) {
-				return 2;
-			}
-		} else if (terrainType == CITY) {
-		} else if (terrainType == PORT) {
-		} else if (terrainType == AIRPORT) {
-		} else if (terrainType == FACTORY) {
-		}
-
-		return 1;
+		return movementCostMatrix[movementType][terrainType];
 	}
 
 	public static int map(int x, int y) {
 		return map[x][y];
+	}
+
+	public static Unit getUnit(int team, int index) {
+		if (team == 0) {
+			return troops1.get(index);
+		} else if (team == 1) {
+			return troops2.get(index);
+		}
+
+		return null;
+	}
+
+	public static int getTroopSize(int team) {
+		if (team == 0) {
+			return troops1.size();
+		} else if (team == 1) {
+			return troops2.size();
+		}
+
+		return 0;
 	}
 
 	public static void paintArea(Graphics g, int x, int y, boolean rangeAble) {
