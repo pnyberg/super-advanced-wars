@@ -85,7 +85,6 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (cursorY > 0 && !mapMenu.isVisible() && !unitMenu.isVisible()) {
 				addArrowPoint(cursorX, cursorY - 1);
 				cursor.moveUp();
-				updateUnitPosition(cursorX, cursorY - 1);
 			} else if (mapMenu.isVisible()) {
 				mapMenu.moveArrowUp();
 			} else if (unitMenu.isVisible()) {
@@ -95,7 +94,6 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (cursorY < (mapHeight - 1) && !mapMenu.isVisible() && !unitMenu.isVisible()) {
 				addArrowPoint(cursorX, cursorY + 1);
 				cursor.moveDown();
-				updateUnitPosition(cursorX, cursorY + 1);
 			} else if (mapMenu.isVisible()) {
 				mapMenu.moveArrowDown();
 			} else if (unitMenu.isVisible()) {
@@ -105,13 +103,11 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (cursorX > 0 && !mapMenu.isVisible() && !unitMenu.isVisible()) {
 				addArrowPoint(cursorX - 1, cursorY);
 				cursor.moveLeft();
-				updateUnitPosition(cursorX - 1, cursorY);
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			if (cursorX < (mapWidth - 1) && !mapMenu.isVisible() && !unitMenu.isVisible()) {
 				addArrowPoint(cursorX + 1, cursorY);
 				cursor.moveRight();
-				updateUnitPosition(cursorX + 1, cursorY);
 			}
 		}
 
@@ -119,7 +115,6 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (mapMenu.isVisible()) {
 				// @TODO: mapMenu-option
 			} else if (unitMenu.isVisible()) {
-				// @TODO: unitMenu-option (for now it just moves unit)
 				chosenUnit.moveTo(cursorX, cursorY);
 				unitChosen = false;
 				chosenUnit = null;
@@ -145,6 +140,7 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (chosenUnit != null) {
 				if (unitMenu.isVisible()) {
 					unitMenu.closeMenu();
+					chosenUnit.moveTo(arrowPoints.get(0).getX(), arrowPoints.get(0).getY());
 				} else {
 					cursor.setPosition(arrowPoints.get(0).getX(), arrowPoints.get(0).getY());
 					chosenUnit.moveTo(arrowPoints.get(0).getX(), arrowPoints.get(0).getY());
@@ -191,13 +187,9 @@ public class Gameboard extends JPanel implements KeyListener {
 		return null;
 	}
 
-	private void updateUnitPosition(int newX, int newY) {
-		if (movementMap[newX][newY]) {
-			chosenUnit.moveTo(newX, newY);
-		}
-	}
-
 	private void handleOpenUnitMenu(int cursorX, int cursorY, int teamNumber) {
+		chosenUnit.moveTo(cursorX, cursorY);
+
 		if (!areaOccupiedByFriendly(cursorX, cursorY, teamNumber)) {
 			unitMenu.unitMayWait();
 			unitMenu.openMenu(cursorX, cursorY);
@@ -335,14 +327,14 @@ public class Gameboard extends JPanel implements KeyListener {
 			arrowPoints.add(new Point(newX, newY));
 
 			if (newPointNotConnectedToPreviousPoint()) {
-//				recountPath(newX, newY);
+				recountPath(newX, newY);
 				// @TODO: add what happens when you make a "jump" between accepted locations
 			}
 
 			// @TODO: if movement is changed due to for example mountains, what happens?
-/*			while (invalidCurrentPath()) {
+			while (invalidCurrentPath()) {
 				recountPath(newX, newY);
-			}*/
+			}
 		}
 	}
 
