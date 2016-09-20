@@ -34,7 +34,8 @@ public class Cursor {
 		y = newY;
 	}
 
-	public void paint(Graphics g, int tileSize) {
+	public void paint(Graphics g) {
+		int tileSize = MapHandler.tileSize;
 		int smallPiece = tileSize / 20 + 1;
 		int bigPiece = smallPiece * 3;
 

@@ -15,9 +15,10 @@ public class MapHandler {
 
 	public static final int tileSize = 40;
 
+	private static int[][] map;
 
-	public static int[][] initMap(int mapWidth, int mapHeight) {
-		int[][] map = new int[mapWidth][mapHeight];
+	public static void initMap(int mapWidth, int mapHeight) {
+		map = new int[mapWidth][mapHeight];
 
 		for (int n = 0 ; n < 2 ; n++) {
 			for (int i = 0 ; i < mapWidth ; i++) {
@@ -75,14 +76,14 @@ public class MapHandler {
 		map[1][1] = REEF;
 		map[8][8] = REEF;
 		map[0][9] = REEF;
-
-		return map;
 	}
 
 	/***
 	 * Used to check if a positions can be moved to by a specific movement-type
 	 ***/
-	public static boolean allowedMovementPosition(int x, int y, int movementType, int terrainType) {
+	public static boolean allowedMovementPosition(int x, int y, int movementType) {
+		int terrainType = map[x][y];
+
 		if (terrainType == ROAD) {
 			if (movementType == Unit.INFANTRY) {
 				return true;
@@ -206,7 +207,9 @@ public class MapHandler {
 		return false;
 	}
 
-	public static int movementCost(int x, int y, int movementType, int terrainType) {
+	public static int movementCost(int x, int y, int movementType) {
+		int terrainType = map[x][y];
+
 		if (terrainType == ROAD) {
 		} else if (terrainType == PLAIN) {
 			if (movementType == Unit.TIRE) {
@@ -240,7 +243,14 @@ public class MapHandler {
 		return 1;
 	}
 
-	public static void paintArea(Graphics g, int x, int y, int areaNumber, boolean movementAble, boolean rangeAble) {
+	public static int map(int x, int y) {
+		return map[x][y];
+	}
+
+	public static void paintArea(Graphics g, int x, int y, boolean rangeAble) {
+		int areaNumber = map[x][y];
+		boolean movementAble = RouteHandler.movementMap(x, y);
+
 		if (areaNumber == ROAD) {
 			if (movementAble) {
 				g.setColor(Color.lightGray);

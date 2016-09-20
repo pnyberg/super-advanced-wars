@@ -18,8 +18,6 @@ import javax.swing.JPanel;
  * @TODO: substitute ArrayList with HashMap for better performance
  */
 public class Gameboard extends JPanel implements KeyListener {
-	private int[][] map;
-	private boolean[][] movementMap;
 	private boolean[][] rangeMap;
 
 	private ArrayList<Unit> troops1;
@@ -34,14 +32,12 @@ public class Gameboard extends JPanel implements KeyListener {
 	private MapMenu mapMenu;
 	private UnitMenu unitMenu;
 
-	private boolean unitChosen;
 	private Unit chosenUnit, rangeUnit;
 
 	public Gameboard(int width, int height) {
 		mapWidth = width;
 		mapHeight = height;
 
-		movementMap = new boolean[mapWidth][mapHeight];
 		rangeMap = new boolean[mapWidth][mapHeight];
 
 		troops1 = new ArrayList<Unit>();
@@ -53,13 +49,14 @@ public class Gameboard extends JPanel implements KeyListener {
 		mapMenu = new MapMenu(MapHandler.tileSize);
 		unitMenu = new UnitMenu(MapHandler.tileSize);
 
-		unitChosen = false;
 		chosenUnit = null;
 		rangeUnit = null;
 
 		addKeyListener(this);
 
-		map = MapHandler.initMap(mapWidth, mapHeight);
+		MapHandler.initMap(mapWidth, mapHeight);
+		RouteHandler.initMovementMap(mapWidth, mapHeight);
+
 		initTroops();
 
 		repaint();
@@ -81,8 +78,10 @@ public class Gameboard extends JPanel implements KeyListener {
 		int cursorX = cursor.getX();
 		int cursorY = cursor.getY();
 
+		boolean noMenuVisible = !mapMenu.isVisible() && !unitMenu.isVisible();
+
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			if (cursorY > 0 && !mapMenu.isVisible() && !unitMenu.isVisible()) {
+			if (cursorY > 0 && noMenuVisible) {
 				addArrowPoint(cursorX, cursorY - 1);
 				cursor.moveUp();
 			} else if (mapMenu.isVisible()) {
@@ -91,7 +90,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				unitMenu.moveArrowUp();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			if (cursorY < (mapHeight - 1) && !mapMenu.isVisible() && !unitMenu.isVisible()) {
+			if (cursorY < (mapHeight - 1) && noMenuVisible) {
 				addArrowPoint(cursorX, cursorY + 1);
 				cursor.moveDown();
 			} else if (mapMenu.isVisible()) {
@@ -100,12 +99,12 @@ public class Gameboard extends JPanel implements KeyListener {
 				unitMenu.moveArrowDown();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			if (cursorX > 0 && !mapMenu.isVisible() && !unitMenu.isVisible()) {
+			if (cursorX > 0 && noMenuVisible) {
 				addArrowPoint(cursorX - 1, cursorY);
 				cursor.moveLeft();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (cursorX < (mapWidth - 1) && !mapMenu.isVisible() && !unitMenu.isVisible()) {
+			if (cursorX < (mapWidth - 1) && noMenuVisible) {
 				addArrowPoint(cursorX + 1, cursorY);
 				cursor.moveRight();
 			}
@@ -116,37 +115,38 @@ public class Gameboard extends JPanel implements KeyListener {
 				// @TODO: mapMenu-option
 			} else if (unitMenu.isVisible()) {
 				chosenUnit.moveTo(cursorX, cursorY);
-				unitChosen = false;
 				chosenUnit = null;
-				movementMap = new boolean[mapWidth][mapHeight];
+				RouteHandler.clearMovementMap();
 				arrowPoints.clear();
 
 				unitMenu.closeMenu();
-			} else if (!unitChosen && rangeUnit == null) {
+			} else if (chosenUnit == null && rangeUnit == null) {
 				chosenUnit = getUnit(cursorX, cursorY);
 
 				if (chosenUnit != null) {
-					unitChosen = true;
-					findPossibleMovementLocations(chosenUnit);
+					RouteHandler.findPossibleMovementLocations(chosenUnit);
 
 					arrowPoints.add(new Point(cursorX, cursorY));
 				}
-			} else if (movementMap[cursorX][cursorY] && rangeUnit == null) {
+			} else if (RouteHandler.movementMap(cursorX, cursorY) && rangeUnit == null) {
 				handleOpenUnitMenu(cursorX, cursorY, teamNumber);
 			}
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_B) {
+			// the start-position of the unit before movement
+			int unitStartX = arrowPoints.get(0).getX();
+			int unitStartY = arrowPoints.get(0).getY();
+
 			if (chosenUnit != null) {
 				if (unitMenu.isVisible()) {
 					unitMenu.closeMenu();
-					chosenUnit.moveTo(arrowPoints.get(0).getX(), arrowPoints.get(0).getY());
+					chosenUnit.moveTo(unitStartX, unitStartY);
 				} else {
-					cursor.setPosition(arrowPoints.get(0).getX(), arrowPoints.get(0).getY());
-					chosenUnit.moveTo(arrowPoints.get(0).getX(), arrowPoints.get(0).getY());
-					unitChosen = false;
+					cursor.setPosition(unitStartX, unitStartY);
+					chosenUnit.moveTo(unitStartX, unitStartY);
 					chosenUnit = null;
-					movementMap = new boolean[mapWidth][mapHeight];
+					RouteHandler.clearMovementMap();
 					arrowPoints.clear();						
 				}
 			} else if (mapMenu.isVisible()) {
@@ -215,49 +215,12 @@ public class Gameboard extends JPanel implements KeyListener {
 		return false;
 	}
 
-	private void findPossibleMovementLocations(Unit chosenUnit) {
-		int x = chosenUnit.getX();
-		int y = chosenUnit.getY();
-		int movementSteps = chosenUnit.getMovement();
-		int movementType = chosenUnit.getMovementType();
-
-		movementMap[x][y] = true;
-
-		checkPath(x + 1, y, movementSteps, movementType);
-		checkPath(x, y + 1, movementSteps, movementType);
-		checkPath(x - 1, y, movementSteps, movementType);
-		checkPath(x, y - 1, movementSteps, movementType);
-	}
-
-	private void checkPath(int x, int y, int movementSteps, int movementType) {
-		if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight) {
-			return;
-		}
-
-		if (!MapHandler.allowedMovementPosition(x, y, movementType, map[x][y])) {
-			return;
-		}
-
-		movementSteps -= MapHandler.movementCost(x, y, movementType, map[x][y]);
-
-		if (movementSteps < 0) {
-			return;
-		}
-
-		movementMap[x][y] = true;
-
-		checkPath(x + 1, y, movementSteps, movementType);
-		checkPath(x, y + 1, movementSteps, movementType);
-		checkPath(x - 1, y, movementSteps, movementType);
-		checkPath(x, y - 1, movementSteps, movementType);
-	}
-
 	private void findPossibleAttackLocations(Unit chosenUnit) {
-		findPossibleMovementLocations(chosenUnit);
+		RouteHandler.findPossibleMovementLocations(chosenUnit);
 
 		for (int n = 0 ; n < mapHeight ; n++) {
 			for (int i = 0 ; i < mapWidth ; i++) {
-				if (movementMap[i][n]) {
+				if (RouteHandler.movementMap(i, n)) {
 					if (i > 0) {
 						rangeMap[i - 1][n] = true;
 					}
@@ -274,7 +237,7 @@ public class Gameboard extends JPanel implements KeyListener {
 			}
 		}
 
-		movementMap = new boolean[mapWidth][mapHeight];
+		RouteHandler.clearMovementMap();
 	}
 
 	private void createRangeAttackLocations(Unit chosenUnit) {
@@ -323,7 +286,7 @@ public class Gameboard extends JPanel implements KeyListener {
 			for (int i = arrowPoints.size() - 1 ; i > newLast ; i--) {
 				arrowPoints.remove(i);
 			}
-		} else if (movementMap[newX][newY]) {
+		} else if (RouteHandler.movementMap(newX, newY)) {
 			arrowPoints.add(new Point(newX, newY));
 
 			if (newPointNotConnectedToPreviousPoint()) {
@@ -347,7 +310,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		for (int i = 1 ; i < arrowPoints.size() ; i++) {
 			int x = arrowPoints.get(i).getX();
 			int y = arrowPoints.get(i).getY();
-			currentMovementValue += MapHandler.movementCost(x, y, movementType, map[x][y]);
+			currentMovementValue += MapHandler.movementCost(x, y, movementType);
 		}
 
 		return currentMovementValue > maximumMovement;
@@ -390,12 +353,12 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (xAxle == 1) {
 				int diff = diffX / Math.abs(diffX);
 				arrowPoints.add(new Point(prevX + diff, prevY));
-				int movementCost = MapHandler.movementCost(prevX + diff, prevY, movementType, map[prevX + diff][prevY]);
+				int movementCost = MapHandler.movementCost(prevX + diff, prevY, movementType);
 				diffX -= diff * movementCost;
 			} else { // yAxel
 				int diff = diffY / Math.abs(diffY);
 				arrowPoints.add(new Point(prevX, prevY + diff));
-				int movementCost = MapHandler.movementCost(prevX, prevY + diff, movementType, map[prevX][prevY + diff]);
+				int movementCost = MapHandler.movementCost(prevX, prevY + diff, movementType);
 				diffY -= diff * movementCost;
 			}
 		}
@@ -429,17 +392,17 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		for (int y = 0 ; y < mapHeight ; y++) {
 			for (int x = 0 ; x < mapWidth ; x++) {
-				MapHandler.paintArea(g, x, y, map[x][y], movementMap[x][y], rangeMap[x][y]);
+				MapHandler.paintArea(g, x, y, rangeMap[x][y]);
 			}
 		}
 
-		if (unitChosen) {
-			paintArrow(g, MapHandler.tileSize);
+		if (chosenUnit != null) {
+			paintArrow(g);
 
 			chosenUnit.paint(g, MapHandler.tileSize);
 		}
 
-		paintRange(g, MapHandler.tileSize);
+		paintRange(g);
 
 		for (Unit unit : troops1) {
 			if (unit != chosenUnit) {
@@ -458,11 +421,13 @@ public class Gameboard extends JPanel implements KeyListener {
 		} else if (unitMenu.isVisible()) {
 			unitMenu.paint(g);
 		} else {
-			cursor.paint(g, MapHandler.tileSize);
+			cursor.paint(g);
 		}
 	}
 
-	private void paintArrow(Graphics g, int tileSize) {
+	private void paintArrow(Graphics g) {
+		int tileSize = MapHandler.tileSize;
+
 		if (arrowPoints.size() < 2) {
 			return;
 		}
@@ -503,7 +468,9 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 	}
 
-	private void paintRange(Graphics g, int tileSize) {
+	private void paintRange(Graphics g) {
+		int tileSize = MapHandler.tileSize;
+
 		for (int n = 0 ; n < mapHeight ; n++) {
 			for (int i = 0 ; i < mapWidth ; i++) {
 				if (rangeMap[i][n]) {
