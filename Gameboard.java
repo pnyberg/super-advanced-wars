@@ -38,7 +38,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		rangeMap = new boolean[mapWidth][mapHeight];
 
 		cursor = new Cursor(0, 0);
-		portrait = new HeroPortrait(0);
+		portrait = new HeroPortrait(0, mapWidth, mapHeight);
 
 		mapMenu = new MapMenu(MapHandler.tileSize);
 		unitMenu = new UnitMenu(MapHandler.tileSize);
@@ -51,7 +51,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		MapHandler.initMapHandler(mapWidth, mapHeight);
 		RouteHandler.initMovementMap(mapWidth, mapHeight);
 
-
+		portrait.updateSideChoice(cursor.getX(), cursor.getY());
 		repaint();
 	}
 
@@ -152,6 +152,7 @@ public class Gameboard extends JPanel implements KeyListener {
 			}
 		}
 
+		portrait.updateSideChoice(cursor.getX(), cursor.getY());
 		repaint();
 	}
 
