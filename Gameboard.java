@@ -24,6 +24,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	private int mapWidth, mapHeight;
 
 	private Cursor cursor;
+	private HeroPortrait portrait;
 
 	private MapMenu mapMenu;
 	private UnitMenu unitMenu;
@@ -37,6 +38,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		rangeMap = new boolean[mapWidth][mapHeight];
 
 		cursor = new Cursor(0, 0);
+		portrait = new HeroPortrait(0);
 
 		mapMenu = new MapMenu(MapHandler.tileSize);
 		unitMenu = new UnitMenu(MapHandler.tileSize);
@@ -272,14 +274,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		paintRange(g);
 
-		for (int t = 0 ; t < 2 ; t++) {
-			for (int k = 0 ; k < MapHandler.getTroopSize(t) ; k++) {
-				Unit unit = MapHandler.getUnit(t, k);
-				if (unit != chosenUnit) {
-					unit.paint(g, MapHandler.tileSize);
-				}
-			}
-		}
+		MapHandler.paintUnits(g, chosenUnit);
 
 		// when the mapMenu is open the cursor is hidden
 		if (mapMenu.isVisible()) {
@@ -289,6 +284,8 @@ public class Gameboard extends JPanel implements KeyListener {
 		} else {
 			cursor.paint(g);
 		}
+
+		portrait.paint(g);
 	}
 
 	private void paintRange(Graphics g) {

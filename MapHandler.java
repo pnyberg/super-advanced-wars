@@ -25,6 +25,7 @@ public class MapHandler {
 	private static ArrayList<Unit> troops1, troops2;
 
 	public static void initMapHandler(int mapWidth, int mapHeight) {
+
 		initMovementCostMatrix();
 		initMoveabilityMatrix();
 		initMap(mapWidth, mapHeight);
@@ -272,6 +273,17 @@ public class MapHandler {
 		} else if (areaNumber == REEF && !rangeAble) {
 			g.fillRect(paintX + tileSize / 4, paintY + tileSize / 4, tileSize / 4, tileSize / 4);
 			g.fillRect(paintX + 5 * tileSize / 8, paintY + 5 * tileSize / 8, tileSize / 4, tileSize / 4);
+		}
+	}
+
+	public static void paintUnits(Graphics g, Unit chosenUnit) {
+		for (int t = 0 ; t < 2 ; t++) {
+			for (int k = 0 ; k < getTroopSize(t) ; k++) {
+				Unit unit = getUnit(t, k);
+				if (unit != chosenUnit) {
+					unit.paint(g, tileSize);
+				}
+			}
 		}
 	}
 }
