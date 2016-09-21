@@ -1,24 +1,37 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 public class HeroPortrait {
-	private int cash;
-	private int starPower;
-	private int powerAmount, superPowerAmount;
-	private Color color;
+	private ArrayList<Hero> heroes;
+	private Hero currentHero;
+	private int heroIndex;
 
 	private boolean leftSide;
 	private int mapWidth, mapHeight;
 
-	public HeroPortrait(int heroIndex, int mapWidth, int mapHeight) {
+	public HeroPortrait(int mapWidth, int mapHeight) {
 		this.mapWidth = mapWidth;
 		this.mapHeight = mapHeight;
 
-		cash = 0;
-		starPower = 0;
+		heroes = new ArrayList<Hero>();
+		currentHero = null;
+		heroIndex = 0;
 		leftSide = true;
+	}
 
-		initHero(heroIndex);
+	public void selectStartHero() {
+		currentHero = heroes.get(heroIndex);
+	}
+
+	public void nextHero() {
+		heroIndex = (heroIndex + 1) % heroes.size();
+
+		currentHero = heroes.get(heroIndex);
+	}
+
+	public void addHero(Hero hero) {
+		heroes.add(hero);
 	}
 
 	public void updateSideChoice(int cursorX, int cursorY) {
@@ -33,14 +46,6 @@ public class HeroPortrait {
 		}
 	}
 
-	private void initHero(int heroIndex) {
-		if (heroIndex == 0) {
-			powerAmount = 3;
-			superPowerAmount = 6;
-			color = Color.magenta;
-		}
-	}
-
 	public void paint(Graphics g) {
 		if (leftSide) {
 			paintLeftSide(g);
@@ -52,6 +57,7 @@ public class HeroPortrait {
 	private void paintLeftSide(Graphics g) {
 		int tileSize = MapHandler.tileSize;
 
+		// remove and make the array with newlines after every element
 		int ox1 = 0;
 		int ox2 = tileSize * 4;
 		int ox3 = tileSize * 4;
@@ -93,13 +99,15 @@ public class HeroPortrait {
 		int[] innerBorderX = {ix1, ix2, ix3, ix4, ix5, ix6, ix7};
 		int[] innerBorderY = {iy1, iy2, iy3, iy4, iy5, iy6, iy7};
 
-		g.setColor(color);
+		g.setColor(currentHero.getColor());
 		g.fillPolygon(outerBorderX, outerBorderY, 7);
 		g.setColor(Color.white);
 		g.fillPolygon(innerBorderX, innerBorderY, 7);
 
 		g.drawString("$:", ox1 + 2, oy1 + 15);
-		g.drawString("" + cash + "", ox2 - 20, oy1 + 15);
+		g.drawString("" + currentHero.getCash() + "", ox2 - 20, oy1 + 15);
+
+		currentHero.paint(g, 0, 0);
 	}
 
 	private void paintRightSide(Graphics g) {
@@ -146,12 +154,14 @@ public class HeroPortrait {
 		int[] innerBorderX = {ix1, ix2, ix3, ix4, ix5, ix6, ix7};
 		int[] innerBorderY = {iy1, iy2, iy3, iy4, iy5, iy6, iy7};
 
-		g.setColor(color);
+		g.setColor(currentHero.getColor());
 		g.fillPolygon(outerBorderX, outerBorderY, 7);
 		g.setColor(Color.white);
 		g.fillPolygon(innerBorderX, innerBorderY, 7);
 
 		g.drawString("$:", ox1 + 2, oy1 + 15);
-		g.drawString("" + cash + "", ox2 - 20, oy1 + 15);
+		g.drawString("" + currentHero.getCash() + "", ox2 - 20, oy1 + 15);
+
+		currentHero.paint(g, 0, 0);
 	}
 }

@@ -23,12 +23,15 @@ public class MapHandler {
 	private static int[][] map, movementCostMatrix;
 	private static boolean[][] moveabilityCostMatrix;
 	private static ArrayList<Unit> troops1, troops2;
+	private static HeroPortrait portrait;
 
 	public static void initMapHandler(int mapWidth, int mapHeight) {
-
 		initMovementCostMatrix();
 		initMoveabilityMatrix();
 		initMap(mapWidth, mapHeight);
+
+		portrait = new HeroPortrait(mapWidth, mapHeight);
+		initHeroes();
 		initTroops();
 	}
 
@@ -162,6 +165,14 @@ public class MapHandler {
 		map[0][9] = REEF;
 	}
 
+	private static void initHeroes() {
+		Hero zero = new Hero(0);
+		Hero one = new Hero(1);
+		portrait.addHero(zero);
+		portrait.addHero(one);
+		portrait.selectStartHero();
+	}
+
 	private static void initTroops() {
 		troops1 = new ArrayList<Unit>();
 		troops2 = new ArrayList<Unit>();
@@ -175,6 +186,14 @@ public class MapHandler {
 		troops1.add(new Battleship(1, 3, Color.red));
 
 		troops2.add(new Infantry(7, 7, Color.orange));
+	}
+
+	public static void updatePortraitSideChoice(int cursorX, int cursorY) {
+		portrait.updateSideChoice(cursorX, cursorY);
+	}
+
+	public static void changeHero() {
+		portrait.nextHero();
 	}
 
 	/***
@@ -285,5 +304,9 @@ public class MapHandler {
 				}
 			}
 		}
+	}
+
+	public static void paintPortrait(Graphics g) {
+		portrait.paint(g);
 	}
 }

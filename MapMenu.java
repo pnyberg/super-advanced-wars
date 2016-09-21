@@ -22,6 +22,16 @@ public class MapMenu extends Menu {
 		this.superPower = superPower;
 	}
 
+	public boolean atEndRow() {
+		if (superPower) {
+			return menuIndex == 6;
+		} else if (power) {
+			return menuIndex == 5;
+		} else {
+			return menuIndex == 4;
+		}
+	}
+
 	public void paint(Graphics g) {
 		int menuWidth = (tileSize * 5 / 3);
 		int menuHeight = 10 + numberOfRows * menuRowHeight;
@@ -46,7 +56,7 @@ public class MapMenu extends Menu {
 		}
 		g.drawString("Options", menuX + xAlign, menuY + yAlign + menuRowHeight * rowHelpIndex);
 		g.drawString("Save", menuX + xAlign, menuY + yAlign + menuRowHeight * (rowHelpIndex + 1));
-		g.drawString("End", menuX + xAlign, menuY + yAlign + menuRowHeight * (rowHelpIndex + 2));
+		g.drawString("End turn", menuX + xAlign, menuY + yAlign + menuRowHeight * (rowHelpIndex + 2));
 
 		paintArrow(g);
 	}

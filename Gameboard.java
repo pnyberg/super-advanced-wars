@@ -24,7 +24,6 @@ public class Gameboard extends JPanel implements KeyListener {
 	private int mapWidth, mapHeight;
 
 	private Cursor cursor;
-	private HeroPortrait portrait;
 
 	private MapMenu mapMenu;
 	private UnitMenu unitMenu;
@@ -38,7 +37,6 @@ public class Gameboard extends JPanel implements KeyListener {
 		rangeMap = new boolean[mapWidth][mapHeight];
 
 		cursor = new Cursor(0, 0);
-		portrait = new HeroPortrait(0, mapWidth, mapHeight);
 
 		mapMenu = new MapMenu(MapHandler.tileSize);
 		unitMenu = new UnitMenu(MapHandler.tileSize);
@@ -51,7 +49,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		MapHandler.initMapHandler(mapWidth, mapHeight);
 		RouteHandler.initMovementMap(mapWidth, mapHeight);
 
-		portrait.updateSideChoice(cursor.getX(), cursor.getY());
+		MapHandler.updatePortraitSideChoice(cursor.getX(), cursor.getY());
 		repaint();
 	}
 
@@ -93,7 +91,10 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		if (e.getKeyCode() == KeyEvent.VK_A) {
 			if (mapMenu.isVisible()) {
-				// @TODO: mapMenu-option
+				if (mapMenu.atEndRow()) {
+					MapHandler.changeHero();
+					mapMenu.closeMenu();
+				}
 			} else if (unitMenu.isVisible()) {
 				chosenUnit.moveTo(cursorX, cursorY);
 				chosenUnit = null;
@@ -147,12 +148,14 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_S) {
-			if (chosenUnit == null) {
+			if (mapMenu.isVisible()) {
+				mapMenu.closeMenu();
+			} else if (chosenUnit == null) {
 				mapMenu.openMenu(cursorX, cursorY);
 			}
 		}
 
-		portrait.updateSideChoice(cursor.getX(), cursor.getY());
+		MapHandler.updatePortraitSideChoice(cursor.getX(), cursor.getY());
 		repaint();
 	}
 
@@ -170,9 +173,9 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private void handleOpenUnitMenu(int cursorX, int cursorY, int teamNumber) {
-		chosenUnit.moveTo(cursorX, cursorY);
-
 		if (!areaOccupiedByFriendly(cursorX, cursorY, teamNumber)) {
+			chosenUnit.moveTo(cursorX, cursorY);
+
 			unitMenu.unitMayWait();
 			unitMenu.openMenu(cursorX, cursorY);
 		}
@@ -286,7 +289,7 @@ public class Gameboard extends JPanel implements KeyListener {
 			cursor.paint(g);
 		}
 
-		portrait.paint(g);
+		MapHandler.paintPortrait(g);
 	}
 
 	private void paintRange(Graphics g) {

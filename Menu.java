@@ -55,6 +55,10 @@ public abstract class Menu {
 		return y;
 	}
 
+	public int getMenuIndex() {
+		return menuIndex;
+	}
+
 	public boolean isVisible() {
 		return visible;
 	}
