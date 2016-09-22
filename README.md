@@ -15,7 +15,7 @@ Menu.java
 UnitMenu.java
 
 # Following classes handles different abstractions
-Hero.java         - encapsulates the heroes properties (including the troops)
+Hero.java         - encapsulates the heroes properties (including the troops)	
 RouteHandler.java - encapsulates the route-handling part of the game (showing possible routes and recalculating routes)
 
 # Following classes contains the units that are used in the game (including abstract helping-classes)
