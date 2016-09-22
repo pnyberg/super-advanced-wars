@@ -171,25 +171,49 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private void handleOpenUnitMenu(int cursorX, int cursorY) {
-		if (!MapHandler.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY) || unitEntryingContainerUnit()) {
-			chosenUnit.moveTo(cursorX, cursorY);
-
+		if (!MapHandler.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY) || unitEntryingContainerUnit(chosenUnit, cursorX, cursorY)) {
 			// @TODO
-			if (chosenUnit instanceof Infantry) {
-				// if an APC is att the specified coordinates, the unit may join
-				unitMenu.unitMayJoin();
+			if (chosenUnit instanceof Infantry || chosenUnit instanceof Mech) {
+				if (footsoldierEnterableUnitAtPosition(cursorX, cursorY)) {
+					unitMenu.unitMayEnter();
+				}
 			} else if (chosenUnit instanceof APC) {
 				// should only be allowed this when close to a friendly unit
 				unitMenu.unitMaySupply();
 			}
 
-			unitMenu.unitMayWait();
+			if (!MapHandler.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY)) {
+				unitMenu.unitMayWait();
+			}
 
 			unitMenu.openMenu(cursorX, cursorY);
+			chosenUnit.moveTo(cursorX, cursorY);
 		}
 	}
 
-	private boolean unitEntryingContainerUnit() {
+	private boolean unitEntryingContainerUnit(Unit unit, int x, int y) {
+		if (unit instanceof Infantry || unit instanceof Mech) {
+			return footsoldierEnterableUnitAtPosition(x, y);
+		}
+
+		return false;
+	}
+
+	private boolean footsoldierEnterableUnitAtPosition(int x, int y) {
+		if (landbasedEnterableUnitAtPosition(x, y)) {
+			return true;
+		}
+
+		Unit unit = MapHandler.getFriendlyUnit(x, y);
+
+		if (unit instanceof APC) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean landbasedEnterableUnitAtPosition(int x, int y) {
 		return false;
 	}
 
