@@ -215,8 +215,16 @@ public class MapHandler {
 		return portrait.getHero(hero).getTroop(index);
 	}
 
+	public static Unit getFriendlyUnit(int index) {
+		return portrait.getCurrentHero().getTroop(index);
+	}
+
 	public static int getTroopSize(int hero) {
 		return portrait.getHero(hero).getTroopSize();
+	}
+
+	public static int getFriendlyTroopSize() {
+		return portrait.getCurrentHero().getTroopSize();
 	}
 
 	public static void paintArea(Graphics g, int x, int y, boolean rangeAble) {

@@ -50,6 +50,10 @@ public class HeroPortrait {
 		return heroes.get(index);
 	}
 
+	public Hero getCurrentHero() {
+		return currentHero;
+	}
+
 	public void paint(Graphics g) {
 		if (leftSide) {
 			paintLeftSide(g);

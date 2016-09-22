@@ -19,8 +19,6 @@ import javax.swing.JPanel;
 public class Gameboard extends JPanel implements KeyListener {
 	private boolean[][] rangeMap;
 
-	private int teamNumber = 0;
-
 	private int mapWidth, mapHeight;
 
 	private Cursor cursor;
@@ -103,7 +101,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 				unitMenu.closeMenu();
 			} else if (chosenUnit == null && rangeUnit == null) {
-				chosenUnit = getUnit(cursorX, cursorY);
+				chosenUnit = getFriendlyUnit(cursorX, cursorY);
 
 				if (chosenUnit != null) {
 					RouteHandler.findPossibleMovementLocations(chosenUnit);
@@ -111,7 +109,7 @@ public class Gameboard extends JPanel implements KeyListener {
 					RouteHandler.initArrowPoint(chosenUnit.getX(), chosenUnit.getY());
 				}
 			} else if (RouteHandler.movementMap(cursorX, cursorY) && rangeUnit == null) {
-				handleOpenUnitMenu(cursorX, cursorY, teamNumber);
+				handleOpenUnitMenu(cursorX, cursorY);
 			}
 		}
 
@@ -135,7 +133,7 @@ public class Gameboard extends JPanel implements KeyListener {
 			} else if (mapMenu.isVisible()) {
 				mapMenu.closeMenu();
 			} else {
-				rangeUnit = getUnit(cursorX, cursorY);
+				rangeUnit = getAnyUnit(cursorX, cursorY);
 
 				if (rangeUnit != null) {
 					if (rangeUnit.getAttackType() == Unit.DIRECT_ATTACK) {
@@ -159,7 +157,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		repaint();
 	}
 
-	private Unit getUnit(int x, int y) {
+	private Unit getAnyUnit(int x, int y) {
 		for (int t = 0 ; t < 2 ; t++) {
 			for (int k = 0 ; k < MapHandler.getTroopSize(t) ; k++) {
 				Unit unit = MapHandler.getUnit(t, k);
@@ -172,8 +170,19 @@ public class Gameboard extends JPanel implements KeyListener {
 		return null;
 	}
 
-	private void handleOpenUnitMenu(int cursorX, int cursorY, int teamNumber) {
-		if (!areaOccupiedByFriendly(cursorX, cursorY, teamNumber)) {
+	private Unit getFriendlyUnit(int x, int y) {
+		for (int k = 0 ; k < MapHandler.getFriendlyTroopSize() ; k++) {
+			Unit unit = MapHandler.getFriendlyUnit(k);
+			if (unit.getX() == x && unit.getY() == y) {
+				return unit;
+			}
+		}
+
+		return null;
+	}
+
+	private void handleOpenUnitMenu(int cursorX, int cursorY) {
+		if (!areaOccupiedByFriendly(cursorX, cursorY)) {
 			chosenUnit.moveTo(cursorX, cursorY);
 
 			unitMenu.unitMayWait();
@@ -181,18 +190,10 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 	}
 
-	private boolean areaOccupiedByFriendly(int x, int y, int team) {
-		// currently no third team available
-		for (int t = 0 ; t < 2 ; t++) {
-			for (int k = 0 ; k < MapHandler.getTroopSize(t) ; k++) {
-				Unit unit = MapHandler.getUnit(t, k);
-				if (unit.getX() == x && unit.getY() == y && unit != chosenUnit) {
-					return true;
-				}
-			}
-		}
+	private boolean areaOccupiedByFriendly(int x, int y) {
+		Unit testFriendlyUnit = getFriendlyUnit(x, y);
 
-		return false;
+		return testFriendlyUnit != null;
 	}
 
 	private void findPossibleAttackLocations(Unit chosenUnit) {
