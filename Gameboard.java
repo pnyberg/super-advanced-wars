@@ -182,6 +182,10 @@ public class Gameboard extends JPanel implements KeyListener {
 				unitMenu.unitMaySupply();
 			}
 
+			if (hurtSameTypeUnitAtPosition(chosenUnit, cursorX, cursorY)) {
+				unitMenu.unitMayJoin();
+			}
+
 			if (!MapHandler.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY)) {
 				unitMenu.unitMayWait();
 			}
@@ -215,6 +219,16 @@ public class Gameboard extends JPanel implements KeyListener {
 
 	private boolean landbasedEnterableUnitAtPosition(int x, int y) {
 		return false;
+	}
+
+	private boolean hurtSameTypeUnitAtPosition(Unit unit, int x, int y) {
+		Unit testUnit = MapHandler.getFriendlyUnit(x, y);
+
+		if (testUnit == null) {
+			return false;
+		}
+
+		return testUnit.isHurt() && testUnit.getClass().equals(unit.getClass());
 	}
 
 	private void findPossibleAttackLocations(Unit chosenUnit) {
