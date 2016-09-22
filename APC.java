@@ -2,12 +2,34 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class APC extends Unit {
+	private Unit containedUnit;
+
 	public APC(int x, int y, Color color) {
 		super(x, y, color);
 
 		movement = 6;
 		movementType = Unit.BAND;
 		attackType = Unit.NONE;
+
+		containedUnit = null;
+	}
+
+	public void addUnit(Unit unit) {
+		containedUnit = unit;
+	}
+
+	public void moveTo(int x, int y) {
+		super.moveTo(x, y);
+
+		if (containedUnit != null) {
+			containedUnit.moveTo(x, y);
+		}
+	}
+
+	public Unit removeUnit() {
+		Unit unit = containedUnit;
+		containedUnit = null;
+		return unit;
 	}
 
 	public void paint(Graphics g, int tileSize) {
