@@ -94,7 +94,18 @@ public class Gameboard extends JPanel implements KeyListener {
 					mapMenu.closeMenu();
 				}
 			} else if (unitMenu.isVisible()) {
-				chosenUnit.moveTo(cursorX, cursorY);
+				if (unitMenu.atEnterRow()) {
+					Unit entryUnit = MapHandler.getFriendlyUnitExceptSelf(chosenUnit, cursorX, cursorY);
+					if (entryUnit instanceof APC) {
+						APC apc = (APC)entryUnit;
+
+						apc.addUnit(chosenUnit);
+					}
+					// @TODO unit enters other unit
+				}
+
+//				chosenUnit.moveTo(cursorX, cursorY); // should work without this
+
 				chosenUnit = null;
 				RouteHandler.clearMovementMap();
 				RouteHandler.clearArrowPoints();

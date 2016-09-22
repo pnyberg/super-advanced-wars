@@ -16,6 +16,8 @@ public class APC extends Unit {
 
 	public void addUnit(Unit unit) {
 		containedUnit = unit;
+
+		containedUnit.regulateHidden(true);
 	}
 
 	public void moveTo(int x, int y) {
@@ -28,7 +30,10 @@ public class APC extends Unit {
 
 	public Unit removeUnit() {
 		Unit unit = containedUnit;
+
+		containedUnit.regulateHidden(false);
 		containedUnit = null;
+
 		return unit;
 	}
 

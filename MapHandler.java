@@ -194,7 +194,18 @@ public class MapHandler {
 	public static Unit getFriendlyUnit(int x, int y) {
 		for (int k = 0 ; k < getFriendlyTroopSize() ; k++) {
 			Unit unit = getFriendlyUnit(k);
-			if (unit.getX() == x && unit.getY() == y) {
+			if (unit.getX() == x && unit.getY() == y && !unit.isHidden()) {
+				return unit;
+			}
+		}
+
+		return null;
+	}
+
+	public static Unit getFriendlyUnitExceptSelf(Unit notUnit, int x, int y) {
+		for (int k = 0 ; k < getFriendlyTroopSize() ; k++) {
+			Unit unit = getFriendlyUnit(k);
+			if (unit.getX() == x && unit.getY() == y && unit != notUnit) {
 				return unit;
 			}
 		}
@@ -312,7 +323,9 @@ public class MapHandler {
 			for (int k = 0 ; k < getTroopSize(t) ; k++) {
 				Unit unit = getUnit(t, k);
 				if (unit != chosenUnit) {
-					unit.paint(g, tileSize);
+					if (!unit.isHidden()) {
+						unit.paint(g, tileSize);
+					}
 				}
 			}
 		}

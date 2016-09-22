@@ -100,6 +100,16 @@ public class UnitMenu extends Menu {
 		wait = true;
 	}
 
+	public boolean atEnterRow() {
+		int comparisonIndex = 0;
+
+		if (join) {
+			comparisonIndex++;
+		}
+
+		return menuIndex == comparisonIndex;
+	}
+
 	public void paint(Graphics g) {
 		int menuWidth = (tileSize * 5 / 3);
 		int menuHeight = 10 + numberOfRows * menuRowHeight;
