@@ -15,7 +15,7 @@ public abstract class Unit {
 								DIRECT_ATTACK = 1,
 								INDIRECT_ATTACK = 2;
 
-	protected int x, y;
+	protected int x, y, hp;
 	protected Color color;
 
 	protected int movement;
@@ -26,11 +26,16 @@ public abstract class Unit {
 		this.x = x;
 		this.y = y;
 		this.color = color;
+		hp = 100;
 	}
 
 	public void moveTo(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+
+	public void takeDamage(int damage) {
+		hp -= damage;
 	}
 
 	public int getX() {
@@ -51,6 +56,14 @@ public abstract class Unit {
 
 	public int getAttackType() {
 		return attackType;
+	}
+
+	public boolean isHurt() {
+		return hp <= 90;
+	}
+
+	public boolean isDead() {
+		return hp <= 0;
 	}
 
 	public abstract void paint(Graphics g, int tileSize);
