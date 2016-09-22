@@ -171,12 +171,26 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private void handleOpenUnitMenu(int cursorX, int cursorY) {
-		if (!MapHandler.areaOccupiedByFriendly(cursorX, cursorY)) {
+		if (!MapHandler.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY) || unitEntryingContainerUnit()) {
 			chosenUnit.moveTo(cursorX, cursorY);
 
+			// @TODO
+			if (chosenUnit instanceof Infantry) {
+				// if an APC is att the specified coordinates, the unit may join
+				unitMenu.unitMayJoin();
+			} else if (chosenUnit instanceof APC) {
+				// should only be allowed this when close to a friendly unit
+				unitMenu.unitMaySupply();
+			}
+
 			unitMenu.unitMayWait();
+
 			unitMenu.openMenu(cursorX, cursorY);
 		}
+	}
+
+	private boolean unitEntryingContainerUnit() {
+		return false;
 	}
 
 	private void findPossibleAttackLocations(Unit chosenUnit) {

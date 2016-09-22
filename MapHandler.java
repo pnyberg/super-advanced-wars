@@ -178,6 +178,7 @@ public class MapHandler {
 		portrait.getHero(0).addTroop(new Artillery(5, 2, Color.red));
 		portrait.getHero(0).addTroop(new Rocket(2, 5, Color.red));
 		portrait.getHero(0).addTroop(new Battleship(1, 3, Color.red));
+		portrait.getHero(0).addTroop(new APC(3, 2, Color.red));
 
 		portrait.getHero(1).addTroop(new Infantry(7, 7, Color.orange));
 	}
@@ -201,8 +202,12 @@ public class MapHandler {
 		return null;
 	}
 
-	public static boolean areaOccupiedByFriendly(int x, int y) {
+	public static boolean areaOccupiedByFriendly(Unit chosenUnit, int x, int y) {
 		Unit testFriendlyUnit = getFriendlyUnit(x, y);
+
+		if (chosenUnit == testFriendlyUnit) {
+			return false;
+		}
 
 		return testFriendlyUnit != null;
 	}
