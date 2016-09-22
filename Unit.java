@@ -16,6 +16,7 @@ public abstract class Unit {
 								INDIRECT_ATTACK = 2;
 
 	protected int x, y, hp;
+	protected boolean hidden;
 	protected Color color;
 
 	protected int movement;
@@ -26,7 +27,9 @@ public abstract class Unit {
 		this.x = x;
 		this.y = y;
 		this.color = color;
+
 		hp = 100;
+		hidden = false;
 	}
 
 	public void moveTo(int x, int y) {
@@ -36,6 +39,10 @@ public abstract class Unit {
 
 	public void takeDamage(int damage) {
 		hp -= damage;
+	}
+
+	public void regulateHidden(boolean hidden) {
+		this.hidden = hidden;
 	}
 
 	public int getX() {
@@ -64,6 +71,10 @@ public abstract class Unit {
 
 	public boolean isDead() {
 		return hp <= 0;
+	}
+
+	public boolean isHidden() {
+		return hidden;
 	}
 
 	public abstract void paint(Graphics g, int tileSize);
