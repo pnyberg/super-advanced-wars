@@ -24,11 +24,13 @@ RouteHandler.java - encapsulates the route-handling part of the game (showing po
 # Following classes contains the units that are used in the game (including abstract helping-classes)
 Artillery.java	
 Battleship.java	
+
 IndirectUnit.java	
 Infantry.java	
 Mech.java	
 Recon.java	
 Rocket.java	
+
 Tank.java	
 Unit.java
 
