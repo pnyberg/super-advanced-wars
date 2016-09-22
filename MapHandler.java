@@ -22,7 +22,6 @@ public class MapHandler {
 
 	private static int[][] map, movementCostMatrix;
 	private static boolean[][] moveabilityCostMatrix;
-	private static ArrayList<Unit> troops1, troops2;
 	private static HeroPortrait portrait;
 
 	public static void initMapHandler(int mapWidth, int mapHeight) {
@@ -174,18 +173,15 @@ public class MapHandler {
 	}
 
 	private static void initTroops() {
-		troops1 = new ArrayList<Unit>();
-		troops2 = new ArrayList<Unit>();
+		portrait.getHero(0).addTroop(new Infantry(2, 2, Color.red));
+		portrait.getHero(0).addTroop(new Mech(3, 3, Color.red));
+		portrait.getHero(0).addTroop(new Tank(4, 4, Color.red));
+		portrait.getHero(0).addTroop(new Recon(5, 5, Color.red));
+		portrait.getHero(0).addTroop(new Artillery(5, 2, Color.red));
+		portrait.getHero(0).addTroop(new Rocket(2, 5, Color.red));
+		portrait.getHero(0).addTroop(new Battleship(1, 3, Color.red));
 
-		troops1.add(new Infantry(2, 2, Color.red));
-		troops1.add(new Mech(3, 3, Color.red));
-		troops1.add(new Tank(4, 4, Color.red));
-		troops1.add(new Recon(5, 5, Color.red));
-		troops1.add(new Artillery(5, 2, Color.red));
-		troops1.add(new Rocket(2, 5, Color.red));
-		troops1.add(new Battleship(1, 3, Color.red));
-
-		troops2.add(new Infantry(7, 7, Color.orange));
+		portrait.getHero(1).addTroop(new Infantry(7, 7, Color.orange));
 	}
 
 	public static void updatePortraitSideChoice(int cursorX, int cursorY) {
@@ -215,24 +211,12 @@ public class MapHandler {
 		return map[x][y];
 	}
 
-	public static Unit getUnit(int team, int index) {
-		if (team == 0) {
-			return troops1.get(index);
-		} else if (team == 1) {
-			return troops2.get(index);
-		}
-
-		return null;
+	public static Unit getUnit(int hero, int index) {
+		return portrait.getHero(hero).getTroop(index);
 	}
 
-	public static int getTroopSize(int team) {
-		if (team == 0) {
-			return troops1.size();
-		} else if (team == 1) {
-			return troops2.size();
-		}
-
-		return 0;
+	public static int getTroopSize(int hero) {
+		return portrait.getHero(hero).getTroopSize();
 	}
 
 	public static void paintArea(Graphics g, int x, int y, boolean rangeAble) {

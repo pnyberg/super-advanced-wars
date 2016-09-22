@@ -46,6 +46,10 @@ public class HeroPortrait {
 		}
 	}
 
+	public Hero getHero(int index) {
+		return heroes.get(index);
+	}
+
 	public void paint(Graphics g) {
 		if (leftSide) {
 			paintLeftSide(g);
