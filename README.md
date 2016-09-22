@@ -8,10 +8,13 @@ Gameboard.java
 
 # Following classes are used for the visuals, like menus, cursor etc (not the main-handler though)
 Cursor.java	
+
 HeroPortrait.java	
 MapHandler.java	
+
 MapMenu.java	
-Menu.java
+Menu.java 
+
 UnitMenu.java
 
 # Following classes handles different abstractions
