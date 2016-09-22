@@ -4,13 +4,13 @@
 SuperAdvanceWars.java	
 
 # The class that works like the engine for the game
-Gameboard.java	Added Map-handler to extract some rows of code from Gameboard-class, …	4 minutes ago
+Gameboard.java
 
 # Following classes are used for the visuals, like menus, cursor etc (not the main-handler though)
 Cursor.java	
-HeroPortrait.java
+HeroPortrait.java	
 MapHandler.java	
-MapMenu.java
+MapMenu.java	
 Menu.java	
 UnitMenu.java
 
