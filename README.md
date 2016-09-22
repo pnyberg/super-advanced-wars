@@ -11,7 +11,7 @@ Cursor.java
 HeroPortrait.java	
 MapHandler.java	
 MapMenu.java	
-Menu.java	
+Menu.java
 UnitMenu.java
 
 # Following classes handles different abstractions
