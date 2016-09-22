@@ -205,7 +205,7 @@ public class MapHandler {
 	public static Unit getFriendlyUnitExceptSelf(Unit notUnit, int x, int y) {
 		for (int k = 0 ; k < getFriendlyTroopSize() ; k++) {
 			Unit unit = getFriendlyUnit(k);
-			if (unit.getX() == x && unit.getY() == y && unit != notUnit) {
+			if (unit.getX() == x && unit.getY() == y && unit != notUnit && !unit.isHidden()) {
 				return unit;
 			}
 		}

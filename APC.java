@@ -3,6 +3,7 @@ import java.awt.Graphics;
 
 public class APC extends Unit {
 	private Unit containedUnit;
+	private boolean droppingOff;
 
 	public APC(int x, int y, Color color) {
 		super(x, y, color);
@@ -12,6 +13,7 @@ public class APC extends Unit {
 		attackType = Unit.NONE;
 
 		containedUnit = null;
+		droppingOff = false;
 	}
 
 	public void addUnit(Unit unit) {
@@ -28,6 +30,14 @@ public class APC extends Unit {
 		}
 	}
 
+	public void regulateDroppingOff(boolean droppingOff) {
+		this.droppingOff = droppingOff;
+	}
+
+	public Unit getUnit() {
+		return containedUnit;
+	}
+
 	public Unit removeUnit() {
 		Unit unit = containedUnit;
 
@@ -35,6 +45,14 @@ public class APC extends Unit {
 		containedUnit = null;
 
 		return unit;
+	}
+
+	public boolean isFull() {
+		return containedUnit != null;
+	}
+
+	public boolean isDroppingOff() {
+		return droppingOff;
 	}
 
 	public void paint(Graphics g, int tileSize) {

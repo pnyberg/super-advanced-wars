@@ -58,7 +58,9 @@ public class Gameboard extends JPanel implements KeyListener {
 		boolean noMenuVisible = !mapMenu.isVisible() && !unitMenu.isVisible();
 
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			if (cursorY > 0 && noMenuVisible) {
+			if (!unitIsntDroppingOff()) {
+				moveDroppingOffCursorCounterclockwise();
+			} else if (cursorY > 0 && noMenuVisible) {
 				RouteHandler.addArrowPoint(cursorX, cursorY - 1, chosenUnit);
 				cursor.moveUp();
 			} else if (mapMenu.isVisible()) {
@@ -67,7 +69,9 @@ public class Gameboard extends JPanel implements KeyListener {
 				unitMenu.moveArrowUp();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			if (cursorY < (mapHeight - 1) && noMenuVisible) {
+			if (!unitIsntDroppingOff()) {
+				moveDroppingOffCursorClockwise();
+			} else if (cursorY < (mapHeight - 1) && noMenuVisible) {
 				RouteHandler.addArrowPoint(cursorX, cursorY + 1, chosenUnit);
 				cursor.moveDown();
 			} else if (mapMenu.isVisible()) {
@@ -76,24 +80,37 @@ public class Gameboard extends JPanel implements KeyListener {
 				unitMenu.moveArrowDown();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			if (cursorX > 0 && noMenuVisible) {
+			if (cursorX > 0 && noMenuVisible && unitIsntDroppingOff()) {
 				RouteHandler.addArrowPoint(cursorX - 1, cursorY, chosenUnit);
 				cursor.moveLeft();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (cursorX < (mapWidth - 1) && noMenuVisible) {
+			if (cursorX < (mapWidth - 1) && noMenuVisible && unitIsntDroppingOff()) {
 				RouteHandler.addArrowPoint(cursorX + 1, cursorY, chosenUnit);
 				cursor.moveRight();
 			}
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_A) {
-			if (mapMenu.isVisible()) {
+			if (!unitIsntDroppingOff()) {
+				if (chosenUnit instanceof APC) {
+					((APC)chosenUnit).regulateDroppingOff(false);
+					Unit exitingUnit = ((APC)chosenUnit).removeUnit();
+					exitingUnit.moveTo(cursor.getX(), cursor.getY());
+
+					chosenUnit = null;
+					RouteHandler.clearMovementMap();
+					RouteHandler.clearArrowPoints();
+				}
+			} else if (mapMenu.isVisible()) {
 				if (mapMenu.atEndRow()) {
 					MapHandler.changeHero();
 					mapMenu.closeMenu();
 				}
 			} else if (unitMenu.isVisible()) {
+				if (unitMenu.atUnitRow()) {
+					handleDroppingOff();
+				}
 				if (unitMenu.atEnterRow()) {
 					Unit entryUnit = MapHandler.getFriendlyUnitExceptSelf(chosenUnit, cursorX, cursorY);
 					if (entryUnit instanceof APC) {
@@ -106,9 +123,11 @@ public class Gameboard extends JPanel implements KeyListener {
 
 //				chosenUnit.moveTo(cursorX, cursorY); // should work without this
 
-				chosenUnit = null;
-				RouteHandler.clearMovementMap();
-				RouteHandler.clearArrowPoints();
+				if (unitIsntDroppingOff()) {
+					chosenUnit = null;
+					RouteHandler.clearMovementMap();
+					RouteHandler.clearArrowPoints();
+				}
 
 				unitMenu.closeMenu();
 			} else if (chosenUnit == null && rangeUnit == null) {
@@ -125,7 +144,16 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_B) {
-			if (chosenUnit != null) {
+			if (!unitIsntDroppingOff()) {
+				int x = chosenUnit.getX();
+				int y = chosenUnit.getY();
+				cursor.setPosition(x, y);
+				handleOpenUnitMenu(x, y);
+
+				if (chosenUnit instanceof APC) {
+					((APC)chosenUnit).regulateDroppingOff(false);
+				}
+			} else if (chosenUnit != null) {
 				// the start-position of the unit before movement
 				Point unitStartPoint = RouteHandler.getArrowPoint(0);
 				int unitStartX = unitStartPoint.getX();
@@ -168,6 +196,123 @@ public class Gameboard extends JPanel implements KeyListener {
 		repaint();
 	}
 
+	public void handleDroppingOff() {
+		if (chosenUnit instanceof APC) {
+			((APC)chosenUnit).regulateDroppingOff(true);
+		}
+
+		int x = chosenUnit.getX();
+		int y = chosenUnit.getY();
+
+		if (y > 0) {
+			y--;
+		} else if (x < (mapWidth - 1)) {
+			x++;
+		} else {
+			y++;
+		}
+
+		cursor.setPosition(x, y);
+	}
+
+	public boolean unitIsntDroppingOff() {
+		if (chosenUnit instanceof APC) {
+			if (((APC)chosenUnit).isDroppingOff()) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public void moveDroppingOffCursorClockwise() {
+		int unitX = chosenUnit.getX();
+		int unitY = chosenUnit.getY();
+		int cursorX = cursor.getX();
+		int cursorY = cursor.getY();
+
+		int xDiff = cursorX - unitX;
+		int yDiff = cursorY - unitY;
+
+		if (xDiff == 1) {
+			if (unitY < (mapHeight - 1)) {
+				cursor.setPosition(cursorX - 1, cursorY + 1);
+			} else if (unitX > 0) {
+				cursor.setPosition(cursorX - 2, cursorY);
+			} else {
+				cursor.setPosition(cursorX - 1, cursorY - 1);
+			}
+		} else if (yDiff == 1) {
+			if (unitX > 0) {
+				cursor.setPosition(cursorX - 1, cursorY - 1);
+			} else if (unitY > 0) {
+				cursor.setPosition(cursorX, cursorY - 2);
+			} else {
+				cursor.setPosition(cursorX + 1, cursorY - 1);
+			}
+		} else if (xDiff == -1) {
+			if (unitY > 0) {
+				cursor.setPosition(cursorX + 1, cursorY - 1);
+			} else if (unitX < (mapWidth - 1)) {
+				cursor.setPosition(cursorX + 2, cursorY);
+			} else {
+				cursor.setPosition(cursorX + 1, cursorY + 1);
+			}
+		} else { // yDiff == -1
+			if (unitX < (mapWidth - 1)) {
+				cursor.setPosition(cursorX + 1, cursorY + 1);
+			} else if (unitY < (mapHeight - 1)) {
+				cursor.setPosition(cursorX, cursorY + 2);
+			} else {
+				cursor.setPosition(cursorX - 1, cursorY + 1);
+			}
+		}
+	}
+
+	public void moveDroppingOffCursorCounterclockwise() {
+		int unitX = chosenUnit.getX();
+		int unitY = chosenUnit.getY();
+		int cursorX = cursor.getX();
+		int cursorY = cursor.getY();
+
+		int xDiff = cursorX - unitX;
+		int yDiff = cursorY - unitY;
+
+		if (xDiff == 1) {
+			if (unitY > 0) {
+				cursor.setPosition(cursorX - 1, cursorY - 1);
+			} else if (unitX > 0) {
+				cursor.setPosition(cursorX - 2, cursorY);
+			} else {
+				cursor.setPosition(cursorX - 1, cursorY + 1);
+			}
+		} else if (yDiff == 1) {
+			if (unitX < (mapWidth - 1)) {
+				cursor.setPosition(cursorX + 1, cursorY - 1);
+			} else if (unitY > 0) {
+				cursor.setPosition(cursorX, cursorY - 2);
+			} else {
+				cursor.setPosition(cursorX - 1, cursorY - 1);
+			}
+		} else if (xDiff == -1) {
+			if (unitY < (mapHeight - 1)) {
+				cursor.setPosition(cursorX + 1, cursorY + 1);
+			} else if (unitX < (mapWidth - 1)) {
+				cursor.setPosition(cursorX + 2, cursorY);
+			} else {
+				cursor.setPosition(cursorX + 1, cursorY - 1);
+			}
+		} else { // yDiff == -1
+			if (unitX > 0) {
+				cursor.setPosition(cursorX - 1, cursorY + 1);
+			} else if (unitY < (mapHeight - 1)) {
+				cursor.setPosition(cursorX, cursorY + 2);
+			} else {
+				cursor.setPosition(cursorX + 1, cursorY + 1);
+			}
+		}
+	}
+
 	private Unit getAnyUnit(int x, int y) {
 		for (int t = 0 ; t < 2 ; t++) {
 			for (int k = 0 ; k < MapHandler.getTroopSize(t) ; k++) {
@@ -191,6 +336,11 @@ public class Gameboard extends JPanel implements KeyListener {
 			} else if (chosenUnit instanceof APC) {
 				// should only be allowed this when close to a friendly unit
 				unitMenu.unitMaySupply();
+
+				if (((APC)chosenUnit).isFull()) {
+					Unit holdUnit = ((APC)chosenUnit).getUnit();
+					unitMenu.containedCargo(holdUnit);
+				}
 			}
 
 			if (hurtSameTypeUnitAtPosition(chosenUnit, cursorX, cursorY)) {
@@ -221,7 +371,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		Unit unit = MapHandler.getFriendlyUnit(x, y);
 
-		if (unit instanceof APC) {
+		if (unit instanceof APC && !((APC)unit).isFull()) {
 			return true;
 		}
 

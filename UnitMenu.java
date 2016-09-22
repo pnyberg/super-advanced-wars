@@ -66,6 +66,11 @@ public class UnitMenu extends Menu {
 		enter = true;
 	}
 
+	public void containedCargo(Unit containedUnit) {
+		cargo.add(containedUnit);
+	}
+
+	// Adds cargo (they will  appear in the menu)
 	public void containedCargo(ArrayList<Unit> containedCargo) {
 		for (int i = 0 ; i < containedCargo.size() ; i++) {
 			cargo.add(containedCargo.get(i));
@@ -98,6 +103,11 @@ public class UnitMenu extends Menu {
 
 	public void unitMayWait() {
 		wait = true;
+	}
+
+	// if units can be exited they will always come first
+	public boolean atUnitRow() {
+		return menuIndex < cargo.size();
 	}
 
 	public boolean atEnterRow() {
