@@ -165,10 +165,8 @@ public class MapHandler {
 	}
 
 	private static void initHeroes() {
-		Hero zero = new Hero(0);
-		Hero one = new Hero(1);
-		portrait.addHero(zero);
-		portrait.addHero(one);
+		portrait.addHero(new Hero(0));
+		portrait.addHero(new Hero(1));
 		portrait.selectStartHero();
 	}
 
@@ -190,6 +188,23 @@ public class MapHandler {
 
 	public static void changeHero() {
 		portrait.nextHero();
+	}
+
+	public static Unit getFriendlyUnit(int x, int y) {
+		for (int k = 0 ; k < getFriendlyTroopSize() ; k++) {
+			Unit unit = getFriendlyUnit(k);
+			if (unit.getX() == x && unit.getY() == y) {
+				return unit;
+			}
+		}
+
+		return null;
+	}
+
+	public static boolean areaOccupiedByFriendly(int x, int y) {
+		Unit testFriendlyUnit = getFriendlyUnit(x, y);
+
+		return testFriendlyUnit != null;
 	}
 
 	/***

@@ -101,7 +101,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 				unitMenu.closeMenu();
 			} else if (chosenUnit == null && rangeUnit == null) {
-				chosenUnit = getFriendlyUnit(cursorX, cursorY);
+				chosenUnit = MapHandler.getFriendlyUnit(cursorX, cursorY);
 
 				if (chosenUnit != null) {
 					RouteHandler.findPossibleMovementLocations(chosenUnit);
@@ -170,30 +170,13 @@ public class Gameboard extends JPanel implements KeyListener {
 		return null;
 	}
 
-	private Unit getFriendlyUnit(int x, int y) {
-		for (int k = 0 ; k < MapHandler.getFriendlyTroopSize() ; k++) {
-			Unit unit = MapHandler.getFriendlyUnit(k);
-			if (unit.getX() == x && unit.getY() == y) {
-				return unit;
-			}
-		}
-
-		return null;
-	}
-
 	private void handleOpenUnitMenu(int cursorX, int cursorY) {
-		if (!areaOccupiedByFriendly(cursorX, cursorY)) {
+		if (!MapHandler.areaOccupiedByFriendly(cursorX, cursorY)) {
 			chosenUnit.moveTo(cursorX, cursorY);
 
 			unitMenu.unitMayWait();
 			unitMenu.openMenu(cursorX, cursorY);
 		}
-	}
-
-	private boolean areaOccupiedByFriendly(int x, int y) {
-		Unit testFriendlyUnit = getFriendlyUnit(x, y);
-
-		return testFriendlyUnit != null;
 	}
 
 	private void findPossibleAttackLocations(Unit chosenUnit) {
