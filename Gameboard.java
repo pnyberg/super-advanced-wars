@@ -9,9 +9,8 @@ import javax.swing.JPanel;
  * - capting
  * - FOG
  * - attacking
- * - heroes
- * - sides
  * - removed recalculating route which also removes movement-control within accepted area (infantrys may take more than three steps)
+ *   - infantry may go over two mountains (very bad)
  * - not crashing on recalculating route
  *
  * @TODO: substitute ArrayList with HashMap for better performance
