@@ -278,39 +278,47 @@ public class Gameboard extends JPanel implements KeyListener {
 		int xDiff = cursorX - unitX;
 		int yDiff = cursorY - unitY;
 
+		Unit containedUnit = ((APC)chosenUnit).getUnit();
+
+		int movementType = containedUnit.getMovementType();
+
 		if (xDiff == 1) {
-			if (unitY > 0) {
+			if (unitY > 0 && validPosition(cursorX - 1, cursorY - 1, movementType)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
-			} else if (unitX > 0) {
+			} else if (unitX > 0 && validPosition(cursorX - 2, cursorY, movementType)) {
 				cursor.setPosition(cursorX - 2, cursorY);
-			} else {
+			} else if (validPosition(cursorX - 1, cursorY + 1, movementType)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			}
 		} else if (yDiff == 1) {
-			if (unitX < (mapWidth - 1)) {
+			if (unitX < (mapWidth - 1) && validPosition(cursorX + 1, cursorY - 1, movementType)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
-			} else if (unitY > 0) {
+			} else if (unitY > 0 && validPosition(cursorX, cursorY - 2, movementType)) {
 				cursor.setPosition(cursorX, cursorY - 2);
-			} else {
+			} else if (validPosition(cursorX - 1, cursorY - 1, movementType)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			}
 		} else if (xDiff == -1) {
-			if (unitY < (mapHeight - 1)) {
+			if (unitY < (mapHeight - 1) && validPosition(cursorX + 1, cursorY + 1, movementType)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
-			} else if (unitX < (mapWidth - 1)) {
+			} else if (unitX < (mapWidth - 1) && validPosition(cursorX + 2, cursorY, movementType)) {
 				cursor.setPosition(cursorX + 2, cursorY);
-			} else {
+			} else if (validPosition(cursorX + 1, cursorY - 1, movementType)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			}
 		} else { // yDiff == -1
-			if (unitX > 0) {
+			if (unitX > 0 && validPosition(cursorX - 1, cursorY + 1, movementType)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
-			} else if (unitY < (mapHeight - 1)) {
+			} else if (unitY < (mapHeight - 1) && validPosition(cursorX, cursorY + 2, movementType)) {
 				cursor.setPosition(cursorX, cursorY + 2);
-			} else {
+			} else if (validPosition(cursorX + 1, cursorY + 1, movementType)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			}
 		}
+	}
+
+	private boolean validPosition(int testX, int testY, int movementType) {
+		return MapHandler.allowedMovementPosition(testX, testY, movementType);
 	}
 
 	private Unit getAnyUnit(int x, int y) {
@@ -468,7 +476,9 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 
 		if (chosenUnit != null) {
-			RouteHandler.paintArrow(g);
+			if (!unitMenu.isVisible() && !unitIsntDroppingOff()) {
+				RouteHandler.paintArrow(g);
+			}
 
 			chosenUnit.paint(g, MapHandler.tileSize);
 		}
