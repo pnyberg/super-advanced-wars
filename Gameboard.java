@@ -437,6 +437,10 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 			}
 
+			if (landbasedEnterableUnitAtPosition(cursorX, cursorY)) {
+				unitMenu.unitMayEnter();
+			}
+
 			if (hurtSameTypeUnitAtPosition(chosenUnit, cursorX, cursorY)) {
 				unitMenu.unitMayJoin();
 			}
