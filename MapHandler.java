@@ -191,9 +191,22 @@ public class MapHandler {
 		portrait.nextHero();
 	}
 
+	public static Unit getAnyUnit(int x, int y) {
+		for (int h = 0 ; h < portrait.getNumberOfHeroes() ; h++) {
+			for (int k = 0 ; k < portrait.getHero(h).getTroopSize() ; k++) {
+				Unit unit = getUnitFromHero(h, k);
+				if (unit.getX() == x && unit.getY() == y && !unit.isHidden()) {
+					return unit;
+				}
+			}
+		}
+
+		return null;
+	}
+
 	public static Unit getFriendlyUnit(int x, int y) {
 		for (int k = 0 ; k < getFriendlyTroopSize() ; k++) {
-			Unit unit = getFriendlyUnit(k);
+			Unit unit = getFriendlyUnitFromCurrentHero(k);
 			if (unit.getX() == x && unit.getY() == y && !unit.isHidden()) {
 				return unit;
 			}
@@ -204,13 +217,23 @@ public class MapHandler {
 
 	public static Unit getFriendlyUnitExceptSelf(Unit notUnit, int x, int y) {
 		for (int k = 0 ; k < getFriendlyTroopSize() ; k++) {
-			Unit unit = getFriendlyUnit(k);
+			Unit unit = getFriendlyUnitFromCurrentHero(k);
 			if (unit.getX() == x && unit.getY() == y && unit != notUnit && !unit.isHidden()) {
 				return unit;
 			}
 		}
 
 		return null;
+	}
+
+	public static boolean areaOccupiedByAny(Unit chosenUnit, int x, int y) {
+		Unit testAnyUnit = getAnyUnit(x, y);
+
+		if (chosenUnit == testAnyUnit) {
+			return false;
+		}
+
+		return testAnyUnit != null;
 	}
 
 	public static boolean areaOccupiedByFriendly(Unit chosenUnit, int x, int y) {
@@ -242,11 +265,11 @@ public class MapHandler {
 		return map[x][y];
 	}
 
-	public static Unit getUnit(int hero, int index) {
+	public static Unit getUnitFromHero(int hero, int index) {
 		return portrait.getHero(hero).getTroop(index);
 	}
 
-	public static Unit getFriendlyUnit(int index) {
+	public static Unit getFriendlyUnitFromCurrentHero(int index) {
 		return portrait.getCurrentHero().getTroop(index);
 	}
 
@@ -321,7 +344,7 @@ public class MapHandler {
 	public static void paintUnits(Graphics g, Unit chosenUnit) {
 		for (int t = 0 ; t < 2 ; t++) {
 			for (int k = 0 ; k < getTroopSize(t) ; k++) {
-				Unit unit = getUnit(t, k);
+				Unit unit = getUnitFromHero(t, k);
 				if (unit != chosenUnit) {
 					if (!unit.isHidden()) {
 						unit.paint(g, tileSize);

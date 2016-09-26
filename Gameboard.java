@@ -58,7 +58,9 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
 			if (!unitIsntDroppingOff()) {
-				moveDroppingOffCursorCounterclockwise();
+				if (unitCanBeDroppedOff()) {
+					moveDroppingOffCursorCounterclockwise();
+				}
 			} else if (cursorY > 0 && noMenuVisible) {
 				RouteHandler.addArrowPoint(cursorX, cursorY - 1, chosenUnit);
 				cursor.moveUp();
@@ -69,7 +71,9 @@ public class Gameboard extends JPanel implements KeyListener {
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			if (!unitIsntDroppingOff()) {
-				moveDroppingOffCursorClockwise();
+				if (unitCanBeDroppedOff()) {
+					moveDroppingOffCursorClockwise();
+				}
 			} else if (cursorY < (mapHeight - 1) && noMenuVisible) {
 				RouteHandler.addArrowPoint(cursorX, cursorY + 1, chosenUnit);
 				cursor.moveDown();
@@ -92,14 +96,16 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		if (e.getKeyCode() == KeyEvent.VK_A) {
 			if (!unitIsntDroppingOff()) {
-				if (chosenUnit instanceof APC) {
-					((APC)chosenUnit).regulateDroppingOff(false);
-					Unit exitingUnit = ((APC)chosenUnit).removeUnit();
-					exitingUnit.moveTo(cursor.getX(), cursor.getY());
+				if (unitCanBeDroppedOff()) {
+					if (chosenUnit instanceof APC) {
+						((APC)chosenUnit).regulateDroppingOff(false);
+						Unit exitingUnit = ((APC)chosenUnit).removeUnit();
+						exitingUnit.moveTo(cursor.getX(), cursor.getY());
 
-					chosenUnit = null;
-					RouteHandler.clearMovementMap();
-					RouteHandler.clearArrowPoints();
+						chosenUnit = null;
+						RouteHandler.clearMovementMap();
+						RouteHandler.clearArrowPoints();
+					}
 				}
 			} else if (mapMenu.isVisible()) {
 				if (mapMenu.atEndRow()) {
@@ -196,22 +202,37 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	public void handleDroppingOff() {
+		Unit containedUnit = null;
 		if (chosenUnit instanceof APC) {
 			((APC)chosenUnit).regulateDroppingOff(true);
+			containedUnit = ((APC)chosenUnit).getUnit();
+		}
+
+		if (containedUnit == null) {
+			return;
 		}
 
 		int x = chosenUnit.getX();
 		int y = chosenUnit.getY();
+		int movementType = containedUnit.getMovementType();
 
-		if (y > 0) {
+		if (y > 0 && validPosition(containedUnit, x, y - 1)) {
 			y--;
-		} else if (x < (mapWidth - 1)) {
+		} else if (x < (mapWidth - 1) && validPosition(containedUnit, x + 1, y)) {
+			x++;
+		} else if (validPosition(containedUnit, x, y + 1)) {
+			y++;
+		} else if (validPosition(containedUnit, x + 1, y)) {
 			x++;
 		} else {
-			y++;
+			return; // cannot drop unit off anywhere
 		}
 
-		cursor.setPosition(x, y);
+		if (unitCanBeDroppedOff()) {
+			cursor.setPosition(x, y);
+		} else {
+			cursor.setPosition(chosenUnit.getX(), chosenUnit.getY());
+		}
 	}
 
 	public boolean unitIsntDroppingOff() {
@@ -222,6 +243,33 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 
 		return true;
+	}
+
+	public boolean unitCanBeDroppedOff() {
+		Unit containedUnit = null;
+		if (chosenUnit instanceof APC) {
+			((APC)chosenUnit).regulateDroppingOff(true);
+			containedUnit = ((APC)chosenUnit).getUnit();
+		}
+
+		if (containedUnit == null) {
+			return false;
+		}
+
+		int x = chosenUnit.getX();
+		int y = chosenUnit.getY();
+
+		if (y > 0 && validPosition(containedUnit, x, y - 1)) {
+			return true;
+		} else if (x < (mapWidth - 1) && validPosition(containedUnit, x + 1, y)) {
+			return true;
+		} else if (validPosition(containedUnit, x, y + 1)) {
+			return true;
+		} else if (validPosition(containedUnit, x + 1, y)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public void moveDroppingOffCursorClockwise() {
@@ -238,35 +286,35 @@ public class Gameboard extends JPanel implements KeyListener {
 		int movementType = containedUnit.getMovementType();
 
 		if (xDiff == 1) {
-			if (unitY < (mapHeight - 1) && validPosition(cursorX - 1, cursorY + 1, movementType)) {
+			if (unitY < (mapHeight - 1) && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
-			} else if (unitX > 0 && validPosition(cursorX - 2, cursorY, movementType)) {
+			} else if (unitX > 0 && validPosition(containedUnit, cursorX - 2, cursorY)) {
 				cursor.setPosition(cursorX - 2, cursorY);
-			} else if (validPosition(cursorX - 1, cursorY - 1, movementType)) {
+			} else if (validPosition(containedUnit, cursorX - 1, cursorY - 1)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			}
 		} else if (yDiff == 1) {
-			if (unitX > 0 && validPosition(cursorX - 1, cursorY - 1, movementType)) {
+			if (unitX > 0 && validPosition(containedUnit, cursorX - 1, cursorY - 1)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
-			} else if (unitY > 0 && validPosition(cursorX, cursorY - 2, movementType)) {
+			} else if (unitY > 0 && validPosition(containedUnit, cursorX, cursorY - 2)) {
 				cursor.setPosition(cursorX, cursorY - 2);
-			} else if (validPosition(cursorX + 1, cursorY - 1, movementType)) {
+			} else if (validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			}
 		} else if (xDiff == -1) {
-			if (unitY > 0 && validPosition(cursorX + 1, cursorY - 1, movementType)) {
+			if (unitY > 0 && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
-			} else if (unitX < (mapWidth - 1) && validPosition(cursorX + 2, cursorY, movementType)) {
+			} else if (unitX < (mapWidth - 1) && validPosition(containedUnit, cursorX + 2, cursorY)) {
 				cursor.setPosition(cursorX + 2, cursorY);
-			} else if (validPosition(cursorX + 1, cursorY + 1, movementType)) {
+			} else if (validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			}
 		} else { // yDiff == -1
-			if (unitX < (mapWidth - 1) && validPosition(cursorX + 1, cursorY + 1, movementType)) {
+			if (unitX < (mapWidth - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
-			} else if (unitY < (mapHeight - 1) && validPosition(cursorX, cursorY + 2, movementType)) {
+			} else if (unitY < (mapHeight - 1) && validPosition(containedUnit, cursorX, cursorY + 2)) {
 				cursor.setPosition(cursorX, cursorY + 2);
-			} else if (validPosition(cursorX - 1, cursorY + 1, movementType)) {
+			} else if (validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			}
 		}
@@ -286,55 +334,46 @@ public class Gameboard extends JPanel implements KeyListener {
 		int movementType = containedUnit.getMovementType();
 
 		if (xDiff == 1) {
-			if (unitY > 0 && validPosition(cursorX - 1, cursorY - 1, movementType)) {
+			if (unitY > 0 && validPosition(containedUnit, cursorX - 1, cursorY - 1)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
-			} else if (unitX > 0 && validPosition(cursorX - 2, cursorY, movementType)) {
+			} else if (unitX > 0 && validPosition(containedUnit, cursorX - 2, cursorY)) {
 				cursor.setPosition(cursorX - 2, cursorY);
-			} else if (validPosition(cursorX - 1, cursorY + 1, movementType)) {
+			} else if (validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			}
 		} else if (yDiff == 1) {
-			if (unitX < (mapWidth - 1) && validPosition(cursorX + 1, cursorY - 1, movementType)) {
+			if (unitX < (mapWidth - 1) && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
-			} else if (unitY > 0 && validPosition(cursorX, cursorY - 2, movementType)) {
+			} else if (unitY > 0 && validPosition(containedUnit, cursorX, cursorY - 2)) {
 				cursor.setPosition(cursorX, cursorY - 2);
-			} else if (validPosition(cursorX - 1, cursorY - 1, movementType)) {
+			} else if (validPosition(containedUnit, cursorX - 1, cursorY - 1)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			}
 		} else if (xDiff == -1) {
-			if (unitY < (mapHeight - 1) && validPosition(cursorX + 1, cursorY + 1, movementType)) {
+			if (unitY < (mapHeight - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
-			} else if (unitX < (mapWidth - 1) && validPosition(cursorX + 2, cursorY, movementType)) {
+			} else if (unitX < (mapWidth - 1) && validPosition(containedUnit, cursorX + 2, cursorY)) {
 				cursor.setPosition(cursorX + 2, cursorY);
-			} else if (validPosition(cursorX + 1, cursorY - 1, movementType)) {
+			} else if (validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			}
 		} else { // yDiff == -1
-			if (unitX > 0 && validPosition(cursorX - 1, cursorY + 1, movementType)) {
+			if (unitX > 0 && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
-			} else if (unitY < (mapHeight - 1) && validPosition(cursorX, cursorY + 2, movementType)) {
+			} else if (unitY < (mapHeight - 1) && validPosition(containedUnit, cursorX, cursorY + 2)) {
 				cursor.setPosition(cursorX, cursorY + 2);
-			} else if (validPosition(cursorX + 1, cursorY + 1, movementType)) {
+			} else if (validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			}
 		}
 	}
 
-	private boolean validPosition(int testX, int testY, int movementType) {
-		return MapHandler.allowedMovementPosition(testX, testY, movementType);
+	private boolean validPosition(Unit unit, int testX, int testY) {
+		return !MapHandler.areaOccupiedByAny(unit, testX, testY) && MapHandler.allowedMovementPosition(testX, testY, unit.getMovementType());
 	}
 
 	private Unit getAnyUnit(int x, int y) {
-		for (int t = 0 ; t < 2 ; t++) {
-			for (int k = 0 ; k < MapHandler.getTroopSize(t) ; k++) {
-				Unit unit = MapHandler.getUnit(t, k);
-				if (unit.getX() == x && unit.getY() == y) {
-					return unit;
-				}
-			}
-		}
-
-		return null;
+		return MapHandler.getAnyUnit(x, y);
 	}
 
 	private void handleOpenUnitMenu(int cursorX, int cursorY) {

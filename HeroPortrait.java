@@ -46,6 +46,10 @@ public class HeroPortrait {
 		}
 	}
 
+	public int getNumberOfHeroes() {
+		return heroes.size();
+	}
+
 	public Hero getHero(int index) {
 		return heroes.get(index);
 	}
