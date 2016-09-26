@@ -16,9 +16,12 @@ public class MapHandler {
 								PORT = 6,
 								AIRPORT = 7,
 								FACTORY = 8,
-								REEF = 9;
+								REEF = 9,
+								SHORE = 10;
 
 	public static final int tileSize = 40;
+	private static final int numberOfMovementTypes = 6;
+	private static final int numberOfAreaTypes = 11;
 
 	private static int[][] map, movementCostMatrix;
 	private static boolean[][] moveabilityCostMatrix;
@@ -36,7 +39,7 @@ public class MapHandler {
 
 	private static void initMovementCostMatrix() {
 		// number of types of units x number of types of terrain
-		movementCostMatrix = new int[6][10];
+		movementCostMatrix = new int[numberOfMovementTypes][numberOfAreaTypes];
 
 		for (int unitIndex = 0 ; unitIndex < movementCostMatrix.length ; unitIndex++) {
 			for (int terrainIndex = 0 ; terrainIndex < movementCostMatrix[0].length ; terrainIndex++) {
@@ -54,7 +57,7 @@ public class MapHandler {
 
 	private static void initMoveabilityMatrix() {
 		// number of types of units x number of types of terrain
-		moveabilityCostMatrix = new boolean[6][10];
+		moveabilityCostMatrix = new boolean[numberOfMovementTypes][numberOfAreaTypes];
 
 		moveabilityCostMatrix[Unit.INFANTRY][ROAD] = true;
 		moveabilityCostMatrix[Unit.MECH][ROAD] = true;
@@ -80,10 +83,21 @@ public class MapHandler {
 		moveabilityCostMatrix[Unit.SHIP][REEF] = true;
 		moveabilityCostMatrix[Unit.TRANSPORT][REEF] = true;
 
+		moveabilityCostMatrix[Unit.INFANTRY][SHORE] = true;
+		moveabilityCostMatrix[Unit.MECH][SHORE] = true;
+		moveabilityCostMatrix[Unit.BAND][SHORE] = true;
+		moveabilityCostMatrix[Unit.TIRE][SHORE] = true;
+		moveabilityCostMatrix[Unit.TRANSPORT][SHORE] = true;
+
 		moveabilityCostMatrix[Unit.INFANTRY][CITY] = true;
 		moveabilityCostMatrix[Unit.MECH][CITY] = true;
 		moveabilityCostMatrix[Unit.BAND][CITY] = true;
 		moveabilityCostMatrix[Unit.TIRE][CITY] = true;
+		
+		moveabilityCostMatrix[Unit.INFANTRY][FACTORY] = true;
+		moveabilityCostMatrix[Unit.MECH][FACTORY] = true;
+		moveabilityCostMatrix[Unit.BAND][FACTORY] = true;
+		moveabilityCostMatrix[Unit.TIRE][FACTORY] = true;
 
 		moveabilityCostMatrix[Unit.INFANTRY][PORT] = true;
 		moveabilityCostMatrix[Unit.MECH][PORT] = true;
@@ -96,11 +110,6 @@ public class MapHandler {
 		moveabilityCostMatrix[Unit.MECH][AIRPORT] = true;
 		moveabilityCostMatrix[Unit.BAND][AIRPORT] = true;
 		moveabilityCostMatrix[Unit.TIRE][AIRPORT] = true;
-
-		moveabilityCostMatrix[Unit.INFANTRY][FACTORY] = true;
-		moveabilityCostMatrix[Unit.MECH][FACTORY] = true;
-		moveabilityCostMatrix[Unit.BAND][FACTORY] = true;
-		moveabilityCostMatrix[Unit.TIRE][FACTORY] = true;
 	}
 
 	private static void initMap(int mapWidth, int mapHeight) {
@@ -157,6 +166,9 @@ public class MapHandler {
 				map[i][n] = SEA;
 			}
 		}
+
+		map[8][4] = SHORE;
+		map[8][5] = SHORE;
 
 		map[9][0] = REEF;
 		map[1][1] = REEF;
@@ -322,6 +334,12 @@ public class MapHandler {
 				g.setColor(new Color(30,144,255)); // lighter blue
 			} else {
 				g.setColor(Color.blue);
+			}
+		} else if (areaNumber == SHORE) {
+			if (movementAble) {
+				g.setColor(new Color(30,144,145)); // lighter blue
+			} else {
+				g.setColor(new Color(30,144,105)); // lighter blue
 			}
 		}
 
