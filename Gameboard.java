@@ -453,6 +453,12 @@ public class Gameboard extends JPanel implements KeyListener {
 	private boolean unitEntryingContainerUnit(Unit unit, int x, int y) {
 		if (unit instanceof Infantry || unit instanceof Mech) {
 			return footsoldierEnterableUnitAtPosition(x, y);
+		} else if (unit instanceof Recon ||
+					unit instanceof APC ||
+					unit instanceof Artillery ||
+					unit instanceof Tank ||
+					unit instanceof Rocket) {
+			return landbasedEnterableUnitAtPosition(x, y);
 		}
 
 		return false;
@@ -467,14 +473,17 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		if (unit instanceof APC && !((APC)unit).isFull()) {
 			return true;
-		} else if (unit instanceof Lander && !((Lander)unit).isFull()) {
-			return true;
-		} 
-
+		}
 		return false;
 	}
 
 	private boolean landbasedEnterableUnitAtPosition(int x, int y) {
+		Unit unit = MapHandler.getFriendlyUnit(x, y);
+
+		if (unit instanceof Lander && !((Lander)unit).isFull()) {
+			return true;
+		} 
+
 		return false;
 	}
 
