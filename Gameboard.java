@@ -101,11 +101,15 @@ public class Gameboard extends JPanel implements KeyListener {
 						((APC)chosenUnit).regulateDroppingOff(false);
 						Unit exitingUnit = ((APC)chosenUnit).removeUnit();
 						exitingUnit.moveTo(cursor.getX(), cursor.getY());
-
-						chosenUnit = null;
-						RouteHandler.clearMovementMap();
-						RouteHandler.clearArrowPoints();
+					} else if (chosenUnit instanceof Lander) {
+						((Lander)chosenUnit).regulateDroppingOff(false);
+						Unit exitingUnit = ((Lander)chosenUnit).removeChosenUnit();
+						exitingUnit.moveTo(cursor.getX(), cursor.getY());
 					}
+
+					chosenUnit = null;
+					RouteHandler.clearMovementMap();
+					RouteHandler.clearArrowPoints();
 				}
 			} else if (mapMenu.isVisible()) {
 				if (mapMenu.atEndRow()) {
@@ -114,14 +118,18 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 			} else if (unitMenu.isVisible()) {
 				if (unitMenu.atUnitRow()) {
+					if (chosenUnit instanceof Lander) {
+						int index = unitMenu.getMenuIndex();
+						((Lander)chosenUnit).chooseUnit(index);
+					}
 					handleDroppingOff();
 				}
 				if (unitMenu.atEnterRow()) {
 					Unit entryUnit = MapHandler.getFriendlyUnitExceptSelf(chosenUnit, cursorX, cursorY);
 					if (entryUnit instanceof APC) {
-						APC apc = (APC)entryUnit;
-
-						apc.addUnit(chosenUnit);
+						((APC)entryUnit).addUnit(chosenUnit);
+					} else if (entryUnit instanceof Lander) {
+						((Lander)entryUnit).addUnit(chosenUnit);
 					}
 					// @TODO unit enters other unit
 				}
@@ -157,6 +165,8 @@ public class Gameboard extends JPanel implements KeyListener {
 
 				if (chosenUnit instanceof APC) {
 					((APC)chosenUnit).regulateDroppingOff(false);
+				} else if (chosenUnit instanceof Lander) {
+					((Lander)chosenUnit).regulateDroppingOff(false);
 				}
 			} else if (chosenUnit != null) {
 				// the start-position of the unit before movement
@@ -206,6 +216,9 @@ public class Gameboard extends JPanel implements KeyListener {
 		if (chosenUnit instanceof APC) {
 			((APC)chosenUnit).regulateDroppingOff(true);
 			containedUnit = ((APC)chosenUnit).getUnit();
+		} else if (chosenUnit instanceof Lander) {
+			((Lander)chosenUnit).regulateDroppingOff(true);
+			containedUnit = ((Lander)chosenUnit).getChosenUnit();
 		}
 
 		if (containedUnit == null) {
@@ -222,8 +235,8 @@ public class Gameboard extends JPanel implements KeyListener {
 			x++;
 		} else if (validPosition(containedUnit, x, y + 1)) {
 			y++;
-		} else if (validPosition(containedUnit, x + 1, y)) {
-			x++;
+		} else if (validPosition(containedUnit, x - 1, y)) {
+			x--;
 		} else {
 			return; // cannot drop unit off anywhere
 		}
@@ -240,32 +253,42 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (((APC)chosenUnit).isDroppingOff()) {
 				return false;
 			}
+		} else if (chosenUnit instanceof Lander) {
+			if (((Lander)chosenUnit).isDroppingOff()) {
+				return false;
+			}
 		}
 
 		return true;
 	}
 
 	public boolean unitCanBeDroppedOff() {
-		Unit containedUnit = null;
 		if (chosenUnit instanceof APC) {
 			((APC)chosenUnit).regulateDroppingOff(true);
-			containedUnit = ((APC)chosenUnit).getUnit();
+			return unitCanBeDroppedOff(((APC)chosenUnit).getUnit());
+		} else if (chosenUnit instanceof Lander) {
+			((Lander)chosenUnit).regulateDroppingOff(true);
+			return unitCanBeDroppedOff(((Lander)chosenUnit).getChosenUnit());
 		}
 
-		if (containedUnit == null) {
+		return false;
+	}
+
+	private boolean unitCanBeDroppedOff(Unit unit) {
+		if (unit == null) {
 			return false;
 		}
 
 		int x = chosenUnit.getX();
 		int y = chosenUnit.getY();
 
-		if (y > 0 && validPosition(containedUnit, x, y - 1)) {
+		if (y > 0 && validPosition(unit, x, y - 1)) {
 			return true;
-		} else if (x < (mapWidth - 1) && validPosition(containedUnit, x + 1, y)) {
+		} else if (x < (mapWidth - 1) && validPosition(unit, x + 1, y)) {
 			return true;
-		} else if (validPosition(containedUnit, x, y + 1)) {
+		} else if (validPosition(unit, x, y + 1)) {
 			return true;
-		} else if (validPosition(containedUnit, x + 1, y)) {
+		} else if (validPosition(unit, x - 1, y)) {
 			return true;
 		}
 
@@ -281,7 +304,15 @@ public class Gameboard extends JPanel implements KeyListener {
 		int xDiff = cursorX - unitX;
 		int yDiff = cursorY - unitY;
 
-		Unit containedUnit = ((APC)chosenUnit).getUnit();
+		Unit containedUnit = null;
+
+		if (chosenUnit instanceof APC) {
+			containedUnit = ((APC)chosenUnit).getUnit();
+		} else if (chosenUnit instanceof Lander) {
+			containedUnit = ((Lander)chosenUnit).getChosenUnit();
+		} else {
+			return; // shouldn't be able to get here
+		}
 
 		int movementType = containedUnit.getMovementType();
 
@@ -329,7 +360,15 @@ public class Gameboard extends JPanel implements KeyListener {
 		int xDiff = cursorX - unitX;
 		int yDiff = cursorY - unitY;
 
-		Unit containedUnit = ((APC)chosenUnit).getUnit();
+		Unit containedUnit = null;
+
+		if (chosenUnit instanceof APC) {
+			((APC)chosenUnit).getUnit();
+		} else if (chosenUnit instanceof Lander) {
+			((Lander)chosenUnit).getChosenUnit();
+		} else {
+			return; // shouldn't be able to get here
+		}
 
 		int movementType = containedUnit.getMovementType();
 
@@ -391,6 +430,11 @@ public class Gameboard extends JPanel implements KeyListener {
 					Unit holdUnit = ((APC)chosenUnit).getUnit();
 					unitMenu.containedCargo(holdUnit);
 				}
+			} else if (chosenUnit instanceof Lander) {
+				for (int i = 0 ; i < ((Lander)chosenUnit).getNumberOfContainedUnits() ; i++) {
+					Unit holdUnit = ((Lander)chosenUnit).getUnit(i);
+					unitMenu.containedCargo(holdUnit);
+				}
 			}
 
 			if (hurtSameTypeUnitAtPosition(chosenUnit, cursorX, cursorY)) {
@@ -423,7 +467,9 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		if (unit instanceof APC && !((APC)unit).isFull()) {
 			return true;
-		}
+		} else if (unit instanceof Lander && !((Lander)unit).isFull()) {
+			return true;
+		} 
 
 		return false;
 	}

@@ -5,10 +5,8 @@ import java.util.ArrayList;
 public class Lander extends Unit {
 	private ArrayList<Unit> containedUnits;
 	private boolean droppingOff;
+	private int chosenIndex;
 
-	/**
-	 * @TODO: verify that lander is correctly implemented (through internet)
-	 */
 	public Lander(int x, int y, Color color) {
 		super(x, y, color);
 
@@ -18,6 +16,7 @@ public class Lander extends Unit {
 
 		containedUnits = new ArrayList<Unit>();
 		droppingOff = false;
+		chosenIndex = -1;
 	}
 
 	public void addUnit(Unit unit) {
@@ -42,16 +41,28 @@ public class Lander extends Unit {
 		this.droppingOff = droppingOff;
 	}
 
+	public void chooseUnit(int index) {
+		chosenIndex = index;
+	}
+
 	public Unit getUnit(int index) {
 		return containedUnits.get(index);
 	}
 
-	public Unit removeUnit(int index) {
-		Unit unit = containedUnit.remove(index);
+	public Unit getChosenUnit() {
+		return containedUnits.get(chosenIndex);
+	}
+
+	public Unit removeChosenUnit() {
+		Unit unit = containedUnits.remove(chosenIndex);
 
 		unit.regulateHidden(false);
 
 		return unit;
+	}
+
+	public int getNumberOfContainedUnits() {
+		return containedUnits.size();
 	}
 
 	public boolean isFull() {
@@ -72,18 +83,6 @@ public class Lander extends Unit {
 		int cx4 = x * tileSize + tileSize / 4;
 		int cy4 = y * tileSize + 5 * tileSize / 6;
 
-		int bodyWidth = 3 * tileSize / 5 + 1;
-		int bodyHeight = 2 * tileSize / 4 - 3;
-		int bodyAlignX = tileSize / 4 - 1;
-		int bodyAlignY = tileSize / 5 + 4;
-
-		// body
-/*		g.setColor(color);
-		g.fillRect(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
-
-		g.setColor(Color.black);
-		g.drawRect(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
-*/
 		// body
 		int[] cannonX = {cx1, cx2, cx3, cx4};
 		int[] cannonY = {cy1, cy2, cy3, cy4};
