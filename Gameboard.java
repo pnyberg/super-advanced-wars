@@ -424,7 +424,9 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 			} else if (chosenUnit instanceof APC) {
 				// should only be allowed this when close to a friendly unit
-				unitMenu.unitMaySupply();
+				if (mayAPCSUpply(cursorX, cursorY)) {
+					unitMenu.unitMaySupply();
+				}
 
 				if (((APC)chosenUnit).isFull()) {
 					Unit holdUnit = ((APC)chosenUnit).getUnit();
@@ -487,6 +489,20 @@ public class Gameboard extends JPanel implements KeyListener {
 		if (unit instanceof Lander && !((Lander)unit).isFull()) {
 			return true;
 		} 
+
+		return false;
+	}
+
+	private boolean mayAPCSUpply(int x, int y) {
+		if (MapHandler.getFriendlyUnit(x + 1, y) != null) {
+			return true;
+		} else if (MapHandler.getFriendlyUnit(x, y + 1) != null) {
+			return true;
+		} else if (MapHandler.getFriendlyUnit(x - 1, y) != null) {
+			return true;
+		} else if (MapHandler.getFriendlyUnit(x, y - 1) != null) {
+			return true;
+		}
 
 		return false;
 	}
