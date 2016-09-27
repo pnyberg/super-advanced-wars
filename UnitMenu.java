@@ -3,7 +3,15 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class UnitMenu extends Menu {
-	private boolean join, enter, fire, capt, launch, dive, emerge, supply, wait;
+	private boolean 	join, 
+						enter, 
+						fire, 
+						capt, 
+						launch, 
+						dive, 
+						emerge, 
+						supply, 
+						wait;
 
 	private ArrayList<Unit> cargo;
 

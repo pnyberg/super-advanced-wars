@@ -191,7 +191,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 				if (rangeUnit != null) {
 					if (rangeUnit.getAttackType() == Unit.DIRECT_ATTACK) {
-						findPossibleAttackLocations(rangeUnit);
+						findPossibleDirectAttackLocations(rangeUnit);
 					} else if (rangeUnit.getAttackType() == Unit.INDIRECT_ATTACK) {
 						createRangeAttackLocations(rangeUnit);
 					}
@@ -428,6 +428,14 @@ public class Gameboard extends JPanel implements KeyListener {
 	private void handleOpenUnitMenu(int cursorX, int cursorY) {
 		if (!MapHandler.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY) || unitEntryingContainerUnit(chosenUnit, cursorX, cursorY)) {
 			// @TODO
+			if (hurtSameTypeUnitAtPosition(chosenUnit, cursorX, cursorY)) {
+				unitMenu.unitMayJoin();
+			}
+
+			if (unitCanFire(cursorX, cursorY)) {
+				unitMenu.unitMayFire();
+			}
+
 			if (chosenUnit instanceof Infantry || chosenUnit instanceof Mech) {
 				if (footsoldierEnterableUnitAtPosition(cursorX, cursorY)) {
 					unitMenu.unitMayEnter();
@@ -457,10 +465,6 @@ public class Gameboard extends JPanel implements KeyListener {
 				} else {
 					// if the chosenUnit is a lander 
 				}
-			}
-
-			if (hurtSameTypeUnitAtPosition(chosenUnit, cursorX, cursorY)) {
-				unitMenu.unitMayJoin();
 			}
 
 			if (!MapHandler.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY)) {
@@ -533,7 +537,68 @@ public class Gameboard extends JPanel implements KeyListener {
 		return testUnit.isHurt() && testUnit.getClass().equals(unit.getClass());
 	}
 
-	private void findPossibleAttackLocations(Unit chosenUnit) {
+	private boolean unitCanFire(int cursorX, int cursorY) {
+		if (chosenUnit instanceof IndirectUnit) {
+			return indirectUnitCanFire(cursorX, cursorY);
+		} else if (chosenUnit instanceof APC
+					|| chosenUnit instanceof Lander) {
+			return false;
+		}
+
+		return directUnitCanFire(cursorX, cursorY);
+	}
+
+	private boolean indirectUnitCanFire(int cursorX, int cursorY) {
+		IndirectUnit unit = (IndirectUnit)chosenUnit;
+
+		int unitX = unit.getX();
+		int unitY = unit.getY();
+		int minRange = unit.getMinRange();
+		int maxRange = unit.getMaxRange();
+
+
+		if (unitX != cursorX || unitY != cursorY) {
+			return false;
+		}
+
+		for (int y = unitY - maxRange ; y <= (unitY + maxRange) ; y++) {
+			if (y < 0) {
+				continue;
+			} else if (y >= mapHeight) {
+				break;
+			}
+			for (int x = unitX - maxRange ; x <= (unitX + maxRange) ; x++) {
+				if (x < 0) {
+					continue;
+				} else if (x >= mapWidth) {
+					break;
+				}
+
+				int distanceFromUnit = Math.abs(unitX - x) + Math.abs(unitY - y);
+				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
+					if (MapHandler.getNonFriendlyUnit(x, y) != null) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	private boolean directUnitCanFire(int cursorX, int cursorY) {
+		Unit northernFront = MapHandler.getNonFriendlyUnit(cursorX, cursorY - 1);
+		Unit easternFront = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY);
+		Unit southernFront = MapHandler.getNonFriendlyUnit(cursorX, cursorY + 1);
+		Unit westernFront = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY);
+
+		System.out.println("here " + northernFront + " - " + easternFront + " - " + southernFront + " - " + westernFront);
+
+		return northernFront != null || easternFront != null 
+			|| southernFront != null || westernFront != null;
+	}
+
+	private void findPossibleDirectAttackLocations(Unit chosenUnit) {
 		RouteHandler.findPossibleMovementLocations(chosenUnit);
 
 		for (int n = 0 ; n < mapHeight ; n++) {

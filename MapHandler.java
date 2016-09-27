@@ -217,6 +217,24 @@ public class MapHandler {
 		return null;
 	}
 
+	public static Unit getNonFriendlyUnit(int x, int y) {
+		System.out.println(portrait.getNumberOfHeroes());
+		for (int h = 0 ; h < portrait.getNumberOfHeroes() ; h++) {
+			if (portrait.getHero(h) == portrait.getCurrentHero()) {
+				continue;
+			}
+			for (int k = 0 ; k < portrait.getHero(h).getTroopSize() ; k++) {
+				Unit unit = getUnitFromHero(h, k);
+					System.out.println(x + "," + y + " -> " + unit.getX() + "," + unit.getY());
+				if (unit.getX() == x && unit.getY() == y && !unit.isHidden()) {
+					return unit;
+				}
+			}
+		}
+
+		return null;
+	}
+
 	public static Unit getFriendlyUnit(int x, int y) {
 		for (int k = 0 ; k < getFriendlyTroopSize() ; k++) {
 			Unit unit = getFriendlyUnitFromCurrentHero(k);
