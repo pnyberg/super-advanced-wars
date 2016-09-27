@@ -295,6 +295,16 @@ public class Gameboard extends JPanel implements KeyListener {
 		return false;
 	}
 
+	private boolean landerAtDroppingOffPosition(int x, int y) {
+		int areaValue = MapHandler.map(x, y);
+
+		if (areaValue == MapHandler.SHORE || areaValue == MapHandler.PORT) {
+			return true;
+		} 
+
+		return false;
+	}
+
 	public void moveDroppingOffCursorClockwise() {
 		int unitX = chosenUnit.getX();
 		int unitY = chosenUnit.getY();
@@ -433,14 +443,20 @@ public class Gameboard extends JPanel implements KeyListener {
 					unitMenu.containedCargo(holdUnit);
 				}
 			} else if (chosenUnit instanceof Lander) {
-				for (int i = 0 ; i < ((Lander)chosenUnit).getNumberOfContainedUnits() ; i++) {
-					Unit holdUnit = ((Lander)chosenUnit).getUnit(i);
-					unitMenu.containedCargo(holdUnit);
+				if (landerAtDroppingOffPosition(cursorX, cursorY)) {
+					for (int i = 0 ; i < ((Lander)chosenUnit).getNumberOfContainedUnits() ; i++) {
+						Unit holdUnit = ((Lander)chosenUnit).getUnit(i);
+						unitMenu.containedCargo(holdUnit);
+					}
 				}
 			}
 
 			if (landbasedEnterableUnitAtPosition(cursorX, cursorY)) {
-				unitMenu.unitMayEnter();
+				if (!(chosenUnit instanceof Lander)) {
+					unitMenu.unitMayEnter();
+				} else {
+					// if the chosenUnit is a lander 
+				}
 			}
 
 			if (hurtSameTypeUnitAtPosition(chosenUnit, cursorX, cursorY)) {
