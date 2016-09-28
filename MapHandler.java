@@ -50,7 +50,7 @@ public class MapHandler {
 		movementCostMatrix[Unit.TIRE][PLAIN] = 2;
 		movementCostMatrix[Unit.BAND][WOOD] = 2;
 		movementCostMatrix[Unit.TIRE][WOOD] = 3;
-		movementCostMatrix[Unit.INFANTRY][WOOD] = 2;
+		movementCostMatrix[Unit.INFANTRY][MOUNTAIN] = 2;
 		movementCostMatrix[Unit.SHIP][REEF] = 2;
 		movementCostMatrix[Unit.TRANSPORT][REEF] = 2;
 	}
