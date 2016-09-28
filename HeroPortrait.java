@@ -50,6 +50,19 @@ public class HeroPortrait {
 		return heroes.size();
 	}
 
+	public Hero getHeroFromUnit(Unit testUnit) {
+		for (int h = 0 ; h < getNumberOfHeroes() ; h++) {
+			for (int k = 0 ; k < getHero(h).getTroopSize() ; k++) {
+				Unit unit = heroes.get(h).getTroop(k);
+				if (unit.getX() == testUnit.getX() && unit.getY() == testUnit.getY() && !unit.isHidden()) {
+					return getHero(h);
+				}
+			}
+		}
+
+		return null;
+	}
+
 	public Hero getHero(int index) {
 		return heroes.get(index);
 	}

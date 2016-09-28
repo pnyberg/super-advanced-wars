@@ -277,11 +277,21 @@ public class MapHandler {
 		return testFriendlyUnit != null;
 	}
 
+	public static boolean areaOccupiedByNonFriendly(int x, int y) {
+		Unit testAnyUnit = getNonFriendlyUnit(x, y);
+
+		return testAnyUnit != null;
+	}
+
 	/***
 	 * Used to check if a positions can be moved to by a specific movement-type
 	 ***/
 	public static boolean allowedMovementPosition(int x, int y, int movementType) {
 		int terrainType = map[x][y];
+
+		if (areaOccupiedByNonFriendly(x, y)) {
+			return false;
+		}
 
 		return moveabilityCostMatrix[movementType][terrainType];
 	}
