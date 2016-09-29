@@ -118,12 +118,29 @@ public class UnitMenu extends Menu {
 		return menuIndex < cargo.size();
 	}
 
-	public boolean atEnterRow() {
+	public boolean atFireRow() {
+		if (!fire) {
+			return false;
+		}
+
 		int comparisonIndex = 0;
 
-		if (join) {
-			comparisonIndex++;
+		if (join) { numberOfRows++; }
+		if (capt) { numberOfRows++; }
+		if (dive) { numberOfRows++; }
+		if (emerge) { numberOfRows++; }
+
+		return menuIndex == comparisonIndex;
+	}
+
+	public boolean atEnterRow() {
+		if (!enter) {
+			return false;
 		}
+
+		int comparisonIndex = 0;
+
+		if (join) { comparisonIndex++; }
 
 		return menuIndex == comparisonIndex;
 	}

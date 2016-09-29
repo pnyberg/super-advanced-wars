@@ -10,13 +10,15 @@ public abstract class Unit {
 								SHIP = 4,
 								TRANSPORT = 5;
 
+	public static final int numberOfUnitTypes = 9;
+
 	// Attack-type
 	public static final int 	NONE = 0,
 								DIRECT_ATTACK = 1,
 								INDIRECT_ATTACK = 2;
 
 	protected int x, y, hp;
-	protected boolean hidden;
+	protected boolean hidden, attacking;
 	protected Color color;
 
 	protected int movement;
@@ -30,6 +32,7 @@ public abstract class Unit {
 
 		hp = 100;
 		hidden = false;
+		attacking = false;
 	}
 
 	public void moveTo(int x, int y) {
@@ -45,12 +48,20 @@ public abstract class Unit {
 		this.hidden = hidden;
 	}
 
+	public void regulateAttack(boolean attacking) {
+		this.attacking = attacking;
+	}
+
 	public int getX() {
 		return x;
 	}
 
 	public int getY() {
 		return y;
+	}
+
+	public int getHP() {
+		return hp;
 	}
 
 	public int getMovement() {
@@ -75,6 +86,10 @@ public abstract class Unit {
 
 	public boolean isHidden() {
 		return hidden;
+	}
+
+	public boolean isAttacking() {
+		return attacking;
 	}
 
 	public abstract void paint(Graphics g, int tileSize);

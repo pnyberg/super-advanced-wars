@@ -33,6 +33,14 @@ public class Hero {
 		troops.add(unit);
 	}
 
+	public int getAttackValue(int unitIndex) {
+		return 100; // @TODO default for now
+	}
+
+	public int getDefenceValue(int unitIndex) {
+		return 100; // @TODO default for now
+	}
+
 	public Unit getTroop(int index) {
 		return troops.get(index);
 	}

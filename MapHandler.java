@@ -183,7 +183,7 @@ public class MapHandler {
 	}
 
 	private static void initTroops() {
-		portrait.getHero(0).addTroop(new Infantry(2, 2, Color.red));
+		portrait.getHero(0).addTroop(new Infantry(3, 6, Color.red));
 		portrait.getHero(0).addTroop(new Mech(3, 3, Color.red));
 		portrait.getHero(0).addTroop(new Tank(4, 4, Color.red));
 		portrait.getHero(0).addTroop(new Recon(5, 5, Color.red));
@@ -193,7 +193,7 @@ public class MapHandler {
 		portrait.getHero(0).addTroop(new APC(3, 2, Color.red));
 		portrait.getHero(0).addTroop(new Lander(8, 5, Color.red));
 
-		portrait.getHero(1).addTroop(new Infantry(7, 7, Color.orange));
+		portrait.getHero(1).addTroop(new Infantry(6, 6, Color.orange));
 	}
 
 	public static void updatePortraitSideChoice(int cursorX, int cursorY) {
@@ -218,14 +218,12 @@ public class MapHandler {
 	}
 
 	public static Unit getNonFriendlyUnit(int x, int y) {
-		System.out.println(portrait.getNumberOfHeroes());
 		for (int h = 0 ; h < portrait.getNumberOfHeroes() ; h++) {
 			if (portrait.getHero(h) == portrait.getCurrentHero()) {
 				continue;
 			}
 			for (int k = 0 ; k < portrait.getHero(h).getTroopSize() ; k++) {
 				Unit unit = getUnitFromHero(h, k);
-					System.out.println(x + "," + y + " -> " + unit.getX() + "," + unit.getY());
 				if (unit.getX() == x && unit.getY() == y && !unit.isHidden()) {
 					return unit;
 				}
@@ -300,6 +298,14 @@ public class MapHandler {
 		int terrainType = map[x][y];
 
 		return movementCostMatrix[movementType][terrainType];
+	}
+
+	public static int getDefenceValue(int terrainType) {
+		return 0;
+	}
+
+	public static HeroPortrait getHeroPortrait() {
+		return portrait;
 	}
 
 	public static int map(int x, int y) {

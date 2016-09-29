@@ -45,6 +45,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		MapHandler.initMapHandler(mapWidth, mapHeight);
 		RouteHandler.initMovementMap(mapWidth, mapHeight);
+		DamageHandler.init();
 
 		MapHandler.updatePortraitSideChoice(cursor.getX(), cursor.getY());
 		repaint();
@@ -61,6 +62,8 @@ public class Gameboard extends JPanel implements KeyListener {
 				if (unitCanBeDroppedOff()) {
 					moveDroppingOffCursorCounterclockwise();
 				}
+			} else if (unitWantToFire()) {
+				moveFiringCursorCounterclockwise();
 			} else if (cursorY > 0 && noMenuVisible) {
 				RouteHandler.addArrowPoint(cursorX, cursorY - 1, chosenUnit);
 				cursor.moveUp();
@@ -74,6 +77,8 @@ public class Gameboard extends JPanel implements KeyListener {
 				if (unitCanBeDroppedOff()) {
 					moveDroppingOffCursorClockwise();
 				}
+			} else if (unitWantToFire()) {
+				moveFiringCursorClockwise();
 			} else if (cursorY < (mapHeight - 1) && noMenuVisible) {
 				RouteHandler.addArrowPoint(cursorX, cursorY + 1, chosenUnit);
 				cursor.moveDown();
@@ -83,12 +88,12 @@ public class Gameboard extends JPanel implements KeyListener {
 				unitMenu.moveArrowDown();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			if (cursorX > 0 && noMenuVisible && unitIsntDroppingOff()) {
+			if (cursorX > 0 && noMenuVisible && unitIsntDroppingOff() && !unitWantToFire()) {
 				RouteHandler.addArrowPoint(cursorX - 1, cursorY, chosenUnit);
 				cursor.moveLeft();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (cursorX < (mapWidth - 1) && noMenuVisible && unitIsntDroppingOff()) {
+			if (cursorX < (mapWidth - 1) && noMenuVisible && unitIsntDroppingOff() && !unitWantToFire()) {
 				RouteHandler.addArrowPoint(cursorX + 1, cursorY, chosenUnit);
 				cursor.moveRight();
 			}
@@ -111,6 +116,18 @@ public class Gameboard extends JPanel implements KeyListener {
 					RouteHandler.clearMovementMap();
 					RouteHandler.clearArrowPoints();
 				}
+			} else if (unitWantToFire()) {
+				Unit defendingUnit = MapHandler.getNonFriendlyUnit(cursorX, cursorY);
+				DamageHandler.handleAttack(chosenUnit, defendingUnit);
+				chosenUnit.regulateAttack(false);
+
+				int x = chosenUnit.getX();
+				int y = chosenUnit.getY();
+				cursor.setPosition(x, y);
+
+				chosenUnit = null;
+				RouteHandler.clearMovementMap();
+				RouteHandler.clearArrowPoints();
 			} else if (mapMenu.isVisible()) {
 				if (mapMenu.atEndRow()) {
 					MapHandler.changeHero();
@@ -123,8 +140,9 @@ public class Gameboard extends JPanel implements KeyListener {
 						((Lander)chosenUnit).chooseUnit(index);
 					}
 					handleDroppingOff();
-				}
-				if (unitMenu.atEnterRow()) {
+				} else if (unitMenu.atFireRow()) {
+					handleFiring();
+				} else if (unitMenu.atEnterRow()) {
 					Unit entryUnit = MapHandler.getFriendlyUnitExceptSelf(chosenUnit, cursorX, cursorY);
 					if (entryUnit instanceof APC) {
 						((APC)entryUnit).addUnit(chosenUnit);
@@ -136,7 +154,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 //				chosenUnit.moveTo(cursorX, cursorY); // should work without this
 
-				if (unitIsntDroppingOff()) {
+				if (unitIsntDroppingOff() && !unitWantToFire()) {
 					chosenUnit = null;
 					RouteHandler.clearMovementMap();
 					RouteHandler.clearArrowPoints();
@@ -168,6 +186,13 @@ public class Gameboard extends JPanel implements KeyListener {
 				} else if (chosenUnit instanceof Lander) {
 					((Lander)chosenUnit).regulateDroppingOff(false);
 				}
+			} else if (unitWantToFire()) {
+				int x = chosenUnit.getX();
+				int y = chosenUnit.getY();
+				cursor.setPosition(x, y);
+				handleOpenUnitMenu(x, y);
+
+				chosenUnit.regulateAttack(false);
 			} else if (chosenUnit != null) {
 				// the start-position of the unit before movement
 				Point unitStartPoint = RouteHandler.getArrowPoint(0);
@@ -211,6 +236,27 @@ public class Gameboard extends JPanel implements KeyListener {
 		repaint();
 	}
 
+	public void handleFiring() {
+		chosenUnit.regulateAttack(true);
+
+		int x = chosenUnit.getX();
+		int y = chosenUnit.getY();
+
+		if (y > 0 && MapHandler.getNonFriendlyUnit(x, y - 1) != null) {
+			y--;
+		} else if (x < (mapWidth - 1) && MapHandler.getNonFriendlyUnit(x + 1, y) != null) {
+			x++;
+		} else if (MapHandler.getNonFriendlyUnit(x, y + 1) != null) {
+			y++;
+		} else if (MapHandler.getNonFriendlyUnit(x - 1, y) != null) {
+			x--;
+		} else {
+			return; // cannot drop unit off anywhere
+		}
+
+		cursor.setPosition(x, y);
+	}
+
 	public void handleDroppingOff() {
 		Unit containedUnit = null;
 		if (chosenUnit instanceof APC) {
@@ -246,6 +292,14 @@ public class Gameboard extends JPanel implements KeyListener {
 		} else {
 			cursor.setPosition(chosenUnit.getX(), chosenUnit.getY());
 		}
+	}
+
+	public boolean unitWantToFire() {
+		if (chosenUnit == null) {
+			return false;
+		}
+
+		return chosenUnit.isAttacking();
 	}
 
 	public boolean unitIsntDroppingOff() {
@@ -412,6 +466,95 @@ public class Gameboard extends JPanel implements KeyListener {
 			} else if (unitY < (mapHeight - 1) && validPosition(containedUnit, cursorX, cursorY + 2)) {
 				cursor.setPosition(cursorX, cursorY + 2);
 			} else if (validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
+				cursor.setPosition(cursorX + 1, cursorY + 1);
+			}
+		}
+	}
+
+	public void moveFiringCursorClockwise() {
+		int unitX = chosenUnit.getX();
+		int unitY = chosenUnit.getY();
+		int cursorX = cursor.getX();
+		int cursorY = cursor.getY();
+
+		int xDiff = cursorX - unitX;
+		int yDiff = cursorY - unitY;
+
+		if (xDiff == 1) {
+			if (unitY < (mapHeight - 1) && MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY + 1) != null) {
+				cursor.setPosition(cursorX - 1, cursorY + 1);
+			} else if (unitX > 0 && MapHandler.getNonFriendlyUnit(cursorX - 2, cursorY) != null) {
+				cursor.setPosition(cursorX - 2, cursorY);
+			} else if (MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY - 1) != null) {
+				cursor.setPosition(cursorX - 1, cursorY - 1);
+			}
+		} else if (yDiff == 1) {
+			if (unitX > 0 && MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY - 1) != null) {
+				cursor.setPosition(cursorX - 1, cursorY - 1);
+			} else if (unitY > 0 && MapHandler.getNonFriendlyUnit(cursorX, cursorY - 2) != null) {
+				cursor.setPosition(cursorX, cursorY - 2);
+			} else if (MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY - 1) != null) {
+				cursor.setPosition(cursorX + 1, cursorY - 1);
+			}
+		} else if (xDiff == -1) {
+			if (unitY > 0 && MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY - 1) != null) {
+				cursor.setPosition(cursorX + 1, cursorY - 1);
+			} else if (unitX < (mapWidth - 1) && MapHandler.getNonFriendlyUnit(cursorX + 2, cursorY) != null) {
+				cursor.setPosition(cursorX + 2, cursorY);
+			} else if (MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY + 1) != null) {
+				cursor.setPosition(cursorX + 1, cursorY + 1);
+			}
+		} else { // yDiff == -1
+			if (unitX < (mapWidth - 1) && MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY + 1) != null) {
+				cursor.setPosition(cursorX + 1, cursorY + 1);
+			} else if (unitY < (mapHeight - 1) && MapHandler.getNonFriendlyUnit(cursorX, cursorY + 2) != null) {
+				cursor.setPosition(cursorX, cursorY + 2);
+			} else if (MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY + 1) != null) {
+				cursor.setPosition(cursorX - 1, cursorY + 1);
+			}
+		}
+	}
+
+	public void moveFiringCursorCounterclockwise() {
+		int unitX = chosenUnit.getX();
+		int unitY = chosenUnit.getY();
+		int cursorX = cursor.getX();
+		int cursorY = cursor.getY();
+
+		int xDiff = cursorX - unitX;
+		int yDiff = cursorY - unitY;
+
+
+		if (xDiff == 1) {
+			if (unitY > 0 && MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY - 1) != null) {
+				cursor.setPosition(cursorX - 1, cursorY - 1);
+			} else if (unitX > 0 && MapHandler.getNonFriendlyUnit(cursorX - 2, cursorY) != null) {
+				cursor.setPosition(cursorX - 2, cursorY);
+			} else if (MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY + 1) != null) {
+				cursor.setPosition(cursorX - 1, cursorY + 1);
+			}
+		} else if (yDiff == 1) {
+			if (unitX < (mapWidth - 1) && MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY - 1) != null) {
+				cursor.setPosition(cursorX + 1, cursorY - 1);
+			} else if (unitY > 0 && MapHandler.getNonFriendlyUnit(cursorX, cursorY - 2) != null) {
+				cursor.setPosition(cursorX, cursorY - 2);
+			} else if (MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY - 1) != null) {
+				cursor.setPosition(cursorX - 1, cursorY - 1);
+			}
+		} else if (xDiff == -1) {
+			if (unitY < (mapHeight - 1) && MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY + 1) != null) {
+				cursor.setPosition(cursorX + 1, cursorY + 1);
+			} else if (unitX < (mapWidth - 1) && MapHandler.getNonFriendlyUnit(cursorX + 2, cursorY) != null) {
+				cursor.setPosition(cursorX + 2, cursorY);
+			} else if (MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY - 1) != null) {
+				cursor.setPosition(cursorX + 1, cursorY - 1);
+			}
+		} else { // yDiff == -1
+			if (unitX > 0 && MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY + 1) != null) {
+				cursor.setPosition(cursorX - 1, cursorY + 1);
+			} else if (unitY < (mapHeight - 1) && MapHandler.getNonFriendlyUnit(cursorX, cursorY + 2) != null) {
+				cursor.setPosition(cursorX, cursorY + 2);
+			} else if (MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY + 1) != null) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			}
 		}
@@ -592,8 +735,6 @@ public class Gameboard extends JPanel implements KeyListener {
 		Unit southernFront = MapHandler.getNonFriendlyUnit(cursorX, cursorY + 1);
 		Unit westernFront = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY);
 
-		System.out.println("here " + northernFront + " - " + easternFront + " - " + southernFront + " - " + westernFront);
-
 		return northernFront != null || easternFront != null 
 			|| southernFront != null || westernFront != null;
 	}
@@ -674,7 +815,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 
 		if (chosenUnit != null) {
-			if (!unitMenu.isVisible() && unitIsntDroppingOff()) {
+			if (!unitMenu.isVisible() && unitIsntDroppingOff() && !unitWantToFire()) {
 				RouteHandler.paintArrow(g);
 			}
 
