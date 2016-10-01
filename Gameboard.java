@@ -152,8 +152,6 @@ public class Gameboard extends JPanel implements KeyListener {
 					// @TODO unit enters other unit
 				}
 
-//				chosenUnit.moveTo(cursorX, cursorY); // should work without this
-
 				if (unitIsntDroppingOff() && !unitWantToFire()) {
 					chosenUnit = null;
 					RouteHandler.clearMovementMap();
@@ -242,16 +240,24 @@ public class Gameboard extends JPanel implements KeyListener {
 		int x = chosenUnit.getX();
 		int y = chosenUnit.getY();
 
-		if (y > 0 && MapHandler.getNonFriendlyUnit(x, y - 1) != null) {
-			y--;
-		} else if (x < (mapWidth - 1) && MapHandler.getNonFriendlyUnit(x + 1, y) != null) {
-			x++;
-		} else if (MapHandler.getNonFriendlyUnit(x, y + 1) != null) {
-			y++;
-		} else if (MapHandler.getNonFriendlyUnit(x - 1, y) != null) {
-			x--;
+		if (chosenUnit instanceof IndirectUnit) {
+			IndirectUnit indirectUnit = (IndirectUnit)chosenUnit;
+			calculatePossibleAttackLocations(indirectUnit);
+			Point p = indirectUnit.getNextFiringLocation();
+			x = p.getX();
+			y = p.getY();
 		} else {
-			return; // cannot drop unit off anywhere
+			if (y > 0 && MapHandler.getNonFriendlyUnit(x, y - 1) != null) {
+				y--;
+			} else if (x < (mapWidth - 1) && MapHandler.getNonFriendlyUnit(x + 1, y) != null) {
+				x++;
+			} else if (MapHandler.getNonFriendlyUnit(x, y + 1) != null) {
+				y++;
+			} else if (MapHandler.getNonFriendlyUnit(x - 1, y) != null) {
+				x--;
+			} else {
+				return; // cannot drop unit off anywhere
+			}
 		}
 
 		cursor.setPosition(x, y);
@@ -791,6 +797,13 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 			}
 		}
+	}
+
+	private void calculatePossibleAttackLocations(IndirectUnit indirectUnit) {
+		int x = indirectUnit.getX();
+		int y = indirectUnit.getY();
+		int minRange = indirectUnit.getMinRange();
+		int maxRange = indirectUnit.getMaxRange();
 	}
 
 	public void keyReleased(KeyEvent e) {
