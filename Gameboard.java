@@ -7,8 +7,12 @@ import javax.swing.JPanel;
 /**
  * TODO-list
  * - capting
+ * - creating units
+ * - removing dead units
+ * - fuel and ammo
  * - FOG
- * - attacking
+ * - show possible damage before firing
+ * - hero-abilities and powers
  * - removed recalculating route which also removes movement-control within accepted area (infantrys may take more than three steps)
  *   - infantry may go over two mountains (very bad)
  * - not crashing on recalculating route
