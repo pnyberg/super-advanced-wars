@@ -10,7 +10,7 @@ public class Mech extends Unit {
 		attackType = Unit.DIRECT_ATTACK;
 	}
 
-	public void paint(Graphics g, int tileSize) {
+	protected void paintUnit(Graphics g, int tileSize) {
 		int rocketAlignX = tileSize / 20 * 3;
 		int rocketAlignY = tileSize / 20 * 4;
 		int rocketWidth = tileSize / 4 * 3;

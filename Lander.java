@@ -73,7 +73,7 @@ public class Lander extends Unit {
 		return droppingOff;
 	}
 
-	public void paint(Graphics g, int tileSize) {
+	protected void paintUnit(Graphics g, int tileSize) {
 		int cx1 = x * tileSize + tileSize / 8;
 		int cy1 = y * tileSize + 3 * tileSize / 5;
 		int cx2 = x * tileSize + 7 * tileSize / 8;

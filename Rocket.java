@@ -11,7 +11,7 @@ public class Rocket extends IndirectUnit {
 		maximumRange = 5;
 	}
 
-	public void paint(Graphics g, int tileSize) {
+	protected void paintUnit(Graphics g, int tileSize) {
 		int cx1 = x * tileSize + 2 * tileSize / 3 + 1;
 		int cy1 = y * tileSize + tileSize / 10 - 1;
 		int cx2 = x * tileSize + 8 * tileSize / 10;

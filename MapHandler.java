@@ -194,6 +194,7 @@ public class MapHandler {
 		portrait.getHero(0).addTroop(new Lander(8, 5, Color.red));
 
 		portrait.getHero(1).addTroop(new Infantry(6, 6, Color.orange));
+		portrait.getHero(1).addTroop(new Infantry(5, 7, Color.orange));
 	}
 
 	public static void updatePortraitSideChoice(int cursorX, int cursorY) {

@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Font;
 
 public abstract class Unit {
 	// Movement-type
@@ -92,5 +93,31 @@ public abstract class Unit {
 		return attacking;
 	}
 
-	public abstract void paint(Graphics g, int tileSize);
+	public void paint(Graphics g, int tileSize) {
+		paintUnit(g, tileSize);
+		paintHP(g, tileSize);
+	}
+
+	protected abstract void paintUnit(Graphics g, int tileSize);
+
+	protected void paintHP(Graphics g, int tileSize) {
+		int showHP = (hp + 9) / 10;
+
+		if (showHP == 10) {
+			return;
+		}
+
+		int paintHPX = x * tileSize + (3 * tileSize) / 4;
+		int paintHPY = y * tileSize + (3 * tileSize) / 4;
+
+		Font currentFont = g.getFont();
+		g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
+
+		g.setColor(Color.black);
+		g.fillRect(paintHPX, paintHPY, tileSize / 4, tileSize / 4);
+		g.setColor(Color.white);
+		g.drawString("" + showHP + "", paintHPX + 3, paintHPY + tileSize / 8 + 4);
+
+		g.setFont(currentFont);
+	}
 }

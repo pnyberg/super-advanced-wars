@@ -54,7 +54,7 @@ public class DamageHandler {
 //		damageMatrix[INFANTRY][SUB][1] = -1;
 	}
 
-	public static void handleAttack(Unit attacking, Unit defending) {
+	public static void handleAttack(Unit attacking, Unit defending, boolean indirectAttack) {
 		HeroPortrait portrait = MapHandler.getHeroPortrait();
 		Hero attackingHero = portrait.getHeroFromUnit(attacking);
 		Hero defendingHero = portrait.getHeroFromUnit(defending); 
@@ -63,11 +63,16 @@ public class DamageHandler {
 		int defX = defending.getX();
 		int defY = defending.getY();
 
-		int attackingTerrainType = MapHandler.map(attX, attY);
 		int defendingTerrainType = MapHandler.map(defX, defY);
 
 		// deal damage from attacker to defender
 		damageCalculation(attacking, attackingHero, defending, defendingHero, defendingTerrainType);
+
+		if (indirectAttack) {
+			return;
+		}
+
+		int attackingTerrainType = MapHandler.map(attX, attY);
 		// deal damage from defender to attacker (counterattack)
 		damageCalculation(defending, defendingHero, attacking, attackingHero, attackingTerrainType);
 	}
@@ -88,11 +93,14 @@ public class DamageHandler {
 		int areaDefenceValue = MapHandler.getDefenceValue(defTerrainType);
 
 		int attackingAffect = attacker.getHP() / 10 * ((baseDamage * heroAttackValue) / 100 + rngNumber) / 10;
-		int defendingAffect = (200 - (heroDefenceValue + defTerrainType * defender.getHP())) / 100;
-		int damageValue = attackingAffect * defendingAffect;
+		int defendingAffect = (200 - (heroDefenceValue + defTerrainType * defender.getHP() / 10)) / 10;
+		int damageValue = attackingAffect * defendingAffect / 10;
+
+		defender.takeDamage(damageValue);
 
 		System.out.println("heroAttackValue: " + heroAttackValue + " baseDamage: " + baseDamage + " rng: " + rngNumber);
 		System.out.println("heroDefenceValue: " + heroDefenceValue + " areaDefenceValue: " + areaDefenceValue);
+		System.out.println("Attackaffect: " + attackingAffect + " Defendingaffect: " + defendingAffect);
 		System.out.println(damageValue);
 
 		/*

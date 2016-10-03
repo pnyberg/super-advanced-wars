@@ -10,7 +10,7 @@ public class Infantry extends Unit {
 		attackType = Unit.DIRECT_ATTACK;
 	}
 
-	public void paint(Graphics g, int tileSize) {
+	protected void paintUnit(Graphics g, int tileSize) {
 		int headSize = tileSize / 2 - 4;
 		int headAlignX = tileSize / 4 + 2;
 		int headAlignY = tileSize / 10;

@@ -11,7 +11,7 @@ public class Artillery extends IndirectUnit {
 		maximumRange = 3;
 	}
 
-	public void paint(Graphics g, int tileSize) {
+	protected void paintUnit(Graphics g, int tileSize) {
 		int cx1 = x * tileSize + 3 * tileSize / 4;
 		int cy1 = y * tileSize + tileSize / 8;
 

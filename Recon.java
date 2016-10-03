@@ -10,7 +10,7 @@ public class Recon extends Unit {
 		attackType = Unit.DIRECT_ATTACK;
 	}
 
-	public void paint(Graphics g, int tileSize) {
+	protected void paintUnit(Graphics g, int tileSize) {
 		int headSize = tileSize / 4 + 2;
 		int headAlignX = 2 * tileSize / 5;
 		int headAlignY = tileSize / 10 + 1;

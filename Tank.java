@@ -10,7 +10,7 @@ public class Tank extends Unit {
 		attackType = Unit.DIRECT_ATTACK;
 	}
 
-	public void paint(Graphics g, int tileSize) {
+	protected void paintUnit(Graphics g, int tileSize) {
 		int headSize = tileSize / 4 + 2;
 		int headAlignX = 3 * tileSize / 5 - 2;
 		int headAlignY = tileSize / 10 + 1;
