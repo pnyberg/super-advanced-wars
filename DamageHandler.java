@@ -72,6 +72,10 @@ public class DamageHandler {
 			return;
 		}
 
+		if (defending.getHP() <= 0) {
+			return;
+		}
+
 		int attackingTerrainType = MapHandler.map(attX, attY);
 		// deal damage from defender to attacker (counterattack)
 		damageCalculation(defending, defendingHero, attacking, attackingHero, attackingTerrainType);
@@ -98,29 +102,6 @@ public class DamageHandler {
 
 		defender.takeDamage(damageValue);
 
-		System.out.println("heroAttackValue: " + heroAttackValue + " baseDamage: " + baseDamage + " rng: " + rngNumber);
-		System.out.println("heroDefenceValue: " + heroDefenceValue + " areaDefenceValue: " + areaDefenceValue);
-		System.out.println("Attackaffect: " + attackingAffect + " Defendingaffect: " + defendingAffect);
 		System.out.println(damageValue);
-
-		/*
-D%=[B*ACO/100+R]*(AHP/10)*[(200-(DCO+DTR*DHP))/100]
-
-D = Actual damage expressed as a percentage
-
-B = Base damage (in damage chart)
-
-ACO = Attacking CO attack value (example:130 for Kanbei)
-
-R = Random number 0-9
-
-AHP = HP of attacker
-
-DCO = Defending CO defense value (example:80 for Grimm)
-
-DTR = Defending Terrain Stars (IE plain = 1, wood = 2)
-
-DHP = HP of defender	 
-		 */
 	}
 }
