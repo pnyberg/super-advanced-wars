@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 /**
  * TODO-list
  * - capting
+ * - enter classes for Factory, Port, Airport, HQ, ev Silo
  * - creating units
  * - fuel and ammo
  * - FOG
