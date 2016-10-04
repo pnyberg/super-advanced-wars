@@ -8,7 +8,6 @@ import javax.swing.JPanel;
  * TODO-list
  * - capting
  * - creating units
- * - removing dead units
  * - fuel and ammo
  * - FOG
  * - show possible damage before firing
