@@ -302,7 +302,7 @@ public class MapHandler {
 	}
 
 	public static int getDefenceValue(int terrainType) {
-		return 0;
+		return 0; // @TODO
 	}
 
 	public static HeroPortrait getHeroPortrait() {

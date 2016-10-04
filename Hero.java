@@ -33,6 +33,15 @@ public class Hero {
 		troops.add(unit);
 	}
 
+	public void removeTroop(Unit unit) {
+		for (int i = 0 ; i < troops.size() ; i++) {
+			if (troops.get(i) == unit) {
+				troops.remove(i);
+				break;
+			}
+		}
+	}
+
 	public int getAttackValue(int unitIndex) {
 		return 100; // @TODO default for now
 	}

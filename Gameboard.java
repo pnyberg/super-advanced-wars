@@ -143,6 +143,9 @@ public class Gameboard extends JPanel implements KeyListener {
 				int y = chosenUnit.getY();
 				cursor.setPosition(x, y);
 
+				removeUnitIfDead(defendingUnit);
+				removeUnitIfDead(chosenUnit);
+
 				chosenUnit = null;
 				RouteHandler.clearMovementMap();
 				RouteHandler.clearArrowPoints();
@@ -285,6 +288,15 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 
 		cursor.setPosition(x, y);
+	}
+
+	public void removeUnitIfDead(Unit unit) {
+		if (!unit.isDead()) {
+			return;
+		}
+
+		Hero unitsHero = MapHandler.getHeroPortrait().getHeroFromUnit(unit);
+		unitsHero.removeTroop(unit);
 	}
 
 	public void handleDroppingOff() {
