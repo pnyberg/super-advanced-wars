@@ -9,7 +9,7 @@ public class Airport extends Building {
 		super(x, y);		
 	}
 
-	public void paint(Graphics g) {
+	public void paint(Graphics g, int tileSize) {
 		int paintX = x * tileSize;
 		int paintY = y * tileSize;
 

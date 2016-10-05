@@ -26,14 +26,16 @@ public class MapHandler {
 	private static int[][] map, movementCostMatrix;
 	private static boolean[][] moveabilityCostMatrix;
 	private static HeroPortrait portrait;
+	private static ArrayList<Building> buildings;
 
 	public static void initMapHandler(int mapWidth, int mapHeight) {
+		portrait = new HeroPortrait(mapWidth, mapHeight);
+		initHeroes();
+
 		initMovementCostMatrix();
 		initMoveabilityMatrix();
 		initMap(mapWidth, mapHeight);
 
-		portrait = new HeroPortrait(mapWidth, mapHeight);
-		initHeroes();
 		initTroops();
 	}
 
@@ -136,7 +138,7 @@ public class MapHandler {
 		map[2][3] = PLAIN;
 		map[7][3] = MOUNTAIN;
 
-		map[2][4] = PLAIN;
+		map[2][4] = FACTORY;
 		map[4][4] = WOOD;
 		map[5][4] = WOOD;
 		map[7][4] = PLAIN;
@@ -174,6 +176,46 @@ public class MapHandler {
 		map[1][1] = REEF;
 		map[8][8] = REEF;
 		map[0][9] = REEF;
+
+		// buildings-part
+		initBuildings();
+
+		Building building = getBuilding(2, 4);
+		building.setOwnership(portrait.getCurrentHero());
+	}
+
+	private static void initBuildings() {
+		buildings = new ArrayList<Building>();
+
+		for (int x = 0 ; x < map.length ; x++) {
+			for (int y = 0 ; y < map[0].length ; y++) {
+				if (map[x][y] == CITY) {
+					buildings.add(new City(x, y));
+				} else if (map[x][y] == PORT) {
+					buildings.add(new Port(x, y));
+				} else if (map[x][y] == AIRPORT) {
+					buildings.add(new Airport(x, y));
+				} else if (map[x][y] == FACTORY) {
+					buildings.add(new Factory(x, y));
+//				} else if (map[x][y] == HQ) {
+//					buildings.add(new HQ(x, y));
+//				} else if (map[x][y] == SILO) {
+//					buildings.add(new Silo(x, y));
+				}
+			}
+		}
+	}
+
+	private static void setOwnerships(Hero[][] ownerMap) {
+		for (Building building : buildings) {
+			int x = building.getX();
+			int y = building.getY();
+			if (ownerMap[x][y] == null) {
+				continue;
+			}
+
+			building.setOwnership(ownerMap[x][y]);
+		}
 	}
 
 	private static void initHeroes() {
@@ -329,6 +371,16 @@ public class MapHandler {
 		return portrait.getCurrentHero().getTroopSize();
 	}
 
+	private static Building getBuilding(int x, int y) {
+		for (Building building : buildings) {
+			if (building.getX() == x && building.getY() == y) {
+				return building;
+			}
+		}
+
+		return null;
+	}
+
 	public static void paintArea(Graphics g, int x, int y, boolean rangeAble) {
 		int areaNumber = map[x][y];
 		boolean movementAble = RouteHandler.movementMap(x, y);
@@ -363,8 +415,6 @@ public class MapHandler {
 			} else {
 				g.setColor(Color.blue);
 			}
-		} else if (areaNumber == CITY) {
-			g.setColor(Color.white);
 		} else if (areaNumber == REEF) {
 			if (movementAble) {
 				g.setColor(new Color(30,144,255)); // lighter blue
@@ -379,6 +429,12 @@ public class MapHandler {
 			}
 		}
 
+		if (getBuilding(x, y) != null && !rangeAble) {
+			Building building = getBuilding(x, y);
+			building.paint(g, tileSize);
+			return;
+		}
+
 		int paintX = x * tileSize;
 		int paintY = y * tileSize;
 
@@ -386,10 +442,7 @@ public class MapHandler {
 		g.setColor(Color.black);
 		g.drawRect(paintX, paintY, tileSize, tileSize);
 
-		if (areaNumber == CITY && !rangeAble) {
-			g.drawLine(paintX, paintY, paintX + tileSize, paintY + tileSize);
-			g.drawLine(paintX, paintY + tileSize, paintX + tileSize, paintY);
-		} else if (areaNumber == REEF && !rangeAble) {
+		if (areaNumber == REEF && !rangeAble) {
 			g.fillRect(paintX + tileSize / 4, paintY + tileSize / 4, tileSize / 4, tileSize / 4);
 			g.fillRect(paintX + 5 * tileSize / 8, paintY + 5 * tileSize / 8, tileSize / 4, tileSize / 4);
 		}

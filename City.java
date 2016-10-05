@@ -2,7 +2,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class City extends Building {
-	public void paint(Graphics g) {
+	public City(int x, int y) {
+		super(x, y);		
+	}
+
+	public void paint(Graphics g, int tileSize) {
 		int paintX = x * tileSize;
 		int paintY = y * tileSize;
 

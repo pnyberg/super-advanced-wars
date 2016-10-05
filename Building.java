@@ -7,7 +7,7 @@ public abstract class Building {
 	protected int x, y, captingValue;
 
 	public static void init(int income) {
-		this.income = income;
+		Building.income = income;
 	}
 
 	public Building(int x, int y) {
@@ -47,5 +47,5 @@ public abstract class Building {
 		return owner;
 	}
 
-	public abstract void paint(Graphics g);
+	public abstract void paint(Graphics g, int tileSize);
 }
