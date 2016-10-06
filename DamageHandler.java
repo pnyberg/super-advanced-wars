@@ -1,3 +1,5 @@
+import units.*;
+
 public class DamageHandler {
 	private static int[][][] damageMatrix;
 	private static final int number = Unit.numberOfUnitTypes;
@@ -85,7 +87,7 @@ public class DamageHandler {
 	private static void damageCalculation(Unit attacker, Hero attHero, Unit defender, Hero defHero, int defTerrainType) {
 		// deal damage from A to B
 
-		int attType = 0; // = attacker.getType();
+		int attType = 0; // = attacker.getType(); @TODO
 		int defType = 0; // = defender.getType();
 
 		int weaponIndex = 1; // 0 eller 1

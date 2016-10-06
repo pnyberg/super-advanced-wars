@@ -1,7 +1,8 @@
+import units.*;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
-
 /**
  * Handles the map
  * - contains movementcost and movementability (should perhaps be put in RouteHandler?)
