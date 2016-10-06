@@ -16,6 +16,8 @@ import javax.swing.JPanel;
  * - removed recalculating route which also removes movement-control within accepted area (infantrys may take more than three steps)
  *   - infantry may go over two mountains (very bad)
  * - not crashing on recalculating route
+ * - fix battle-simulations (not counterattack for indirect etc)
+ * - fix join mechanic 
  *
  * @TODO: substitute ArrayList with HashMap for better performance
  */
@@ -28,8 +30,10 @@ public class Gameboard extends JPanel implements KeyListener {
 
 	private MapMenu mapMenu;
 	private UnitMenu unitMenu;
+	private BuildingMenu buildingMenu;
 
 	private Unit chosenUnit, rangeUnit;
+	private Building selectedBuilding;
 
 	public Gameboard(int width, int height) {
 		mapWidth = width;
@@ -41,6 +45,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		mapMenu = new MapMenu(MapHandler.tileSize);
 		unitMenu = new UnitMenu(MapHandler.tileSize);
+		buildingMenu = new BuildingMenu(MapHandler.tileSize);
 
 		chosenUnit = null;
 		rangeUnit = null;
@@ -59,7 +64,8 @@ public class Gameboard extends JPanel implements KeyListener {
 		int cursorX = cursor.getX();
 		int cursorY = cursor.getY();
 
-		boolean noMenuVisible = !mapMenu.isVisible() && !unitMenu.isVisible();
+		boolean menuVisible = mapMenu.isVisible() || unitMenu.isVisible() || buildingMenu.isVisible();
+		boolean unitSelected = chosenUnit != null || rangeUnit != null;
 
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
 			if (!unitIsntDroppingOff()) {
@@ -75,13 +81,15 @@ public class Gameboard extends JPanel implements KeyListener {
 				} else {
 					moveFiringCursorCounterclockwise();
 				}
-			} else if (cursorY > 0 && noMenuVisible) {
+			} else if (cursorY > 0 && !menuVisible) {
 				RouteHandler.addArrowPoint(cursorX, cursorY - 1, chosenUnit);
 				cursor.moveUp();
 			} else if (mapMenu.isVisible()) {
 				mapMenu.moveArrowUp();
 			} else if (unitMenu.isVisible()) {
 				unitMenu.moveArrowUp();
+			} else if (buildingMenu.isVisible()) {
+				buildingMenu.moveArrowUp();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			if (!unitIsntDroppingOff()) {
@@ -97,21 +105,23 @@ public class Gameboard extends JPanel implements KeyListener {
 				} else {
 					moveFiringCursorClockwise();
 				}
-			} else if (cursorY < (mapHeight - 1) && noMenuVisible) {
+			} else if (cursorY < (mapHeight - 1) && !menuVisible) {
 				RouteHandler.addArrowPoint(cursorX, cursorY + 1, chosenUnit);
 				cursor.moveDown();
 			} else if (mapMenu.isVisible()) {
 				mapMenu.moveArrowDown();
 			} else if (unitMenu.isVisible()) {
 				unitMenu.moveArrowDown();
+			} else if (buildingMenu.isVisible()) {
+				buildingMenu.moveArrowDown();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			if (cursorX > 0 && noMenuVisible && unitIsntDroppingOff() && !unitWantToFire()) {
+			if (cursorX > 0 && !menuVisible && unitIsntDroppingOff() && !unitWantToFire()) {
 				RouteHandler.addArrowPoint(cursorX - 1, cursorY, chosenUnit);
 				cursor.moveLeft();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (cursorX < (mapWidth - 1) && noMenuVisible && unitIsntDroppingOff() && !unitWantToFire()) {
+			if (cursorX < (mapWidth - 1) && !menuVisible && unitIsntDroppingOff() && !unitWantToFire()) {
 				RouteHandler.addArrowPoint(cursorX + 1, cursorY, chosenUnit);
 				cursor.moveRight();
 			}
@@ -183,7 +193,19 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 
 				unitMenu.closeMenu();
-			} else if (chosenUnit == null && rangeUnit == null) {
+			} else if (buildingMenu.isVisible()) {
+				HeroPortrait portrait = MapHandler.getHeroPortrait();
+				buildingMenu.buySelectedTroop(portrait);
+				buildingMenu.closeMenu();
+			} else if (chosenUnit != null && RouteHandler.movementMap(cursorX, cursorY) && rangeUnit == null) {
+				handleOpenUnitMenu(cursorX, cursorY);
+			} else if (!unitSelected && !unitSelectable(cursorX, cursorY)) {
+				selectedBuilding = MapHandler.getBuilding(cursorX, cursorY);
+
+				if (selectedBuilding != null) {
+					handleOpenBuildingMenu(cursorX, cursorY);
+				}
+			} else if (!unitSelected) {
 				chosenUnit = MapHandler.getFriendlyUnit(cursorX, cursorY);
 
 				if (chosenUnit != null) {
@@ -191,8 +213,6 @@ public class Gameboard extends JPanel implements KeyListener {
 
 					RouteHandler.initArrowPoint(chosenUnit.getX(), chosenUnit.getY());
 				}
-			} else if (RouteHandler.movementMap(cursorX, cursorY) && rangeUnit == null) {
-				handleOpenUnitMenu(cursorX, cursorY);
 			}
 		}
 
@@ -218,6 +238,10 @@ public class Gameboard extends JPanel implements KeyListener {
 				handleOpenUnitMenu(x, y);
 
 				chosenUnit.regulateAttack(false);
+			} else if (mapMenu.isVisible()) {
+				mapMenu.closeMenu();
+			} else if (buildingMenu.isVisible()) {
+				buildingMenu.closeMenu();
 			} else if (chosenUnit != null) {
 				// the start-position of the unit before movement
 				Point unitStartPoint = RouteHandler.getArrowPoint(0);
@@ -234,8 +258,6 @@ public class Gameboard extends JPanel implements KeyListener {
 					RouteHandler.clearMovementMap();
 					RouteHandler.clearArrowPoints();
 				}
-			} else if (mapMenu.isVisible()) {
-				mapMenu.closeMenu();
 			} else {
 				rangeUnit = getAnyUnit(cursorX, cursorY);
 
@@ -606,6 +628,10 @@ public class Gameboard extends JPanel implements KeyListener {
 		return !MapHandler.areaOccupiedByAny(unit, testX, testY) && MapHandler.allowedMovementPosition(testX, testY, unit.getMovementType());
 	}
 
+	private boolean unitSelectable(int x, int y) {
+		return getAnyUnit(x, y) != null;
+	}
+
 	private Unit getAnyUnit(int x, int y) {
 		return MapHandler.getAnyUnit(x, y);
 	}
@@ -658,6 +684,12 @@ public class Gameboard extends JPanel implements KeyListener {
 
 			unitMenu.openMenu(cursorX, cursorY);
 			chosenUnit.moveTo(cursorX, cursorY);
+		}
+	}
+
+	private void handleOpenBuildingMenu(int cursorX, int cursorY) {
+		if (selectedBuilding instanceof Factory) {
+			buildingMenu.openMenu(cursorX, cursorY);
 		}
 	}
 
@@ -901,6 +933,8 @@ public class Gameboard extends JPanel implements KeyListener {
 			mapMenu.paint(g);
 		} else if (unitMenu.isVisible()) {
 			unitMenu.paint(g);
+		} else if (buildingMenu.isVisible()) {
+			buildingMenu.paint(g);
 		} else {
 			cursor.paint(g);
 		}

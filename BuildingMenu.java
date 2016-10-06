@@ -25,6 +25,8 @@ public class BuildingMenu extends Menu {
 		Hero currentHero = portrait.getCurrentHero();
 		int cash = currentHero.getCash();
 
+		currentHero.manageCash(-items[menuIndex].getPrice());
+
 		Unit unit = createUnitFromIndex(currentHero);
 		currentHero.addTroop(unit);
 	}

@@ -33,9 +33,7 @@ public class MapMenu extends Menu {
 	}
 
 	public void paint(Graphics g) {
-		int menuWidth = (tileSize * 5 / 3);
-		int menuHeight = 10 + numberOfRows * menuRowHeight;
-		int arrowWidth = tileSize / 2;
+		menuHeight = 10 + numberOfRows * menuRowHeight;
 
 		int menuX = x * tileSize + tileSize / 2;
 		int menuY = y * tileSize + tileSize / 2;

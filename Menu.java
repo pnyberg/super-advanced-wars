@@ -4,6 +4,7 @@ import java.awt.Graphics;
 public abstract class Menu {
 	protected boolean visible;
 	protected int x, y, menuIndex, numberOfRows, tileSize;
+	protected int menuWidth, menuHeight;
 
 	protected final int menuRowHeight = 15;
 	protected final int xAlign = 4;
@@ -16,12 +17,16 @@ public abstract class Menu {
 		this.tileSize = tileSize;
 		visible = false;
 		numberOfRows = 0;
+
+		menuWidth = (tileSize * 5 / 3);
+		menuHeight = 0; // is set when it's used
 	}
 
 	public void openMenu(int x, int y) {
 		this.x = x;
 		this.y = y;
 		visible = true;
+		updateNumberOfRows();
 	}
 
 	public void closeMenu() {
@@ -66,10 +71,6 @@ public abstract class Menu {
 	protected void paintMenuBackground(Graphics g) {
 		updateNumberOfRows();
 
-		int menuWidth = (tileSize * 5 / 3);
-		int menuHeight = 10 + numberOfRows * menuRowHeight;
-		int arrowWidth = tileSize / 2;
-
 		int menuX = x * tileSize + tileSize / 2;
 		int menuY = y * tileSize + tileSize / 2;
 
@@ -83,8 +84,6 @@ public abstract class Menu {
 	}
 
 	protected void paintArrow(Graphics g) {
-		int menuWidth = (tileSize * 5 / 3);
-		int menuHeight = 10 + numberOfRows * menuRowHeight;
 		int arrowWidth = tileSize / 2;
 
 		int menuX = x * tileSize + tileSize / 2;

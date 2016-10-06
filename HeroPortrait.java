@@ -82,6 +82,10 @@ public class HeroPortrait {
 	private void paintLeftSide(Graphics g) {
 		int tileSize = MapHandler.tileSize;
 
+		int borderThickness = 2;
+		int cashBarHeight = 25;
+		int cashAlign = 8 * (String.valueOf(currentHero.getCash()).length() - 1);
+
 		// remove and make the array with newlines after every element
 		int ox1 = 0;
 		int ox2 = tileSize * 4;
@@ -102,9 +106,6 @@ public class HeroPortrait {
 		int[] outerBorderX = {ox1, ox2, ox3, ox4, ox5, ox6, ox7};
 		int[] outerBorderY = {oy1, oy2, oy3, oy4, oy5, oy6, oy7};
 
-		int borderThickness = 2;
-		int cashBarHeight = 25;
-
 		int ix1 = ox1 + borderThickness;
 		int ix2 = ox2 - borderThickness;
 		int ix3 = ox3 - borderThickness;
@@ -130,13 +131,17 @@ public class HeroPortrait {
 		g.fillPolygon(innerBorderX, innerBorderY, 7);
 
 		g.drawString("$:", ox1 + 2, oy1 + 15);
-		g.drawString("" + currentHero.getCash() + "", ox2 - 20, oy1 + 15);
+		g.drawString("" + currentHero.getCash() + "", ox2 - 20 - cashAlign, oy1 + 15);
 
 		currentHero.paint(g, 0, 0);
 	}
 
 	private void paintRightSide(Graphics g) {
 		int tileSize = MapHandler.tileSize;
+
+		int borderThickness = 2;
+		int cashBarHeight = 25;
+		int cashAlign = 8 * (String.valueOf(currentHero.getCash()).length() - 1);
 
 		int ox1 = mapWidth * tileSize - (tileSize * 4);
 		int ox2 = mapWidth * tileSize;
@@ -157,9 +162,6 @@ public class HeroPortrait {
 		int[] outerBorderX = {ox1, ox2, ox3, ox4, ox5, ox6, ox7};
 		int[] outerBorderY = {oy1, oy2, oy3, oy4, oy5, oy6, oy7};
 
-		int borderThickness = 2;
-		int cashBarHeight = 25;
-
 		int ix1 = ox1 + borderThickness;
 		int ix2 = ox2 - borderThickness;
 		int ix3 = ox3 - borderThickness;
@@ -185,7 +187,7 @@ public class HeroPortrait {
 		g.fillPolygon(innerBorderX, innerBorderY, 7);
 
 		g.drawString("$:", ox1 + 2, oy1 + 15);
-		g.drawString("" + currentHero.getCash() + "", ox2 - 20, oy1 + 15);
+		g.drawString("" + currentHero.getCash() + "", ox2 - 20 - cashAlign, oy1 + 15);
 
 		currentHero.paint(g, 0, 0);
 	}

@@ -225,18 +225,21 @@ public class MapHandler {
 	}
 
 	private static void initTroops() {
-		portrait.getHero(0).addTroop(new Infantry(3, 6, Color.red));
-		portrait.getHero(0).addTroop(new Mech(3, 3, Color.red));
-		portrait.getHero(0).addTroop(new Tank(4, 4, Color.red));
-		portrait.getHero(0).addTroop(new Recon(5, 5, Color.red));
-		portrait.getHero(0).addTroop(new Artillery(5, 2, Color.red));
-		portrait.getHero(0).addTroop(new Rocket(2, 5, Color.red));
-		portrait.getHero(0).addTroop(new Battleship(1, 3, Color.red));
-		portrait.getHero(0).addTroop(new APC(3, 2, Color.red));
-		portrait.getHero(0).addTroop(new Lander(8, 5, Color.red));
+		Hero hero1 = portrait.getHero(0);
+		Hero hero2 = portrait.getHero(1);
 
-		portrait.getHero(1).addTroop(new Infantry(6, 6, Color.orange));
-		portrait.getHero(1).addTroop(new Infantry(5, 7, Color.orange));
+		hero1.addTroop(new Infantry(3, 6, hero1.getColor()));
+		hero1.addTroop(new Mech(3, 3, hero1.getColor()));
+		hero1.addTroop(new Tank(4, 4, hero1.getColor()));
+		hero1.addTroop(new Recon(5, 5, hero1.getColor()));
+		hero1.addTroop(new Artillery(5, 2, hero1.getColor()));
+		hero1.addTroop(new Rocket(2, 5, hero1.getColor()));
+		hero1.addTroop(new Battleship(1, 3, hero1.getColor()));
+		hero1.addTroop(new APC(3, 2, hero1.getColor()));
+		hero1.addTroop(new Lander(8, 5, hero1.getColor()));
+
+		hero2.addTroop(new Infantry(6, 6, hero2.getColor()));
+		hero2.addTroop(new Infantry(5, 7, hero2.getColor()));
 	}
 
 	public static void updatePortraitSideChoice(int cursorX, int cursorY) {
@@ -371,7 +374,7 @@ public class MapHandler {
 		return portrait.getCurrentHero().getTroopSize();
 	}
 
-	private static Building getBuilding(int x, int y) {
+	public static Building getBuilding(int x, int y) {
 		for (Building building : buildings) {
 			if (building.getX() == x && building.getY() == y) {
 				return building;

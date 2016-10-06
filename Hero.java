@@ -21,12 +21,16 @@ public class Hero {
 		if (heroIndex == 0) {
 			powerAmount = 3;
 			superPowerAmount = 6;
-			color = Color.magenta;
+			color = Color.red; // magenta
 		} else if (heroIndex == 1) {
 			powerAmount = 4;
 			superPowerAmount = 7;
 			color = Color.orange;
 		}
+	}
+
+	public void manageCash(int cashDiff) {
+		cash += cashDiff;
 	}
 
 	public void addTroop(Unit unit) {
