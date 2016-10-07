@@ -56,7 +56,7 @@ public class DamageHandler {
 //		damageMatrix[INFANTRY][SUB][1] = -1;
 	}
 
-	public static void handleAttack(Unit attacking, Unit defending, boolean indirectAttack) {
+	public static void handleAttack(Unit attacking, Unit defending) {
 		HeroPortrait portrait = MapHandler.getHeroPortrait();
 		Hero attackingHero = portrait.getHeroFromUnit(attacking);
 		Hero defendingHero = portrait.getHeroFromUnit(defending); 
@@ -70,11 +70,11 @@ public class DamageHandler {
 		// deal damage from attacker to defender
 		damageCalculation(attacking, attackingHero, defending, defendingHero, defendingTerrainType);
 
-		if (indirectAttack) {
+		if (defending.getHP() <= 0) {
 			return;
 		}
 
-		if (defending.getHP() <= 0) {
+		if (attacking instanceof IndirectUnit || defending instanceof IndirectUnit) {
 			return;
 		}
 

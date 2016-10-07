@@ -149,7 +149,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 			} else if (unitWantToFire()) {
 				Unit defendingUnit = MapHandler.getNonFriendlyUnit(cursorX, cursorY);
-				DamageHandler.handleAttack(chosenUnit, defendingUnit, chosenUnit instanceof IndirectUnit);
+				DamageHandler.handleAttack(chosenUnit, defendingUnit);
 				chosenUnit.regulateAttack(false);
 
 				int x = chosenUnit.getX();
@@ -167,8 +167,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 			} else if (mapMenu.isVisible()) {
 				if (mapMenu.atEndRow()) {
-					MapHandler.changeHero();
-					mapMenu.closeMenu();
+					endTurn();
 				}
 			} else if (unitMenu.isVisible()) {
 				if (unitMenu.atUnitRow()) {
@@ -896,6 +895,16 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 			}
 		}
+	}
+
+	public void endTurn() {
+		// close current turn
+		MapHandler.changeHero();
+		mapMenu.closeMenu();
+
+		// start new turn
+		MapHandler.updateCash();
+		MapHandler.resetActiveVariable();
 	}
 
 	public void keyReleased(KeyEvent e) {

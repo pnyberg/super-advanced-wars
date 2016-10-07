@@ -37,6 +37,8 @@ public class MapHandler {
 		initMoveabilityMatrix();
 		initMap(mapWidth, mapHeight);
 
+		Building.init(1000);
+
 		initTroops();
 	}
 
@@ -249,6 +251,25 @@ public class MapHandler {
 
 	public static void changeHero() {
 		portrait.nextHero();
+	}
+
+	public static void updateCash() {
+		int numberOfCashgivers = 0;
+		Hero hero = portrait.getCurrentHero();
+
+		for (Building building : buildings) {
+			if (building.getOwner() == hero) {
+				numberOfCashgivers++;
+			}
+		}
+
+		int newCash = Building.getIncome() * numberOfCashgivers;
+		hero.manageCash(newCash);
+		System.out.println("Cashing in " + numberOfCashgivers);
+	}
+
+	public static void resetActiveVariable() {
+
 	}
 
 	public static Unit getAnyUnit(int x, int y) {
