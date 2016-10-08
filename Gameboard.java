@@ -204,7 +204,7 @@ public class Gameboard extends JPanel implements KeyListener {
 			} else if (chosenUnit != null && RouteHandler.movementMap(cursorX, cursorY) && rangeUnit == null) {
 				handleOpenUnitMenu(cursorX, cursorY);
 			} else if (!unitSelected && !unitSelectable(cursorX, cursorY)) {
-				selectedBuilding = MapHandler.getBuilding(cursorX, cursorY);
+				selectedBuilding = MapHandler.getFriendlyBuilding(cursorX, cursorY);
 
 				if (selectedBuilding != null) {
 					handleOpenBuildingMenu(cursorX, cursorY);

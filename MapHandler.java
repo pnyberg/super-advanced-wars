@@ -406,6 +406,16 @@ public class MapHandler {
 		return null;
 	}
 
+	public static Building getFriendlyBuilding(int x, int y) {
+		Building building = getBuilding(x, y);
+
+		if (building != null && building.getOwner() == portrait.getCurrentHero()) {
+			return building;
+		}
+
+		return null;
+	}
+
 	public static void paintArea(Graphics g, int x, int y, boolean rangeAble) {
 		int areaNumber = map[x][y];
 		boolean movementAble = RouteHandler.movementMap(x, y);
