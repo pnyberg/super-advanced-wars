@@ -1,8 +1,8 @@
-public class FactoryItem {
+public class BuildingItem {
 	private String name;
 	private int price;
 
-	public FactoryItem(String name, int price) {
+	public BuildingItem(String name, int price) {
 		this.name = name;
 		this.price = price;
 	}
