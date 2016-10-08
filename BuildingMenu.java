@@ -5,13 +5,22 @@ import java.awt.Graphics;
 public class BuildingMenu extends Menu {
 	private final int priceAlign = 70;
 
-	private final FactoryItem[] items = {	new FactoryItem("Infantry", 1000),
-											new FactoryItem("Mech", 3000),
-											new FactoryItem("Recon", 4000),
-											new FactoryItem("Tank", 7000),
-											new FactoryItem("Artillery", 6000)/*,
-											new FactoryItem("Missiles", 12000)*/
-										};
+	private final BuildingItem[] factoryItems = {	
+									new BuildingItem("Infantry", 1000),
+									new BuildingItem("Mech", 3000),
+									new BuildingItem("Recon", 4000),
+									new BuildingItem("Tank", 7000),
+									new BuildingItem("Artillery", 6000)/*,
+									new FactoryItem("Missiles", 12000)*/
+								};
+	private final BuildingItem[] portItems = {	
+									new BuildingItem("Lander", 12000),
+									new BuildingItem("Bship", 28000),
+								};
+
+	private final BuildingItem[] airportItems = {	
+//									new BuildingItem("Bship", 28000),
+								};
 
 	public BuildingMenu(int tileSize) {
 		super(tileSize);
@@ -20,21 +29,21 @@ public class BuildingMenu extends Menu {
 	}
 
 	protected void updateNumberOfRows() {
-		numberOfRows = items.length;
+		numberOfRows = factoryItems.length;
 	}
 
 	public void buySelectedTroop(HeroPortrait portrait) {
 		Hero currentHero = portrait.getCurrentHero();
 		int cash = currentHero.getCash();
 
-		currentHero.manageCash(-items[menuIndex].getPrice());
+		currentHero.manageCash(-factoryItems[menuIndex].getPrice());
 
 		Unit unit = createUnitFromIndex(currentHero);
 		currentHero.addTroop(unit);
 	}
 
 	private Unit createUnitFromIndex(Hero hero) {
-		String unitName = items[menuIndex].getName();
+		String unitName = factoryItems[menuIndex].getName();
 
 		if (unitName.equals("Infantry")) {
 			return new Infantry(x, y, hero.getColor());
@@ -63,8 +72,8 @@ public class BuildingMenu extends Menu {
 
 		int rowHelpIndex = 3;
 
-		for (int k = 0 ; k < items.length ; k++) {
-			paintMenuItem(g, menuY + yAlign + menuRowHeight * (k + 1), items[k].getName(), items[k].getPrice());
+		for (int k = 0 ; k < factoryItems.length ; k++) {
+			paintMenuItem(g, menuY + yAlign + menuRowHeight * (k + 1), factoryItems[k].getName(), factoryItems[k].getPrice());
 		}
 
 		paintArrow(g);
@@ -77,7 +86,5 @@ public class BuildingMenu extends Menu {
 
 		g.drawString(text, menuX + xAlign, y);
 		g.drawString("" + price + "", menuX + xAlign + priceAlign + extraPriceAlign, y);
-
-//		g.drawString("End turn", menuX + xAlign, menuY + yAlign + menuRowHeight * (rowHelpIndex + 2));
 	}
 }

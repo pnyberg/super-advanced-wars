@@ -172,11 +172,14 @@ public class MapHandler {
 			}
 		}
 
+		map[9][0] = REEF;
+		map[1][1] = REEF;
+
 		map[8][4] = SHORE;
 		map[8][5] = SHORE;
 
-		map[9][0] = REEF;
-		map[1][1] = REEF;
+		map[4][8] = PORT;
+
 		map[8][8] = REEF;
 		map[0][9] = REEF;
 
@@ -184,6 +187,8 @@ public class MapHandler {
 		initBuildings();
 
 		Building building = getBuilding(2, 4);
+		building.setOwnership(portrait.getCurrentHero());
+		building = getBuilding(4, 8);
 		building.setOwnership(portrait.getCurrentHero());
 	}
 
