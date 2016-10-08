@@ -59,6 +59,8 @@ public class Gameboard extends JPanel implements KeyListener {
 		RouteHandler.initMovementMap(mapWidth, mapHeight);
 		DamageHandler.init();
 
+		startTurnActions();
+
 		MapHandler.updatePortraitSideChoice(cursor.getX(), cursor.getY());
 		repaint();
 	}
@@ -897,14 +899,19 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 	}
 
-	public void endTurn() {
-		// close current turn
-		MapHandler.changeHero();
-		mapMenu.closeMenu();
+	private void endTurn() {
+		endTurnActions();
+		startTurnActions();
+	}
 
-		// start new turn
-		MapHandler.updateCash();
+	private void endTurnActions() {
+		mapMenu.closeMenu();
 		MapHandler.resetActiveVariable();
+		MapHandler.changeHero();
+	}
+
+	private void startTurnActions() {
+		MapHandler.updateCash();
 	}
 
 	public void keyReleased(KeyEvent e) {
