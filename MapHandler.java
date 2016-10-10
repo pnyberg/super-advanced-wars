@@ -270,11 +270,10 @@ public class MapHandler {
 
 		int newCash = Building.getIncome() * numberOfCashgivers;
 		hero.manageCash(newCash);
-		System.out.println("Cashing in " + numberOfCashgivers);
 	}
 
 	public static void resetActiveVariable() {
-
+		// @TODO
 	}
 
 	public static Unit getAnyUnit(int x, int y) {

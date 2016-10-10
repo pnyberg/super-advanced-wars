@@ -692,9 +692,11 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private void handleOpenBuildingMenu(int cursorX, int cursorY) {
-		if (selectedBuilding instanceof Factory) {
-			buildingMenu.openMenu(cursorX, cursorY);
+		if (selectedBuilding instanceof City/* || selectedBuilding instanceof HQ*/) {
+			return;
 		}
+
+		buildingMenu.openMenu(cursorX, cursorY);
 	}
 
 	private boolean unitEntryingContainerUnit(Unit unit, int x, int y) {

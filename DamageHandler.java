@@ -104,6 +104,6 @@ public class DamageHandler {
 
 		defender.takeDamage(damageValue);
 
-		System.out.println(damageValue);
+		System.out.println("Dammagevalue: " + damageValue);
 	}
 }
