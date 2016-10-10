@@ -38,7 +38,11 @@ public class Mech extends Unit {
 		g.drawRect(x * tileSize + rocketAlignX, y * tileSize + rocketAlignY, rocketWidth, rocketHeight);
 
 		// head
-		g.setColor(color);
+		if (active) {
+			g.setColor(color);
+		} else {
+			g.setColor(restingColor);
+		}
 		g.fillOval(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
 
 		g.setColor(Color.black);

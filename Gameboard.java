@@ -139,12 +139,15 @@ public class Gameboard extends JPanel implements KeyListener {
 						((APC)chosenUnit).regulateDroppingOff(false);
 						Unit exitingUnit = ((APC)chosenUnit).removeUnit();
 						exitingUnit.moveTo(cursor.getX(), cursor.getY());
+						exitingUnit.regulateActive(false);
 					} else if (chosenUnit instanceof Lander) {
 						((Lander)chosenUnit).regulateDroppingOff(false);
 						Unit exitingUnit = ((Lander)chosenUnit).removeChosenUnit();
 						exitingUnit.moveTo(cursor.getX(), cursor.getY());
+						exitingUnit.regulateActive(false);
 					}
 
+					chosenUnit.regulateActive(false);
 					chosenUnit = null;
 					RouteHandler.clearMovementMap();
 					RouteHandler.clearArrowPoints();
@@ -161,6 +164,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				removeUnitIfDead(defendingUnit);
 				removeUnitIfDead(chosenUnit);
 
+				chosenUnit.regulateActive(false);
 				chosenUnit = null;
 				RouteHandler.clearMovementMap();
 				RouteHandler.clearArrowPoints();
@@ -191,6 +195,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 
 				if (unitIsntDroppingOff() && !unitWantToFire()) {
+					chosenUnit.regulateActive(false);
 					chosenUnit = null;
 					RouteHandler.clearMovementMap();
 					RouteHandler.clearArrowPoints();

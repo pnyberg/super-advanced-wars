@@ -35,14 +35,22 @@ public class Artillery extends IndirectUnit {
 		int[] cannonY = {cy1, cy2, cy3, cy4};
 		int npoints = 4;
 
-		g.setColor(color);
+		if (active) {
+			g.setColor(color);
+		} else {
+			g.setColor(restingColor);
+		}
 		g.fillPolygon(cannonX, cannonY, npoints);
 
 		g.setColor(Color.black);
 		g.drawPolygon(cannonX, cannonY, npoints);
 
 		// body
-		g.setColor(color);
+		if (active) {
+			g.setColor(color);
+		} else {
+			g.setColor(restingColor);
+		}
 		g.fillRect(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 
 		g.setColor(Color.black);

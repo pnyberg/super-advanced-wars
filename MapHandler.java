@@ -248,6 +248,12 @@ public class MapHandler {
 
 		hero2.addTroop(new Infantry(6, 6, hero2.getColor()));
 		hero2.addTroop(new Infantry(5, 7, hero2.getColor()));
+
+		for (int h = 0 ; h < 2 ; h++) {
+			for (int k = 0 ; k < portrait.getHero(h).getTroopSize() ; k++) {
+				getUnitFromHero(h, k).regulateActive(true);
+			}
+		}
 	}
 
 	public static void updatePortraitSideChoice(int cursorX, int cursorY) {
@@ -273,7 +279,10 @@ public class MapHandler {
 	}
 
 	public static void resetActiveVariable() {
-		// @TODO
+		Hero hero = portrait.getCurrentHero();
+		for (int k = 0 ; k < hero.getTroopSize() ; k++) {
+			hero.getTroop(k).regulateActive(true);
+		}
 	}
 
 	public static Unit getAnyUnit(int x, int y) {

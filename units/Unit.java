@@ -21,8 +21,8 @@ public abstract class Unit {
 								INDIRECT_ATTACK = 2;
 
 	protected int x, y, hp;
-	protected boolean hidden, attacking;
-	protected Color color;
+	protected boolean hidden, attacking, active;
+	protected Color color, restingColor;
 
 	protected int movement;
 	protected int movementType;
@@ -32,10 +32,12 @@ public abstract class Unit {
 		this.x = x;
 		this.y = y;
 		this.color = color;
+		restingColor = color.darker();
 
 		hp = 100;
 		hidden = false;
 		attacking = false;
+		active = false;
 	}
 
 	public void moveTo(int x, int y) {
@@ -45,6 +47,10 @@ public abstract class Unit {
 
 	public void takeDamage(int damage) {
 		hp -= damage;
+	}
+
+	public void regulateActive(boolean active) {
+		this.active = active;
 	}
 
 	public void regulateHidden(boolean hidden) {
@@ -85,6 +91,10 @@ public abstract class Unit {
 
 	public boolean isDead() {
 		return hp <= 0;
+	}
+
+	public boolean isActive() {
+		return active;
 	}
 
 	public boolean isHidden() {

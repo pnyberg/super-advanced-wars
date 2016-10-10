@@ -38,21 +38,33 @@ public class Battleship extends IndirectUnit {
 		int[] cannonY = {cy1, cy2, cy3, cy4};
 		int npoints = 4;
 
-		g.setColor(color);
+		if (active) {
+			g.setColor(color);
+		} else {
+			g.setColor(restingColor);
+		}
 		g.fillPolygon(cannonX, cannonY, npoints);
 
 		g.setColor(Color.black);
 		g.drawPolygon(cannonX, cannonY, npoints);
 
 		// head
-		g.setColor(color);
+		if (active) {
+			g.setColor(color);
+		} else {
+			g.setColor(restingColor);
+		}
 		g.fillRect(x * tileSize + headAlignX, y * tileSize + headAlignY, headWidth, headHeight);
 
 		g.setColor(Color.black);
 		g.drawRect(x * tileSize + headAlignX, y * tileSize + headAlignY, headWidth, headHeight);
 
 		// cannon
-		g.setColor(color);
+		if (active) {
+			g.setColor(color);
+		} else {
+			g.setColor(restingColor);
+		}
 		g.fillRect(x * tileSize + cannonAlignX, y * tileSize + cannonAlignY, cannonWidth, cannonHeight);
 
 		g.setColor(Color.black);

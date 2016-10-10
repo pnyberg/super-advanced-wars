@@ -90,7 +90,11 @@ public class Lander extends Unit {
 		int[] cannonY = {cy1, cy2, cy3, cy4};
 		int npoints = 4;
 
-		g.setColor(color);
+		if (active) {
+			g.setColor(color);
+		} else {
+			g.setColor(restingColor);
+		}
 		g.fillPolygon(cannonX, cannonY, npoints);
 
 		g.setColor(Color.black);

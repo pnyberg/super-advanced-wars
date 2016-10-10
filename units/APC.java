@@ -64,7 +64,11 @@ public class APC extends Unit {
 		int bodyAlignY = tileSize / 5 + 4;
 
 		// body
-		g.setColor(color);
+		if (active) {
+			g.setColor(color);
+		} else {
+			g.setColor(restingColor);
+		}
 		g.fillRect(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 
 		g.setColor(Color.black);

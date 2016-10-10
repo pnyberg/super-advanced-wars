@@ -28,21 +28,33 @@ public class Tank extends Unit {
 		int bodyAlignY = headSize + headAlignY;
 
 		// head
-		g.setColor(color);
+		if (active) {
+			g.setColor(color);
+		} else {
+			g.setColor(restingColor);
+		}
 		g.fillRect(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
 
 		g.setColor(Color.black);
 		g.drawRect(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
 
 		// cannon
-		g.setColor(color);
+		if (active) {
+			g.setColor(color);
+		} else {
+			g.setColor(restingColor);
+		}
 		g.fillRect(x * tileSize + cannonAlignX, y * tileSize + cannonAlignY, cannonWidth, cannonHeight);
 
 		g.setColor(Color.black);
 		g.drawRect(x * tileSize + cannonAlignX, y * tileSize + cannonAlignY, cannonWidth, cannonHeight);
 
 		// body
-		g.setColor(color);
+		if (active) {
+			g.setColor(color);
+		} else {
+			g.setColor(restingColor);
+		}
 		g.fillRect(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 
 		g.setColor(Color.black);

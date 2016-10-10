@@ -2,6 +2,9 @@ import units.*;
 
 import java.awt.Graphics;
 
+/**
+ * Add so that item's can't be clicked if they cost to much
+ */
 public class BuildingMenu extends Menu {
 	private final int priceAlign = 70;
 	private boolean factory, port, airport;

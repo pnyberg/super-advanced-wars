@@ -26,7 +26,11 @@ public class Infantry extends Unit {
 		int leftLegAlign = tileSize / 4 + 1;
 		int rightLegEnd = 3 * tileSize / 4 - 1;
 
-		g.setColor(color);
+		if (active) {
+			g.setColor(color);
+		} else {
+			g.setColor(restingColor);
+		}
 
 		// head
 		g.fillOval(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
