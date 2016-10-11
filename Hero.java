@@ -33,7 +33,6 @@ public class Hero {
 
 	public void manageCash(int cashDiff) {
 		cash += cashDiff;
-		System.out.println(cash);
 	}
 
 	public void addTroop(Unit unit) {

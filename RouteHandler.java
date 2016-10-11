@@ -31,20 +31,24 @@ public class RouteHandler {
 		int movementSteps = chosenUnit.getMovement();
 		int movementType = chosenUnit.getMovementType();
 
+		Hero hero = MapHandler.getHeroPortrait().getHeroFromUnit(chosenUnit);
+
+
 		movementMap[x][y] = true;
 
-		checkPath(x + 1, y, movementSteps, movementType);
-		checkPath(x, y + 1, movementSteps, movementType);
-		checkPath(x - 1, y, movementSteps, movementType);
-		checkPath(x, y - 1, movementSteps, movementType);
+		checkPath(x + 1, y, movementSteps, movementType, hero);
+		checkPath(x, y + 1, movementSteps, movementType, hero);
+		checkPath(x - 1, y, movementSteps, movementType, hero);
+		checkPath(x, y - 1, movementSteps, movementType, hero);
 	}
 
-	private static void checkPath(int x, int y, int movementSteps, int movementType) {
+	private static void checkPath(int x, int y, int movementSteps, int movementType, Hero hero) {
 		if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight) {
 			return;
 		}
 
-		if (!MapHandler.allowedMovementPosition(x, y, movementType)) {
+		// @TODO: enable allowed movement in team-play
+		if (!MapHandler.allowedMovementPosition(x, y, movementType, hero)) {
 			return;
 		}
 
@@ -56,10 +60,10 @@ public class RouteHandler {
 
 		movementMap[x][y] = true;
 
-		checkPath(x + 1, y, movementSteps, movementType);
-		checkPath(x, y + 1, movementSteps, movementType);
-		checkPath(x - 1, y, movementSteps, movementType);
-		checkPath(x, y - 1, movementSteps, movementType);
+		checkPath(x + 1, y, movementSteps, movementType, hero);
+		checkPath(x, y + 1, movementSteps, movementType, hero);
+		checkPath(x - 1, y, movementSteps, movementType, hero);
+		checkPath(x, y - 1, movementSteps, movementType, hero);
 	}
 
 	public static void initArrowPoint(int newX, int newY) {

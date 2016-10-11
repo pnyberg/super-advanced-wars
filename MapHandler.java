@@ -298,9 +298,9 @@ public class MapHandler {
 		return null;
 	}
 
-	public static Unit getNonFriendlyUnit(int x, int y) {
+	public static Unit getNonFriendlyUnit(int x, int y, Hero hero) {
 		for (int h = 0 ; h < portrait.getNumberOfHeroes() ; h++) {
-			if (portrait.getHero(h) == portrait.getCurrentHero()) {
+			if (portrait.getHero(h) == hero) {
 				continue;
 			}
 			for (int k = 0 ; k < portrait.getHero(h).getTroopSize() ; k++) {
@@ -312,6 +312,10 @@ public class MapHandler {
 		}
 
 		return null;
+	}
+
+	public static Unit getNonFriendlyUnit(int x, int y) {
+		return getNonFriendlyUnit(x, y, portrait.getCurrentHero());
 	}
 
 	public static Unit getFriendlyUnit(int x, int y) {
@@ -356,23 +360,31 @@ public class MapHandler {
 		return testFriendlyUnit != null;
 	}
 
-	public static boolean areaOccupiedByNonFriendly(int x, int y) {
-		Unit testAnyUnit = getNonFriendlyUnit(x, y);
+	public static boolean areaOccupiedByNonFriendly(int x, int y, Hero hero) {
+		Unit testAnyUnit = getNonFriendlyUnit(x, y, hero);
 
 		return testAnyUnit != null;
+	}
+
+	public static boolean areaOccupiedByNonFriendly(int x, int y) {
+		return areaOccupiedByNonFriendly(x, y, portrait.getCurrentHero());
 	}
 
 	/***
 	 * Used to check if a positions can be moved to by a specific movement-type
 	 ***/
-	public static boolean allowedMovementPosition(int x, int y, int movementType) {
+	public static boolean allowedMovementPosition(int x, int y, int movementType, Hero hero) {
 		int terrainType = map[x][y];
 
-		if (areaOccupiedByNonFriendly(x, y)) {
+		if (areaOccupiedByNonFriendly(x, y, hero)) {
 			return false;
 		}
 
 		return moveabilityCostMatrix[movementType][terrainType];
+	}
+
+	public static boolean allowedMovementPosition(int x, int y, int movementType) {
+		return allowedMovementPosition(x, y, movementType, portrait.getCurrentHero());
 	}
 
 	public static int movementCost(int x, int y, int movementType) {

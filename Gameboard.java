@@ -207,7 +207,11 @@ public class Gameboard extends JPanel implements KeyListener {
 				buildingMenu.buySelectedTroop(portrait);
 				buildingMenu.closeMenu();
 			} else if (chosenUnit != null && RouteHandler.movementMap(cursorX, cursorY) && rangeUnit == null) {
-				handleOpenUnitMenu(cursorX, cursorY);
+				int x = chosenUnit.getX();
+				int y = chosenUnit.getY();
+				if (MapHandler.getFriendlyUnit(x, y) != null) {
+					handleOpenUnitMenu(cursorX, cursorY);
+				}
 			} else if (!unitSelected && !unitSelectable(cursorX, cursorY)) {
 				selectedBuilding = MapHandler.getFriendlyBuilding(cursorX, cursorY);
 
@@ -215,7 +219,9 @@ public class Gameboard extends JPanel implements KeyListener {
 					handleOpenBuildingMenu(cursorX, cursorY);
 				}
 			} else if (!unitSelected) {
-				chosenUnit = MapHandler.getFriendlyUnit(cursorX, cursorY);
+				// @TODO 
+				chosenUnit = MapHandler.getAnyUnit(cursorX, cursorY);
+//				chosenUnit = MapHandler.getFriendlyUnit(cursorX, cursorY);
 
 				if (chosenUnit != null) {
 					RouteHandler.findPossibleMovementLocations(chosenUnit);
