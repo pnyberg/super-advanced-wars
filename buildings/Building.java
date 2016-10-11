@@ -10,6 +10,7 @@ public abstract class Building {
 	protected Hero owner;
 	protected int x, y, captingValue;
 
+	// static since all buildings should generate the same amount of cash
 	public static void init(int income) {
 		Building.income = income;
 	}

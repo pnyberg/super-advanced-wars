@@ -18,6 +18,7 @@ public class BuildingMenu extends Menu {
 									new BuildingItem("Mech", 3000),
 									new BuildingItem("Recon", 4000),
 									new BuildingItem("Tank", 7000),
+									new BuildingItem("MDTank", 16000),
 									new BuildingItem("Artillery", 6000)/*,
 									new FactoryItem("Missiles", 12000)*/
 								};
@@ -111,8 +112,8 @@ public class BuildingMenu extends Menu {
 			return new Recon(x, y, hero.getColor());
 		} else if (unitName.equals("Tank")) {
 			return new Tank(x, y, hero.getColor());
-//		} else if (unitName.equals("MD Tank")) {
-//			return new MDTank(x, y, hero.getColor());
+		} else if (unitName.equals("MDTank")) {
+			return new MDTank(x, y, hero.getColor());
 //		} else if (unitName.equals("Neotank")) {
 //			return new Neotank(x, y, hero.getColor());
 		} else if (unitName.equals("APC")) {
