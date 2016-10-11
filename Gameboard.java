@@ -1,5 +1,9 @@
 import point.*;
 import units.*;
+import menus.*;
+import buildings.*;
+import heroes.*;
+import handlers.*;
 
 import java.awt.Color;
 import java.awt.Graphics;

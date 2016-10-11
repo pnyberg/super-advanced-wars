@@ -1,3 +1,5 @@
+package heroes;
+
 import units.*;
 
 import java.awt.Color;

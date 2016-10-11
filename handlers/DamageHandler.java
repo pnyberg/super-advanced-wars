@@ -1,4 +1,7 @@
+package handlers;
+
 import units.*;
+import heroes.*;
 
 public class DamageHandler {
 	private static int[][][] damageMatrix;

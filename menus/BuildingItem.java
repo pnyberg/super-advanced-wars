@@ -1,3 +1,5 @@
+package menus;
+
 public class BuildingItem {
 	private String name;
 	private int price;

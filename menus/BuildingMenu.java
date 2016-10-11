@@ -1,4 +1,8 @@
+package menus;
+
 import units.*;
+import heroes.*;
+import handlers.*;
 
 import java.awt.Graphics;
 

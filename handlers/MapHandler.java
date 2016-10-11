@@ -1,4 +1,9 @@
+package handlers;
+
 import units.*;
+import menus.*;
+import buildings.*;
+import heroes.*;
 
 import java.awt.Color;
 import java.awt.Graphics;

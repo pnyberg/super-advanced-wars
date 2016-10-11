@@ -1,5 +1,8 @@
+package handlers;
+
 import point.*;
 import units.*;
+import heroes.*;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -32,7 +35,6 @@ public class RouteHandler {
 		int movementType = chosenUnit.getMovementType();
 
 		Hero hero = MapHandler.getHeroPortrait().getHeroFromUnit(chosenUnit);
-
 
 		movementMap[x][y] = true;
 

@@ -1,3 +1,7 @@
+package buildings;
+
+import heroes.*;
+
 import java.awt.Graphics;
 
 public abstract class Building {
