@@ -1,5 +1,7 @@
 package units;
 
+import menus.BuildingItem;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Font;
@@ -19,6 +21,9 @@ public abstract class Unit {
 	public static final int 	NONE = 0,
 								DIRECT_ATTACK = 1,
 								INDIRECT_ATTACK = 2;
+
+	protected static int price;
+	protected static String typeName;
 
 	protected int x, y, hp;
 	protected boolean hidden, attacking, active;

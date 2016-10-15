@@ -13,24 +13,6 @@ public class BuildingMenu extends Menu {
 	private final int priceAlign = 70;
 	private boolean factory, port, airport;
 
-	private final BuildingItem[] factoryItems = {	
-									new BuildingItem("Infantry", 1000),
-									new BuildingItem("Mech", 3000),
-									new BuildingItem("Recon", 4000),
-									new BuildingItem("Tank", 7000),
-									new BuildingItem("MDTank", 16000),
-									new BuildingItem("Artillery", 6000)/*,
-									new FactoryItem("Missiles", 12000)*/
-								};
-	private final BuildingItem[] portItems = {	
-									new BuildingItem("Battleship", 28000),
-									new BuildingItem("Lander", 12000)
-								};
-
-	private final BuildingItem[] airportItems = {	
-//									new BuildingItem("Bship", 28000),
-								};
-
 	public BuildingMenu(int tileSize) {
 		super(tileSize);
 
@@ -44,7 +26,6 @@ public class BuildingMenu extends Menu {
 		super.openMenu(x, y);
 
 		int terrainType = MapHandler.map(x, y);
-		System.out.println(terrainType);
 
 		if (terrainType == MapHandler.FACTORY) {
 			factory = true;
@@ -67,11 +48,11 @@ public class BuildingMenu extends Menu {
 
 	protected void updateNumberOfRows() {
 		if (factory) {
-			numberOfRows = factoryItems.length;
+			numberOfRows = BuildingItem.getFactoryItems().length;
 		} else if (port) {
-			numberOfRows = portItems.length;
+			numberOfRows = BuildingItem.getPortItems().length;
 		} else if (airport) {
-			numberOfRows = airportItems.length;
+			numberOfRows = BuildingItem.getAirportItems().length;
 		}
 	}
 
@@ -80,11 +61,11 @@ public class BuildingMenu extends Menu {
 		int cash = currentHero.getCash();
 
 		if (factory) {
-			currentHero.manageCash(-factoryItems[menuIndex].getPrice());
+			currentHero.manageCash(-BuildingItem.getFactoryItems()[menuIndex].getPrice());
 		} else if (port) {
-			currentHero.manageCash(-portItems[menuIndex].getPrice());
+			currentHero.manageCash(-BuildingItem.getPortItems()[menuIndex].getPrice());
 		} else if (airport) {
-			currentHero.manageCash(-airportItems[menuIndex].getPrice());
+			currentHero.manageCash(-BuildingItem.getAirportItems()[menuIndex].getPrice());
 		} else {
 			return;
 		}
@@ -97,30 +78,30 @@ public class BuildingMenu extends Menu {
 		String unitName = "";
 
 		if (factory) {
-			unitName = factoryItems[menuIndex].getName();
+			unitName = BuildingItem.getFactoryItems()[menuIndex].getName();
 		} else if (port) {
-			unitName = portItems[menuIndex].getName();
+			unitName = BuildingItem.getPortItems()[menuIndex].getName();
 		} else if (airport) {
-			unitName = airportItems[menuIndex].getName();
+			unitName = BuildingItem.getAirportItems()[menuIndex].getName();
 		}
 
-		if (unitName.equals("Infantry")) {
+		if (unitName.equals(Infantry.getTypeName())) {
 			return new Infantry(x, y, hero.getColor());
-		} else if (unitName.equals("Mech")) {
+		} else if (unitName.equals(Mech.getTypeName())) {
 			return new Mech(x, y, hero.getColor());
-		} else if (unitName.equals("Recon")) {
+		} else if (unitName.equals(Recon.getTypeName())) {
 			return new Recon(x, y, hero.getColor());
-		} else if (unitName.equals("Tank")) {
+		} else if (unitName.equals(Tank.getTypeName())) {
 			return new Tank(x, y, hero.getColor());
-		} else if (unitName.equals("MDTank")) {
+		} else if (unitName.equals(MDTank.getTypeName())) {
 			return new MDTank(x, y, hero.getColor());
 //		} else if (unitName.equals("Neotank")) {
 //			return new Neotank(x, y, hero.getColor());
-		} else if (unitName.equals("APC")) {
+		} else if (unitName.equals(APC.getTypeName())) {
 			return new APC(x, y, hero.getColor());
-		} else if (unitName.equals("Artillery")) {
+		} else if (unitName.equals(Artillery.getTypeName())) {
 			return new Artillery(x, y, hero.getColor());
-		} else if (unitName.equals("Rocket")) {
+		} else if (unitName.equals(Rocket.getTypeName())) {
 			return new Rocket(x, y, hero.getColor());
 //		} else if (unitName.equals("A-air")) {
 //			return new Aair(x, y, hero.getColor());
@@ -134,11 +115,11 @@ public class BuildingMenu extends Menu {
 //			return new BCopter(x, y, hero.getColor());
 //		} else if (unitName.equals("T Copter")) {
 //			return new TCopter(x, y, hero.getColor());
-		} else if (unitName.equals("Battleship")) {
+		} else if (unitName.equals(Battleship.getTypeName())) {
 			return new Battleship(x, y, hero.getColor());
 //		} else if (unitName.equals("Cruiser")) {
 //			return new Cruiser(x, y, hero.getColor());
-		} else if (unitName.equals("Lander")) {
+		} else if (unitName.equals(Lander.getTypeName())) {
 			return new Lander(x, y, hero.getColor());
 //		} else if (unitName.equals("Sub")) {
 //			return new Sub(x, y, hero.getColor());
@@ -156,11 +137,11 @@ public class BuildingMenu extends Menu {
 		BuildingItem[] items = new BuildingItem[0];
 
 		if (factory) {
-			items = factoryItems;
+			items = BuildingItem.getFactoryItems();
 		} else if (airport) {
-			items = airportItems;
+			items = BuildingItem.getAirportItems();
 		} else if (port) {
-			items = portItems;
+			items = BuildingItem.getPortItems();
 		}
 
 		paintMenuBackground(g);
@@ -168,6 +149,8 @@ public class BuildingMenu extends Menu {
 		int rowHelpIndex = 3;
 
 		for (int k = 0 ; k < items.length ; k++) {
+			System.out.println("k" + k + "-price: " + items[k].getPrice());
+			System.out.println(items.length);
 			paintMenuItem(g, menuY + yAlign + menuRowHeight * (k + 1), items[k].getName(), items[k].getPrice());
 		}
 

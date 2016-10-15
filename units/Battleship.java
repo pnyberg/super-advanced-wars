@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Battleship extends IndirectUnit {
+	private static int price = 28000;
+	private static String typeName = "Battleship";
+
 	public Battleship(int x, int y, Color color) {
 		super(x, y, color);
 
@@ -11,6 +14,18 @@ public class Battleship extends IndirectUnit {
 		movementType = Unit.SHIP;
 		minimumRange = 2;
 		maximumRange = 6;
+	}
+
+	public static void setPrice(int price) {
+		Battleship.price = price;
+	}
+
+	public static int getPrice() {
+		return price;
+	}
+
+	public static String getTypeName() {
+		return typeName;
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {

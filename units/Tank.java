@@ -4,12 +4,27 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Tank extends Unit {
+	private static int price = 7000;
+	private static String typeName = "Tank";
+
 	public Tank(int x, int y, Color color) {
 		super(x, y, color);
 
 		movement = 6;
 		movementType = Unit.BAND;
 		attackType = Unit.DIRECT_ATTACK;
+	}
+
+	public static void setPrice(int price) {
+		Tank.price = price;
+	}
+
+	public static int getPrice() {
+		return price;
+	}
+
+	public static String getTypeName() {
+		return typeName;
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {

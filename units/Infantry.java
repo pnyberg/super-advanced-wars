@@ -4,12 +4,27 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Infantry extends Unit {
+	private static int price = 1000;
+	private static String typeName = "Infantry";
+
 	public Infantry(int x, int y, Color color) {
 		super(x, y, color);
 
 		movement = 3;
 		movementType = Unit.INFANTRY;
 		attackType = Unit.DIRECT_ATTACK;
+	}
+
+	public static void setPrice(int price) {
+		Infantry.price = price;
+	}
+
+	public static int getPrice() {
+		return price;
+	}
+
+	public static String getTypeName() {
+		return typeName;
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {

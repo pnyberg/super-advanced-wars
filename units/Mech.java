@@ -4,12 +4,27 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Mech extends Unit {
+	private static int price = 3000;
+	private static String typeName = "Mech";
+
 	public Mech(int x, int y, Color color) {
 		super(x, y, color);
 
 		movement = 2;
 		movementType = Unit.MECH;
 		attackType = Unit.DIRECT_ATTACK;
+	}
+
+	public static void setPrice(int price) {
+		Mech.price = price;
+	}
+
+	public static int getPrice() {
+		return price;
+	}
+
+	public static String getTypeName() {
+		return typeName;
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {

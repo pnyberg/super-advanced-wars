@@ -4,12 +4,27 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Recon extends Unit {
+	private static int price = 4000;
+	private static String typeName = "Recon";
+
 	public Recon(int x, int y, Color color) {
 		super(x, y, color);
 
 		movement = 8;
 		movementType = Unit.TIRE;
 		attackType = Unit.DIRECT_ATTACK;
+	}
+
+	public static void setPrice(int price) {
+		Recon.price = price;
+	}
+
+	public static int getPrice() {
+		return price;
+	}
+
+	public static String getTypeName() {
+		return typeName;
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {

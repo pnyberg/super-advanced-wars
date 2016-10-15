@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Rocket extends IndirectUnit {
+	private static int price = 15000;
+	private static String typeName = "Rocket";
+
 	public Rocket(int x, int y, Color color) {
 		super(x, y, color);
 
@@ -11,6 +14,18 @@ public class Rocket extends IndirectUnit {
 		movementType = Unit.TIRE;
 		minimumRange = 3;
 		maximumRange = 5;
+	}
+
+	public static void setPrice(int price) {
+		Rocket.price = price;
+	}
+
+	public static int getPrice() {
+		return price;
+	}
+
+	public static String getTypeName() {
+		return typeName;
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {

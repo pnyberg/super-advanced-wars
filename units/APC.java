@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class APC extends Unit {
+	private static int price = 6000;
+	private static String typeName = "APC";
+
 	private Unit containedUnit;
 	private boolean droppingOff;
 
@@ -34,6 +37,18 @@ public class APC extends Unit {
 
 	public void regulateDroppingOff(boolean droppingOff) {
 		this.droppingOff = droppingOff;
+	}
+
+	public static void setPrice(int price) {
+		APC.price = price;
+	}
+
+	public static int getPrice() {
+		return price;
+	}
+
+	public static String getTypeName() {
+		return typeName;
 	}
 
 	public Unit getUnit() {

@@ -5,6 +5,9 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class Lander extends Unit {
+	private static int price = 12000;
+	private static String typeName = "Lander";
+
 	private ArrayList<Unit> containedUnits;
 	private boolean droppingOff;
 	private int chosenIndex;
@@ -45,6 +48,18 @@ public class Lander extends Unit {
 
 	public void chooseUnit(int index) {
 		chosenIndex = index;
+	}
+
+	public static void setPrice(int price) {
+		Lander.price = price;
+	}
+
+	public static int getPrice() {
+		return price;
+	}
+
+	public static String getTypeName() {
+		return typeName;
 	}
 
 	public Unit getUnit(int index) {

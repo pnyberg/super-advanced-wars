@@ -59,6 +59,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		addKeyListener(this);
 
+		BuildingItem.createBuildingItems();
 		MapHandler.initMapHandler(mapWidth, mapHeight);
 		RouteHandler.initMovementMap(mapWidth, mapHeight);
 		DamageHandler.init();
