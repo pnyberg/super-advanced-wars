@@ -12,20 +12,20 @@ public class DamageHandler {
 		MECH = 1,
 		RECON = 2,
 		TANK = 3,
-//		MDTANK = 4,
+		MDTANK = 4,
 //		NEOTANK = 5,
-		APC = 4, // 6,
-		ARTILLERY = 5, // 7,
-		ROCKET = 6, // 8,
+		APC = 5, // 6,
+		ARTILLERY = 6, // 7,
+		ROCKET = 7, // 8,
 //		A_AIR = 9,
 //		MISSILES = 10,
 //		PLANE = 11,
 //		BOMBER = 12,
 //		BCOPTER = 13,
 //		TCOPTER = 14,
-		BSHIP = 7, // 15,
+		BSHIP = 8, // 15,
 //		CRUISER = 16,
-		LANDER = 8; //17,
+		LANDER = 9; //17,
 //		SUB = 18;
 
 	public static void init() {
@@ -37,12 +37,15 @@ public class DamageHandler {
 	private static void implementDamageMatrix() {
 		for (int i = 0 ; i < number ; i++) {
 			damageMatrix[INFANTRY][i][0] = -1;
+			damageMatrix[MECH][i][0] = -1;
 		}
+
+		// infantry
 		damageMatrix[INFANTRY][INFANTRY][1] = 55;
 		damageMatrix[INFANTRY][MECH][1] = 45;
 		damageMatrix[INFANTRY][RECON][1] = 12;
 		damageMatrix[INFANTRY][TANK][1] = 5;
-//		damageMatrix[INFANTRY][MDTANK][1] = 1;
+		damageMatrix[INFANTRY][MDTANK][1] = 1;
 //		damageMatrix[INFANTRY][NEOTANK][1] = 1;
 		damageMatrix[INFANTRY][APC][1] = 14;
 		damageMatrix[INFANTRY][ARTILLERY][1] = 15;
@@ -57,6 +60,36 @@ public class DamageHandler {
 //		damageMatrix[INFANTRY][CRUISER][1] = -1;
 		damageMatrix[INFANTRY][LANDER][1] = -1;
 //		damageMatrix[INFANTRY][SUB][1] = -1;
+
+		// mech
+		damageMatrix[MECH][INFANTRY][1] = 65;
+		damageMatrix[MECH][MECH][1] = 55;
+		damageMatrix[MECH][RECON][0] = 85;
+		damageMatrix[MECH][RECON][1] = 18;
+		damageMatrix[MECH][TANK][0] = 55;
+		damageMatrix[MECH][TANK][1] = 6;
+		damageMatrix[MECH][MDTANK][0] = 15;
+		damageMatrix[MECH][MDTANK][1] = 1;
+//		damageMatrix[MECH][NEOTANK][0] = 15;
+//		damageMatrix[MECH][NEOTANK][1] = 1;
+		damageMatrix[MECH][APC][0] = 75;
+		damageMatrix[MECH][APC][1] = 20;
+		damageMatrix[MECH][ARTILLERY][0] = 70;
+		damageMatrix[MECH][ARTILLERY][1] = 32;
+		damageMatrix[MECH][ROCKET][0] = 85;
+		damageMatrix[MECH][ROCKET][1] = 35;
+//		damageMatrix[MECH][A_AIR][0] = 65;
+//		damageMatrix[MECH][A_AIR][1] = 6;
+//		damageMatrix[MECH][MISSILES][0] = 85;
+//		damageMatrix[MECH][MISSILES][1] = 35;
+//		damageMatrix[MECH][PLANE][1] = -1;
+//		damageMatrix[MECH][BOMBER][1] = -1;
+//		damageMatrix[MECH][BCOPTER][1] = 9;
+//		damageMatrix[MECH][TCOPTER][1] = 35;
+		damageMatrix[MECH][BSHIP][1] = -1;
+//		damageMatrix[MECH][CRUISER][1] = -1;
+		damageMatrix[MECH][LANDER][1] = -1;
+//		damageMatrix[MECH][SUB][1] = -1;
 	}
 
 	public static void handleAttack(Unit attacking, Unit defending) {
