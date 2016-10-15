@@ -90,6 +90,91 @@ public class DamageHandler {
 //		damageMatrix[MECH][CRUISER][1] = -1;
 		damageMatrix[MECH][LANDER][1] = -1;
 //		damageMatrix[MECH][SUB][1] = -1;
+
+		// recon
+		damageMatrix[RECON][INFANTRY][1] = 70;
+		damageMatrix[RECON][MECH][1] = 65;
+		damageMatrix[RECON][RECON][1] = 35;
+		damageMatrix[RECON][TANK][1] = 6;
+		damageMatrix[RECON][MDTANK][1] = 1;
+//		damageMatrix[RECON][NEOTANK][1] = 1;
+		damageMatrix[RECON][APC][1] = 45;
+		damageMatrix[RECON][ARTILLERY][1] = 45;
+		damageMatrix[RECON][ROCKET][1] = 55;
+//		damageMatrix[RECON][A_AIR][1] = 4;
+//		damageMatrix[RECON][MISSILES][1] = 28;
+//		damageMatrix[RECON][PLANE][1] = -1;
+//		damageMatrix[RECON][BOMBER][1] = -1;
+//		damageMatrix[RECON][BCOPTER][1] = 10;
+//		damageMatrix[RECON][TCOPTER][1] = 35;
+		damageMatrix[RECON][BSHIP][1] = -1;
+//		damageMatrix[RECON][CRUISER][1] = -1;
+		damageMatrix[RECON][LANDER][1] = -1;
+//		damageMatrix[RECON][SUB][1] = -1;
+
+		// tank
+		damageMatrix[TANK][INFANTRY][0] = 25; // will not be used
+		damageMatrix[TANK][INFANTRY][1] = 75;
+		damageMatrix[TANK][MECH][0] = 25; // will not be used
+		damageMatrix[TANK][MECH][1] = 70;
+		damageMatrix[TANK][RECON][0] = 85;
+		damageMatrix[TANK][RECON][1] = 40;
+		damageMatrix[TANK][TANK][0] = 55;
+		damageMatrix[TANK][TANK][1] = 6;
+		damageMatrix[TANK][MDTANK][0] = 15;
+		damageMatrix[TANK][MDTANK][1] = 1;
+//		damageMatrix[TANK][NEOTANK][0] = 15;
+//		damageMatrix[TANK][NEOTANK][1] = 1;
+		damageMatrix[TANK][APC][0] = 75;
+		damageMatrix[TANK][APC][1] = 45;
+		damageMatrix[TANK][ARTILLERY][0] = 70;
+		damageMatrix[TANK][ARTILLERY][1] = 45;
+		damageMatrix[TANK][ROCKET][0] = 85;
+		damageMatrix[TANK][ROCKET][1] = 55;
+//		damageMatrix[TANK][A_AIR][0] = 65;
+//		damageMatrix[TANK][A_AIR][1] = 5;
+//		damageMatrix[TANK][MISSILES][0] = 85;
+//		damageMatrix[TANK][MISSILES][1] = 30;
+//		damageMatrix[TANK][PLANE][1] = -1;
+//		damageMatrix[TANK][BOMBER][1] = -1;
+//		damageMatrix[TANK][BCOPTER][1] = 10;
+//		damageMatrix[TANK][TCOPTER][1] = 40;
+		damageMatrix[TANK][BSHIP][1] = 1;
+//		damageMatrix[TANK][CRUISER][1] = 5;
+		damageMatrix[TANK][LANDER][1] = 10;
+//		damageMatrix[TANK][SUB][1] = 1;
+
+		// MDtank
+		damageMatrix[MDTANK][INFANTRY][0] = 30; // will not be used
+		damageMatrix[MDTANK][INFANTRY][1] = 105;
+		damageMatrix[MDTANK][MECH][0] = 30; // will not be used
+		damageMatrix[MDTANK][MECH][1] = 95;
+		damageMatrix[MDTANK][RECON][0] = 105;
+		damageMatrix[MDTANK][RECON][1] = 45;
+		damageMatrix[MDTANK][TANK][0] = 85;
+		damageMatrix[MDTANK][TANK][1] = 8;
+		damageMatrix[MDTANK][MDTANK][0] = 55;
+		damageMatrix[MDTANK][MDTANK][1] = 1;
+//		damageMatrix[MDTANK][NEOTANK][0] = 45;
+//		damageMatrix[MDTANK][NEOTANK][1] = 1;
+		damageMatrix[MDTANK][APC][0] = 105;
+		damageMatrix[MDTANK][APC][1] = 45;
+		damageMatrix[MDTANK][ARTILLERY][0] = 105;
+		damageMatrix[MDTANK][ARTILLERY][1] = 45;
+		damageMatrix[MDTANK][ROCKET][0] = 105;
+		damageMatrix[MDTANK][ROCKET][1] = 55;
+//		damageMatrix[MDTANK][A_AIR][0] = 105;
+//		damageMatrix[MDTANK][A_AIR][1] = 7;
+//		damageMatrix[MDTANK][MISSILES][0] = 105;
+//		damageMatrix[MDTANK][MISSILES][1] = 35;
+//		damageMatrix[MDTANK][PLANE][1] = -1;
+//		damageMatrix[MDTANK][BOMBER][1] = -1;
+//		damageMatrix[MDTANK][BCOPTER][1] = 12;
+//		damageMatrix[MDTANK][TCOPTER][1] = 45;
+		damageMatrix[MDTANK][BSHIP][1] = 10;
+//		damageMatrix[MDTANK][CRUISER][1] = 45;
+		damageMatrix[MDTANK][LANDER][1] = 35;
+//		damageMatrix[MDTANK][SUB][1] = 10;
 	}
 
 	public static void handleAttack(Unit attacking, Unit defending) {
