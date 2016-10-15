@@ -23,7 +23,7 @@ public class DamageHandler {
 //		BOMBER = 12,
 //		BCOPTER = 13,
 //		TCOPTER = 14,
-		BSHIP = 8, // 15,
+		BATTLESHIP = 8, // 15,
 //		CRUISER = 16,
 		LANDER = 9; //17,
 //		SUB = 18;
@@ -56,7 +56,7 @@ public class DamageHandler {
 //		damageMatrix[INFANTRY][BOMBER][1] = -1;
 //		damageMatrix[INFANTRY][BCOPTER][1] = 7;
 //		damageMatrix[INFANTRY][TCOPTER][1] = 30;
-		damageMatrix[INFANTRY][BSHIP][1] = -1;
+		damageMatrix[INFANTRY][BATTLESHIP][1] = -1;
 //		damageMatrix[INFANTRY][CRUISER][1] = -1;
 		damageMatrix[INFANTRY][LANDER][1] = -1;
 //		damageMatrix[INFANTRY][SUB][1] = -1;
@@ -86,7 +86,7 @@ public class DamageHandler {
 //		damageMatrix[MECH][BOMBER][1] = -1;
 //		damageMatrix[MECH][BCOPTER][1] = 9;
 //		damageMatrix[MECH][TCOPTER][1] = 35;
-		damageMatrix[MECH][BSHIP][1] = -1;
+		damageMatrix[MECH][BATTLESHIP][1] = -1;
 //		damageMatrix[MECH][CRUISER][1] = -1;
 		damageMatrix[MECH][LANDER][1] = -1;
 //		damageMatrix[MECH][SUB][1] = -1;
@@ -107,7 +107,7 @@ public class DamageHandler {
 //		damageMatrix[RECON][BOMBER][1] = -1;
 //		damageMatrix[RECON][BCOPTER][1] = 10;
 //		damageMatrix[RECON][TCOPTER][1] = 35;
-		damageMatrix[RECON][BSHIP][1] = -1;
+		damageMatrix[RECON][BATTLESHIP][1] = -1;
 //		damageMatrix[RECON][CRUISER][1] = -1;
 		damageMatrix[RECON][LANDER][1] = -1;
 //		damageMatrix[RECON][SUB][1] = -1;
@@ -139,7 +139,7 @@ public class DamageHandler {
 //		damageMatrix[TANK][BOMBER][1] = -1;
 //		damageMatrix[TANK][BCOPTER][1] = 10;
 //		damageMatrix[TANK][TCOPTER][1] = 40;
-		damageMatrix[TANK][BSHIP][1] = 1;
+		damageMatrix[TANK][BATTLESHIP][1] = 1;
 //		damageMatrix[TANK][CRUISER][1] = 5;
 		damageMatrix[TANK][LANDER][1] = 10;
 //		damageMatrix[TANK][SUB][1] = 1;
@@ -171,7 +171,7 @@ public class DamageHandler {
 //		damageMatrix[MDTANK][BOMBER][1] = -1;
 //		damageMatrix[MDTANK][BCOPTER][1] = 12;
 //		damageMatrix[MDTANK][TCOPTER][1] = 45;
-		damageMatrix[MDTANK][BSHIP][1] = 10;
+		damageMatrix[MDTANK][BATTLESHIP][1] = 10;
 //		damageMatrix[MDTANK][CRUISER][1] = 45;
 		damageMatrix[MDTANK][LANDER][1] = 35;
 //		damageMatrix[MDTANK][SUB][1] = 10;
@@ -208,8 +208,8 @@ public class DamageHandler {
 	private static void damageCalculation(Unit attacker, Hero attHero, Unit defender, Hero defHero, int defTerrainType) {
 		// deal damage from A to B
 
-		int attType = 0; // = attacker.getType(); @TODO
-		int defType = 0; // = defender.getType();
+		int attType = getTypeFromUnit(attacker);
+		int defType = getTypeFromUnit(defender);
 
 		int weaponIndex = 1; // 0 eller 1
 
@@ -226,5 +226,46 @@ public class DamageHandler {
 		defender.takeDamage(damageValue);
 
 		System.out.println("Dammagevalue: " + damageValue);
+	}
+
+	private static int getTypeFromUnit(Unit unit) {
+		if (unit instanceof Infantry) {
+			return INFANTRY;
+		} else if (unit instanceof Mech) {
+			return MECH;
+		} else if (unit instanceof Recon) {
+			return RECON;
+		} else if (unit instanceof Tank) {
+			return TANK;
+		} else if (unit instanceof MDTank) {
+			return MDTANK;
+/*		} else if (unit instanceof Neotank) {
+			return NEOTANK;*/
+		} else if (unit instanceof APC) {
+			return APC;
+		} else if (unit instanceof Artillery) {
+			return ARTILLERY;
+		} else if (unit instanceof Rocket) {
+			return ROCKET;
+/*		} else if (unit instanceof AAir) {
+			return A_AIR;
+		} else if (unit instanceof Missiles) {
+			return MISSILES;
+		} else if (unit instanceof Plane) {
+			return PLANE;
+		} else if (unit instanceof Bomber) {
+			return BOMBER;
+		} else if (unit instanceof Bcopter) {
+			return BCOPTER;*/
+		} else if (unit instanceof Battleship) {
+			return BATTLESHIP;
+/*		} else if (unit instanceof Cruiser) {
+			return CRUISER;*/
+		} else if (unit instanceof Lander) {
+			return LANDER;
+/*		} else if (unit instanceof Sub) {
+			return SUB;*/
+		}
+		return -1;
 	}
 }
