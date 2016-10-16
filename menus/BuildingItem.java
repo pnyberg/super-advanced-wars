@@ -22,6 +22,7 @@ public class BuildingItem {
 						new BuildingItem(Recon.getTypeName(), Recon.getPrice()),
 						new BuildingItem(Tank.getTypeName(), Tank.getPrice()),
 						new BuildingItem(MDTank.getTypeName(), MDTank.getPrice()),
+						new BuildingItem(Neotank.getTypeName(), Neotank.getPrice()),
 						new BuildingItem(Artillery.getTypeName(), Artillery.getPrice()),
 						new BuildingItem(Rocket.getTypeName(), Rocket.getPrice())/*,
 						new FactoryItem("Missiles", 12000)*/

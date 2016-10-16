@@ -15,7 +15,7 @@ public abstract class Unit {
 								SHIP = 4,
 								TRANSPORT = 5;
 
-	public static final int numberOfUnitTypes = 10;
+	public static final int numberOfUnitTypes = 11;
 
 	// Attack-type
 	public static final int 	NONE = 0,

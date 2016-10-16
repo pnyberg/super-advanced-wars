@@ -95,8 +95,8 @@ public class BuildingMenu extends Menu {
 			return new Tank(x, y, hero.getColor());
 		} else if (unitName.equals(MDTank.getTypeName())) {
 			return new MDTank(x, y, hero.getColor());
-//		} else if (unitName.equals("Neotank")) {
-//			return new Neotank(x, y, hero.getColor());
+		} else if (unitName.equals(Neotank.getTypeName())) {
+			return new Neotank(x, y, hero.getColor());
 		} else if (unitName.equals(APC.getTypeName())) {
 			return new APC(x, y, hero.getColor());
 		} else if (unitName.equals(Artillery.getTypeName())) {

@@ -13,19 +13,19 @@ public class DamageHandler {
 		RECON = 2,
 		TANK = 3,
 		MDTANK = 4,
-//		NEOTANK = 5,
-		APC = 5, // 6,
-		ARTILLERY = 6, // 7,
-		ROCKET = 7, // 8,
+		NEOTANK = 5,
+		APC = 6,
+		ARTILLERY = 7,
+		ROCKET = 8,
 //		A_AIR = 9,
 //		MISSILES = 10,
 //		PLANE = 11,
 //		BOMBER = 12,
 //		BCOPTER = 13,
 //		TCOPTER = 14,
-		BATTLESHIP = 8, // 15,
+		BATTLESHIP = 9, // 15,
 //		CRUISER = 16,
-		LANDER = 9; //17,
+		LANDER = 10; //17,
 //		SUB = 18;
 
 	public static void init() {
@@ -175,6 +175,38 @@ public class DamageHandler {
 //		damageMatrix[MDTANK][CRUISER][1] = 45;
 		damageMatrix[MDTANK][LANDER][1] = 35;
 //		damageMatrix[MDTANK][SUB][1] = 10;
+
+		// neotank
+		damageMatrix[NEOTANK][INFANTRY][0] = 35; // will not be used
+		damageMatrix[NEOTANK][INFANTRY][1] = 125;
+		damageMatrix[NEOTANK][MECH][0] = 35; // will not be used
+		damageMatrix[NEOTANK][MECH][1] = 115;
+		damageMatrix[NEOTANK][RECON][0] = 125;
+		damageMatrix[NEOTANK][RECON][1] = 65;
+		damageMatrix[NEOTANK][TANK][0] = 105;
+		damageMatrix[NEOTANK][TANK][1] = 10;
+		damageMatrix[NEOTANK][MDTANK][0] = 75;
+		damageMatrix[NEOTANK][MDTANK][1] = 1;
+//		damageMatrix[NEOTANK][NEOTANK][0] = 55;
+//		damageMatrix[NEOTANK][NEOTANK][1] = 1;
+		damageMatrix[NEOTANK][APC][0] = 125;
+		damageMatrix[NEOTANK][APC][1] = 65;
+		damageMatrix[NEOTANK][ARTILLERY][0] = 115;
+		damageMatrix[NEOTANK][ARTILLERY][1] = 65;
+		damageMatrix[NEOTANK][ROCKET][0] = 125;
+		damageMatrix[NEOTANK][ROCKET][1] = 75;
+//		damageMatrix[NEOTANK][A_AIR][0] = 115;
+//		damageMatrix[NEOTANK][A_AIR][1] = 17;
+//		damageMatrix[NEOTANK][MISSILES][0] = 125;
+//		damageMatrix[NEOTANK][MISSILES][1] = 55;
+//		damageMatrix[NEOTANK][PLANE][1] = -1;
+//		damageMatrix[NEOTANK][BOMBER][1] = -1;
+//		damageMatrix[NEOTANK][BCOPTER][1] = 22;
+//		damageMatrix[NEOTANK][TCOPTER][1] = 55;
+		damageMatrix[NEOTANK][BATTLESHIP][1] = 15;
+//		damageMatrix[NEOTANK][CRUISER][1] = 50;
+		damageMatrix[NEOTANK][LANDER][1] = 40;
+//		damageMatrix[NEOTANK][SUB][1] = 15;
 	}
 
 	public static void handleAttack(Unit attacking, Unit defending) {
@@ -239,8 +271,8 @@ public class DamageHandler {
 			return TANK;
 		} else if (unit instanceof MDTank) {
 			return MDTANK;
-/*		} else if (unit instanceof Neotank) {
-			return NEOTANK;*/
+		} else if (unit instanceof Neotank) {
+			return NEOTANK;
 		} else if (unit instanceof APC) {
 			return APC;
 		} else if (unit instanceof Artillery) {
