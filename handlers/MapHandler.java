@@ -73,41 +73,50 @@ public class MapHandler {
 		moveabilityCostMatrix[Unit.MECH][ROAD] = true;
 		moveabilityCostMatrix[Unit.BAND][ROAD] = true;
 		moveabilityCostMatrix[Unit.TIRE][ROAD] = true;
+		moveabilityCostMatrix[Unit.AIR][ROAD] = true;
 
 		moveabilityCostMatrix[Unit.INFANTRY][PLAIN] = true;
 		moveabilityCostMatrix[Unit.MECH][PLAIN] = true;
 		moveabilityCostMatrix[Unit.BAND][PLAIN] = true;
 		moveabilityCostMatrix[Unit.TIRE][PLAIN] = true;
+		moveabilityCostMatrix[Unit.AIR][PLAIN] = true;
 
 		moveabilityCostMatrix[Unit.INFANTRY][WOOD] = true;
 		moveabilityCostMatrix[Unit.MECH][WOOD] = true;
 		moveabilityCostMatrix[Unit.BAND][WOOD] = true;
 		moveabilityCostMatrix[Unit.TIRE][WOOD] = true;
+		moveabilityCostMatrix[Unit.AIR][WOOD] = true;
 
 		moveabilityCostMatrix[Unit.INFANTRY][MOUNTAIN] = true;
 		moveabilityCostMatrix[Unit.MECH][MOUNTAIN] = true;
+		moveabilityCostMatrix[Unit.AIR][MOUNTAIN] = true;
 
 		moveabilityCostMatrix[Unit.SHIP][SEA] = true;
 		moveabilityCostMatrix[Unit.TRANSPORT][SEA] = true;
+		moveabilityCostMatrix[Unit.AIR][SEA] = true;
 
 		moveabilityCostMatrix[Unit.SHIP][REEF] = true;
 		moveabilityCostMatrix[Unit.TRANSPORT][REEF] = true;
+		moveabilityCostMatrix[Unit.AIR][REEF] = true;
 
 		moveabilityCostMatrix[Unit.INFANTRY][SHORE] = true;
 		moveabilityCostMatrix[Unit.MECH][SHORE] = true;
 		moveabilityCostMatrix[Unit.BAND][SHORE] = true;
 		moveabilityCostMatrix[Unit.TIRE][SHORE] = true;
 		moveabilityCostMatrix[Unit.TRANSPORT][SHORE] = true;
+		moveabilityCostMatrix[Unit.AIR][SHORE] = true;
 
 		moveabilityCostMatrix[Unit.INFANTRY][CITY] = true;
 		moveabilityCostMatrix[Unit.MECH][CITY] = true;
 		moveabilityCostMatrix[Unit.BAND][CITY] = true;
 		moveabilityCostMatrix[Unit.TIRE][CITY] = true;
+		moveabilityCostMatrix[Unit.AIR][CITY] = true;
 		
 		moveabilityCostMatrix[Unit.INFANTRY][FACTORY] = true;
 		moveabilityCostMatrix[Unit.MECH][FACTORY] = true;
 		moveabilityCostMatrix[Unit.BAND][FACTORY] = true;
 		moveabilityCostMatrix[Unit.TIRE][FACTORY] = true;
+		moveabilityCostMatrix[Unit.AIR][FACTORY] = true;
 
 		moveabilityCostMatrix[Unit.INFANTRY][PORT] = true;
 		moveabilityCostMatrix[Unit.MECH][PORT] = true;
@@ -115,11 +124,13 @@ public class MapHandler {
 		moveabilityCostMatrix[Unit.TIRE][PORT] = true;
 		moveabilityCostMatrix[Unit.SHIP][PORT] = true;
 		moveabilityCostMatrix[Unit.TRANSPORT][PORT] = true;
+		moveabilityCostMatrix[Unit.AIR][PORT] = true;
 
 		moveabilityCostMatrix[Unit.INFANTRY][AIRPORT] = true;
 		moveabilityCostMatrix[Unit.MECH][AIRPORT] = true;
 		moveabilityCostMatrix[Unit.BAND][AIRPORT] = true;
 		moveabilityCostMatrix[Unit.TIRE][AIRPORT] = true;
+		moveabilityCostMatrix[Unit.AIR][AIRPORT] = true;
 	}
 
 	private static void initMap(int mapWidth, int mapHeight) {
