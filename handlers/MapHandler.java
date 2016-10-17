@@ -250,11 +250,13 @@ public class MapHandler {
 		hero1.addTroop(new Battleship(1, 3, hero1.getColor()));
 		hero1.addTroop(new APC(3, 2, hero1.getColor()));
 		hero1.addTroop(new Lander(8, 5, hero1.getColor()));
+		hero1.addTroop(new Fighter(10, 2, hero1.getColor()));
 
 		hero2.addTroop(new Infantry(6, 6, hero2.getColor()));
 		hero2.addTroop(new Infantry(5, 7, hero2.getColor()));
 		hero2.addTroop(new Battleship(6, 8, hero2.getColor()));
 		hero2.addTroop(new Lander(7, 9, hero2.getColor()));
+		hero2.addTroop(new Fighter(10, 8, hero2.getColor()));
 
 		for (int h = 0 ; h < 2 ; h++) {
 			for (int k = 0 ; k < portrait.getHero(h).getTroopSize() ; k++) {

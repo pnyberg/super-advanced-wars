@@ -12,7 +12,7 @@ public class MDTank extends Unit {
 
 		movement = 5;
 		movementType = Unit.BAND;
-		attackType = Unit.DIRECT_ATTACK;
+		unitClass = Unit.VEHICLE;
 	}
 
 	public static void setPrice(int price) {

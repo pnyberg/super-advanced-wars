@@ -12,7 +12,7 @@ public class Recon extends Unit {
 
 		movement = 8;
 		movementType = Unit.TIRE;
-		attackType = Unit.DIRECT_ATTACK;
+		unitClass = Unit.VEHICLE;
 	}
 
 	public static void setPrice(int price) {

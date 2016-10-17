@@ -12,6 +12,7 @@ public class Battleship extends IndirectUnit {
 
 		movement = 5;
 		movementType = Unit.SHIP;
+		unitClass = Unit.BOAT;
 		minimumRange = 2;
 		maximumRange = 6;
 	}

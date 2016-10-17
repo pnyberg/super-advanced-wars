@@ -12,7 +12,7 @@ public class Infantry extends Unit {
 
 		movement = 3;
 		movementType = Unit.INFANTRY;
-		attackType = Unit.DIRECT_ATTACK;
+		unitClass = Unit.FOOTMAN;
 	}
 
 	public static void setPrice(int price) {

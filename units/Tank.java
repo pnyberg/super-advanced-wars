@@ -12,7 +12,7 @@ public class Tank extends Unit {
 
 		movement = 6;
 		movementType = Unit.BAND;
-		attackType = Unit.DIRECT_ATTACK;
+		unitClass = Unit.VEHICLE;
 	}
 
 	public static void setPrice(int price) {

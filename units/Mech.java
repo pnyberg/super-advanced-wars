@@ -12,7 +12,7 @@ public class Mech extends Unit {
 
 		movement = 2;
 		movementType = Unit.MECH;
-		attackType = Unit.DIRECT_ATTACK;
+		unitClass = Unit.FOOTMAN;
 	}
 
 	public static void setPrice(int price) {

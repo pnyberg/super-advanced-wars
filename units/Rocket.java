@@ -12,6 +12,7 @@ public class Rocket extends IndirectUnit {
 
 		movement = 5;
 		movementType = Unit.TIRE;
+		unitClass = Unit.VEHICLE;
 		minimumRange = 3;
 		maximumRange = 5;
 	}

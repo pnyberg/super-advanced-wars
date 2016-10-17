@@ -12,6 +12,7 @@ public class Artillery extends IndirectUnit {
 
 		movement = 5;
 		movementType = Unit.BAND;
+		unitClass = Unit.VEHICLE;
 		minimumRange = 2;
 		maximumRange = 3;
 	}

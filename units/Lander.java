@@ -18,6 +18,7 @@ public class Lander extends Unit {
 		movement = 6;
 		movementType = Unit.TRANSPORT;
 		attackType = Unit.NONE;
+		unitClass = Unit.BOAT;
 
 		containedUnits = new ArrayList<Unit>();
 		droppingOff = false;

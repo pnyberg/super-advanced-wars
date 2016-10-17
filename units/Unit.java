@@ -49,6 +49,8 @@ public abstract class Unit {
 		hidden = false;
 		attacking = false;
 		active = false;
+
+		attackType = Unit.DIRECT_ATTACK;
 	}
 
 	public void moveTo(int x, int y) {

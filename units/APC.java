@@ -16,6 +16,7 @@ public class APC extends Unit {
 		movement = 6;
 		movementType = Unit.BAND;
 		attackType = Unit.NONE;
+		unitClass = Unit.VEHICLE;
 
 		containedUnit = null;
 		droppingOff = false;
