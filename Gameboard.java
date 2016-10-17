@@ -780,7 +780,8 @@ public class Gameboard extends JPanel implements KeyListener {
 		if (chosenUnit instanceof IndirectUnit) {
 			return indirectUnitCanFire(cursorX, cursorY);
 		} else if (chosenUnit instanceof APC
-					|| chosenUnit instanceof Lander) {
+					|| chosenUnit instanceof Lander
+					/*|| chosenUnit instanceof TCopter*/) {
 			return false;
 		}
 
@@ -788,12 +789,12 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private boolean indirectUnitCanFire(int cursorX, int cursorY) {
-		IndirectUnit unit = (IndirectUnit)chosenUnit;
+		IndirectUnit attackingUnit = (IndirectUnit)chosenUnit;
 
-		int unitX = unit.getX();
-		int unitY = unit.getY();
-		int minRange = unit.getMinRange();
-		int maxRange = unit.getMaxRange();
+		int unitX = attackingUnit.getX();
+		int unitY = attackingUnit.getY();
+		int minRange = attackingUnit.getMinRange();
+		int maxRange = attackingUnit.getMaxRange();
 
 
 		if (unitX != cursorX || unitY != cursorY) {
@@ -815,7 +816,8 @@ public class Gameboard extends JPanel implements KeyListener {
 
 				int distanceFromUnit = Math.abs(unitX - x) + Math.abs(unitY - y);
 				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
-					if (MapHandler.getNonFriendlyUnit(x, y) != null) {
+					Unit targetUnit = MapHandler.getNonFriendlyUnit(x, y);
+					if (targetUnit != null && validTarget(attackingUnit, targetUnit)) {
 						return true;
 					}
 				}
@@ -831,8 +833,18 @@ public class Gameboard extends JPanel implements KeyListener {
 		Unit southernFront = MapHandler.getNonFriendlyUnit(cursorX, cursorY + 1);
 		Unit westernFront = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY);
 
-		return northernFront != null || easternFront != null 
-			|| southernFront != null || westernFront != null;
+		return (northernFront != null && validTarget(chosenUnit, northernFront)) 
+			|| (easternFront != null && validTarget(chosenUnit, easternFront))
+			|| (southernFront != null && validTarget(chosenUnit, southernFront))
+			|| (westernFront != null && validTarget(chosenUnit, westernFront));
+	}
+
+	private boolean validTarget(Unit attackingUnit, Unit targetUnit) {
+		int attUnitType = DamageHandler.getTypeFromUnit(attackingUnit);
+		int targetUnitType = DamageHandler.getTypeFromUnit(targetUnit);
+
+		return DamageHandler.getDamageValue(attUnitType, targetUnitType, 0) > -1
+			|| DamageHandler.getDamageValue(attUnitType, targetUnitType, 1) > -1;
 	}
 
 	private void findPossibleDirectAttackLocations(Unit chosenUnit) {

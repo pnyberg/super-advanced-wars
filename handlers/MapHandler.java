@@ -253,6 +253,8 @@ public class MapHandler {
 
 		hero2.addTroop(new Infantry(6, 6, hero2.getColor()));
 		hero2.addTroop(new Infantry(5, 7, hero2.getColor()));
+		hero2.addTroop(new Battleship(6, 8, hero2.getColor()));
+		hero2.addTroop(new Lander(7, 9, hero2.getColor()));
 
 		for (int h = 0 ; h < 2 ; h++) {
 			for (int k = 0 ; k < portrait.getHero(h).getTroopSize() ; k++) {

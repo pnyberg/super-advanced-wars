@@ -13,7 +13,15 @@ public abstract class Unit {
 								BAND = 2,
 								TIRE = 3,
 								SHIP = 4,
-								TRANSPORT = 5;
+								TRANSPORT = 5,
+								AIR = 6;
+
+	public static final int 	FOOTMAN = 0,
+								VEHICLE = 1,
+								PLANE = 2,
+								COPTER = 3,
+								BOAT = 4,
+								SUB = 5;
 
 	public static final int numberOfUnitTypes = 11;
 
@@ -29,9 +37,7 @@ public abstract class Unit {
 	protected boolean hidden, attacking, active;
 	protected Color color, restingColor;
 
-	protected int movement;
-	protected int movementType;
-	protected int attackType;
+	protected int movement, movementType, attackType, unitClass;
 
 	public Unit(int x, int y, Color color) {
 		this.x = x;
@@ -88,6 +94,10 @@ public abstract class Unit {
 
 	public int getAttackType() {
 		return attackType;
+	}
+
+	public int getUnitClass() {
+		return unitClass;
 	}
 
 	public boolean isHurt() {

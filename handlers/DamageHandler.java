@@ -257,10 +257,10 @@ public class DamageHandler {
 
 		defender.takeDamage(damageValue);
 
-		System.out.println("Dammagevalue: " + damageValue);
+		System.out.println("Damagevalue: " + damageValue);
 	}
 
-	private static int getTypeFromUnit(Unit unit) {
+	public static int getTypeFromUnit(Unit unit) {
 		if (unit instanceof Infantry) {
 			return INFANTRY;
 		} else if (unit instanceof Mech) {
@@ -299,5 +299,9 @@ public class DamageHandler {
 			return SUB;*/
 		}
 		return -1;
+	}
+
+	public static int getDamageValue(int attType, int defType, int gunNumber) {
+		return damageMatrix[attType][defType][gunNumber];
 	}
 }
