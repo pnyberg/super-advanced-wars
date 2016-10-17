@@ -19,13 +19,13 @@ public class DamageHandler {
 		ROCKET = 8,
 //		A_AIR = 9,
 //		MISSILES = 10,
-//		PLANE = 11,
+		PLANE = 9, //11,
 //		BOMBER = 12,
 //		BCOPTER = 13,
 //		TCOPTER = 14,
-		BATTLESHIP = 9, // 15,
+		BATTLESHIP = 10, // 15,
 //		CRUISER = 16,
-		LANDER = 10; //17,
+		LANDER = 11; //17,
 //		SUB = 18;
 
 	public static void init() {
@@ -37,7 +37,8 @@ public class DamageHandler {
 	private static void implementDamageMatrix() {
 		for (int i = 0 ; i < number ; i++) {
 			damageMatrix[INFANTRY][i][0] = -1;
-			damageMatrix[MECH][i][0] = -1;
+			damageMatrix[RECON][i][0] = -1;
+			damageMatrix[PLANE][i][1] = -1;
 		}
 
 		// infantry
@@ -46,13 +47,13 @@ public class DamageHandler {
 		damageMatrix[INFANTRY][RECON][1] = 12;
 		damageMatrix[INFANTRY][TANK][1] = 5;
 		damageMatrix[INFANTRY][MDTANK][1] = 1;
-//		damageMatrix[INFANTRY][NEOTANK][1] = 1;
+		damageMatrix[INFANTRY][NEOTANK][1] = 1;
 		damageMatrix[INFANTRY][APC][1] = 14;
 		damageMatrix[INFANTRY][ARTILLERY][1] = 15;
 		damageMatrix[INFANTRY][ROCKET][1] = 25;
 //		damageMatrix[INFANTRY][A_AIR][1] = 5;
 //		damageMatrix[INFANTRY][MISSILES][1] = 25;
-//		damageMatrix[INFANTRY][PLANE][1] = -1;
+		damageMatrix[INFANTRY][PLANE][1] = -1;
 //		damageMatrix[INFANTRY][BOMBER][1] = -1;
 //		damageMatrix[INFANTRY][BCOPTER][1] = 7;
 //		damageMatrix[INFANTRY][TCOPTER][1] = 30;
@@ -62,7 +63,9 @@ public class DamageHandler {
 //		damageMatrix[INFANTRY][SUB][1] = -1;
 
 		// mech
+		damageMatrix[MECH][INFANTRY][0] = -1;
 		damageMatrix[MECH][INFANTRY][1] = 65;
+		damageMatrix[MECH][MECH][0] = -1;
 		damageMatrix[MECH][MECH][1] = 55;
 		damageMatrix[MECH][RECON][0] = 85;
 		damageMatrix[MECH][RECON][1] = 18;
@@ -70,8 +73,8 @@ public class DamageHandler {
 		damageMatrix[MECH][TANK][1] = 6;
 		damageMatrix[MECH][MDTANK][0] = 15;
 		damageMatrix[MECH][MDTANK][1] = 1;
-//		damageMatrix[MECH][NEOTANK][0] = 15;
-//		damageMatrix[MECH][NEOTANK][1] = 1;
+		damageMatrix[MECH][NEOTANK][0] = 15;
+		damageMatrix[MECH][NEOTANK][1] = 1;
 		damageMatrix[MECH][APC][0] = 75;
 		damageMatrix[MECH][APC][1] = 20;
 		damageMatrix[MECH][ARTILLERY][0] = 70;
@@ -82,13 +85,21 @@ public class DamageHandler {
 //		damageMatrix[MECH][A_AIR][1] = 6;
 //		damageMatrix[MECH][MISSILES][0] = 85;
 //		damageMatrix[MECH][MISSILES][1] = 35;
-//		damageMatrix[MECH][PLANE][1] = -1;
+		damageMatrix[MECH][PLANE][0] = -1;
+		damageMatrix[MECH][PLANE][1] = -1;
+//		damageMatrix[MECH][BOMBER][0] = -1;
 //		damageMatrix[MECH][BOMBER][1] = -1;
+//		damageMatrix[MECH][BCOPTER][0] = -1;
 //		damageMatrix[MECH][BCOPTER][1] = 9;
+//		damageMatrix[MECH][TCOPTER][0] = -1;
 //		damageMatrix[MECH][TCOPTER][1] = 35;
+		damageMatrix[MECH][BATTLESHIP][0] = -1;
 		damageMatrix[MECH][BATTLESHIP][1] = -1;
+//		damageMatrix[MECH][CRUISER][0] = -1;
 //		damageMatrix[MECH][CRUISER][1] = -1;
+		damageMatrix[MECH][LANDER][0] = -1;
 		damageMatrix[MECH][LANDER][1] = -1;
+//		damageMatrix[MECH][SUB][0] = -1;
 //		damageMatrix[MECH][SUB][1] = -1;
 
 		// recon
@@ -97,13 +108,13 @@ public class DamageHandler {
 		damageMatrix[RECON][RECON][1] = 35;
 		damageMatrix[RECON][TANK][1] = 6;
 		damageMatrix[RECON][MDTANK][1] = 1;
-//		damageMatrix[RECON][NEOTANK][1] = 1;
+		damageMatrix[RECON][NEOTANK][1] = 1;
 		damageMatrix[RECON][APC][1] = 45;
 		damageMatrix[RECON][ARTILLERY][1] = 45;
 		damageMatrix[RECON][ROCKET][1] = 55;
 //		damageMatrix[RECON][A_AIR][1] = 4;
 //		damageMatrix[RECON][MISSILES][1] = 28;
-//		damageMatrix[RECON][PLANE][1] = -1;
+		damageMatrix[RECON][PLANE][1] = -1;
 //		damageMatrix[RECON][BOMBER][1] = -1;
 //		damageMatrix[RECON][BCOPTER][1] = 10;
 //		damageMatrix[RECON][TCOPTER][1] = 35;
@@ -123,8 +134,8 @@ public class DamageHandler {
 		damageMatrix[TANK][TANK][1] = 6;
 		damageMatrix[TANK][MDTANK][0] = 15;
 		damageMatrix[TANK][MDTANK][1] = 1;
-//		damageMatrix[TANK][NEOTANK][0] = 15;
-//		damageMatrix[TANK][NEOTANK][1] = 1;
+		damageMatrix[TANK][NEOTANK][0] = 15;
+		damageMatrix[TANK][NEOTANK][1] = 1;
 		damageMatrix[TANK][APC][0] = 75;
 		damageMatrix[TANK][APC][1] = 45;
 		damageMatrix[TANK][ARTILLERY][0] = 70;
@@ -135,14 +146,22 @@ public class DamageHandler {
 //		damageMatrix[TANK][A_AIR][1] = 5;
 //		damageMatrix[TANK][MISSILES][0] = 85;
 //		damageMatrix[TANK][MISSILES][1] = 30;
-//		damageMatrix[TANK][PLANE][1] = -1;
+		damageMatrix[TANK][PLANE][0] = -1;
+		damageMatrix[TANK][PLANE][1] = -1;
+//		damageMatrix[TANK][BOMBER][0] = -1;
 //		damageMatrix[TANK][BOMBER][1] = -1;
+//		damageMatrix[TANK][BCOPTER][0] = -1;
 //		damageMatrix[TANK][BCOPTER][1] = 10;
+//		damageMatrix[TANK][TCOPTER][0] = -1;
 //		damageMatrix[TANK][TCOPTER][1] = 40;
-		damageMatrix[TANK][BATTLESHIP][1] = 1;
-//		damageMatrix[TANK][CRUISER][1] = 5;
-		damageMatrix[TANK][LANDER][1] = 10;
-//		damageMatrix[TANK][SUB][1] = 1;
+		damageMatrix[TANK][BATTLESHIP][0] = 1;
+		damageMatrix[TANK][BATTLESHIP][1] = -1;
+//		damageMatrix[TANK][CRUISER][0] = 5;
+//		damageMatrix[TANK][CRUISER][1] = -1;
+		damageMatrix[TANK][LANDER][0] = 10;
+		damageMatrix[TANK][LANDER][1] = -1;
+//		damageMatrix[TANK][SUB][0] = 1;
+//		damageMatrix[TANK][SUB][1] = -1;
 
 		// MDtank
 		damageMatrix[MDTANK][INFANTRY][0] = 30; // will not be used
@@ -155,8 +174,8 @@ public class DamageHandler {
 		damageMatrix[MDTANK][TANK][1] = 8;
 		damageMatrix[MDTANK][MDTANK][0] = 55;
 		damageMatrix[MDTANK][MDTANK][1] = 1;
-//		damageMatrix[MDTANK][NEOTANK][0] = 45;
-//		damageMatrix[MDTANK][NEOTANK][1] = 1;
+		damageMatrix[MDTANK][NEOTANK][0] = 45;
+		damageMatrix[MDTANK][NEOTANK][1] = 1;
 		damageMatrix[MDTANK][APC][0] = 105;
 		damageMatrix[MDTANK][APC][1] = 45;
 		damageMatrix[MDTANK][ARTILLERY][0] = 105;
@@ -167,14 +186,22 @@ public class DamageHandler {
 //		damageMatrix[MDTANK][A_AIR][1] = 7;
 //		damageMatrix[MDTANK][MISSILES][0] = 105;
 //		damageMatrix[MDTANK][MISSILES][1] = 35;
-//		damageMatrix[MDTANK][PLANE][1] = -1;
+		damageMatrix[MDTANK][PLANE][0] = -1;
+		damageMatrix[MDTANK][PLANE][1] = -1;
+//		damageMatrix[MDTANK][BOMBER][0] = -1;
 //		damageMatrix[MDTANK][BOMBER][1] = -1;
+//		damageMatrix[MDTANK][BCOPTER][0] = -1;
 //		damageMatrix[MDTANK][BCOPTER][1] = 12;
+//		damageMatrix[MDTANK][TCOPTER][0] = -1;
 //		damageMatrix[MDTANK][TCOPTER][1] = 45;
-		damageMatrix[MDTANK][BATTLESHIP][1] = 10;
-//		damageMatrix[MDTANK][CRUISER][1] = 45;
-		damageMatrix[MDTANK][LANDER][1] = 35;
-//		damageMatrix[MDTANK][SUB][1] = 10;
+		damageMatrix[MDTANK][BATTLESHIP][0] = 10;
+		damageMatrix[MDTANK][BATTLESHIP][1] = -1;
+//		damageMatrix[MDTANK][CRUISER][0] = 45;
+//		damageMatrix[MDTANK][CRUISER][1] = -1;
+		damageMatrix[MDTANK][LANDER][0] = 35;
+		damageMatrix[MDTANK][LANDER][1] = -1;
+//		damageMatrix[MDTANK][SUB][0] = 10;
+//		damageMatrix[MDTANK][SUB][1] = -1;
 
 		// neotank
 		damageMatrix[NEOTANK][INFANTRY][0] = 35; // will not be used
@@ -187,8 +214,8 @@ public class DamageHandler {
 		damageMatrix[NEOTANK][TANK][1] = 10;
 		damageMatrix[NEOTANK][MDTANK][0] = 75;
 		damageMatrix[NEOTANK][MDTANK][1] = 1;
-//		damageMatrix[NEOTANK][NEOTANK][0] = 55;
-//		damageMatrix[NEOTANK][NEOTANK][1] = 1;
+		damageMatrix[NEOTANK][NEOTANK][0] = 55;
+		damageMatrix[NEOTANK][NEOTANK][1] = 1;
 		damageMatrix[NEOTANK][APC][0] = 125;
 		damageMatrix[NEOTANK][APC][1] = 65;
 		damageMatrix[NEOTANK][ARTILLERY][0] = 115;
@@ -199,14 +226,43 @@ public class DamageHandler {
 //		damageMatrix[NEOTANK][A_AIR][1] = 17;
 //		damageMatrix[NEOTANK][MISSILES][0] = 125;
 //		damageMatrix[NEOTANK][MISSILES][1] = 55;
-//		damageMatrix[NEOTANK][PLANE][1] = -1;
+		damageMatrix[NEOTANK][PLANE][0] = -1;
+		damageMatrix[NEOTANK][PLANE][1] = -1;
+//		damageMatrix[NEOTANK][BOMBER][0] = -1;
 //		damageMatrix[NEOTANK][BOMBER][1] = -1;
+//		damageMatrix[NEOTANK][BCOPTER][0] = -1;
 //		damageMatrix[NEOTANK][BCOPTER][1] = 22;
+//		damageMatrix[NEOTANK][TCOPTER][0] = -1;
 //		damageMatrix[NEOTANK][TCOPTER][1] = 55;
-		damageMatrix[NEOTANK][BATTLESHIP][1] = 15;
-//		damageMatrix[NEOTANK][CRUISER][1] = 50;
-		damageMatrix[NEOTANK][LANDER][1] = 40;
-//		damageMatrix[NEOTANK][SUB][1] = 15;
+		damageMatrix[NEOTANK][BATTLESHIP][0] = 15;
+		damageMatrix[NEOTANK][BATTLESHIP][1] = -1;
+//		damageMatrix[NEOTANK][CRUISER][0] = 50;
+//		damageMatrix[NEOTANK][CRUISER][1] = -1;
+		damageMatrix[NEOTANK][LANDER][0] = 40;
+		damageMatrix[NEOTANK][LANDER][1] = -1;
+//		damageMatrix[NEOTANK][SUB][0] = 15;
+//		damageMatrix[NEOTANK][SUB][1] = -1;
+
+		// plane
+		damageMatrix[PLANE][INFANTRY][0] = -1;
+		damageMatrix[PLANE][MECH][0] = -1;
+		damageMatrix[PLANE][RECON][0] = -1;
+		damageMatrix[PLANE][TANK][0] = -1;
+		damageMatrix[PLANE][MDTANK][0] = -1;
+		damageMatrix[PLANE][NEOTANK][0] = -1;
+		damageMatrix[PLANE][APC][0] = -1;
+		damageMatrix[PLANE][ARTILLERY][0] = -1;
+		damageMatrix[PLANE][ROCKET][0] = -1;
+//		damageMatrix[PLANE][A_AIR][0] = -1;
+//		damageMatrix[PLANE][MISSILES][0] = -1;
+		damageMatrix[PLANE][PLANE][0] = 55;
+//		damageMatrix[PLANE][BOMBER][0] = 100;
+//		damageMatrix[PLANE][BCOPTER][0] = 100;
+//		damageMatrix[PLANE][TCOPTER][0] = 100;
+		damageMatrix[PLANE][BATTLESHIP][0] = -1;
+//		damageMatrix[PLANE][CRUISER][0] = -1;
+		damageMatrix[PLANE][LANDER][0] = -1;
+//		damageMatrix[PLANE][SUB][0] = -1;
 	}
 
 	public static void handleAttack(Unit attacking, Unit defending) {
