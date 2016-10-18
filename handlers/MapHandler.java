@@ -26,7 +26,7 @@ public class MapHandler {
 								SHORE = 10;
 
 	public static final int tileSize = 40;
-	private static final int numberOfMovementTypes = 6;
+	private static final int numberOfMovementTypes = 7;
 	private static final int numberOfAreaTypes = 11;
 
 	private static int[][] map, movementCostMatrix;

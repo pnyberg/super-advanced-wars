@@ -843,6 +843,8 @@ public class Gameboard extends JPanel implements KeyListener {
 		int attUnitType = DamageHandler.getTypeFromUnit(attackingUnit);
 		int targetUnitType = DamageHandler.getTypeFromUnit(targetUnit);
 
+		System.out.println(attUnitType + " " + targetUnitType);
+
 		return DamageHandler.getDamageValue(attUnitType, targetUnitType, 0) > -1
 			|| DamageHandler.getDamageValue(attUnitType, targetUnitType, 1) > -1;
 	}
