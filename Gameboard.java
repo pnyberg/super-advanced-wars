@@ -565,35 +565,47 @@ public class Gameboard extends JPanel implements KeyListener {
 		int yDiff = cursorY - unitY;
 
 		if (xDiff == 1) {
-			if (unitY < (mapHeight - 1) && MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY + 1) != null) {
+			Unit leftDown = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY + 1);
+			Unit leftOnly = MapHandler.getNonFriendlyUnit(cursorX - 2, cursorY);
+			Unit leftUp = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY - 1);
+			if (unitY < (mapHeight - 1) && leftDown != null && validTarget(chosenUnit, leftDown)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
-			} else if (unitX > 0 && MapHandler.getNonFriendlyUnit(cursorX - 2, cursorY) != null) {
+			} else if (unitX > 0 && leftOnly != null && validTarget(chosenUnit, leftOnly)) {
 				cursor.setPosition(cursorX - 2, cursorY);
-			} else if (MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY - 1) != null) {
+			} else if (leftUp != null && validTarget(chosenUnit, leftUp)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			}
 		} else if (yDiff == 1) {
-			if (unitX > 0 && MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY - 1) != null) {
+			Unit upLeft = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY - 1);
+			Unit upOnly = MapHandler.getNonFriendlyUnit(cursorX, cursorY - 2);
+			Unit upRight = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY - 1);
+			if (unitX > 0 && upLeft != null && validTarget(chosenUnit, upLeft)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
-			} else if (unitY > 0 && MapHandler.getNonFriendlyUnit(cursorX, cursorY - 2) != null) {
+			} else if (unitY > 0 && upOnly != null && validTarget(chosenUnit, upOnly)) {
 				cursor.setPosition(cursorX, cursorY - 2);
-			} else if (MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY - 1) != null) {
+			} else if (upRight != null && validTarget(chosenUnit, upRight)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			}
 		} else if (xDiff == -1) {
-			if (unitY > 0 && MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY - 1) != null) {
+			Unit rightDown = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY - 1);
+			Unit rightOnly = MapHandler.getNonFriendlyUnit(cursorX + 2, cursorY);
+			Unit rightUp = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY + 1);
+			if (unitY > 0 && rightDown != null && validTarget(chosenUnit, rightDown)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
-			} else if (unitX < (mapWidth - 1) && MapHandler.getNonFriendlyUnit(cursorX + 2, cursorY) != null) {
+			} else if (unitX < (mapWidth - 1) && rightOnly != null && validTarget(chosenUnit, rightOnly)) {
 				cursor.setPosition(cursorX + 2, cursorY);
-			} else if (MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY + 1) != null) {
+			} else if (rightUp != null && validTarget(chosenUnit, rightUp)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			}
 		} else { // yDiff == -1
-			if (unitX < (mapWidth - 1) && MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY + 1) != null) {
+			Unit downLeft = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY + 1);
+			Unit downOnly = MapHandler.getNonFriendlyUnit(cursorX, cursorY + 2);
+			Unit downRight = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY + 1);
+			if (unitX < (mapWidth - 1) && downLeft != null && validTarget(chosenUnit, downLeft)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
-			} else if (unitY < (mapHeight - 1) && MapHandler.getNonFriendlyUnit(cursorX, cursorY + 2) != null) {
+			} else if (unitY < (mapHeight - 1) && downOnly != null && validTarget(chosenUnit, downOnly)) {
 				cursor.setPosition(cursorX, cursorY + 2);
-			} else if (MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY + 1) != null) {
+			} else if (downRight != null && validTarget(chosenUnit, downRight)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			}
 		}
@@ -610,35 +622,47 @@ public class Gameboard extends JPanel implements KeyListener {
 
 
 		if (xDiff == 1) {
-			if (unitY > 0 && MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY - 1) != null) {
+			Unit leftUp = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY - 1);
+			Unit leftOnly = MapHandler.getNonFriendlyUnit(cursorX - 2, cursorY);
+			Unit leftDown = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY + 1);
+			if (unitY > 0 && leftUp != null && validTarget(chosenUnit, leftUp)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
-			} else if (unitX > 0 && MapHandler.getNonFriendlyUnit(cursorX - 2, cursorY) != null) {
+			} else if (unitX > 0 && leftOnly != null && validTarget(chosenUnit, leftOnly)) {
 				cursor.setPosition(cursorX - 2, cursorY);
-			} else if (MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY + 1) != null) {
+			} else if (leftDown != null && validTarget(chosenUnit, leftDown)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			}
 		} else if (yDiff == 1) {
-			if (unitX < (mapWidth - 1) && MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY - 1) != null) {
+			Unit upRight = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY - 1);
+			Unit upOnly = MapHandler.getNonFriendlyUnit(cursorX, cursorY - 2);
+			Unit upLeft = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY - 1);
+			if (unitX < (mapWidth - 1) && upRight != null && validTarget(chosenUnit, upRight)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
-			} else if (unitY > 0 && MapHandler.getNonFriendlyUnit(cursorX, cursorY - 2) != null) {
+			} else if (unitY > 0 && upOnly != null && validTarget(chosenUnit, upOnly)) {
 				cursor.setPosition(cursorX, cursorY - 2);
-			} else if (MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY - 1) != null) {
+			} else if (upLeft != null && validTarget(chosenUnit, upLeft)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			}
 		} else if (xDiff == -1) {
-			if (unitY < (mapHeight - 1) && MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY + 1) != null) {
+			Unit rightUp = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY + 1);
+			Unit rightOnly = MapHandler.getNonFriendlyUnit(cursorX + 2, cursorY);
+			Unit rightDown = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY - 1);
+			if (unitY < (mapHeight - 1) && rightUp != null && validTarget(chosenUnit, rightUp)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
-			} else if (unitX < (mapWidth - 1) && MapHandler.getNonFriendlyUnit(cursorX + 2, cursorY) != null) {
+			} else if (unitX < (mapWidth - 1) && rightOnly != null && validTarget(chosenUnit, rightOnly)) {
 				cursor.setPosition(cursorX + 2, cursorY);
-			} else if (MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY - 1) != null) {
+			} else if (rightDown != null && validTarget(chosenUnit, rightDown)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			}
 		} else { // yDiff == -1
-			if (unitX > 0 && MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY + 1) != null) {
+			Unit downRight = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY + 1);
+			Unit downOnly = MapHandler.getNonFriendlyUnit(cursorX, cursorY + 2);
+			Unit downLeft = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY + 1);
+			if (unitX > 0 && downRight != null && validTarget(chosenUnit, downRight)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
-			} else if (unitY < (mapHeight - 1) && MapHandler.getNonFriendlyUnit(cursorX, cursorY + 2) != null) {
+			} else if (unitY < (mapHeight - 1) && downOnly != null && validTarget(chosenUnit, downOnly)) {
 				cursor.setPosition(cursorX, cursorY + 2);
-			} else if (MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY + 1) != null) {
+			} else if (downLeft != null && validTarget(chosenUnit, downLeft)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			}
 		}
@@ -842,11 +866,6 @@ public class Gameboard extends JPanel implements KeyListener {
 	private boolean validTarget(Unit attackingUnit, Unit targetUnit) {
 		int attUnitType = DamageHandler.getTypeFromUnit(attackingUnit);
 		int targetUnitType = DamageHandler.getTypeFromUnit(targetUnit);
-
-		System.out.println(attUnitType + " " + targetUnitType);
-
-		System.out.println(DamageHandler.getBaseDamageValue(attUnitType, targetUnitType, 0));
-		System.out.println(DamageHandler.getBaseDamageValue(attUnitType, targetUnitType, 1));
 
 		return DamageHandler.getBaseDamageValue(attUnitType, targetUnitType, 0) > -1
 			|| DamageHandler.getBaseDamageValue(attUnitType, targetUnitType, 1) > -1;

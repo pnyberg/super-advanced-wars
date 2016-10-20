@@ -90,7 +90,7 @@ public class DamageHandler {
 		damageMatrix[MECH][ROCKET][0] = 85;
 		damageMatrix[MECH][ROCKET][1] = 35;
 		damageMatrix[MECH][A_AIR][0] = 65;
-//		damageMatrix[MECH][A_AIR][1] = 6;
+		damageMatrix[MECH][A_AIR][1] = 6;
 //		damageMatrix[MECH][MISSILES][0] = 85;
 //		damageMatrix[MECH][MISSILES][1] = 35;
 		damageMatrix[MECH][FIGHTER][0] = -1;
@@ -307,7 +307,7 @@ public class DamageHandler {
 //		damageMatrix[BOMBER][MISSILES][0] = 105;
 		damageMatrix[BOMBER][FIGHTER][0] = -1;
 		damageMatrix[BOMBER][BOMBER][0] = -1;
-//		damageMatrix[BOMBER][BCOPTER][0] = -1;
+		damageMatrix[BOMBER][BCOPTER][0] = -1;
 //		damageMatrix[BOMBER][TCOPTER][0] = -1;
 		damageMatrix[BOMBER][BATTLESHIP][0] = 75;
 //		damageMatrix[BOMBER][CRUISER][0] = 85;
@@ -315,9 +315,9 @@ public class DamageHandler {
 //		damageMatrix[BOMBER][SUB][0] = 95;
 
 		// bcopter
-		damageMatrix[BCOPTER][INFANTRY][0] = -1; // will not be used
+		damageMatrix[BCOPTER][INFANTRY][0] = -1;
 		damageMatrix[BCOPTER][INFANTRY][1] = 75;
-		damageMatrix[BCOPTER][MECH][0] = -1; // will not be used
+		damageMatrix[BCOPTER][MECH][0] = -1;
 		damageMatrix[BCOPTER][MECH][1] = 75;
 		damageMatrix[BCOPTER][RECON][0] = 55;
 		damageMatrix[BCOPTER][RECON][1] = 30;
