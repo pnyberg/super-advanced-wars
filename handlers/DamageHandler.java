@@ -20,12 +20,12 @@ public class DamageHandler {
 //		A_AIR = 9,
 //		MISSILES = 10,
 		FIGHTER = 9, //11,
-//		BOMBER = 12,
+		BOMBER = 10, //12,
 //		BCOPTER = 13,
 //		TCOPTER = 14,
-		BATTLESHIP = 10, // 15,
+		BATTLESHIP = 11, // 15,
 //		CRUISER = 16,
-		LANDER = 11; //17,
+		LANDER = 12; //17,
 //		SUB = 18;
 
 	public static void init() {
@@ -39,6 +39,7 @@ public class DamageHandler {
 			damageMatrix[INFANTRY][i][0] = -1;
 			damageMatrix[RECON][i][0] = -1;
 			damageMatrix[FIGHTER][i][1] = -1;
+			damageMatrix[BOMBER][i][1] = -1;
 		}
 
 		// infantry
@@ -54,7 +55,7 @@ public class DamageHandler {
 //		damageMatrix[INFANTRY][A_AIR][1] = 5;
 //		damageMatrix[INFANTRY][MISSILES][1] = 25;
 		damageMatrix[INFANTRY][FIGHTER][1] = -1;
-//		damageMatrix[INFANTRY][BOMBER][1] = -1;
+		damageMatrix[INFANTRY][BOMBER][1] = -1;
 //		damageMatrix[INFANTRY][BCOPTER][1] = 7;
 //		damageMatrix[INFANTRY][TCOPTER][1] = 30;
 		damageMatrix[INFANTRY][BATTLESHIP][1] = -1;
@@ -87,8 +88,8 @@ public class DamageHandler {
 //		damageMatrix[MECH][MISSILES][1] = 35;
 		damageMatrix[MECH][FIGHTER][0] = -1;
 		damageMatrix[MECH][FIGHTER][1] = -1;
-//		damageMatrix[MECH][BOMBER][0] = -1;
-//		damageMatrix[MECH][BOMBER][1] = -1;
+		damageMatrix[MECH][BOMBER][0] = -1;
+		damageMatrix[MECH][BOMBER][1] = -1;
 //		damageMatrix[MECH][BCOPTER][0] = -1;
 //		damageMatrix[MECH][BCOPTER][1] = 9;
 //		damageMatrix[MECH][TCOPTER][0] = -1;
@@ -115,7 +116,7 @@ public class DamageHandler {
 //		damageMatrix[RECON][A_AIR][1] = 4;
 //		damageMatrix[RECON][MISSILES][1] = 28;
 		damageMatrix[RECON][FIGHTER][1] = -1;
-//		damageMatrix[RECON][BOMBER][1] = -1;
+		damageMatrix[RECON][BOMBER][1] = -1;
 //		damageMatrix[RECON][BCOPTER][1] = 10;
 //		damageMatrix[RECON][TCOPTER][1] = 35;
 		damageMatrix[RECON][BATTLESHIP][1] = -1;
@@ -148,8 +149,8 @@ public class DamageHandler {
 //		damageMatrix[TANK][MISSILES][1] = 30;
 		damageMatrix[TANK][FIGHTER][0] = -1;
 		damageMatrix[TANK][FIGHTER][1] = -1;
-//		damageMatrix[TANK][BOMBER][0] = -1;
-//		damageMatrix[TANK][BOMBER][1] = -1;
+		damageMatrix[TANK][BOMBER][0] = -1;
+		damageMatrix[TANK][BOMBER][1] = -1;
 //		damageMatrix[TANK][BCOPTER][0] = -1;
 //		damageMatrix[TANK][BCOPTER][1] = 10;
 //		damageMatrix[TANK][TCOPTER][0] = -1;
@@ -188,8 +189,8 @@ public class DamageHandler {
 //		damageMatrix[MDTANK][MISSILES][1] = 35;
 		damageMatrix[MDTANK][FIGHTER][0] = -1;
 		damageMatrix[MDTANK][FIGHTER][1] = -1;
-//		damageMatrix[MDTANK][BOMBER][0] = -1;
-//		damageMatrix[MDTANK][BOMBER][1] = -1;
+		damageMatrix[MDTANK][BOMBER][0] = -1;
+		damageMatrix[MDTANK][BOMBER][1] = -1;
 //		damageMatrix[MDTANK][BCOPTER][0] = -1;
 //		damageMatrix[MDTANK][BCOPTER][1] = 12;
 //		damageMatrix[MDTANK][TCOPTER][0] = -1;
@@ -228,8 +229,8 @@ public class DamageHandler {
 //		damageMatrix[NEOTANK][MISSILES][1] = 55;
 		damageMatrix[NEOTANK][FIGHTER][0] = -1;
 		damageMatrix[NEOTANK][FIGHTER][1] = -1;
-//		damageMatrix[NEOTANK][BOMBER][0] = -1;
-//		damageMatrix[NEOTANK][BOMBER][1] = -1;
+		damageMatrix[NEOTANK][BOMBER][0] = -1;
+		damageMatrix[NEOTANK][BOMBER][1] = -1;
 //		damageMatrix[NEOTANK][BCOPTER][0] = -1;
 //		damageMatrix[NEOTANK][BCOPTER][1] = 22;
 //		damageMatrix[NEOTANK][TCOPTER][0] = -1;
@@ -243,7 +244,7 @@ public class DamageHandler {
 //		damageMatrix[NEOTANK][SUB][0] = 15;
 //		damageMatrix[NEOTANK][SUB][1] = -1;
 
-		// FIGHTER
+		// fighter
 		damageMatrix[FIGHTER][INFANTRY][0] = -1;
 		damageMatrix[FIGHTER][MECH][0] = -1;
 		damageMatrix[FIGHTER][RECON][0] = -1;
@@ -256,13 +257,34 @@ public class DamageHandler {
 //		damageMatrix[FIGHTER][A_AIR][0] = -1;
 //		damageMatrix[FIGHTER][MISSILES][0] = -1;
 		damageMatrix[FIGHTER][FIGHTER][0] = 55;
-//		damageMatrix[FIGHTER][BOMBER][0] = 100;
+		damageMatrix[FIGHTER][BOMBER][0] = 100;
 //		damageMatrix[FIGHTER][BCOPTER][0] = 100;
 //		damageMatrix[FIGHTER][TCOPTER][0] = 100;
 		damageMatrix[FIGHTER][BATTLESHIP][0] = -1;
 //		damageMatrix[FIGHTER][CRUISER][0] = -1;
 		damageMatrix[FIGHTER][LANDER][0] = -1;
 //		damageMatrix[FIGHTER][SUB][0] = -1;
+
+		// bomber
+		damageMatrix[BOMBER][INFANTRY][0] = 110;
+		damageMatrix[BOMBER][MECH][0] = 110;
+		damageMatrix[BOMBER][RECON][0] = 105;
+		damageMatrix[BOMBER][TANK][0] = 105;
+		damageMatrix[BOMBER][MDTANK][0] = 95;
+		damageMatrix[BOMBER][NEOTANK][0] = 90;
+		damageMatrix[BOMBER][APC][0] = 105;
+		damageMatrix[BOMBER][ARTILLERY][0] = 105;
+		damageMatrix[BOMBER][ROCKET][0] = 105;
+//		damageMatrix[BOMBER][A_AIR][0] = 95;
+//		damageMatrix[BOMBER][MISSILES][0] = 105;
+		damageMatrix[BOMBER][FIGHTER][0] = -1;
+		damageMatrix[BOMBER][BOMBER][0] = -1;
+//		damageMatrix[BOMBER][BCOPTER][0] = -1;
+//		damageMatrix[BOMBER][TCOPTER][0] = -1;
+		damageMatrix[BOMBER][BATTLESHIP][0] = 75;
+//		damageMatrix[BOMBER][CRUISER][0] = 85;
+		damageMatrix[BOMBER][LANDER][0] = 95;
+//		damageMatrix[BOMBER][SUB][0] = 95;
 	}
 
 	public static void handleAttack(Unit attacking, Unit defending) {
@@ -283,7 +305,11 @@ public class DamageHandler {
 			return;
 		}
 
-		if (attacking instanceof IndirectUnit || defending instanceof IndirectUnit) {
+		if (attacking instanceof IndirectUnit
+			|| defending instanceof IndirectUnit
+			|| defending instanceof APC
+			|| defending instanceof Lander
+			/*|| defending instanceof TCopter*/) {
 			return;
 		}
 
@@ -299,7 +325,7 @@ public class DamageHandler {
 		int attType = getTypeFromUnit(attacker);
 		int defType = getTypeFromUnit(defender);
 
-		int weaponIndex = 1; // 0 eller 1
+		int weaponIndex = getWeaponIndex(attacker, defender); // 0 or 1
 
 		int baseDamage = damageMatrix[attType][defType][weaponIndex];
 		int heroAttackValue = attHero.getAttackValue(attType);
@@ -308,12 +334,13 @@ public class DamageHandler {
 		int areaDefenceValue = MapHandler.getDefenceValue(defTerrainType);
 
 		int attackingAffect = attacker.getHP() / 10 * ((baseDamage * heroAttackValue) / 100 + rngNumber) / 10;
-		int defendingAffect = (200 - (heroDefenceValue + defTerrainType * defender.getHP() / 10)) / 10;
+		int defendingAffect = (200 - (heroDefenceValue + areaDefenceValue * defender.getHP() / 10)) / 10;
 		int damageValue = attackingAffect * defendingAffect / 10;
 
 		defender.takeDamage(damageValue);
 
-		System.out.println("Damagevalue: " + damageValue);
+		System.out.println("BaseDamage: " + baseDamage + " (" + attackingAffect + "*" + defendingAffect + ")");
+		System.out.println("Damagevalue: " + damageValue + " of type: " + attType);
 	}
 
 	public static int getTypeFromUnit(Unit unit) {
@@ -341,10 +368,12 @@ public class DamageHandler {
 			return MISSILES;*/
 		} else if (unit instanceof Fighter) {
 			return FIGHTER;
-/*		} else if (unit instanceof Bomber) {
+		} else if (unit instanceof Bomber) {
 			return BOMBER;
-		} else if (unit instanceof Bcopter) {
-			return BCOPTER;*/
+/*		} else if (unit instanceof BCopter) {
+			return BCOPTER;
+		} else if (unit instanceof TCopter) {
+			return TCOPTER;*/
 		} else if (unit instanceof Battleship) {
 			return BATTLESHIP;
 /*		} else if (unit instanceof Cruiser) {
@@ -354,6 +383,80 @@ public class DamageHandler {
 /*		} else if (unit instanceof Sub) {
 			return SUB;*/
 		}
+		return -1;
+	}
+
+	private static int getWeaponIndex(Unit attacker, Unit defender) {
+		if (attacker instanceof Infantry) {
+			return 1;
+		} else if (attacker instanceof Mech) {
+			if (defender instanceof Infantry 
+				/*|| defender instanceof Bcopter
+				|| defender instanceof TCopter*/) {
+				return 1;
+			}
+			return 0;
+		} else if (attacker instanceof Recon) {
+			return 1;
+		} else if (attacker instanceof Tank) {
+			if (defender instanceof Infantry
+				 || defender instanceof Mech 
+				/*|| defender instanceof Bcopter
+				|| defender instanceof TCopter*/) {
+				return 1;
+			}
+			return 0;
+		} else if (attacker instanceof MDTank) {
+			if (defender instanceof Infantry
+				 || defender instanceof Mech 
+				/*|| defender instanceof Bcopter
+				|| defender instanceof TCopter*/) {
+				return 1;
+			}
+			return 0;
+		} else if (attacker instanceof Neotank) {
+			if (defender instanceof Infantry
+				 || defender instanceof Mech 
+				/*|| defender instanceof Bcopter
+				|| defender instanceof TCopter*/) {
+				return 1;
+			}
+			return 0;
+		} else if (attacker instanceof APC) {
+			// Do nothing
+		} else if (attacker instanceof Artillery) {
+			return 0;
+		} else if (attacker instanceof Rocket) {
+			return 0;
+/*		} else if (attacker instanceof AAir) {
+			return 0;
+		} else if (attacker instanceof Missiles) {
+			return 0;*/
+		} else if (attacker instanceof Fighter) {
+			return 0;
+		} else if (attacker instanceof Bomber) {
+			return 0;
+/*		} else if (attacker instanceof Bcopter) {
+			if (defender instanceof Infantry
+				|| defender instanceof Mech 
+				|| defender instanceof Bcopter
+				|| defender instanceof TCopter) {
+				return 1;
+			}
+			return 0; */
+		} else if (attacker instanceof Battleship) {
+			return 0;
+/*		} else if (attacker instanceof Cruiser) {
+			if (defender instanceof Sub) {
+				return 0;
+			}
+			return 1; */
+		} else if (attacker instanceof Lander) {
+			// Do nothing
+/*		} else if (attacker instanceof Sub) {
+			return 1;*/
+		}
+
 		return -1;
 	}
 

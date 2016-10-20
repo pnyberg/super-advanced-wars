@@ -72,7 +72,7 @@ public class Fighter extends Unit {
 		g.setColor(Color.black);
 		g.drawOval(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
 
-		// cannon
+		// wings
 		if (active) {
 			g.setColor(color);
 		} else {

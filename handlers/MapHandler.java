@@ -262,6 +262,7 @@ public class MapHandler {
 		hero1.addTroop(new APC(3, 2, hero1.getColor()));
 		hero1.addTroop(new Lander(8, 5, hero1.getColor()));
 		hero1.addTroop(new Fighter(10, 2, hero1.getColor()));
+		hero1.addTroop(new Bomber(10, 4, hero1.getColor()));
 
 		hero2.addTroop(new Infantry(6, 6, hero2.getColor()));
 		hero2.addTroop(new Infantry(5, 7, hero2.getColor()));

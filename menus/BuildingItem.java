@@ -35,6 +35,8 @@ public class BuildingItem {
 
 		BuildingItem[] newAirportItems = {	
 //						new BuildingItem("B Copter", 9000),
+						new BuildingItem(Fighter.getTypeName(), Fighter.getPrice()),
+						new BuildingItem(Bomber.getTypeName(), Bomber.getPrice())
 					};
 
 		factoryItems = newFactoryItems;
