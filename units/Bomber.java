@@ -10,7 +10,7 @@ public class Bomber extends Unit {
 	public Bomber(int x, int y, Color color) {
 		super(x, y, color);
 
-		movement = 7; // ??
+		movement = 7;
 		movementType = Unit.AIR;
 		unitClass = Unit.PLANE;
 	}
