@@ -155,7 +155,7 @@ public class MapHandler {
 		map[7][2] = MOUNTAIN;
 
 		map[2][3] = PLAIN;
-		map[7][3] = MOUNTAIN;
+		map[7][3] = AIRPORT;
 
 		map[2][4] = FACTORY;
 		map[4][4] = WOOD;
@@ -202,9 +202,11 @@ public class MapHandler {
 		// buildings-part
 		initBuildings();
 
-		Building building = getBuilding(2, 4);
+		Building building = getBuilding(2, 4); // factory
 		building.setOwnership(portrait.getCurrentHero());
-		building = getBuilding(4, 8);
+		building = getBuilding(4, 8); // port
+		building.setOwnership(portrait.getCurrentHero());
+		building = getBuilding(7, 3); // airport
 		building.setOwnership(portrait.getCurrentHero());
 	}
 

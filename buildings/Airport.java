@@ -15,12 +15,25 @@ public class Airport extends Building {
 		int paintX = x * tileSize;
 		int paintY = y * tileSize;
 
-		g.setColor(Color.white);
+		if (owner == null) {
+			g.setColor(Color.white);
+		} else {
+			g.setColor(owner.getColor());
+		}
 		g.fillRect(paintX, paintY, tileSize, tileSize);
 		g.setColor(Color.black);
 		g.drawRect(paintX, paintY, tileSize, tileSize);
 
-		g.drawLine(paintX, paintY, paintX + tileSize, paintY + tileSize);
-		g.drawLine(paintX, paintY + tileSize, paintX + tileSize, paintY);
+		int baseX = paintX + tileSize / 4;
+		int baseY = paintY + tileSize / 4;
+		int baseDiameter = tileSize / 2;
+
+		int towerX = paintX + tileSize / 8;
+		int towerY = paintY + tileSize / 8;
+		int towerHeight = tileSize / 2;
+		int towerWidth = tileSize / 8;
+
+		g.drawOval(baseX, baseY, baseDiameter, baseDiameter);
+		g.drawRect(towerX, towerY, towerWidth, towerHeight);
 	}
 }
