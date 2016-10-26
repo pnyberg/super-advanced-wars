@@ -36,9 +36,10 @@ public class BuildingItem {
 				};
 
 		BuildingItem[] newAirportItems = {	
-						new BuildingItem(BCopter.getTypeName(), BCopter.getPrice()),
 						new BuildingItem(Fighter.getTypeName(), Fighter.getPrice()),
-						new BuildingItem(Bomber.getTypeName(), Bomber.getPrice())
+						new BuildingItem(Bomber.getTypeName(), Bomber.getPrice()),
+						new BuildingItem(BCopter.getTypeName(), BCopter.getPrice()),
+						new BuildingItem(TCopter.getTypeName(), TCopter.getPrice())
 					};
 
 		factoryItems = newFactoryItems;

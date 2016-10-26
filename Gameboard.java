@@ -150,6 +150,11 @@ public class Gameboard extends JPanel implements KeyListener {
 						Unit exitingUnit = ((Lander)chosenUnit).removeChosenUnit();
 						exitingUnit.moveTo(cursor.getX(), cursor.getY());
 						exitingUnit.regulateActive(false);
+					} else if (chosenUnit instanceof TCopter) {
+						((TCopter)chosenUnit).regulateDroppingOff(false);
+						Unit exitingUnit = ((TCopter)chosenUnit).removeUnit();
+						exitingUnit.moveTo(cursor.getX(), cursor.getY());
+						exitingUnit.regulateActive(false);
 					}
 
 					chosenUnit.regulateActive(false);
@@ -195,6 +200,8 @@ public class Gameboard extends JPanel implements KeyListener {
 						((APC)entryUnit).addUnit(chosenUnit);
 					} else if (entryUnit instanceof Lander) {
 						((Lander)entryUnit).addUnit(chosenUnit);
+					} else if (entryUnit instanceof TCopter) {
+						((TCopter)entryUnit).addUnit(chosenUnit);
 					}
 					// @TODO unit enters other unit
 				}
@@ -247,6 +254,8 @@ public class Gameboard extends JPanel implements KeyListener {
 					((APC)chosenUnit).regulateDroppingOff(false);
 				} else if (chosenUnit instanceof Lander) {
 					((Lander)chosenUnit).regulateDroppingOff(false);
+				} else if (chosenUnit instanceof TCopter) {
+					((TCopter)chosenUnit).regulateDroppingOff(false);
 				}
 			} else if (unitWantToFire()) {
 				if (chosenUnit instanceof IndirectUnit) {
@@ -349,6 +358,9 @@ public class Gameboard extends JPanel implements KeyListener {
 		} else if (chosenUnit instanceof Lander) {
 			((Lander)chosenUnit).regulateDroppingOff(true);
 			containedUnit = ((Lander)chosenUnit).getChosenUnit();
+		} else if (chosenUnit instanceof TCopter) {
+			((TCopter)chosenUnit).regulateDroppingOff(true);
+			containedUnit = ((TCopter)chosenUnit).getUnit();
 		}
 
 		if (containedUnit == null) {
@@ -395,6 +407,10 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (((Lander)chosenUnit).isDroppingOff()) {
 				return false;
 			}
+		} else if (chosenUnit instanceof TCopter) {
+			if (((TCopter)chosenUnit).isDroppingOff()) {
+				return false;
+			}
 		}
 
 		return true;
@@ -407,6 +423,9 @@ public class Gameboard extends JPanel implements KeyListener {
 		} else if (chosenUnit instanceof Lander) {
 			((Lander)chosenUnit).regulateDroppingOff(true);
 			return unitCanBeDroppedOff(((Lander)chosenUnit).getChosenUnit());
+		} else if (chosenUnit instanceof TCopter) {
+			((TCopter)chosenUnit).regulateDroppingOff(true);
+			return unitCanBeDroppedOff(((TCopter)chosenUnit).getUnit());
 		}
 
 		return false;
@@ -458,6 +477,8 @@ public class Gameboard extends JPanel implements KeyListener {
 			containedUnit = ((APC)chosenUnit).getUnit();
 		} else if (chosenUnit instanceof Lander) {
 			containedUnit = ((Lander)chosenUnit).getChosenUnit();
+		} else if (chosenUnit instanceof TCopter) {
+			containedUnit = ((TCopter)chosenUnit).getUnit();
 		} else {
 			return; // shouldn't be able to get here
 		}
@@ -514,6 +535,8 @@ public class Gameboard extends JPanel implements KeyListener {
 			((APC)chosenUnit).getUnit();
 		} else if (chosenUnit instanceof Lander) {
 			((Lander)chosenUnit).getChosenUnit();
+		} else if (chosenUnit instanceof TCopter) {
+			((TCopter)chosenUnit).getUnit();
 		} else {
 			return; // shouldn't be able to get here
 		}
@@ -712,6 +735,11 @@ public class Gameboard extends JPanel implements KeyListener {
 						unitMenu.containedCargo(holdUnit);
 					}
 				}
+			} else if (chosenUnit instanceof TCopter) {
+				if (((TCopter)chosenUnit).isFull()) {
+					Unit holdUnit = ((TCopter)chosenUnit).getUnit();
+					unitMenu.containedCargo(holdUnit);
+				}
 			}
 
 			if (landbasedEnterableUnitAtPosition(cursorX, cursorY)) {
@@ -743,10 +771,14 @@ public class Gameboard extends JPanel implements KeyListener {
 		if (unit instanceof Infantry || unit instanceof Mech) {
 			return footsoldierEnterableUnitAtPosition(x, y);
 		} else if (unit instanceof Recon ||
+					unit instanceof Tank ||
+					unit instanceof MDTank ||
+					unit instanceof Neotank ||
 					unit instanceof APC ||
 					unit instanceof Artillery ||
-					unit instanceof Tank ||
-					unit instanceof Rocket) {
+					unit instanceof Rocket ||
+					unit instanceof AAir ||
+					unit instanceof Missiles) {
 			return landbasedEnterableUnitAtPosition(x, y);
 		}
 
@@ -761,6 +793,9 @@ public class Gameboard extends JPanel implements KeyListener {
 		Unit unit = MapHandler.getFriendlyUnit(x, y);
 
 		if (unit instanceof APC && !((APC)unit).isFull()) {
+			return true;
+		}
+		if (unit instanceof TCopter && !((TCopter)unit).isFull()) {
 			return true;
 		}
 		return false;
@@ -805,7 +840,7 @@ public class Gameboard extends JPanel implements KeyListener {
 			return indirectUnitCanFire(cursorX, cursorY);
 		} else if (chosenUnit instanceof APC
 					|| chosenUnit instanceof Lander
-					/*|| chosenUnit instanceof TCopter*/) {
+					|| chosenUnit instanceof TCopter) {
 			return false;
 		}
 
