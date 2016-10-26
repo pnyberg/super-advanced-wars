@@ -23,9 +23,11 @@ public class BuildingItem {
 						new BuildingItem(Tank.getTypeName(), Tank.getPrice()),
 						new BuildingItem(MDTank.getTypeName(), MDTank.getPrice()),
 						new BuildingItem(Neotank.getTypeName(), Neotank.getPrice()),
+						new BuildingItem(APC.getTypeName(), APC.getPrice()),
 						new BuildingItem(Artillery.getTypeName(), Artillery.getPrice()),
-						new BuildingItem(Rocket.getTypeName(), Rocket.getPrice())/*,
-						new FactoryItem("Missiles", 12000)*/
+						new BuildingItem(Rocket.getTypeName(), Rocket.getPrice()),
+						new BuildingItem(AAir.getTypeName(), AAir.getPrice()),
+						new BuildingItem(Missiles.getTypeName(), Missiles.getPrice())
 					};
 
 		BuildingItem[] newPortItems = {	
@@ -34,7 +36,7 @@ public class BuildingItem {
 				};
 
 		BuildingItem[] newAirportItems = {	
-//						new BuildingItem("B Copter", 9000),
+						new BuildingItem(BCopter.getTypeName(), BCopter.getPrice()),
 						new BuildingItem(Fighter.getTypeName(), Fighter.getPrice()),
 						new BuildingItem(Bomber.getTypeName(), Bomber.getPrice())
 					};

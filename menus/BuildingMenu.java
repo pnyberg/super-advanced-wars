@@ -105,14 +105,14 @@ public class BuildingMenu extends Menu {
 			return new Rocket(x, y, hero.getColor());
 		} else if (unitName.equals(AAir.getTypeName())) {
 			return new AAir(x, y, hero.getColor());
-//		} else if (unitName.equals("Missiles")) {
-//			return new Missiles(x, y, hero.getColor());
+		} else if (unitName.equals(Missiles.getTypeName())) {
+			return new Missiles(x, y, hero.getColor());
 		} else if (unitName.equals(Fighter.getTypeName())) {
 			return new Fighter(x, y, hero.getColor());
 		} else if (unitName.equals(Bomber.getTypeName())) {
 			return new Bomber(x, y, hero.getColor());
-//		} else if (unitName.equals("B Copter")) {
-//			return new BCopter(x, y, hero.getColor());
+		} else if (unitName.equals(BCopter.getTypeName())) {
+			return new BCopter(x, y, hero.getColor());
 //		} else if (unitName.equals("T Copter")) {
 //			return new TCopter(x, y, hero.getColor());
 		} else if (unitName.equals(Battleship.getTypeName())) {
