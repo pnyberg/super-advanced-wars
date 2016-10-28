@@ -187,16 +187,11 @@ public class RouteHandler {
 
 		int movementType = unit.getMovementType();
 
-		System.out.println(arrowPoints.get(0).getX() + "," + arrowPoints.get(0).getY());
-
 		for (int i = 1 ; i < arrowPoints.size() ; i++) {
 			int x = arrowPoints.get(i).getX();
-			int y = arrowPoints.get(i).getX();
-			System.out.print(x + "," + y + " - ");
+			int y = arrowPoints.get(i).getY();
 			fuelUsed += MapHandler.movementCost(x, y, movementType);
 		}
-
-		System.out.println();
 
 		return fuelUsed;
 	}

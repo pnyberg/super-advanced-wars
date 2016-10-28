@@ -204,12 +204,12 @@ public class Gameboard extends JPanel implements KeyListener {
 					// @TODO unit enters other unit
 				}
 
-				// using fuel
-				int fuelUse = calculateFuelUsed();
-				chosenUnit.useFuel(fuelUse);
-				System.out.println(chosenUnit.getFuel() + " - " + chosenUnit.getAmmo());
-
 				if (unitIsntDroppingOff() && !unitWantToFire()) {
+					// using fuel
+					int fuelUse = calculateFuelUsed();
+					chosenUnit.useFuel(fuelUse);
+					System.out.println(chosenUnit.getFuel() + " - " + chosenUnit.getAmmo());
+
 					chosenUnit.regulateActive(false);
 					chosenUnit = null;
 					RouteHandler.clearMovementMap();
