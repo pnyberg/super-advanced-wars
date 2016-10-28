@@ -18,6 +18,10 @@ public class APC extends Unit {
 		attackType = Unit.NONE;
 		unitClass = Unit.VEHICLE;
 
+		maxFuel = 70;
+		maxAmmo = 0;
+		replentish();
+
 		containedUnit = null;
 		droppingOff = false;
 	}

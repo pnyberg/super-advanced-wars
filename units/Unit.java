@@ -33,7 +33,7 @@ public abstract class Unit {
 	protected static int price;
 	protected static String typeName;
 
-	protected int x, y, hp;
+	protected int x, y, hp, currentFuel, maxFuel, currentAmmo, maxAmmo;
 	protected boolean hidden, attacking, active;
 	protected Color color, restingColor;
 
@@ -50,7 +50,15 @@ public abstract class Unit {
 		attacking = false;
 		active = false;
 
+		maxFuel = 0;
+		maxAmmo = 0;
+
 		attackType = Unit.DIRECT_ATTACK;
+	}
+
+	public void replentish() {
+		currentFuel = maxFuel;
+		currentAmmo = maxAmmo;
 	}
 
 	public void moveTo(int x, int y) {

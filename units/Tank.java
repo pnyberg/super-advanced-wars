@@ -13,6 +13,10 @@ public class Tank extends Unit {
 		movement = 6;
 		movementType = Unit.BAND;
 		unitClass = Unit.VEHICLE;
+
+		maxFuel = 70;
+		maxAmmo = 9;
+		replentish();
 	}
 
 	public static void setPrice(int price) {

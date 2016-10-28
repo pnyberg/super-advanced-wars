@@ -13,6 +13,10 @@ public class Fighter extends Unit {
 		movement = 9;
 		movementType = Unit.AIR;
 		unitClass = Unit.PLANE;
+
+		maxFuel = 99;
+		maxAmmo = 9;
+		replentish();
 	}
 
 	public static void setPrice(int price) {

@@ -20,6 +20,10 @@ public class Lander extends Unit {
 		attackType = Unit.NONE;
 		unitClass = Unit.BOAT;
 
+		maxFuel = 99;
+		maxAmmo = 0;
+		replentish();
+
 		containedUnits = new ArrayList<Unit>();
 		droppingOff = false;
 		chosenIndex = -1;

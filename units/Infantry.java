@@ -13,6 +13,10 @@ public class Infantry extends Unit {
 		movement = 3;
 		movementType = Unit.INFANTRY;
 		unitClass = Unit.FOOTMAN;
+
+		maxFuel = 99;
+		maxAmmo = 0;
+		replentish();
 	}
 
 	public static void setPrice(int price) {

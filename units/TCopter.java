@@ -18,6 +18,10 @@ public class TCopter extends Unit {
 		attackType = Unit.NONE;
 		unitClass = Unit.COPTER;
 
+		maxFuel = 99;
+		maxAmmo = 0;
+		replentish();
+
 		containedUnit = null;
 		droppingOff = false;
 	}

@@ -13,6 +13,10 @@ public class Recon extends Unit {
 		movement = 8;
 		movementType = Unit.TIRE;
 		unitClass = Unit.VEHICLE;
+
+		maxFuel = 80;
+		maxAmmo = 0;
+		replentish();
 	}
 
 	public static void setPrice(int price) {

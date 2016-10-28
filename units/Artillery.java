@@ -15,6 +15,10 @@ public class Artillery extends IndirectUnit {
 		unitClass = Unit.VEHICLE;
 		minimumRange = 2;
 		maximumRange = 3;
+
+		maxFuel = 50;
+		maxAmmo = 9;
+		replentish();
 	}
 
 	public static void setPrice(int price) {

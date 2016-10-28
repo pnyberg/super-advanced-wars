@@ -13,6 +13,10 @@ public class Neotank extends Unit {
 		movement = 6;
 		movementType = Unit.BAND;
 		unitClass = Unit.VEHICLE;
+
+		maxFuel = 99;
+		maxAmmo = 9;
+		replentish();
 	}
 
 	public static void setPrice(int price) {

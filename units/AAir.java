@@ -13,6 +13,10 @@ public class AAir extends Unit {
 		movement = 6;
 		movementType = Unit.BAND;
 		unitClass = Unit.VEHICLE;
+
+		maxFuel = 60;
+		maxAmmo = 9;
+		replentish();
 	}
 
 	public static void setPrice(int price) {

@@ -15,6 +15,10 @@ public class Battleship extends IndirectUnit {
 		unitClass = Unit.BOAT;
 		minimumRange = 2;
 		maximumRange = 6;
+
+		maxFuel = 99;
+		maxAmmo = 9;
+		replentish();
 	}
 
 	public static void setPrice(int price) {

@@ -15,6 +15,10 @@ public class Rocket extends IndirectUnit {
 		unitClass = Unit.VEHICLE;
 		minimumRange = 3;
 		maximumRange = 5;
+
+		maxFuel = 50;
+		maxAmmo = 6;
+		replentish();
 	}
 
 	public static void setPrice(int price) {

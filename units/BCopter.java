@@ -13,6 +13,10 @@ public class BCopter extends Unit {
 		movement = 6;
 		movementType = Unit.AIR;
 		unitClass = Unit.COPTER;
+
+		maxFuel = 99;
+		maxAmmo = 6;
+		replentish();
 	}
 
 	public static void setPrice(int price) {

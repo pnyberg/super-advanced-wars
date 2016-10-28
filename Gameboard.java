@@ -17,7 +17,6 @@ import javax.swing.JPanel;
  * - enter classes for HQ, ev Silo
  * - fuel and ammo
  * - FOG
- * - show possible damage before firing
  * - hero-abilities and powers
  * - removed recalculating route which also removes movement-control within accepted area (infantrys may take more than three steps)
  *   - infantry may go over two mountains (very bad)

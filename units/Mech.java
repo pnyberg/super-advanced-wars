@@ -13,6 +13,10 @@ public class Mech extends Unit {
 		movement = 2;
 		movementType = Unit.MECH;
 		unitClass = Unit.FOOTMAN;
+
+		maxFuel = 70;
+		maxAmmo = 3;
+		replentish();
 	}
 
 	public static void setPrice(int price) {
