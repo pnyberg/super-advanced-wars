@@ -15,7 +15,6 @@ import javax.swing.JPanel;
  * TODO-list
  * - capting
  * - enter classes for HQ, ev Silo
- * - creating units
  * - fuel and ammo
  * - FOG
  * - show possible damage before firing
@@ -1043,6 +1042,8 @@ public class Gameboard extends JPanel implements KeyListener {
 			unitMenu.paint(g);
 		} else if (buildingMenu.isVisible()) {
 			buildingMenu.paint(g);
+		} else if (unitWantToFire()) {
+			paintFiringCursor(g);
 		} else {
 			cursor.paint(g);
 		}
@@ -1066,5 +1067,61 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 			}
 		}
+	}
+
+	private void paintFiringCursor(Graphics g) {
+		int tileSize = MapHandler.tileSize;
+
+		int x = cursor.getX();
+		int y = cursor.getY();
+
+		int xDiff = x - chosenUnit.getX();
+		int yDiff = y - chosenUnit.getY();
+
+		Unit targetUnit = MapHandler.getNonFriendlyUnit(x, y);
+
+		int chosenUnitType = DamageHandler.getTypeFromUnit(chosenUnit);
+		int targetUnitType = DamageHandler.getTypeFromUnit(targetUnit);
+
+		int damage = Math.max(DamageHandler.getBaseDamageValue(chosenUnitType, targetUnitType, 0), 
+							DamageHandler.getBaseDamageValue(chosenUnitType, targetUnitType, 1));
+
+		int damageFieldWidth = (damage <= 9 ? 3 * tileSize / 5 : 
+									(damage <= 99 ? 4 * tileSize / 5
+										: tileSize - 3));
+		int damageFieldHeight = 3 * tileSize / 5;
+
+		int paintX = x * tileSize + 2;
+		int paintY = y * tileSize + 2;
+		int dmgFieldX = x * tileSize; // will be changed
+		int dmgFieldY = y * tileSize; // will be changed
+
+		g.setColor(Color.black);
+		g.drawOval(paintX, paintY, tileSize - 4, tileSize - 4);
+		g.drawOval(paintX + 2, paintY + 2, tileSize - 8, tileSize - 8);
+
+		g.setColor(Color.white);
+		g.drawOval(paintX + 1, paintY + 1, tileSize - 6, tileSize - 6);
+
+		if (yDiff == -1) {
+			dmgFieldX += tileSize;
+			dmgFieldY += -damageFieldHeight;
+		} else if (xDiff == 1) {
+			dmgFieldX += tileSize;
+			dmgFieldY += tileSize;
+		} else if (yDiff == 1) {
+			dmgFieldX += -damageFieldWidth;
+			dmgFieldY += tileSize;
+		} else { // xDiff == -1
+			dmgFieldX += -damageFieldWidth;
+			dmgFieldY += -damageFieldHeight;
+		}
+
+		g.setColor(Color.red);
+		g.fillRect(dmgFieldX, dmgFieldY, damageFieldWidth, damageFieldHeight);
+		g.setColor(Color.black);
+		g.drawRect(dmgFieldX, dmgFieldY, damageFieldWidth, damageFieldHeight);
+		g.setColor(Color.white);
+		g.drawString("" + damage + "%", dmgFieldX + damageFieldWidth / 10, dmgFieldY + 2 * damageFieldHeight / 3);
 	}
 }

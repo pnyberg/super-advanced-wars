@@ -36,6 +36,14 @@ public class Cursor {
 		y = newY;
 	}
 
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
 	public void paint(Graphics g) {
 		int tileSize = MapHandler.tileSize;
 		int smallPiece = tileSize / 20 + 1;
@@ -95,13 +103,5 @@ public class Cursor {
 		g.drawLine(posX + tileSize - bigPiece, posY + tileSize, posX + tileSize - bigPiece, posY + tileSize - smallPiece);
 		g.drawLine(posX + tileSize - bigPiece, posY + tileSize - smallPiece, posX + tileSize - smallPiece, posY + tileSize - smallPiece);
 		g.drawLine(posX + tileSize - smallPiece, posY + tileSize - smallPiece, posX + tileSize - smallPiece, posY + tileSize - bigPiece);
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
 	}
 }
