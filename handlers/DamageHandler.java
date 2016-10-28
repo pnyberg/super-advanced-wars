@@ -420,6 +420,10 @@ public class DamageHandler {
 
 		int weaponIndex = getWeaponIndex(attacker, defender); // 0 or 1
 
+		if (weaponIndex == 0) {
+			attacker.useAmmo();
+		}
+
 		int baseDamage = damageMatrix[attType][defType][weaponIndex];
 		int heroAttackValue = attHero.getAttackValue(attType);
 		int rngNumber = ((int)(Math.random()*10)) % 10;

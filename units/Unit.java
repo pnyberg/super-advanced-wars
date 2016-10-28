@@ -103,7 +103,7 @@ public abstract class Unit {
 	}
 
 	public int getAmmo() {
-		return ammo;
+		return currentAmmo;
 	}
 
 	public int getMaxAmmo() {
@@ -111,7 +111,7 @@ public abstract class Unit {
 	}
 
 	public int getFuel() {
-		return fuel;
+		return currentFuel;
 	}
 
 	public int getMaxFuel() {
@@ -155,11 +155,11 @@ public abstract class Unit {
 	}
 
 	public boolean hasAmmo() {
-		return ammo > 0;
+		return currentAmmo > 0;
 	}
 
 	public boolean hasFuel(int fuelNeeded) {
-		return fuel >= fuelNeeded;
+		return currentFuel >= fuelNeeded;
 	}
 
 	public void paint(Graphics g, int tileSize) {

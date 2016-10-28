@@ -182,6 +182,25 @@ public class RouteHandler {
 		return Math.abs(x1 - x2) + Math.abs(y1 - y2) > 1;
 	}
 
+	public static int getFuelFromArrows(Unit unit) {
+		int fuelUsed = 0;
+
+		int movementType = unit.getMovementType();
+
+		System.out.println(arrowPoints.get(0).getX() + "," + arrowPoints.get(0).getY());
+
+		for (int i = 1 ; i < arrowPoints.size() ; i++) {
+			int x = arrowPoints.get(i).getX();
+			int y = arrowPoints.get(i).getX();
+			System.out.print(x + "," + y + " - ");
+			fuelUsed += MapHandler.movementCost(x, y, movementType);
+		}
+
+		System.out.println();
+
+		return fuelUsed;
+	}
+
 	public static boolean movementMap(int x, int y) {
 		return movementMap[x][y];
 	}

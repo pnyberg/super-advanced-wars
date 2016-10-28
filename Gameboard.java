@@ -204,6 +204,11 @@ public class Gameboard extends JPanel implements KeyListener {
 					// @TODO unit enters other unit
 				}
 
+				// using fuel
+				int fuelUse = calculateFuelUsed();
+				chosenUnit.useFuel(fuelUse);
+				System.out.println(chosenUnit.getFuel() + " - " + chosenUnit.getAmmo());
+
 				if (unitIsntDroppingOff() && !unitWantToFire()) {
 					chosenUnit.regulateActive(false);
 					chosenUnit = null;
@@ -984,6 +989,10 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 			}
 		}
+	}
+
+	private int calculateFuelUsed() {
+		return RouteHandler.getFuelFromArrows(chosenUnit);
 	}
 
 	private void endTurn() {
