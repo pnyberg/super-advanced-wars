@@ -15,7 +15,7 @@ import javax.swing.JPanel;
  * TODO-list
  * - capting
  * - enter classes for HQ, ev Silo
- * - fuel and ammo
+ * - fuel and ammo implementation
  * - FOG
  * - hero-abilities and powers
  * - removed recalculating route which also removes movement-control within accepted area (infantrys may take more than three steps)

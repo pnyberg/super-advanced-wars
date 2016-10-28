@@ -82,6 +82,14 @@ public abstract class Unit {
 		this.attacking = attacking;
 	}
 
+	public void useAmmo() {
+		currentAmmo--;
+	}
+
+	public void useFuel(int fuel) {
+		currentFuel -= fuel;
+	} 
+
 	public int getX() {
 		return x;
 	}
@@ -92,6 +100,22 @@ public abstract class Unit {
 
 	public int getHP() {
 		return hp;
+	}
+
+	public int getAmmo() {
+		return ammo;
+	}
+
+	public int getMaxAmmo() {
+		return maxAmmo;
+	}
+
+	public int getFuel() {
+		return fuel;
+	}
+
+	public int getMaxFuel() {
+		return maxFuel;
 	}
 
 	public int getMovement() {
@@ -128,6 +152,14 @@ public abstract class Unit {
 
 	public boolean isAttacking() {
 		return attacking;
+	}
+
+	public boolean hasAmmo() {
+		return ammo > 0;
+	}
+
+	public boolean hasFuel(int fuelNeeded) {
+		return fuel >= fuelNeeded;
 	}
 
 	public void paint(Graphics g, int tileSize) {
