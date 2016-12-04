@@ -35,6 +35,12 @@ public class Hero {
 
 	public void manageCash(int cashDiff) {
 		cash += cashDiff;
+
+		if (cash >= 1000000) {
+			cash = 999999;
+		} else if (cash < 0) {
+			cash = 0;
+		}
 	}
 
 	public void addTroop(Unit unit) {
