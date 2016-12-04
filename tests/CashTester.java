@@ -1,7 +1,10 @@
 package tests;
 
+import heroes.*;
+
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class CashTester {
@@ -38,7 +41,7 @@ public class CashTester {
 		hero0.manageCash(1);
 		assertEquals(hero0.getCash(), maxAmount);
 
-		hero.manageCash(-maxAmount);
+		hero0.manageCash(-maxAmount);
 		assertEquals(hero0.getCash(), 0);
 
 		hero0.manageCash(-1);
