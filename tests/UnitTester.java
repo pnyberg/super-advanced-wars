@@ -30,7 +30,7 @@ public class UnitTester {
 	private static Lander lander;
 	//private static Sub sub;
 
-	private static void init() {
+	private void init() {
 		infantry = new Infantry(-1, -1, Color.white);
 		mech = new Mech(-1, -1, Color.white);
 		recon = new Recon(-1, -1, Color.white);
@@ -54,20 +54,25 @@ public class UnitTester {
 
 	@Test
 	public void testUnitVsUnit() {
+		init();
 		DamageHandler.init();
 
 		testInfantryVsUnit();
-
+		testMechVsUnit();
+		
 		System.out.println("All tests succeeded!");
 	}
 
-	private static void testXvsY(Unit att, Unit def, boolean expectedSuccess) {
-		if(expectedSuccess == DamageHandler.validTarget(att, def)) {
-			System.out.println(att.getClass().getTypeName() + " vs " + def.getClass().getTypeName() + " failed!");
+	private void testXvsY(Unit att, Unit def, boolean expectedSuccess) {
+		if (expectedSuccess) {
+			assertTrue(att.getClass() + " should be able to attack " + def.getClass(), DamageHandler.validTarget(att, def));
+		} else {
+			assertFalse(att.getClass() + " shouldn't be able to attack " + def.getClass(), DamageHandler.validTarget(att, def));
 		}
 	}
 
-	private static void testInfantryVsUnit() {
+	private void testInfantryVsUnit() {
+		// acceptable
 		testXvsY(infantry, infantry, true);
 		testXvsY(infantry, mech, true);
 		testXvsY(infantry, recon, true);
@@ -82,34 +87,33 @@ public class UnitTester {
 		testXvsY(infantry, bCopter, true);
 		testXvsY(infantry, tCopter, true);
 
-		testXvsY(infantry, fighter, true);
+		// not acceptable
 		testXvsY(infantry, fighter, false);
-
 		testXvsY(infantry, bomber, false);
 		testXvsY(infantry, battleship, false);
 		testXvsY(infantry, lander, false);
-
-//		assertTrue(true);
 	}
 
-/*	private static void testMechVsUnit() {
-		assertTrue(DamageHandler.validTarget(mech, infantry));
-		assertTrue(DamageHandler.validTarget(mech, mech));
-		assertTrue(DamageHandler.validTarget(mech, recon));
-		assertTrue(DamageHandler.validTarget(mech, tank));
-		assertTrue(DamageHandler.validTarget(mech, mdTank));
-		assertTrue(DamageHandler.validTarget(mech, neotank));
-		assertTrue(DamageHandler.validTarget(mech, apc));
-		assertTrue(DamageHandler.validTarget(mech, artillery));
-		assertTrue(DamageHandler.validTarget(mech, rocket));
-		assertTrue(DamageHandler.validTarget(mech, a_air));
-		assertTrue(DamageHandler.validTarget(mech, missiles));
-		assertTrue(DamageHandler.validTarget(mech, bCopter));
-		assertTrue(DamageHandler.validTarget(mech, tCopter));
+	private void testMechVsUnit() {
+		// acceptable
+		testXvsY(mech, infantry, true);
+		testXvsY(mech, mech, true);
+		testXvsY(mech, recon, true);
+		testXvsY(mech, tank, true);
+		testXvsY(mech, mdTank, true);
+		testXvsY(mech, neotank, true);
+		testXvsY(mech, apc, true);
+		testXvsY(mech, artillery, true);
+		testXvsY(mech, rocket, true);
+		testXvsY(mech, a_air, true);
+		testXvsY(mech, missiles, true);
+		testXvsY(mech, bCopter, true);
+		testXvsY(mech, tCopter, true);
 
-		assertFalse(DamageHandler.validTarget(mech, fighter));
-		assertFalse(DamageHandler.validTarget(mech, bomber));
-		assertFalse(DamageHandler.validTarget(mech, battleship));
-		assertFalse(DamageHandler.validTarget(mech, lander));
-	}*/
+		// not acceptable
+		testXvsY(mech, fighter, false);
+		testXvsY(mech, bomber, false);
+		testXvsY(mech, battleship, false);
+		testXvsY(mech, lander, false);
+	}
 }

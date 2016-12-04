@@ -514,8 +514,8 @@ public class DamageHandler {
 	}
 
 	public static boolean validTarget(Unit attackingUnit, Unit targetUnit) {
-		int attUnitType = DamageHandler.getTypeFromUnit(attackingUnit);
-		int targetUnitType = DamageHandler.getTypeFromUnit(targetUnit);
+		int attUnitType = getTypeFromUnit(attackingUnit);
+		int targetUnitType = getTypeFromUnit(targetUnit);
 
 		return getBaseDamageValue(attUnitType, targetUnitType, 0) > -1
 			|| getBaseDamageValue(attUnitType, targetUnitType, 1) > -1;
