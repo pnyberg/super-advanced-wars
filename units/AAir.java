@@ -48,9 +48,9 @@ public class AAir extends Unit {
 		// cannon-points
 		int cx1 = paintX + 3 * tileSize / 4;
 		int cy1 = paintY + tileSize / 8;
-		int cx2 = paintX + 7 * tileSize / 8;
-		int cy2 = paintY + tileSize / 4;
-		int cx3 = paintX + 3 * tileSize / 4 - 3;
+		int cx2 = paintX + 7 * tileSize / 8 - 3;
+		int cy2 = paintY + tileSize / 4 - 3;
+		int cx3 = paintX + 3 * tileSize / 4 - 9;
 		int cy3 = bodyAlignY;
 		int cx4 = headAlignX + headWidth;
 		int cy4 = bodyAlignY;
