@@ -10,6 +10,14 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * TODO:
+ *  - test when ammo is out
+ *  - test when sub is emerged/submerged
+ * 
+ * @author pnyberg
+ */
+
 public class BattleTester {
 	private static Infantry infantry;
 	private static Mech mech;
@@ -65,6 +73,10 @@ public class BattleTester {
 		testTankVsUnit();
 		testMDtankVsUnit();
 		testNeotankVsUnit();
+		testArtilleryVsUnit();
+		testRocketVsUnit();
+
+		testBattleshipVsUnit();
 		
 		System.out.println("All tests succeeded!");
 	}
@@ -103,6 +115,32 @@ public class BattleTester {
 		testXvsY(att, bomber, false);
 		testXvsY(att, battleship, false);
 		testXvsY(att, lander, false);
+
+		// reset the ammo
+		att.replentish();
+	}
+
+	private void testGroundIndirectUnitVsUnit(Unit att) {
+		// acceptable
+		testXvsY(att, infantry, true);
+		testXvsY(att, mech, true);
+		testXvsY(att, recon, true);
+		testXvsY(att, tank, true);
+		testXvsY(att, mdTank, true);
+		testXvsY(att, neotank, true);
+		testXvsY(att, apc, true);
+		testXvsY(att, artillery, true);
+		testXvsY(att, rocket, true);
+		testXvsY(att, a_air, true);
+		testXvsY(att, missiles, true);
+		testXvsY(att, battleship, true);
+		testXvsY(att, lander, true);
+
+		// not acceptable
+		testXvsY(att, fighter, false);
+		testXvsY(att, bomber, false);
+		testXvsY(att, bCopter, false);
+		testXvsY(att, tCopter, false);
 
 		// reset the ammo
 		att.replentish();
@@ -208,5 +246,19 @@ public class BattleTester {
 		// not acceptable
 		testXvsY(neotank, fighter, false);
 		testXvsY(neotank, bomber, false);
+	}
+
+	private void testArtilleryVsUnit() {
+		testGroundIndirectUnitVsUnit(artillery);
+	}
+
+	private void testRocketVsUnit() {
+		testGroundIndirectUnitVsUnit(rocket);
+	}
+	
+	//
+
+	private void testBattleshipVsUnit() {
+		testGroundIndirectUnitVsUnit(battleship);
 	}
 }
