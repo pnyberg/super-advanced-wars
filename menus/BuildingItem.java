@@ -32,7 +32,8 @@ public class BuildingItem {
 
 		BuildingItem[] newPortItems = {	
 					new BuildingItem(Battleship.getTypeName(), Battleship.getPrice()),
-					new BuildingItem(Lander.getTypeName(), Lander.getPrice())
+					new BuildingItem(Lander.getTypeName(), Lander.getPrice()),
+					new BuildingItem(Cruiser.getTypeName(), Cruiser.getPrice())
 				};
 
 		BuildingItem[] newAirportItems = {	

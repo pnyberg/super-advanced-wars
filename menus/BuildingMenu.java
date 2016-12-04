@@ -117,8 +117,8 @@ public class BuildingMenu extends Menu {
 			return new TCopter(x, y, hero.getColor());
 		} else if (unitName.equals(Battleship.getTypeName())) {
 			return new Battleship(x, y, hero.getColor());
-//		} else if (unitName.equals("Cruiser")) {
-//			return new Cruiser(x, y, hero.getColor());
+		} else if (unitName.equals("Cruiser")) {
+			return new Cruiser(x, y, hero.getColor());
 		} else if (unitName.equals(Lander.getTypeName())) {
 			return new Lander(x, y, hero.getColor());
 //		} else if (unitName.equals("Sub")) {
