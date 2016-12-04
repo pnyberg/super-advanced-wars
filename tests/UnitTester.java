@@ -5,6 +5,10 @@ import units.*;
 
 import java.awt.Color;
 
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 public class UnitTester {
 	private static Infantry infantry;
 	private static Mech mech;
@@ -46,10 +50,10 @@ public class UnitTester {
 //		cruiser = new Cruiser(-1, -1, Color.white);
 		lander = new Lander(-1, -1, Color.white);
 //		sub = new Sub(-1, -1, Color.white);
-
 	}
 
-	public static void testUnitVsUnit() {
+	@Test
+	public void testUnitVsUnit() {
 		DamageHandler.init();
 
 		testInfantryVsUnit();
