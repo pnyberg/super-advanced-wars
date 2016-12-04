@@ -149,8 +149,6 @@ public class BuildingMenu extends Menu {
 		int rowHelpIndex = 3;
 
 		for (int k = 0 ; k < items.length ; k++) {
-			System.out.println("k" + k + "-price: " + items[k].getPrice());
-			System.out.println(items.length);
 			paintMenuItem(g, menuY + yAlign + menuRowHeight * (k + 1), items[k].getName(), items[k].getPrice());
 		}
 

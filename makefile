@@ -7,7 +7,11 @@ compile:
 	javac ./menus/*.java
 	javac ./point/*.java
 	javac ./units/*.java
+	javac ./tests/*.java
 	javac *.java
 
 war:
 	java SuperAdvanceWars
+
+testing:
+	java SuperAdvanceTester
