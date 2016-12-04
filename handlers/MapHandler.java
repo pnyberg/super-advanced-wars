@@ -419,7 +419,24 @@ public class MapHandler {
 	}
 
 	public static int getDefenceValue(int terrainType) {
-		return 0; // @TODO
+		if (terrainType == ROAD ||
+			terrainType == SEA ||
+			terrainType == SHORE) {
+			return 0;
+		} else if (terrainType == PLAIN ||
+					terrainType == REEF) {
+			return 1;
+		} else if (terrainType == WOOD) {
+			return 2;
+		} else if (terrainType == CITY ||
+					terrainType == FACTORY ||
+					terrainType == AIRPORT ||
+					terrainType == PORT) {
+			return 3;
+		} else if (terrainType == MOUNTAIN) {
+			return 4;
+		} 
+		return -1;
 	}
 
 	public static HeroPortrait getHeroPortrait() {
