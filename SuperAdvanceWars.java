@@ -2,7 +2,7 @@ import javax.swing.JFrame;
 
 public class SuperAdvanceWars extends JFrame {
 	private Gameboard board;
-	private final int 	width = 20, 
+	private final int	width = 20, 
 						height = 15;
 
 	public SuperAdvanceWars() {
