@@ -77,7 +77,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		boolean unitSelected = chosenUnit != null || rangeUnit != null;
 
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			if (!unitIsntDroppingOff()) {
+			if (unitIsDroppingOff()) {
 				if (unitCanBeDroppedOff()) {
 					moveDroppingOffCursorCounterclockwise();
 				}
@@ -101,7 +101,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				buildingMenu.moveArrowUp();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			if (!unitIsntDroppingOff()) {
+			if (unitIsDroppingOff()) {
 				if (unitCanBeDroppedOff()) {
 					moveDroppingOffCursorClockwise();
 				}
@@ -125,23 +125,29 @@ public class Gameboard extends JPanel implements KeyListener {
 				buildingMenu.moveArrowDown();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			if (cursorX > 0 && !menuVisible && unitIsntDroppingOff() && !unitWantToFire()) {
+			if (cursorX > 0 && !menuVisible && !unitIsDroppingOff() && !unitWantToFire()) {
 				RouteHandler.addArrowPoint(cursorX - 1, cursorY, chosenUnit);
 				cursor.moveLeft();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (cursorX < (mapWidth - 1) && !menuVisible && unitIsntDroppingOff() && !unitWantToFire()) {
+			if (cursorX < (mapWidth - 1) && !menuVisible && !unitIsDroppingOff() && !unitWantToFire()) {
 				RouteHandler.addArrowPoint(cursorX + 1, cursorY, chosenUnit);
 				cursor.moveRight();
 			}
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_A) {
-			if (!unitIsntDroppingOff()) {
+			if (unitIsDroppingOff()) {
 				if (unitCanBeDroppedOff()) {
+					System.out.println("Dropping");
 					if (chosenUnit instanceof APC) {
 						((APC)chosenUnit).regulateDroppingOff(false);
 						Unit exitingUnit = ((APC)chosenUnit).removeUnit();
+						exitingUnit.moveTo(cursor.getX(), cursor.getY());
+						exitingUnit.regulateActive(false);
+					} else if (chosenUnit instanceof TCopter) {
+						((TCopter)chosenUnit).regulateDroppingOff(false);
+						Unit exitingUnit = ((TCopter)chosenUnit).removeUnit();
 						exitingUnit.moveTo(cursor.getX(), cursor.getY());
 						exitingUnit.regulateActive(false);
 					} else if (chosenUnit instanceof Lander) {
@@ -149,9 +155,10 @@ public class Gameboard extends JPanel implements KeyListener {
 						Unit exitingUnit = ((Lander)chosenUnit).removeChosenUnit();
 						exitingUnit.moveTo(cursor.getX(), cursor.getY());
 						exitingUnit.regulateActive(false);
-					} else if (chosenUnit instanceof TCopter) {
-						((TCopter)chosenUnit).regulateDroppingOff(false);
-						Unit exitingUnit = ((TCopter)chosenUnit).removeUnit();
+					} else if (chosenUnit instanceof Cruiser) {
+						System.out.println("Hi");
+						((Cruiser)chosenUnit).regulateDroppingOff(false);
+						Unit exitingUnit = ((Cruiser)chosenUnit).removeChosenUnit();
 						exitingUnit.moveTo(cursor.getX(), cursor.getY());
 						exitingUnit.regulateActive(false);
 					}
@@ -189,6 +196,11 @@ public class Gameboard extends JPanel implements KeyListener {
 					if (chosenUnit instanceof Lander) {
 						int index = unitMenu.getMenuIndex();
 						((Lander)chosenUnit).chooseUnit(index);
+					} else if (chosenUnit instanceof Cruiser) {
+						System.out.println("Trallalla");
+						int index = unitMenu.getMenuIndex();
+						((Cruiser)chosenUnit).chooseUnit(index);
+						System.out.println(((Cruiser)chosenUnit).getChosenUnit());
 					}
 					handleDroppingOff();
 				} else if (unitMenu.atFireRow()) {
@@ -197,19 +209,21 @@ public class Gameboard extends JPanel implements KeyListener {
 					Unit entryUnit = MapHandler.getFriendlyUnitExceptSelf(chosenUnit, cursorX, cursorY);
 					if (entryUnit instanceof APC) {
 						((APC)entryUnit).addUnit(chosenUnit);
-					} else if (entryUnit instanceof Lander) {
-						((Lander)entryUnit).addUnit(chosenUnit);
 					} else if (entryUnit instanceof TCopter) {
 						((TCopter)entryUnit).addUnit(chosenUnit);
+					} else if (entryUnit instanceof Lander) {
+						((Lander)entryUnit).addUnit(chosenUnit);
+					} else if (entryUnit instanceof Cruiser) {
+						((Cruiser)entryUnit).addUnit(chosenUnit);
 					}
 					// @TODO unit enters other unit
 				}
 
-				if (unitIsntDroppingOff() && !unitWantToFire()) {
+				if (!unitIsDroppingOff() && !unitWantToFire()) {
 					// using fuel
 					int fuelUse = calculateFuelUsed();
 					chosenUnit.useFuel(fuelUse);
-					System.out.println("Fuel + Ammo: " + chosenUnit.getFuel() + " - " + chosenUnit.getAmmo());
+//					System.out.println("Fuel + Ammo: " + chosenUnit.getFuel() + " - " + chosenUnit.getAmmo());
 
 					chosenUnit.regulateActive(false);
 					chosenUnit = null;
@@ -248,7 +262,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_B) {
-			if (!unitIsntDroppingOff()) {
+			if (unitIsDroppingOff()) {
 				int x = chosenUnit.getX();
 				int y = chosenUnit.getY();
 				cursor.setPosition(x, y);
@@ -256,10 +270,12 @@ public class Gameboard extends JPanel implements KeyListener {
 
 				if (chosenUnit instanceof APC) {
 					((APC)chosenUnit).regulateDroppingOff(false);
-				} else if (chosenUnit instanceof Lander) {
-					((Lander)chosenUnit).regulateDroppingOff(false);
 				} else if (chosenUnit instanceof TCopter) {
 					((TCopter)chosenUnit).regulateDroppingOff(false);
+				} else if (chosenUnit instanceof Lander) {
+					((Lander)chosenUnit).regulateDroppingOff(false);
+				} else if (chosenUnit instanceof Cruiser) {
+					((Cruiser)chosenUnit).regulateDroppingOff(false);
 				}
 			} else if (unitWantToFire()) {
 				if (chosenUnit instanceof IndirectUnit) {
@@ -359,12 +375,15 @@ public class Gameboard extends JPanel implements KeyListener {
 		if (chosenUnit instanceof APC) {
 			((APC)chosenUnit).regulateDroppingOff(true);
 			containedUnit = ((APC)chosenUnit).getUnit();
-		} else if (chosenUnit instanceof Lander) {
-			((Lander)chosenUnit).regulateDroppingOff(true);
-			containedUnit = ((Lander)chosenUnit).getChosenUnit();
 		} else if (chosenUnit instanceof TCopter) {
 			((TCopter)chosenUnit).regulateDroppingOff(true);
 			containedUnit = ((TCopter)chosenUnit).getUnit();
+		} else if (chosenUnit instanceof Lander) {
+			((Lander)chosenUnit).regulateDroppingOff(true);
+			containedUnit = ((Lander)chosenUnit).getChosenUnit();
+		} else if (chosenUnit instanceof Cruiser) {
+			((Cruiser)chosenUnit).regulateDroppingOff(true);
+			containedUnit = ((Cruiser)chosenUnit).getChosenUnit();
 		}
 
 		if (containedUnit == null) {
@@ -402,34 +421,41 @@ public class Gameboard extends JPanel implements KeyListener {
 		return chosenUnit.isAttacking();
 	}
 
-	public boolean unitIsntDroppingOff() {
+	public boolean unitIsDroppingOff() {
 		if (chosenUnit instanceof APC) {
 			if (((APC)chosenUnit).isDroppingOff()) {
-				return false;
-			}
-		} else if (chosenUnit instanceof Lander) {
-			if (((Lander)chosenUnit).isDroppingOff()) {
-				return false;
+				return true;
 			}
 		} else if (chosenUnit instanceof TCopter) {
 			if (((TCopter)chosenUnit).isDroppingOff()) {
-				return false;
+				return true;
+			}
+		} else if (chosenUnit instanceof Lander) {
+			if (((Lander)chosenUnit).isDroppingOff()) {
+				return true;
+			}
+		} else if (chosenUnit instanceof Cruiser) {
+			if (((Cruiser)chosenUnit).isDroppingOff()) {
+				return true;
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	public boolean unitCanBeDroppedOff() {
 		if (chosenUnit instanceof APC) {
 			((APC)chosenUnit).regulateDroppingOff(true);
 			return unitCanBeDroppedOff(((APC)chosenUnit).getUnit());
-		} else if (chosenUnit instanceof Lander) {
-			((Lander)chosenUnit).regulateDroppingOff(true);
-			return unitCanBeDroppedOff(((Lander)chosenUnit).getChosenUnit());
 		} else if (chosenUnit instanceof TCopter) {
 			((TCopter)chosenUnit).regulateDroppingOff(true);
 			return unitCanBeDroppedOff(((TCopter)chosenUnit).getUnit());
+		} else if (chosenUnit instanceof Lander) {
+			((Lander)chosenUnit).regulateDroppingOff(true);
+			return unitCanBeDroppedOff(((Lander)chosenUnit).getChosenUnit());
+		} else if (chosenUnit instanceof Cruiser) {
+			((Cruiser)chosenUnit).regulateDroppingOff(true);
+			return unitCanBeDroppedOff(((Cruiser)chosenUnit).getChosenUnit());
 		}
 
 		return false;
@@ -447,9 +473,9 @@ public class Gameboard extends JPanel implements KeyListener {
 			return true;
 		} else if (x < (mapWidth - 1) && validPosition(unit, x + 1, y)) {
 			return true;
-		} else if (validPosition(unit, x, y + 1)) {
+		} else if (y < (mapHeight - 1) && validPosition(unit, x, y + 1)) {
 			return true;
-		} else if (validPosition(unit, x - 1, y)) {
+		} else if (x > 0 && validPosition(unit, x - 1, y)) {
 			return true;
 		}
 
@@ -479,10 +505,12 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		if (chosenUnit instanceof APC) {
 			containedUnit = ((APC)chosenUnit).getUnit();
-		} else if (chosenUnit instanceof Lander) {
-			containedUnit = ((Lander)chosenUnit).getChosenUnit();
 		} else if (chosenUnit instanceof TCopter) {
 			containedUnit = ((TCopter)chosenUnit).getUnit();
+		} else if (chosenUnit instanceof Lander) {
+			containedUnit = ((Lander)chosenUnit).getChosenUnit();
+		} else if (chosenUnit instanceof Cruiser) {
+			containedUnit = ((Cruiser)chosenUnit).getChosenUnit();
 		} else {
 			return; // shouldn't be able to get here
 		}
@@ -494,7 +522,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			} else if (unitX > 0 && validPosition(containedUnit, cursorX - 2, cursorY)) {
 				cursor.setPosition(cursorX - 2, cursorY);
-			} else if (validPosition(containedUnit, cursorX - 1, cursorY - 1)) {
+			} else if (unitY > 0 && validPosition(containedUnit, cursorX - 1, cursorY - 1)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			}
 		} else if (yDiff == 1) {
@@ -502,7 +530,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			} else if (unitY > 0 && validPosition(containedUnit, cursorX, cursorY - 2)) {
 				cursor.setPosition(cursorX, cursorY - 2);
-			} else if (validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
+			} else if (unitX < (mapWidth - 1) && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			}
 		} else if (xDiff == -1) {
@@ -510,7 +538,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			} else if (unitX < (mapWidth - 1) && validPosition(containedUnit, cursorX + 2, cursorY)) {
 				cursor.setPosition(cursorX + 2, cursorY);
-			} else if (validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
+			} else if (unitY < (mapHeight - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			}
 		} else { // yDiff == -1
@@ -518,7 +546,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			} else if (unitY < (mapHeight - 1) && validPosition(containedUnit, cursorX, cursorY + 2)) {
 				cursor.setPosition(cursorX, cursorY + 2);
-			} else if (validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
+			} else if (unitX > 0 && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			}
 		}
@@ -537,10 +565,12 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		if (chosenUnit instanceof APC) {
 			((APC)chosenUnit).getUnit();
-		} else if (chosenUnit instanceof Lander) {
-			((Lander)chosenUnit).getChosenUnit();
 		} else if (chosenUnit instanceof TCopter) {
 			((TCopter)chosenUnit).getUnit();
+		} else if (chosenUnit instanceof Lander) {
+			((Lander)chosenUnit).getChosenUnit();
+		} else if (chosenUnit instanceof Cruiser) {
+			((Cruiser)chosenUnit).getChosenUnit();
 		} else {
 			return; // shouldn't be able to get here
 		}
@@ -552,7 +582,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			} else if (unitX > 0 && validPosition(containedUnit, cursorX - 2, cursorY)) {
 				cursor.setPosition(cursorX - 2, cursorY);
-			} else if (validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
+			} else if (unitY < (mapHeight - 1) && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			}
 		} else if (yDiff == 1) {
@@ -560,7 +590,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			} else if (unitY > 0 && validPosition(containedUnit, cursorX, cursorY - 2)) {
 				cursor.setPosition(cursorX, cursorY - 2);
-			} else if (validPosition(containedUnit, cursorX - 1, cursorY - 1)) {
+			} else if (unitX > 0 && validPosition(containedUnit, cursorX - 1, cursorY - 1)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			}
 		} else if (xDiff == -1) {
@@ -568,7 +598,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			} else if (unitX < (mapWidth - 1) && validPosition(containedUnit, cursorX + 2, cursorY)) {
 				cursor.setPosition(cursorX + 2, cursorY);
-			} else if (validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
+			} else if (unitY > 0 && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			}
 		} else { // yDiff == -1
@@ -576,7 +606,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			} else if (unitY < (mapHeight - 1) && validPosition(containedUnit, cursorX, cursorY + 2)) {
 				cursor.setPosition(cursorX, cursorY + 2);
-			} else if (validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
+			} else if (unitX < (mapWidth - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			}
 		}
@@ -696,7 +726,8 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private boolean validPosition(Unit unit, int testX, int testY) {
-		return !MapHandler.areaOccupiedByAny(unit, testX, testY) && MapHandler.allowedMovementPosition(testX, testY, unit.getMovementType());
+		return !MapHandler.areaOccupiedByAny(unit, testX, testY) 
+			&& MapHandler.allowedMovementPosition(testX, testY, unit.getMovementType());
 	}
 
 	private boolean unitSelectable(int x, int y) {
@@ -708,8 +739,9 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private void handleOpenUnitMenu(int cursorX, int cursorY) {
-		if (!MapHandler.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY) || unitEntryingContainerUnit(chosenUnit, cursorX, cursorY)) {
-			// @TODO
+		if (!MapHandler.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY) 
+		|| unitEntryingContainerUnit(chosenUnit, cursorX, cursorY)) {
+			// @TODO fix join
 			if (hurtSameTypeUnitAtPosition(chosenUnit, cursorX, cursorY)) {
 				unitMenu.unitMayJoin();
 			}
@@ -732,6 +764,11 @@ public class Gameboard extends JPanel implements KeyListener {
 					Unit holdUnit = ((APC)chosenUnit).getUnit();
 					unitMenu.containedCargo(holdUnit);
 				}
+			} else if (chosenUnit instanceof TCopter) {
+				if (((TCopter)chosenUnit).isFull()) {
+					Unit holdUnit = ((TCopter)chosenUnit).getUnit();
+					unitMenu.containedCargo(holdUnit);
+				}
 			} else if (chosenUnit instanceof Lander) {
 				if (landerAtDroppingOffPosition(cursorX, cursorY)) {
 					for (int i = 0 ; i < ((Lander)chosenUnit).getNumberOfContainedUnits() ; i++) {
@@ -739,9 +776,9 @@ public class Gameboard extends JPanel implements KeyListener {
 						unitMenu.containedCargo(holdUnit);
 					}
 				}
-			} else if (chosenUnit instanceof TCopter) {
-				if (((TCopter)chosenUnit).isFull()) {
-					Unit holdUnit = ((TCopter)chosenUnit).getUnit();
+			} else if (chosenUnit instanceof Cruiser) {
+				for (int i = 0 ; i < ((Cruiser)chosenUnit).getNumberOfContainedUnits() ; i++) {
+					Unit holdUnit = ((Cruiser)chosenUnit).getUnit(i);
 					unitMenu.containedCargo(holdUnit);
 				}
 			}
@@ -751,6 +788,10 @@ public class Gameboard extends JPanel implements KeyListener {
 					unitMenu.unitMayEnter();
 				} else {
 					// if the chosenUnit is a lander 
+				}
+			} else if (copterEnterableUnitAtPosition(cursorX, cursorY)) {
+				if (!(chosenUnit instanceof Cruiser)) {
+					unitMenu.unitMayEnter();
 				}
 			}
 
@@ -784,6 +825,8 @@ public class Gameboard extends JPanel implements KeyListener {
 					unit instanceof AAir ||
 					unit instanceof Missiles) {
 			return landbasedEnterableUnitAtPosition(x, y);
+		} else if (unit instanceof BCopter || unit instanceof TCopter) {
+			return copterEnterableUnitAtPosition(x, y);
 		}
 
 		return false;
@@ -809,6 +852,16 @@ public class Gameboard extends JPanel implements KeyListener {
 		Unit unit = MapHandler.getFriendlyUnit(x, y);
 
 		if (unit instanceof Lander && !((Lander)unit).isFull()) {
+			return true;
+		} 
+
+		return false;
+	}
+	
+	private boolean copterEnterableUnitAtPosition(int x, int y) {
+		Unit unit = MapHandler.getFriendlyUnit(x, y);
+
+		if (unit instanceof Cruiser && !((Cruiser)unit).isFull()) {
 			return true;
 		} 
 
@@ -1025,7 +1078,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 
 		if (chosenUnit != null) {
-			if (!unitMenu.isVisible() && unitIsntDroppingOff() && !unitWantToFire()) {
+			if (!unitMenu.isVisible() && !unitIsDroppingOff() && !unitWantToFire()) {
 				RouteHandler.paintArrow(g);
 			}
 
