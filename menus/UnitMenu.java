@@ -1,9 +1,7 @@
 package menus;
 
-import point.*;
 import units.*;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
