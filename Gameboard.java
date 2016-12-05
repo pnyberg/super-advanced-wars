@@ -139,7 +139,6 @@ public class Gameboard extends JPanel implements KeyListener {
 		if (e.getKeyCode() == KeyEvent.VK_A) {
 			if (unitIsDroppingOff()) {
 				if (unitCanBeDroppedOff()) {
-					System.out.println("Dropping");
 					if (chosenUnit instanceof APC) {
 						((APC)chosenUnit).regulateDroppingOff(false);
 						Unit exitingUnit = ((APC)chosenUnit).removeUnit();
@@ -156,7 +155,6 @@ public class Gameboard extends JPanel implements KeyListener {
 						exitingUnit.moveTo(cursor.getX(), cursor.getY());
 						exitingUnit.regulateActive(false);
 					} else if (chosenUnit instanceof Cruiser) {
-						System.out.println("Hi");
 						((Cruiser)chosenUnit).regulateDroppingOff(false);
 						Unit exitingUnit = ((Cruiser)chosenUnit).removeChosenUnit();
 						exitingUnit.moveTo(cursor.getX(), cursor.getY());
@@ -197,10 +195,8 @@ public class Gameboard extends JPanel implements KeyListener {
 						int index = unitMenu.getMenuIndex();
 						((Lander)chosenUnit).chooseUnit(index);
 					} else if (chosenUnit instanceof Cruiser) {
-						System.out.println("Trallalla");
 						int index = unitMenu.getMenuIndex();
 						((Cruiser)chosenUnit).chooseUnit(index);
-						System.out.println(((Cruiser)chosenUnit).getChosenUnit());
 					}
 					handleDroppingOff();
 				} else if (unitMenu.atFireRow()) {
@@ -564,17 +560,17 @@ public class Gameboard extends JPanel implements KeyListener {
 		Unit containedUnit = null;
 
 		if (chosenUnit instanceof APC) {
-			((APC)chosenUnit).getUnit();
+			containedUnit = ((APC)chosenUnit).getUnit();
 		} else if (chosenUnit instanceof TCopter) {
-			((TCopter)chosenUnit).getUnit();
+			containedUnit = ((TCopter)chosenUnit).getUnit();
 		} else if (chosenUnit instanceof Lander) {
-			((Lander)chosenUnit).getChosenUnit();
+			containedUnit = ((Lander)chosenUnit).getChosenUnit();
 		} else if (chosenUnit instanceof Cruiser) {
-			((Cruiser)chosenUnit).getChosenUnit();
+			containedUnit = ((Cruiser)chosenUnit).getChosenUnit();
 		} else {
 			return; // shouldn't be able to get here
 		}
-
+		
 		int movementType = containedUnit.getMovementType();
 
 		if (xDiff == 1) {
@@ -765,7 +761,7 @@ public class Gameboard extends JPanel implements KeyListener {
 					unitMenu.containedCargo(holdUnit);
 				}
 			} else if (chosenUnit instanceof TCopter) {
-				if (((TCopter)chosenUnit).isFull()) {
+				if (((TCopter)chosenUnit).isFull() && MapHandler.unitOnLand(cursorX, cursorY)) {
 					Unit holdUnit = ((TCopter)chosenUnit).getUnit();
 					unitMenu.containedCargo(holdUnit);
 				}
