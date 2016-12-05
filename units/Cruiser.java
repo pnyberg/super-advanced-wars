@@ -109,10 +109,10 @@ public class Cruiser extends Unit {
 		int headAlignX = (tileSize - headWidth) / 2;
 		int headAlignY = 3 * tileSize / 5 - headHeight;
 
-		int cannonWidth = headWidth / 4;
-		int cannonHeight = headHeight / 2;
-		int cannonAlignX = headAlignX + headWidth;
-		int cannonAlignY = headAlignY + headHeight / 4;
+		int miniHeadWidth = tileSize / 8;
+		int miniHeadHeight = tileSize / 8;
+		int miniHeadAlignX = headAlignX + headWidth;
+		int miniHeadAlignY = headAlignY + tileSize / 8;
 
 		// body
 		int[] cannonX = {cx1, cx2, cx3, cx4};
@@ -136,6 +136,7 @@ public class Cruiser extends Unit {
 			g.setColor(restingColor);
 		}
 		g.fillRect(x * tileSize + headAlignX, y * tileSize + headAlignY, headWidth, headHeight);
+		g.fillRect(x * tileSize + miniHeadAlignX, y * tileSize + miniHeadAlignY, miniHeadWidth, miniHeadHeight);
 
 		g.setColor(Color.black);
 		g.drawRect(x * tileSize + headAlignX, y * tileSize + headAlignY, headWidth, headHeight);
