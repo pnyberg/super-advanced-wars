@@ -25,8 +25,8 @@ public class DamageHandler {
 		BCOPTER = 13,
 		TCOPTER = 14,
 		BATTLESHIP = 15,
-//		CRUISER = 16,
-		LANDER = 16; //17,
+		CRUISER = 16,
+		LANDER = 17;
 //		SUB = 18;
 
 	public static void init() {
@@ -75,7 +75,7 @@ public class DamageHandler {
 		damageMatrix[INFANTRY][BCOPTER][1] = 7;
 		damageMatrix[INFANTRY][TCOPTER][1] = 30;
 		damageMatrix[INFANTRY][BATTLESHIP][1] = -1;
-//		damageMatrix[INFANTRY][CRUISER][1] = -1;
+		damageMatrix[INFANTRY][CRUISER][1] = -1;
 		damageMatrix[INFANTRY][LANDER][1] = -1;
 //		damageMatrix[INFANTRY][SUB][1] = -1;
 
@@ -112,8 +112,8 @@ public class DamageHandler {
 		damageMatrix[MECH][TCOPTER][1] = 35;
 		damageMatrix[MECH][BATTLESHIP][0] = -1;
 		damageMatrix[MECH][BATTLESHIP][1] = -1;
-//		damageMatrix[MECH][CRUISER][0] = -1;
-//		damageMatrix[MECH][CRUISER][1] = -1;
+		damageMatrix[MECH][CRUISER][0] = -1;
+		damageMatrix[MECH][CRUISER][1] = -1;
 		damageMatrix[MECH][LANDER][0] = -1;
 		damageMatrix[MECH][LANDER][1] = -1;
 //		damageMatrix[MECH][SUB][0] = -1;
@@ -136,7 +136,7 @@ public class DamageHandler {
 		damageMatrix[RECON][BCOPTER][1] = 10;
 		damageMatrix[RECON][TCOPTER][1] = 35;
 		damageMatrix[RECON][BATTLESHIP][1] = -1;
-//		damageMatrix[RECON][CRUISER][1] = -1;
+		damageMatrix[RECON][CRUISER][1] = -1;
 		damageMatrix[RECON][LANDER][1] = -1;
 //		damageMatrix[RECON][SUB][1] = -1;
 
@@ -173,8 +173,8 @@ public class DamageHandler {
 		damageMatrix[TANK][TCOPTER][1] = 40;
 		damageMatrix[TANK][BATTLESHIP][0] = 1;
 		damageMatrix[TANK][BATTLESHIP][1] = -1;
-//		damageMatrix[TANK][CRUISER][0] = 5;
-//		damageMatrix[TANK][CRUISER][1] = -1;
+		damageMatrix[TANK][CRUISER][0] = 5;
+		damageMatrix[TANK][CRUISER][1] = -1;
 		damageMatrix[TANK][LANDER][0] = 10;
 		damageMatrix[TANK][LANDER][1] = -1;
 //		damageMatrix[TANK][SUB][0] = 1;
@@ -213,8 +213,8 @@ public class DamageHandler {
 		damageMatrix[MDTANK][TCOPTER][1] = 45;
 		damageMatrix[MDTANK][BATTLESHIP][0] = 10;
 		damageMatrix[MDTANK][BATTLESHIP][1] = -1;
-//		damageMatrix[MDTANK][CRUISER][0] = 45;
-//		damageMatrix[MDTANK][CRUISER][1] = -1;
+		damageMatrix[MDTANK][CRUISER][0] = 45;
+		damageMatrix[MDTANK][CRUISER][1] = -1;
 		damageMatrix[MDTANK][LANDER][0] = 35;
 		damageMatrix[MDTANK][LANDER][1] = -1;
 //		damageMatrix[MDTANK][SUB][0] = 10;
@@ -253,8 +253,8 @@ public class DamageHandler {
 		damageMatrix[NEOTANK][TCOPTER][1] = 55;
 		damageMatrix[NEOTANK][BATTLESHIP][0] = 15;
 		damageMatrix[NEOTANK][BATTLESHIP][1] = -1;
-//		damageMatrix[NEOTANK][CRUISER][0] = 50;
-//		damageMatrix[NEOTANK][CRUISER][1] = -1;
+		damageMatrix[NEOTANK][CRUISER][0] = 50;
+		damageMatrix[NEOTANK][CRUISER][1] = -1;
 		damageMatrix[NEOTANK][LANDER][0] = 40;
 		damageMatrix[NEOTANK][LANDER][1] = -1;
 //		damageMatrix[NEOTANK][SUB][0] = 15;
@@ -277,7 +277,7 @@ public class DamageHandler {
 		damageMatrix[ARTILLERY][BCOPTER][0] = -1;
 		damageMatrix[ARTILLERY][TCOPTER][0] = -1;
 		damageMatrix[ARTILLERY][BATTLESHIP][0] = 40;
-//		damageMatrix[ARTILLERY][CRUISER][0] = 65;
+		damageMatrix[ARTILLERY][CRUISER][0] = 65;
 		damageMatrix[ARTILLERY][LANDER][0] = 55;
 //		damageMatrix[ARTILLERY][SUB][0] = 60;
 
@@ -298,7 +298,7 @@ public class DamageHandler {
 		damageMatrix[ROCKET][BCOPTER][0] = -1;
 		damageMatrix[ROCKET][TCOPTER][0] = -1;
 		damageMatrix[ROCKET][BATTLESHIP][0] = 55;
-//		damageMatrix[ROCKET][CRUISER][0] = 85;
+		damageMatrix[ROCKET][CRUISER][0] = 85;
 		damageMatrix[ROCKET][LANDER][0] = 60;
 //		damageMatrix[ROCKET][SUB][0] = 85;
 
@@ -319,7 +319,7 @@ public class DamageHandler {
 		damageMatrix[A_AIR][BCOPTER][0] = 120;
 		damageMatrix[A_AIR][TCOPTER][0] = 120;
 		damageMatrix[A_AIR][BATTLESHIP][0] = -1;
-//		damageMatrix[A_AIR][CRUISER][0] = -1;
+		damageMatrix[A_AIR][CRUISER][0] = -1;
 		damageMatrix[A_AIR][LANDER][0] = -1;
 //		damageMatrix[A_AIR][SUB][0] = -1;
 
@@ -340,7 +340,7 @@ public class DamageHandler {
 		damageMatrix[MISSILES][BCOPTER][0] = 120;
 		damageMatrix[MISSILES][TCOPTER][0] = 120;
 		damageMatrix[MISSILES][BATTLESHIP][0] = -1;
-//		damageMatrix[MISSILES][CRUISER][0] = -1;
+		damageMatrix[MISSILES][CRUISER][0] = -1;
 		damageMatrix[MISSILES][LANDER][0] = -1;
 //		damageMatrix[MISSILES][SUB][0] = -1;
 
@@ -363,7 +363,7 @@ public class DamageHandler {
 		damageMatrix[FIGHTER][BCOPTER][0] = 100;
 		damageMatrix[FIGHTER][TCOPTER][0] = 100;
 		damageMatrix[FIGHTER][BATTLESHIP][0] = -1;
-//		damageMatrix[FIGHTER][CRUISER][0] = -1;
+		damageMatrix[FIGHTER][CRUISER][0] = -1;
 		damageMatrix[FIGHTER][LANDER][0] = -1;
 //		damageMatrix[FIGHTER][SUB][0] = -1;
 
@@ -384,7 +384,7 @@ public class DamageHandler {
 		damageMatrix[BOMBER][BCOPTER][0] = -1;
 		damageMatrix[BOMBER][TCOPTER][0] = -1;
 		damageMatrix[BOMBER][BATTLESHIP][0] = 75;
-//		damageMatrix[BOMBER][CRUISER][0] = 85;
+		damageMatrix[BOMBER][CRUISER][0] = 85;
 		damageMatrix[BOMBER][LANDER][0] = 95;
 //		damageMatrix[BOMBER][SUB][0] = 95;
 
@@ -421,8 +421,8 @@ public class DamageHandler {
 		damageMatrix[BCOPTER][TCOPTER][1] = 95;
 		damageMatrix[BCOPTER][BATTLESHIP][0] = 25;
 		damageMatrix[BCOPTER][BATTLESHIP][1] = -1;
-//		damageMatrix[BCOPTER][CRUISER][0] = 55;
-//		damageMatrix[BCOPTER][CRUISER][1] = -1;
+		damageMatrix[BCOPTER][CRUISER][0] = 55;
+		damageMatrix[BCOPTER][CRUISER][1] = -1;
 		damageMatrix[BCOPTER][LANDER][0] = 25;
 		damageMatrix[BCOPTER][LANDER][1] = -1;
 //		damageMatrix[BCOPTER][SUB][0] = 25;
@@ -447,9 +447,49 @@ public class DamageHandler {
 		damageMatrix[BATTLESHIP][BCOPTER][0] = -1;
 		damageMatrix[BATTLESHIP][TCOPTER][0] = -1;
 		damageMatrix[BATTLESHIP][BATTLESHIP][0] = 50;
-//		damageMatrix[BATTLESHIP][CRUISER][0] = 95;
+		damageMatrix[BATTLESHIP][CRUISER][0] = 95;
 		damageMatrix[BATTLESHIP][LANDER][0] = 95;
 //		damageMatrix[BATTLESHIP][SUB][0] = 95;
+
+		// @cruiser
+		damageMatrix[CRUISER][INFANTRY][0] = -1;
+		damageMatrix[CRUISER][INFANTRY][1] = -1;
+		damageMatrix[CRUISER][MECH][0] = -1;
+		damageMatrix[CRUISER][MECH][1] = -1;
+		damageMatrix[CRUISER][RECON][0] = -1;
+		damageMatrix[CRUISER][RECON][1] = -1;
+		damageMatrix[CRUISER][TANK][0] = -1;
+		damageMatrix[CRUISER][TANK][1] = -1;
+		damageMatrix[CRUISER][MDTANK][0] = -1;
+		damageMatrix[CRUISER][MDTANK][1] = -1;
+		damageMatrix[CRUISER][NEOTANK][0] = -1;
+		damageMatrix[CRUISER][NEOTANK][1] = -1;
+		damageMatrix[CRUISER][APC][0] = -1;
+		damageMatrix[CRUISER][APC][1] = -1;
+		damageMatrix[CRUISER][ARTILLERY][0] = -1;
+		damageMatrix[CRUISER][ARTILLERY][1] = -1;
+		damageMatrix[CRUISER][ROCKET][0] = -1;
+		damageMatrix[CRUISER][ROCKET][1] = -1;
+		damageMatrix[CRUISER][A_AIR][0] = -1;
+		damageMatrix[CRUISER][A_AIR][1] = -1;
+		damageMatrix[CRUISER][MISSILES][0] = -1;
+		damageMatrix[CRUISER][MISSILES][1] = -1;
+		damageMatrix[CRUISER][FIGHTER][0] = -1;
+		damageMatrix[CRUISER][FIGHTER][1] = 55;
+		damageMatrix[CRUISER][BOMBER][0] = -1;
+		damageMatrix[CRUISER][BOMBER][1] = 65;
+		damageMatrix[CRUISER][BCOPTER][0] = -1;
+		damageMatrix[CRUISER][BCOPTER][1] = 115;
+		damageMatrix[CRUISER][TCOPTER][0] = -1;
+		damageMatrix[CRUISER][TCOPTER][1] = 115;
+		damageMatrix[CRUISER][BATTLESHIP][0] = -1;
+		damageMatrix[CRUISER][BATTLESHIP][1] = -1;
+		damageMatrix[CRUISER][CRUISER][0] = -1;
+		damageMatrix[CRUISER][CRUISER][1] = -1;
+		damageMatrix[CRUISER][LANDER][0] = -1;
+		damageMatrix[CRUISER][LANDER][1] = -1;
+//		damageMatrix[CRUISER][SUB][0] = 90;
+//		damageMatrix[CRUISER][SUB][1] = -1;
 	}
 
 	public static void handleAttack(Unit attacking, Unit defending) {
@@ -554,8 +594,8 @@ public class DamageHandler {
 			return TCOPTER;
 		} else if (unit instanceof Battleship) {
 			return BATTLESHIP;
-/*		} else if (unit instanceof Cruiser) {
-			return CRUISER;*/
+		} else if (unit instanceof Cruiser) {
+			return CRUISER;
 		} else if (unit instanceof Lander) {
 			return LANDER;
 /*		} else if (unit instanceof Sub) {
@@ -615,11 +655,11 @@ public class DamageHandler {
 			return 0;
 		} else if (attacker instanceof Battleship) {
 			return 0;
-/*		} else if (attacker instanceof Cruiser) {
-			if (defender instanceof Sub) {
+		} else if (attacker instanceof Cruiser) {
+/*			if (defender instanceof Sub) {
 				return 0;
-			}
-			return 1; */
+			}*/
+			return 1;
 		} else if (attacker instanceof Lander) {
 			// Do nothing
 /*		} else if (attacker instanceof Sub) {
