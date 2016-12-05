@@ -78,38 +78,18 @@ public class TCopter extends Unit {
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
-		int bodyWidth = tileSize / 2;
-		int bodyHeight = tileSize / 2;
-		int bodyAlignX = 7 * tileSize / 20;
-		int bodyAlignY = tileSize / 5 + 3;
+		int bodyWidth = 2 * tileSize / 3;
+		int bodyHeight = tileSize / 3;
+		int bodyAlignX = tileSize / 6;
+		int bodyAlignY = tileSize / 3;
+		
+		int firstCrossLeftX = bodyAlignX + 3;
+		int firstCrossRightX = bodyAlignX + tileSize / 5 + 2;
+		int secondCrossLeftX = bodyAlignX + 3 + tileSize / 3;
+		int secondCrossRightX = bodyAlignX + 8 * tileSize / 15 + 2;
 
-		int legWidth = tileSize / 10;
-		int legHeight = tileSize / 5;
-		int leftLegAlignX = 9 * tileSize / 20;
-		int rightLegAlignX = 13 * tileSize / 20;
-		int legAlignY = 7 * tileSize /	 10 - 2;
-
-		int feetWidth = tileSize / 2 + 4;
-		int feetHeight = tileSize / 8;
-		int feetAlignX = tileSize / 5 + 4;
-		int feetAlignY = 3 * tileSize / 4 + 2;
-
-		int x1 = x * tileSize + tileSize / 7;
-		int x2 = x * tileSize + tileSize / 5 - 1;
-		int x3 = x2;
-		int x4 = x * tileSize + 7 * tileSize / 20;
-		int x5 = x4;
-		int x6 = x1;
-		int y1 = y * tileSize + tileSize / 4 + 2;
-		int y2 = y1;
-		int y3 = y * tileSize + 2 * tileSize / 5 + 1;
-		int y4 = y3;
-		int y5 = y * tileSize + tileSize / 2;
-		int y6 = y5;
-
-		int number = 6;
-		int[] cx = {x1, x2, x3, x4, x5, x6};
-		int[] cy = {y1, y2, y3, y4, y5, y6};
+		int crossUpperY = 2 * tileSize / 9 + 4;
+		int crossLowerY = 4 * tileSize / 9 + 1;
 
 		// body
 		if (active) {
@@ -121,40 +101,10 @@ public class TCopter extends Unit {
 
 		g.setColor(Color.black);
 		g.drawOval(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
-
-		// fen
-		if (active) {
-			g.setColor(color);
-		} else {
-			g.setColor(restingColor);
-		}
-		g.fillPolygon(cx, cy, number);
-
-		g.setColor(Color.black);
-		g.drawPolygon(cx, cy, number);
-
-		// feet
-		if (active) {
-			g.setColor(color);
-		} else {
-			g.setColor(restingColor);
-		}
-		g.fillRect(x * tileSize + feetAlignX, y * tileSize + feetAlignY, feetWidth, feetHeight);
-
-		g.setColor(Color.black);
-		g.drawRect(x * tileSize + feetAlignX, y * tileSize + feetAlignY, feetWidth, feetHeight);
-
-		// legs
-		if (active) {
-			g.setColor(color);
-		} else {
-			g.setColor(restingColor);
-		}
-		g.fillRect(x * tileSize + leftLegAlignX, y * tileSize + legAlignY, legWidth, legHeight);
-		g.fillRect(x * tileSize + rightLegAlignX, y * tileSize + legAlignY, legWidth, legHeight);
-
-		g.setColor(Color.black);
-		g.drawRect(x * tileSize + leftLegAlignX, y * tileSize + legAlignY, legWidth, legHeight);
-		g.drawRect(x * tileSize + rightLegAlignX, y * tileSize + legAlignY, legWidth, legHeight);
+		
+		g.drawLine(x * tileSize + firstCrossLeftX, y * tileSize + crossUpperY, x * tileSize + firstCrossRightX, y * tileSize + crossLowerY);
+		g.drawLine(x * tileSize + firstCrossLeftX, y * tileSize + crossLowerY, x * tileSize + firstCrossRightX, y * tileSize + crossUpperY);
+		g.drawLine(x * tileSize + secondCrossLeftX, y * tileSize + crossUpperY, x * tileSize + secondCrossRightX, y * tileSize + crossLowerY);
+		g.drawLine(x * tileSize + secondCrossLeftX, y * tileSize + crossLowerY, x * tileSize + secondCrossRightX, y * tileSize + crossUpperY);
 	}
 }
