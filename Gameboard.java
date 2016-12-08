@@ -16,14 +16,12 @@ import javax.swing.JPanel;
  * - capting
  * - only one action/unit per turn
  * - enter classes for HQ, ev Silo
- * - fuel and ammo implementation
  * - FOG
  * - hero-abilities and powers
  * - removed recalculating route which also removes movement-control within accepted area (infantrys may take more than three steps)
  *   - infantry may go over two mountains (very bad)
  * - not crashing on recalculating route
  * - fix join mechanic 
- * - fix apc-replentish
  * - fix so fuel is used for air and sea-units every turn (5 units of fuel)
  * - fix so infantry, mech, recon and a-air cannot attack bships (among others) 
  *
@@ -365,13 +363,17 @@ public class Gameboard extends JPanel implements KeyListener {
 			x = p.getX();
 			y = p.getY();
 		} else {
-			if (y > 0 && MapHandler.getNonFriendlyUnit(x, y - 1) != null) {
+			Unit north = MapHandler.getNonFriendlyUnit(x, y - 1);
+			Unit east = MapHandler.getNonFriendlyUnit(x + 1, y);
+			Unit south = MapHandler.getNonFriendlyUnit(x, y + 1);
+			Unit west = MapHandler.getNonFriendlyUnit(x - 1, y);
+			if (y > 0 && north != null && DamageHandler.validTarget(chosenUnit, north)) {
 				y--;
-			} else if (x < (mapWidth - 1) && MapHandler.getNonFriendlyUnit(x + 1, y) != null) {
+			} else if (x < (mapWidth - 1) && east != null && DamageHandler.validTarget(chosenUnit, east)) {
 				x++;
-			} else if (MapHandler.getNonFriendlyUnit(x, y + 1) != null) {
+			} else if (south != null && DamageHandler.validTarget(chosenUnit, south)) {
 				y++;
-			} else if (MapHandler.getNonFriendlyUnit(x - 1, y) != null) {
+			} else if (west != null && DamageHandler.validTarget(chosenUnit, west)) {
 				x--;
 			} else {
 				return; // cannot drop unit off anywhere
@@ -805,8 +807,6 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (landbasedEnterableUnitAtPosition(cursorX, cursorY)) {
 				if (!(chosenUnit instanceof Lander)) {
 					unitMenu.unitMayEnter();
-				} else {
-					// if the chosenUnit is a lander 
 				}
 			} else if (copterEnterableUnitAtPosition(cursorX, cursorY)) {
 				if (!(chosenUnit instanceof Cruiser)) {
