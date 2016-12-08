@@ -14,6 +14,7 @@ public abstract class Unit {
 								TRANSPORT = 5,
 								AIR = 6;
 
+	// Unit-type
 	public static final int 	FOOTMAN = 0,
 								VEHICLE = 1,
 								PLANE = 2,

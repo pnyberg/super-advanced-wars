@@ -22,8 +22,6 @@ import javax.swing.JPanel;
  *   - infantry may go over two mountains (very bad)
  * - not crashing on recalculating route
  * - fix join mechanic 
- * - fix so fuel is used for air and sea-units every turn (5 units of fuel)
- * - fix so infantry, mech, recon and a-air cannot attack bships (among others) 
  *
  * @TODO: substitute ArrayList with HashMap for better performance
  */
@@ -1084,6 +1082,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 	private void startTurnActions() {
 		MapHandler.updateCash();
+		MapHandler.fuelMaintenance();
 	}
 
 	public void keyReleased(KeyEvent e) {
