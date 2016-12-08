@@ -413,6 +413,19 @@ public class MapHandler {
 		return allowedMovementPosition(x, y, movementType, portrait.getCurrentHero());
 	}
 
+	/**
+	 * Because infantry can move to every area that is considered "land" we will use 
+	 *  the infantrys boolean-value to determine if it's land or not
+	 * 
+	 * @param unit
+	 * @return
+	 */
+	public static boolean unitOnLand(int x, int y) {
+		int terrainType = map[x][y];
+		
+		return moveabilityCostMatrix[Unit.INFANTRY][terrainType];
+	}
+	
 	public static int movementCost(int x, int y, int movementType) {
 		int terrainType = map[x][y];
 
