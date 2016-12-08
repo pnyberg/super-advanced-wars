@@ -24,8 +24,8 @@ import javax.swing.JPanel;
  * - not crashing on recalculating route
  * - fix join mechanic 
  * - fix apc-replentish
- * - fix so fuel is used when unit is attacking
  * - fix so fuel is used for air and sea-units every turn (5 units of fuel)
+ * - fix so infantry, mech, recon and a-air cannot attack bships (among others) 
  *
  * @TODO: substitute ArrayList with HashMap for better performance
  */
@@ -141,7 +141,6 @@ public class Gameboard extends JPanel implements KeyListener {
 		if (e.getKeyCode() == KeyEvent.VK_A) {
 			if (unitIsDroppingOff()) {
 				if (unitCanBeDroppedOff()) {
-					System.out.println("Dropping");
 					if (chosenUnit instanceof APC) {
 						((APC)chosenUnit).regulateDroppingOff(false);
 						Unit exitingUnit = ((APC)chosenUnit).removeUnit();
@@ -158,17 +157,21 @@ public class Gameboard extends JPanel implements KeyListener {
 						exitingUnit.moveTo(cursor.getX(), cursor.getY());
 						exitingUnit.regulateActive(false);
 					} else if (chosenUnit instanceof Cruiser) {
-						System.out.println("Hi");
 						((Cruiser)chosenUnit).regulateDroppingOff(false);
 						Unit exitingUnit = ((Cruiser)chosenUnit).removeChosenUnit();
 						exitingUnit.moveTo(cursor.getX(), cursor.getY());
 						exitingUnit.regulateActive(false);
 					}
 
+					int fuelUse = calculateFuelUsed();
+					chosenUnit.useFuel(fuelUse);
+
 					chosenUnit.regulateActive(false);
 					chosenUnit = null;
 					RouteHandler.clearMovementMap();
 					RouteHandler.clearArrowPoints();
+				} else {
+					// If all drop-slots are occupied, pressing 'A' won't do anything
 				}
 			} else if (unitWantToFire()) {
 				Unit defendingUnit = MapHandler.getNonFriendlyUnit(cursorX, cursorY);
@@ -181,6 +184,9 @@ public class Gameboard extends JPanel implements KeyListener {
 
 				removeUnitIfDead(defendingUnit);
 				removeUnitIfDead(chosenUnit);
+
+				int fuelUse = calculateFuelUsed();
+				chosenUnit.useFuel(fuelUse);
 
 				chosenUnit.regulateActive(false);
 				chosenUnit = null;
@@ -199,7 +205,6 @@ public class Gameboard extends JPanel implements KeyListener {
 						int index = unitMenu.getMenuIndex();
 						((Lander)chosenUnit).chooseUnit(index);
 					} else if (chosenUnit instanceof Cruiser) {
-						System.out.println("Trallalla");
 						int index = unitMenu.getMenuIndex();
 						((Cruiser)chosenUnit).chooseUnit(index);
 						System.out.println(((Cruiser)chosenUnit).getChosenUnit());
@@ -218,6 +223,7 @@ public class Gameboard extends JPanel implements KeyListener {
 					} else if (entryUnit instanceof Cruiser) {
 						((Cruiser)entryUnit).addUnit(chosenUnit);
 					}
+
 					// @TODO cargo-unit enters other unit
 				} else if (unitMenu.atSupplyRow()) {
 					int x = chosenUnit.getX();
