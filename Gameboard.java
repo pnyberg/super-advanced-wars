@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 
 /**
  * TODO-list
- * - Bship shouldn't be able to attack Fighters
  * - capting
  * - only one action/unit per turn
  * - enter classes for HQ, ev Silo
@@ -23,8 +22,10 @@ import javax.swing.JPanel;
  * - removed recalculating route which also removes movement-control within accepted area (infantrys may take more than three steps)
  *   - infantry may go over two mountains (very bad)
  * - not crashing on recalculating route
- * - fix battle-simulations (not counterattack for indirect etc)
  * - fix join mechanic 
+ * - fix apc-replentish
+ * - fix so fuel is used when unit is attacking
+ * - fix so fuel is used for air and sea-units every turn (5 units of fuel)
  *
  * @TODO: substitute ArrayList with HashMap for better performance
  */
@@ -217,14 +218,27 @@ public class Gameboard extends JPanel implements KeyListener {
 					} else if (entryUnit instanceof Cruiser) {
 						((Cruiser)entryUnit).addUnit(chosenUnit);
 					}
-					// @TODO unit enters other unit
+					// @TODO cargo-unit enters other unit
+				} else if (unitMenu.atSupplyRow()) {
+					int x = chosenUnit.getX();
+					int y = chosenUnit.getY();
+
+					Unit north = MapHandler.getFriendlyUnit(x, y - 1);
+					Unit east = MapHandler.getFriendlyUnit(x + 1, y);
+					Unit south = MapHandler.getFriendlyUnit(x, y + 1);
+					Unit west = MapHandler.getFriendlyUnit(x - 1, y);
+
+					replentishUnit(north);
+					replentishUnit(east);
+					replentishUnit(south);
+					replentishUnit(west);
 				}
 
 				if (!unitIsDroppingOff() && !unitWantToFire()) {
 					// using fuel
 					int fuelUse = calculateFuelUsed();
 					chosenUnit.useFuel(fuelUse);
-//					System.out.println("Fuel + Ammo: " + chosenUnit.getFuel() + " - " + chosenUnit.getAmmo());
+					System.out.println("Fuel + Ammo: " + chosenUnit.getFuel() + " - " + chosenUnit.getAmmo());
 
 					chosenUnit.regulateActive(false);
 					chosenUnit = null;
@@ -1038,6 +1052,14 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 			}
 		}
+	}
+	
+	private void replentishUnit(Unit unit) {
+		if (unit == null) {
+			return;
+		}
+		
+		unit.replentish();
 	}
 
 	private int calculateFuelUsed() {

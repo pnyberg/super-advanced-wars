@@ -136,6 +136,17 @@ public class UnitMenu extends Menu {
 		return menuIndex == comparisonIndex;
 	}
 
+	public boolean atSupplyRow() {
+		if (!supply) {
+			return false;
+		}
+
+		// if there is units in the "cargo", then supply comes after the cargo
+		int comparisonIndex = cargo.size();
+
+		return menuIndex == comparisonIndex;
+	}
+
 	public boolean atEnterRow() {
 		if (!enter) {
 			return false;

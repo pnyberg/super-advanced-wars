@@ -541,16 +541,12 @@ public class DamageHandler {
 		int rngNumber = ((int)(Math.random()*10)) % 10;
 		int heroDefenceValue = defHero.getDefenceValue(defType);
 		int areaDefenceValue = (defender.getMovementType() == Unit.AIR ? 0 : MapHandler.getDefenceValue(defTerrainType));
-		System.out.println("Defence-value: " + areaDefenceValue);
 
 		int attackingAffect = attacker.getHP() / 10 * ((baseDamage * heroAttackValue) / 100 + rngNumber) / 10;
 		int defendingAffect = (200 - (heroDefenceValue + areaDefenceValue * defender.getHP() / 10)) / 10;
 		int damageValue = attackingAffect * defendingAffect / 10;
 
 		defender.takeDamage(damageValue);
-
-		System.out.println("BaseDamage: " + baseDamage + " (" + attackingAffect + "*" + defendingAffect + ")");
-		System.out.println("Damagevalue: " + damageValue + " of type: " + attType);
 	}
 
 	public static boolean validTarget(Unit attackingUnit, Unit targetUnit) {
