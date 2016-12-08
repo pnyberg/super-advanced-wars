@@ -15,6 +15,7 @@ import javax.swing.JPanel;
  * TODO-list
  * - Bship shouldn't be able to attack Fighters
  * - capting
+ * - only one action/unit per turn
  * - enter classes for HQ, ev Silo
  * - fuel and ammo implementation
  * - FOG
@@ -392,7 +393,6 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		int x = chosenUnit.getX();
 		int y = chosenUnit.getY();
-		int movementType = containedUnit.getMovementType();
 
 		if (y > 0 && validPosition(containedUnit, x, y - 1)) {
 			y--;
@@ -1029,7 +1029,10 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 
 				int distanceFromUnit = Math.abs(unitX - x) + Math.abs(unitY - y);
-				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange && MapHandler.getNonFriendlyUnit(x, y) != null) {
+				
+				Unit target = MapHandler.getNonFriendlyUnit(x, y);
+				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange && 
+						 target != null && DamageHandler.validTarget(chosenUnit, target)) {
 					Point p = new Point(x, y);
 					indirectUnit.addFiringLocation(p);
 				}

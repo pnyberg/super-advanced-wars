@@ -1,7 +1,5 @@
 package units;
 
-import menus.BuildingItem;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Font;
