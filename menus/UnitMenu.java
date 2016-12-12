@@ -158,6 +158,16 @@ public class UnitMenu extends Menu {
 
 		return menuIndex == comparisonIndex;
 	}
+	
+	/**
+	 * Could maybe add so this works if there for some reason should be okay to join and do another action on the same tile
+	 * (if units could enter and join in the same context for instance)
+	 * 
+	 * @return
+	 */
+	public boolean atJoinRow() {
+		return join;
+	}
 
 	public void paint(Graphics g) {
 		menuHeight = 10 + numberOfRows * menuRowHeight;
