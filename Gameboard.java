@@ -22,6 +22,7 @@ import javax.swing.JPanel;
  *   - infantry may go over two mountains (very bad)
  * - not crashing on recalculating route
  * - fix join mechanic 
+ * - first attack take ages to calculate
  *
  * @TODO: substitute ArrayList with HashMap for better performance
  */
@@ -233,6 +234,14 @@ public class Gameboard extends JPanel implements KeyListener {
 					replentishUnit(east);
 					replentishUnit(south);
 					replentishUnit(west);
+				} else if (unitMenu.atJoinRow()) {
+					int x = chosenUnit.getX();
+					int y = chosenUnit.getY();
+					Unit unit = MapHandler.getFriendlyUnitExceptSelf(chosenUnit, x, y);
+					
+					unit.heal(chosenUnit.getHP());
+					chosenUnit.kill();
+					removeUnitIfDead(chosenUnit);
 				}
 
 				if (!unitIsDroppingOff() && !unitWantToFire()) {
@@ -758,14 +767,16 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private void handleOpenUnitMenu(int cursorX, int cursorY) {
+		boolean hurtAtSamePosition = hurtSameTypeUnitAtPosition(chosenUnit, cursorX, cursorY);
 		if (!MapHandler.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY) 
-		|| unitEntryingContainerUnit(chosenUnit, cursorX, cursorY)) {
+		|| unitEntryingContainerUnit(chosenUnit, cursorX, cursorY)
+		|| hurtAtSamePosition) {
 			// @TODO fix join
-			if (hurtSameTypeUnitAtPosition(chosenUnit, cursorX, cursorY)) {
+			if (hurtAtSamePosition) {
 				unitMenu.unitMayJoin();
 			}
 
-			if (unitCanFire(cursorX, cursorY)) {
+			if (!hurtAtSamePosition && unitCanFire(cursorX, cursorY)) {
 				unitMenu.unitMayFire();
 			}
 
@@ -900,7 +911,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private boolean hurtSameTypeUnitAtPosition(Unit unit, int x, int y) {
-		Unit testUnit = MapHandler.getFriendlyUnit(x, y);
+		Unit testUnit = MapHandler.getFriendlyUnitExceptSelf(unit, x, y);
 
 		if (testUnit == null) {
 			return false;
