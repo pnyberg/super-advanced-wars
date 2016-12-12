@@ -65,8 +65,18 @@ public abstract class Unit {
 		this.y = y;
 	}
 
+	public void heal(int health) {
+		hp += health;
+		
+		hp = Math.min(hp, 100);
+	}
+	
 	public void takeDamage(int damage) {
 		hp -= damage;
+	}
+	
+	public void kill() {
+		hp = 0;
 	}
 
 	public void regulateActive(boolean active) {
