@@ -21,7 +21,6 @@ import javax.swing.JPanel;
  * - removed recalculating route which also removes movement-control within accepted area (infantrys may take more than three steps)
  *   - infantry may go over two mountains (very bad)
  * - not crashing on recalculating route
- * - fix join mechanic 
  * - first attack take ages to calculate
  *
  * @TODO: substitute ArrayList with HashMap for better performance
@@ -1174,13 +1173,15 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		Unit targetUnit = MapHandler.getNonFriendlyUnit(x, y);
 
-		int chosenUnitType = DamageHandler.getTypeFromUnit(chosenUnit);
-		int targetUnitType = DamageHandler.getTypeFromUnit(targetUnit);
+		HeroPortrait portrait = MapHandler.getHeroPortrait();
+		Hero chosenHero = portrait.getCurrentHero();
+		Hero targetHero = portrait.getHeroFromUnit(targetUnit);
+		
+		int terrainType = MapHandler.map(x, y);
+//		int areaDefenceValue = MapHandler.getDefenceValue(terrainType);
 
-		// @TODO: fix so that the damage shown includes 
-		int damage = Math.max(DamageHandler.getBaseDamageValue(chosenUnitType, targetUnitType, 0), 
-							DamageHandler.getBaseDamageValue(chosenUnitType, targetUnitType, 1));
-
+		int damage = DamageHandler.getNonRNGDamageValue(chosenUnit, chosenHero, targetUnit, targetHero, terrainType); 
+				
 		int damageFieldWidth = (damage <= 9 ? 3 * tileSize / 5 : 
 									(damage <= 99 ? 4 * tileSize / 5
 										: tileSize - 3));
