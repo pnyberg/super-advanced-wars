@@ -74,7 +74,7 @@ public class BattleTester {
 
 	/***
 	 * Tests all the units vs other units
-	 * @TODO: implement methods for AAir, Missile and Sub
+	 * @TODO: implement methods for AAir, Missiles and Sub
 	 */
 	@Test
 	public void testUnitVsUnit() {
@@ -87,7 +87,7 @@ public class BattleTester {
 		testArtilleryVsUnit();
 		testRocketVsUnit();
 		testAAirVsUnit();
-		//testMissileVsUnit();
+		testMissilesVsUnit();
 
 		//testFighterVsUnit();
 		//testBomberVsUnit();
@@ -139,23 +139,23 @@ public class BattleTester {
 
 	private void testAAirVsUnit() {
 		// acceptable
+		testXvsY(a_air, infantry, true);
+		testXvsY(a_air, mech, true);
+		testXvsY(a_air, recon, true);
+		testXvsY(a_air, tank, true);
+		testXvsY(a_air, mdTank, true);
+		testXvsY(a_air, neotank, true);
+		testXvsY(a_air, apc, true);
+		testXvsY(a_air, artillery, true);
+		testXvsY(a_air, rocket, true);
+		testXvsY(a_air, a_air, true);
+		testXvsY(a_air, missiles, true);
 		testXvsY(a_air, fighter, true);
 		testXvsY(a_air, bomber, true);
 		testXvsY(a_air, bCopter, true);
 		testXvsY(a_air, tCopter, true);
 		
 		// not acceptable
-		testXvsY(a_air, infantry, false);
-		testXvsY(a_air, mech, false);
-		testXvsY(a_air, recon, false);
-		testXvsY(a_air, tank, false);
-		testXvsY(a_air, mdTank, false);
-		testXvsY(a_air, neotank, false);
-		testXvsY(a_air, apc, false);
-		testXvsY(a_air, artillery, false);
-		testXvsY(a_air, rocket, false);
-		testXvsY(a_air, a_air, false);
-		testXvsY(a_air, missiles, false);
 		testXvsY(a_air, battleship, false);
 		testXvsY(a_air, cruiser, false);
 		testXvsY(a_air, lander, false);
@@ -164,6 +164,10 @@ public class BattleTester {
 		testNonCruiserOrSubVsSub(a_air, false);
 	}
 	
+	private void testMissilesVsUnit() {
+		testAirIndirectUnitVsUnit(missiles);
+	}
+
 	private void testBattleshipVsUnit() {
 		testGroundIndirectUnitVsUnit(battleship);
 	}
@@ -283,6 +287,32 @@ public class BattleTester {
 		testXvsY(att, tCopter, false);
 
 		testNonCruiserOrSubVsSub(att, true);
+	}
+
+	private void testAirIndirectUnitVsUnit(Unit att) {
+		// acceptable
+		testXvsY(att, fighter, true);
+		testXvsY(att, bomber, true);
+		testXvsY(att, bCopter, true);
+		testXvsY(att, tCopter, true);
+
+		// not acceptable
+		testXvsY(att, infantry, false);
+		testXvsY(att, mech, false);
+		testXvsY(att, recon, false);
+		testXvsY(att, tank, false);
+		testXvsY(att, mdTank, false);
+		testXvsY(att, neotank, false);
+		testXvsY(att, apc, false);
+		testXvsY(att, artillery, false);
+		testXvsY(att, rocket, false);
+		testXvsY(att, a_air, false);
+		testXvsY(att, missiles, false);
+		testXvsY(att, battleship, false);
+		testXvsY(att, cruiser, false);
+		testXvsY(att, lander, false);
+
+		testNonCruiserOrSubVsSub(att, false);
 	}
 
 	/**
