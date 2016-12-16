@@ -11,9 +11,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
+ * Tests the interaction between all the units but only if there is allowed.
+ * Do not test how much damage is given, might want to do that but for now 
+ *  it's not tested.
+ * However, machine gun and submerged/emerged subs are included.
+ *
  * TODO:
- *  - test when ammo is out
- *  - test when sub is emerged/submerged
+ *  - complement test code for subs when Sub is implemented
+ *  - test how much ammo units should have (3 for Mech for example)
  * 
  * @author pnyberg
  */
@@ -39,6 +44,9 @@ public class BattleTester {
 	private static Lander lander;
 	//private static Sub sub;
 
+	/***
+	 * Creates units of every type and implements the damage-matrix (in the DamageHandler) 
+	 */
 	@Before
 	public void init() {
 		infantry = new Infantry(-1, -1, Color.white);
@@ -64,6 +72,10 @@ public class BattleTester {
 		DamageHandler.init();
 	}
 
+	/***
+	 * Tests all the units vs other units
+	 * @TODO: implement methods for AAir, Missile and Sub
+	 */
 	@Test
 	public void testUnitVsUnit() {
 		testInfantryVsUnit();
@@ -74,52 +86,42 @@ public class BattleTester {
 		testNeotankVsUnit();
 		testArtilleryVsUnit();
 		testRocketVsUnit();
+		//testAAirVsUnit();
+		//testMissileVsUnit();
 
 		testBattleshipVsUnit();
 		testCruiserVsUnit();
+		//testSubVsUnit();
 		
 		System.out.println("All tests succeeded!");
 	}
 
-	/* === Units === */
-	
-	/**
-	 *  Only want to test if infantry can fire
-	 *  Testing the damage from infantries is to tedious, so won't do that
-	 */
+	/*******************************
+	 *        Unit-methods
+	 *******************************/
+
 	private void testInfantryVsUnit() {
 		testMachineGunVsUnit(infantry);
 	}
 
-	/**
-	 *  We want to test the machine gun for the mech
-	 *  But we also want to test that the rocket launcher works correctly
-	 *  That is, 3 shots then machine gun and never rocket launcher against non-vehicles
-	 */
 	private void testMechVsUnit() {
 		testMachineGunVsUnit(mech);
-		
-		//TODO: test rocket launcher (amount of ammo, against units)
 	}
 
-	/**
-	 *  Only want to test if recon can fire
-	 *  Testing the damage from recons is to tedious, so won't do that
-	 */
 	private void testReconVsUnit() {
 		testMachineGunVsUnit(recon);
 	}
 
 	private void testTankVsUnit() {
-		testTankUnitVsUnit(tank);
+		testTankTypeUnitVsUnit(tank);
 	}
 
 	private void testMDtankVsUnit() {
-		testTankUnitVsUnit(mdTank);
+		testTankTypeUnitVsUnit(mdTank);
 	}
 
 	private void testNeotankVsUnit() {
-		testTankUnitVsUnit(neotank);
+		testTankTypeUnitVsUnit(neotank);
 	}
 	
 	private void testArtilleryVsUnit() {
@@ -157,11 +159,20 @@ public class BattleTester {
 		testXvsY(cruiser, lander, false);
 
 		// special case
-		testCruiserVsSub();
+		testCruiserOrSubVsSub();
 	}
 
-	/* === Helping methods === */
-	
+	/*******************************
+	 *        Helping methods
+	 *******************************/
+
+	/**
+	 * If expected result isn't matched a text is printed explaining what went wrong
+	 * 
+	 * @param att
+	 * @param def
+	 * @param expectedSuccess
+	 */
 	private void testXvsY(Unit att, Unit def, boolean expectedSuccess) {
 		if (expectedSuccess) {
 			assertTrue(att.getClass() + " should be able to attack " + def.getClass(), DamageHandler.validTarget(att, def));
@@ -170,6 +181,11 @@ public class BattleTester {
 		}
 	}
 
+	/**
+	 * Tests machine gun (used for several units)
+	 * 
+	 * @param att
+	 */
 	private void testMachineGunVsUnit(Unit att) {
 		// if the attacking unit normally has main weapon, empty it
 		while(att.hasAmmo()) {
@@ -197,12 +213,18 @@ public class BattleTester {
 		testXvsY(att, battleship, false);
 		testXvsY(att, lander, false);
 
-		testNonCruiserVsSub(att, false);
+		testNonCruiserOrSubVsSub(att, false);
 
 		// reset the ammo
 		att.replentish();
 	}
 
+	/**
+	 * Tests indirect units that targets ground-units
+	 * That is: Artillery, Rocket and Battleship
+	 * 
+	 * @param att
+	 */
 	private void testGroundIndirectUnitVsUnit(Unit att) {
 		// acceptable
 		testXvsY(att, infantry, true);
@@ -225,13 +247,15 @@ public class BattleTester {
 		testXvsY(att, bCopter, false);
 		testXvsY(att, tCopter, false);
 
-		testNonCruiserVsSub(att, true);
-
-		// reset the ammo
-		att.replentish();
+		testNonCruiserOrSubVsSub(att, true);
 	}
 
-	private void testTankUnitVsUnit(Unit attacker) {
+	/**
+	 * Test tanks against other units (Tank, MDTank and Neotank)
+	 * 
+	 * @param attacker
+	 */
+	private void testTankTypeUnitVsUnit(Unit attacker) {
 		testMachineGunVsUnit(attacker);
 
 		// acceptable
@@ -255,29 +279,39 @@ public class BattleTester {
 		testXvsY(attacker, fighter, false);
 		testXvsY(attacker, bomber, false);
 
-		testNonCruiserVsSub(attacker, true);
+		testNonCruiserOrSubVsSub(attacker, true);
 	}
 
-	private void testNonCruiserVsSub(Unit attacker, boolean expectedSuccessEmerged) {
+	/**
+	 * Test all units that isn't Cruiser or Sub against Subs
+	 * Shouldn't be able to attack when sub is submerged
+	 * 
+	 * @param attacker
+	 * @param expectedSuccessEmerged
+	 */
+	private void testNonCruiserOrSubVsSub(Unit attacker, boolean expectedSuccessEmerged) {
 //		testXvsY(attacker, sub, expectedSuccessEmerged);
 //		sub.dive();
 //		testXvsY(attacker, sub, false);
 //		sub.emerge();
 	}
 	
-	private void testCruiserVsSub() {
-//		testXvsY(cruiser, sub, true);
+	/**
+	 * Tests Cruiser or Sub against Subs, should be able to attack if it has ammo
+	 */
+	private void testCruiserOrSubVsSub(Unit attacker) {
+//		testXvsY(attacker, sub, true);
 		//sub.dive();
-//		testXvsY(cruiser, sub, true);
+//		testXvsY(attacker, sub, true);
 
-		// shouldn't be able to attack subs with machine gun
-		while(cruiser.hasAmmo()) {
-			cruiser.useAmmo();
+		// shouldn't be able to attack subs with machine gun (if Cruiser)
+		while(attacker.hasAmmo()) {
+			attacker.useAmmo();
 		}
 		
-//		testXvsY(cruiser, sub, false);
+//		testXvsY(attacker, sub, false);
 		//sub.emerge();
-//		testXvsY(cruiser, sub, false);
+//		testXvsY(attacker, sub, false);
 		
 		cruiser.replentish();
 	}
