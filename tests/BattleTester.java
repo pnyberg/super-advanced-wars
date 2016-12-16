@@ -86,8 +86,13 @@ public class BattleTester {
 		testNeotankVsUnit();
 		testArtilleryVsUnit();
 		testRocketVsUnit();
-		//testAAirVsUnit();
+		testAAirVsUnit();
 		//testMissileVsUnit();
+
+		//testFighterVsUnit();
+		//testBomberVsUnit();
+		//testBCopterVsUnit();
+		//testTCopterVsUnit();
 
 		testBattleshipVsUnit();
 		testCruiserVsUnit();
@@ -131,6 +136,33 @@ public class BattleTester {
 	private void testRocketVsUnit() {
 		testGroundIndirectUnitVsUnit(rocket);
 	}
+
+	private void testAAirVsUnit() {
+		// acceptable
+		testXvsY(a_air, fighter, true);
+		testXvsY(a_air, bomber, true);
+		testXvsY(a_air, bCopter, true);
+		testXvsY(a_air, tCopter, true);
+		
+		// not acceptable
+		testXvsY(a_air, infantry, false);
+		testXvsY(a_air, mech, false);
+		testXvsY(a_air, recon, false);
+		testXvsY(a_air, tank, false);
+		testXvsY(a_air, mdTank, false);
+		testXvsY(a_air, neotank, false);
+		testXvsY(a_air, apc, false);
+		testXvsY(a_air, artillery, false);
+		testXvsY(a_air, rocket, false);
+		testXvsY(a_air, a_air, false);
+		testXvsY(a_air, missiles, false);
+		testXvsY(a_air, battleship, false);
+		testXvsY(a_air, cruiser, false);
+		testXvsY(a_air, lander, false);
+
+		// special case
+		testNonCruiserOrSubVsSub(a_air, false);
+	}
 	
 	private void testBattleshipVsUnit() {
 		testGroundIndirectUnitVsUnit(battleship);
@@ -156,10 +188,11 @@ public class BattleTester {
 		testXvsY(cruiser, a_air, false);
 		testXvsY(cruiser, missiles, false);
 		testXvsY(cruiser, battleship, false);
+		testXvsY(cruiser, cruiser, false);
 		testXvsY(cruiser, lander, false);
 
 		// special case
-		testCruiserOrSubVsSub();
+		testCruiserOrSubVsSub(cruiser);
 	}
 
 	/*******************************
@@ -211,6 +244,7 @@ public class BattleTester {
 		testXvsY(att, fighter, false);
 		testXvsY(att, bomber, false);
 		testXvsY(att, battleship, false);
+		testXvsY(att, cruiser, false);
 		testXvsY(att, lander, false);
 
 		testNonCruiserOrSubVsSub(att, false);
@@ -239,6 +273,7 @@ public class BattleTester {
 		testXvsY(att, a_air, true);
 		testXvsY(att, missiles, true);
 		testXvsY(att, battleship, true);
+		testXvsY(att, cruiser, true);
 		testXvsY(att, lander, true);
 
 		// not acceptable
@@ -273,6 +308,7 @@ public class BattleTester {
 		testXvsY(attacker, bCopter, true);
 		testXvsY(attacker, tCopter, true);
 		testXvsY(attacker, battleship, true);
+		testXvsY(attacker, cruiser, true);
 		testXvsY(attacker, lander, true);
 
 		// not acceptable
