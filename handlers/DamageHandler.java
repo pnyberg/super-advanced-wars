@@ -572,7 +572,7 @@ public class DamageHandler {
 		int attUnitType = getTypeFromUnit(attackingUnit);
 		int targetUnitType = getTypeFromUnit(targetUnit);
 
-		return getBaseDamageValue(attUnitType, targetUnitType, 0) > -1
+		return (attackingUnit.hasAmmo() && getBaseDamageValue(attUnitType, targetUnitType, 0) > -1)
 			|| getBaseDamageValue(attUnitType, targetUnitType, 1) > -1;
 	}
 
