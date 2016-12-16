@@ -89,7 +89,7 @@ public class BattleTester {
 		testAAirVsUnit();
 		testMissilesVsUnit();
 
-		//testFighterVsUnit();
+		testFighterVsUnit();
 		//testBomberVsUnit();
 		//testBCopterVsUnit();
 		//testTCopterVsUnit();
@@ -168,6 +168,33 @@ public class BattleTester {
 		testAirIndirectUnitVsUnit(missiles);
 	}
 
+	private void testFighterVsUnit() {
+		// acceptable
+		testXvsY(fighter, fighter, true);
+		testXvsY(fighter, bomber, true);
+		testXvsY(fighter, bCopter, true);
+		testXvsY(fighter, tCopter, true);
+		
+		// not acceptable
+		testXvsY(fighter, infantry, false);
+		testXvsY(fighter, mech, false);
+		testXvsY(fighter, recon, false);
+		testXvsY(fighter, tank, false);
+		testXvsY(fighter, mdTank, false);
+		testXvsY(fighter, neotank, false);
+		testXvsY(fighter, apc, false);
+		testXvsY(fighter, artillery, false);
+		testXvsY(fighter, rocket, false);
+		testXvsY(fighter, a_air, false);
+		testXvsY(fighter, missiles, false);
+		testXvsY(fighter, battleship, false);
+		testXvsY(fighter, cruiser, false);
+		testXvsY(fighter, lander, false);
+
+		// special case
+		testNonCruiserOrSubVsSub(fighter, false);
+	}
+	
 	private void testBattleshipVsUnit() {
 		testGroundIndirectUnitVsUnit(battleship);
 	}
