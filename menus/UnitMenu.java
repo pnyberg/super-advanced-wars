@@ -136,6 +136,17 @@ public class UnitMenu extends Menu {
 		return menuIndex == comparisonIndex;
 	}
 
+	public boolean atSupplyRow() {
+		if (!supply) {
+			return false;
+		}
+
+		// if there is units in the "cargo", then supply comes after the cargo
+		int comparisonIndex = cargo.size();
+
+		return menuIndex == comparisonIndex;
+	}
+
 	public boolean atEnterRow() {
 		if (!enter) {
 			return false;
@@ -146,6 +157,16 @@ public class UnitMenu extends Menu {
 		if (join) { comparisonIndex++; }
 
 		return menuIndex == comparisonIndex;
+	}
+	
+	/**
+	 * Could maybe add so this works if there for some reason should be okay to join and do another action on the same tile
+	 * (if units could enter and join in the same context for instance)
+	 * 
+	 * @return
+	 */
+	public boolean atJoinRow() {
+		return join;
 	}
 
 	public void paint(Graphics g) {

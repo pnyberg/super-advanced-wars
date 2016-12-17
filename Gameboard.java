@@ -13,17 +13,15 @@ import javax.swing.JPanel;
 
 /**
  * TODO-list
- * - Bship shouldn't be able to attack Fighters
  * - capting
+ * - only one action/unit per turn
  * - enter classes for HQ, ev Silo
- * - fuel and ammo implementation
  * - FOG
  * - hero-abilities and powers
  * - removed recalculating route which also removes movement-control within accepted area (infantrys may take more than three steps)
  *   - infantry may go over two mountains (very bad)
  * - not crashing on recalculating route
- * - fix battle-simulations (not counterattack for indirect etc)
- * - fix join mechanic 
+ * - first attack take ages to calculate
  *
  * @TODO: substitute ArrayList with HashMap for better performance
  */
@@ -161,10 +159,15 @@ public class Gameboard extends JPanel implements KeyListener {
 						exitingUnit.regulateActive(false);
 					}
 
+					int fuelUse = calculateFuelUsed();
+					chosenUnit.useFuel(fuelUse);
+
 					chosenUnit.regulateActive(false);
 					chosenUnit = null;
 					RouteHandler.clearMovementMap();
 					RouteHandler.clearArrowPoints();
+				} else {
+					// If all drop-slots are occupied, pressing 'A' won't do anything
 				}
 			} else if (unitWantToFire()) {
 				Unit defendingUnit = MapHandler.getNonFriendlyUnit(cursorX, cursorY);
@@ -177,6 +180,9 @@ public class Gameboard extends JPanel implements KeyListener {
 
 				removeUnitIfDead(defendingUnit);
 				removeUnitIfDead(chosenUnit);
+
+				int fuelUse = calculateFuelUsed();
+				chosenUnit.useFuel(fuelUse);
 
 				chosenUnit.regulateActive(false);
 				chosenUnit = null;
@@ -212,14 +218,36 @@ public class Gameboard extends JPanel implements KeyListener {
 					} else if (entryUnit instanceof Cruiser) {
 						((Cruiser)entryUnit).addUnit(chosenUnit);
 					}
-					// @TODO unit enters other unit
+
+					// @TODO cargo-unit enters other unit
+				} else if (unitMenu.atSupplyRow()) {
+					int x = chosenUnit.getX();
+					int y = chosenUnit.getY();
+
+					Unit north = MapHandler.getFriendlyUnit(x, y - 1);
+					Unit east = MapHandler.getFriendlyUnit(x + 1, y);
+					Unit south = MapHandler.getFriendlyUnit(x, y + 1);
+					Unit west = MapHandler.getFriendlyUnit(x - 1, y);
+
+					replentishUnit(north);
+					replentishUnit(east);
+					replentishUnit(south);
+					replentishUnit(west);
+				} else if (unitMenu.atJoinRow()) {
+					int x = chosenUnit.getX();
+					int y = chosenUnit.getY();
+					Unit unit = MapHandler.getFriendlyUnitExceptSelf(chosenUnit, x, y);
+					
+					unit.heal(chosenUnit.getHP());
+					chosenUnit.kill();
+					removeUnitIfDead(chosenUnit);
 				}
 
 				if (!unitIsDroppingOff() && !unitWantToFire()) {
 					// using fuel
 					int fuelUse = calculateFuelUsed();
 					chosenUnit.useFuel(fuelUse);
-//					System.out.println("Fuel + Ammo: " + chosenUnit.getFuel() + " - " + chosenUnit.getAmmo());
+					System.out.println("Fuel + Ammo: " + chosenUnit.getFuel() + " - " + chosenUnit.getAmmo());
 
 					chosenUnit.regulateActive(false);
 					chosenUnit = null;
@@ -341,13 +369,17 @@ public class Gameboard extends JPanel implements KeyListener {
 			x = p.getX();
 			y = p.getY();
 		} else {
-			if (y > 0 && MapHandler.getNonFriendlyUnit(x, y - 1) != null) {
+			Unit north = MapHandler.getNonFriendlyUnit(x, y - 1);
+			Unit east = MapHandler.getNonFriendlyUnit(x + 1, y);
+			Unit south = MapHandler.getNonFriendlyUnit(x, y + 1);
+			Unit west = MapHandler.getNonFriendlyUnit(x - 1, y);
+			if (y > 0 && north != null && DamageHandler.validTarget(chosenUnit, north)) {
 				y--;
-			} else if (x < (mapWidth - 1) && MapHandler.getNonFriendlyUnit(x + 1, y) != null) {
+			} else if (x < (mapWidth - 1) && east != null && DamageHandler.validTarget(chosenUnit, east)) {
 				x++;
-			} else if (MapHandler.getNonFriendlyUnit(x, y + 1) != null) {
+			} else if (south != null && DamageHandler.validTarget(chosenUnit, south)) {
 				y++;
-			} else if (MapHandler.getNonFriendlyUnit(x - 1, y) != null) {
+			} else if (west != null && DamageHandler.validTarget(chosenUnit, west)) {
 				x--;
 			} else {
 				return; // cannot drop unit off anywhere
@@ -388,7 +420,6 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		int x = chosenUnit.getX();
 		int y = chosenUnit.getY();
-		int movementType = containedUnit.getMovementType();
 
 		if (y > 0 && validPosition(containedUnit, x, y - 1)) {
 			y--;
@@ -735,14 +766,16 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private void handleOpenUnitMenu(int cursorX, int cursorY) {
+		boolean hurtAtSamePosition = hurtSameTypeUnitAtPosition(chosenUnit, cursorX, cursorY);
 		if (!MapHandler.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY) 
-		|| unitEntryingContainerUnit(chosenUnit, cursorX, cursorY)) {
+		|| unitEntryingContainerUnit(chosenUnit, cursorX, cursorY)
+		|| hurtAtSamePosition) {
 			// @TODO fix join
-			if (hurtSameTypeUnitAtPosition(chosenUnit, cursorX, cursorY)) {
+			if (hurtAtSamePosition) {
 				unitMenu.unitMayJoin();
 			}
 
-			if (unitCanFire(cursorX, cursorY)) {
+			if (!hurtAtSamePosition && unitCanFire(cursorX, cursorY)) {
 				unitMenu.unitMayFire();
 			}
 
@@ -782,8 +815,6 @@ public class Gameboard extends JPanel implements KeyListener {
 			if (landbasedEnterableUnitAtPosition(cursorX, cursorY)) {
 				if (!(chosenUnit instanceof Lander)) {
 					unitMenu.unitMayEnter();
-				} else {
-					// if the chosenUnit is a lander 
 				}
 			} else if (copterEnterableUnitAtPosition(cursorX, cursorY)) {
 				if (!(chosenUnit instanceof Cruiser)) {
@@ -879,7 +910,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private boolean hurtSameTypeUnitAtPosition(Unit unit, int x, int y) {
-		Unit testUnit = MapHandler.getFriendlyUnit(x, y);
+		Unit testUnit = MapHandler.getFriendlyUnitExceptSelf(unit, x, y);
 
 		if (testUnit == null) {
 			return false;
@@ -1025,12 +1056,23 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 
 				int distanceFromUnit = Math.abs(unitX - x) + Math.abs(unitY - y);
-				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange && MapHandler.getNonFriendlyUnit(x, y) != null) {
+				
+				Unit target = MapHandler.getNonFriendlyUnit(x, y);
+				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange && 
+						 target != null && DamageHandler.validTarget(chosenUnit, target)) {
 					Point p = new Point(x, y);
 					indirectUnit.addFiringLocation(p);
 				}
 			}
 		}
+	}
+	
+	private void replentishUnit(Unit unit) {
+		if (unit == null) {
+			return;
+		}
+		
+		unit.replentish();
 	}
 
 	private int calculateFuelUsed() {
@@ -1050,6 +1092,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 	private void startTurnActions() {
 		MapHandler.updateCash();
+		MapHandler.fuelMaintenance();
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -1130,13 +1173,15 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		Unit targetUnit = MapHandler.getNonFriendlyUnit(x, y);
 
-		int chosenUnitType = DamageHandler.getTypeFromUnit(chosenUnit);
-		int targetUnitType = DamageHandler.getTypeFromUnit(targetUnit);
+		HeroPortrait portrait = MapHandler.getHeroPortrait();
+		Hero chosenHero = portrait.getCurrentHero();
+		Hero targetHero = portrait.getHeroFromUnit(targetUnit);
+		
+		int terrainType = MapHandler.map(x, y);
+//		int areaDefenceValue = MapHandler.getDefenceValue(terrainType);
 
-		// @TODO: fix so that the damage shown includes 
-		int damage = Math.max(DamageHandler.getBaseDamageValue(chosenUnitType, targetUnitType, 0), 
-							DamageHandler.getBaseDamageValue(chosenUnitType, targetUnitType, 1));
-
+		int damage = DamageHandler.getNonRNGDamageValue(chosenUnit, chosenHero, targetUnit, targetHero, terrainType); 
+				
 		int damageFieldWidth = (damage <= 9 ? 3 * tileSize / 5 : 
 									(damage <= 99 ? 4 * tileSize / 5
 										: tileSize - 3));

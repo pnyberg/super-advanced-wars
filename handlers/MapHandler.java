@@ -1,7 +1,6 @@
 package handlers;
 
 import units.*;
-import menus.*;
 import buildings.*;
 import heroes.*;
 
@@ -25,9 +24,15 @@ public class MapHandler {
 								REEF = 9,
 								SHORE = 10;
 
+	// appearance-variable
 	public static final int tileSize = 40;
+	
+	// logic-variables
 	private static final int numberOfMovementTypes = 7;
 	private static final int numberOfAreaTypes = 11;
+
+	// ruling-variable
+	private static final int fuelMaintenancePerTurn = 5;
 
 	private static int[][] map, movementCostMatrix;
 	private static boolean[][] moveabilityCostMatrix;
@@ -174,6 +179,19 @@ public class MapHandler {
 
 		int newCash = Building.getIncome() * numberOfCashgivers;
 		hero.manageCash(newCash);
+	}
+
+	public static void fuelMaintenance() {
+		Hero hero = portrait.getCurrentHero();
+		for (int k = 0 ; k < hero.getTroopSize() ; k++) {
+			Unit unit = hero.getTroop(k);
+			
+			if (unit.getMovementType() == Unit.SHIP ||
+				unit.getMovementType() == Unit.TRANSPORT ||
+				unit.getMovementType() == Unit.AIR) {
+				unit.useFuel(fuelMaintenancePerTurn);
+			}
+		}
 	}
 
 	public static void resetActiveVariable() {

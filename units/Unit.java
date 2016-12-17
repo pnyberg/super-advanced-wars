@@ -1,7 +1,5 @@
 package units;
 
-import menus.BuildingItem;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Font;
@@ -16,6 +14,7 @@ public abstract class Unit {
 								TRANSPORT = 5,
 								AIR = 6;
 
+	// Unit-type
 	public static final int 	FOOTMAN = 0,
 								VEHICLE = 1,
 								PLANE = 2,
@@ -66,8 +65,18 @@ public abstract class Unit {
 		this.y = y;
 	}
 
+	public void heal(int health) {
+		hp += health;
+		
+		hp = Math.min(hp, 100);
+	}
+	
 	public void takeDamage(int damage) {
 		hp -= damage;
+	}
+	
+	public void kill() {
+		hp = 0;
 	}
 
 	public void regulateActive(boolean active) {

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class Hero {
 	private int cash;
+	private int attackValue, defenceValue;
 	private int starPower;
 	private int powerAmount, superPowerAmount;
 	private Color color;
@@ -23,10 +24,14 @@ public class Hero {
 
 	private void initHero(int heroIndex) {
 		if (heroIndex == 0) {
+			attackValue = 100;
+			defenceValue = 100;
 			powerAmount = 3;
 			superPowerAmount = 6;
 			color = Color.red; // magenta
 		} else if (heroIndex == 1) {
+			attackValue = 110;
+			defenceValue = 110;
 			powerAmount = 4;
 			superPowerAmount = 7;
 			color = Color.orange;
@@ -57,11 +62,11 @@ public class Hero {
 	}
 
 	public int getAttackValue(int unitIndex) {
-		return 100; // @TODO default for now
+		return attackValue;
 	}
 
 	public int getDefenceValue(int unitIndex) {
-		return 100; // @TODO default for now
+		return defenceValue;
 	}
 
 	public Unit getTroop(int index) {
