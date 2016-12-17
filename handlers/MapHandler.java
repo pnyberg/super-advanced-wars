@@ -40,11 +40,10 @@ public class MapHandler {
 
 		initMovementCostMatrix();
 		initMoveabilityMatrix();
-		initMap(mapWidth, mapHeight);
+
+		initMapAndTroops(mapWidth, mapHeight, map, portrait, 0);
 
 		Building.init(1000);
-
-		initTroops();
 	}
 
 	private static void initMovementCostMatrix() {
@@ -133,103 +132,8 @@ public class MapHandler {
 		moveabilityCostMatrix[Unit.AIR][AIRPORT] = true;
 	}
 
-	private static void initMap(int mapWidth, int mapHeight) {
-		map = new int[mapWidth][mapHeight];
-
-		for (int n = 0 ; n < 2 ; n++) {
-			for (int i = 0 ; i < mapWidth ; i++) {
-				map[i][n] = SEA;
-			}
-		}
-
-		for (int i = 0 ; i < 2 ; i++) {
-			for (int n = 2 ; n < 8 ; n++) {
-				map[i][n] = SEA;
-			}
-		}
-
-		map[2][2] = CITY;
-		map[4][2] = PLAIN;
-		map[5][2] = PLAIN;
-		map[6][2] = MOUNTAIN;
-		map[7][2] = MOUNTAIN;
-
-		map[2][3] = PLAIN;
-		map[7][3] = AIRPORT;
-
-		map[2][4] = FACTORY;
-		map[4][4] = WOOD;
-		map[5][4] = WOOD;
-		map[7][4] = PLAIN;
-
-		map[2][5] = PLAIN;
-		map[4][5] = WOOD;
-		map[5][5] = WOOD;
-		map[7][5] = PLAIN;
-
-		map[2][6] = MOUNTAIN;
-		map[7][6] = PLAIN;
-
-		map[2][7] = MOUNTAIN;
-		map[3][7] = MOUNTAIN;
-		map[4][7] = PLAIN;
-		map[5][7] = PLAIN;
-		map[7][7] = CITY;
-
-		for (int i = 8 ; i < mapWidth ; i++) {
-			for (int n = 2 ; n < 8 ; n++) {
-				map[i][n] = SEA;
-			}
-		}
-
-		for (int n = 8 ; n < mapHeight ; n++) {
-			for (int i = 0 ; i < mapWidth ; i++) {
-				map[i][n] = SEA;
-			}
-		}
-
-		map[9][0] = REEF;
-		map[1][1] = REEF;
-
-		map[8][4] = SHORE;
-		map[8][5] = SHORE;
-
-		map[4][8] = PORT;
-
-		map[8][8] = REEF;
-		map[0][9] = REEF;
-
-		// buildings-part
-		initBuildings();
-
-		Building building = getBuilding(2, 4); // factory
-		building.setOwnership(portrait.getCurrentHero());
-		building = getBuilding(4, 8); // port
-		building.setOwnership(portrait.getCurrentHero());
-		building = getBuilding(7, 3); // airport
-		building.setOwnership(portrait.getCurrentHero());
-	}
-
-	private static void initBuildings() {
-		buildings = new ArrayList<Building>();
-
-		for (int x = 0 ; x < map.length ; x++) {
-			for (int y = 0 ; y < map[0].length ; y++) {
-				if (map[x][y] == CITY) {
-					buildings.add(new City(x, y));
-				} else if (map[x][y] == PORT) {
-					buildings.add(new Port(x, y));
-				} else if (map[x][y] == AIRPORT) {
-					buildings.add(new Airport(x, y));
-				} else if (map[x][y] == FACTORY) {
-					buildings.add(new Factory(x, y));
-//				} else if (map[x][y] == HQ) {
-//					buildings.add(new HQ(x, y));
-//				} else if (map[x][y] == SILO) {
-//					buildings.add(new Silo(x, y));
-				}
-			}
-		}
+	private static void initMapAndTroops(int mapWidth, int mapHeight, int[][] map, HeroPortrait portrait, int index) {
+		MapInitiator.initMap(mapWidth, mapHeight, map, buildings, portrait, index);
 	}
 
 	private static void setOwnerships(Hero[][] ownerMap) {
@@ -248,38 +152,6 @@ public class MapHandler {
 		portrait.addHero(new Hero(0));
 		portrait.addHero(new Hero(1));
 		portrait.selectStartHero();
-	}
-
-	private static void initTroops() {
-		Hero hero1 = portrait.getHero(0);
-		Hero hero2 = portrait.getHero(1);
-
-		hero1.addTroop(new Infantry(3, 6, hero1.getColor()));
-		hero1.addTroop(new Mech(3, 3, hero1.getColor()));
-		hero1.addTroop(new Tank(4, 4, hero1.getColor()));
-		hero1.addTroop(new Recon(5, 5, hero1.getColor()));
-		hero1.addTroop(new Artillery(5, 2, hero1.getColor()));
-		hero1.addTroop(new Rocket(2, 5, hero1.getColor()));
-		hero1.addTroop(new Battleship(1, 3, hero1.getColor()));
-		hero1.addTroop(new APC(3, 2, hero1.getColor()));
-		hero1.addTroop(new AAir(3, 4, hero1.getColor()));
-		hero1.addTroop(new Lander(8, 5, hero1.getColor()));
-		hero1.addTroop(new Fighter(10, 2, hero1.getColor()));
-		hero1.addTroop(new Bomber(10, 4, hero1.getColor()));
-		hero1.addTroop(new BCopter(8, 2, hero1.getColor()));
-		hero1.addTroop(new Cruiser(8, 3, hero1.getColor()));
-
-		hero2.addTroop(new Infantry(6, 6, hero2.getColor()));
-		hero2.addTroop(new Infantry(5, 7, hero2.getColor()));
-		hero2.addTroop(new Battleship(6, 8, hero2.getColor()));
-		hero2.addTroop(new Lander(7, 9, hero2.getColor()));
-		hero2.addTroop(new Fighter(10, 8, hero2.getColor()));
-
-		for (int h = 0 ; h < 2 ; h++) {
-			for (int k = 0 ; k < portrait.getHero(h).getTroopSize() ; k++) {
-				getUnitFromHero(h, k).regulateActive(true);
-			}
-		}
 	}
 
 	public static void updatePortraitSideChoice(int cursorX, int cursorY) {
