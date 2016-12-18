@@ -58,7 +58,7 @@ public class PowerStar {
 		g.fillPolygon(cx, cy, n);
 
 		g.setColor(Color.orange);
-		if (filled == 1) {
+		if (filled >= 1) {
 			g.fillPolygon(cx, cy, n);
 		} else if (filled >= 0.75) {
 			// right upper limit
