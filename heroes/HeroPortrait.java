@@ -205,15 +205,22 @@ public class HeroPortrait {
 		int starX = x + 1;
 		int starY = y - 8;
 
-		for (int i = 0 ; i < 3 ; i++) {
-			PowerStar.paintNormal(g, starX, starY);
+		int powerStars = currentHero.getRequiredPower();
+		int superPowerStars = currentHero.getRequiredSuperPower();
+		
+		double currentPower = currentHero.getStarPower();
+
+		for (int i = 0 ; i < powerStars ; i++) {
+			double amountFilled = Math.max(0, (currentPower - i));
+			PowerStar.paintNormal(g, starX, starY, amountFilled);
 			starX += PowerStar.smallSize;
 		}
 
 		starY -= PowerStar.bigSize - PowerStar.smallSize;
 
-		for (int i = 0 ; i < 3 ; i++) {
-			PowerStar.paintSuper(g, starX, starY);
+		for (int i = 0 ; i < (superPowerStars - powerStars) ; i++) {
+			double amountFilled = Math.max(0, (currentPower - i - powerStars));
+			PowerStar.paintSuper(g, starX, starY,  amountFilled);
 			starX += PowerStar.bigSize;
 		}
 	}
