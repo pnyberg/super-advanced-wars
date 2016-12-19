@@ -60,6 +60,10 @@ public class Hero {
 			}
 		}
 	}
+	
+	public void addStarPower(double value) {
+		starPower += value;
+	}
 
 	public int getAttackValue(int unitIndex) {
 		return attackValue;
