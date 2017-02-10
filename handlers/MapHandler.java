@@ -7,9 +7,11 @@ import heroes.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+
 /**
  * Handles the map
  * - contains movementcost and movementability (should perhaps be put in RouteHandler?)
+ *
  */
 public class MapHandler {
 	public static final int 	ROAD = 0,
@@ -40,13 +42,18 @@ public class MapHandler {
 	private static ArrayList<Building> buildings;
 
 	public static void initMapHandler(int mapWidth, int mapHeight) {
+		buildings = new ArrayList<Building>();
+
 		portrait = new HeroPortrait(mapWidth, mapHeight);
 		initHeroes();
 
 		initMovementCostMatrix();
 		initMoveabilityMatrix();
 
-		initMapAndTroops(mapWidth, mapHeight, map, portrait, 0);
+		map = new int[mapWidth][mapHeight];
+		buildings = new ArrayList<Building>();
+
+		initMapAndTroops(mapWidth, mapHeight, 0);
 
 		Building.init(1000);
 	}
@@ -137,7 +144,7 @@ public class MapHandler {
 		moveabilityCostMatrix[Unit.AIR][AIRPORT] = true;
 	}
 
-	private static void initMapAndTroops(int mapWidth, int mapHeight, int[][] map, HeroPortrait portrait, int index) {
+	private static void initMapAndTroops(int mapWidth, int mapHeight, int index) {
 		MapInitiator.initMap(mapWidth, mapHeight, map, buildings, portrait, index);
 	}
 
@@ -388,7 +395,7 @@ public class MapHandler {
 	}
 
 	public static void paintArea(Graphics g, int x, int y, boolean rangeAble) {
-		int areaNumber = map[x][y];
+		int areaNumber = MapInitiator.map[x][y];
 		boolean movementAble = RouteHandler.movementMap(x, y);
 
 		if (areaNumber == ROAD) {

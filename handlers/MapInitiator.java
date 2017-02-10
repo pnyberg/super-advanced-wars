@@ -25,9 +25,14 @@ import units.Tank;
 
 import heroes.*;
 
+/**
+ * Handles the map
+ * - contains movementcost and movementability (should perhaps be put in RouteHandler?)
+ *
+ */
 public class MapInitiator {
 	private static int mapWidth, mapHeight;
-	private static int[][] map;
+	protected static int[][] map;
 	private static ArrayList<Building> buildings;
 	private static HeroPortrait portrait;
 
@@ -47,8 +52,6 @@ public class MapInitiator {
 	}
 	
 	private static void initTestMap() {
-		map = new int[mapWidth][mapHeight];
-
 		for (int n = 0 ; n < 2 ; n++) {
 			for (int i = 0 ; i < mapWidth ; i++) {
 				map[i][n] = MapHandler.SEA;
@@ -116,7 +119,9 @@ public class MapInitiator {
 		initBuildings();
 
 		Building building = MapHandler.getBuilding(2, 4); // factory
+
 		building.setOwnership(portrait.getCurrentHero());
+
 		building = MapHandler.getBuilding(4, 8); // port
 		building.setOwnership(portrait.getCurrentHero());
 		building = MapHandler.getBuilding(7, 3); // airport
@@ -124,8 +129,6 @@ public class MapInitiator {
 	}
 
 	private static void initBuildings() {
-		buildings = new ArrayList<Building>();
-
 		for (int x = 0 ; x < map.length ; x++) {
 			for (int y = 0 ; y < map[0].length ; y++) {
 				if (map[x][y] == MapHandler.CITY) {
