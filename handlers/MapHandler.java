@@ -42,9 +42,7 @@ public class MapHandler {
 	private static ArrayList<Building> buildings;
 
 	public static void initMapHandler(int mapWidth, int mapHeight) {
-		buildings = new ArrayList<Building>();
-
-		portrait = new HeroPortrait(mapWidth, mapHeight);
+		portrait = new HeroPortrait(mapWidth);
 		initHeroes();
 
 		initMovementCostMatrix();

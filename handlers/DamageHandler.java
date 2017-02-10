@@ -15,7 +15,7 @@ public class DamageHandler {
 		TANK = 3,
 		MDTANK = 4,
 		NEOTANK = 5,
-		APC = 6,
+		APC_v = 6,
 		ARTILLERY = 7,
 		ROCKET = 8,
 		A_AIR = 9,
@@ -39,8 +39,8 @@ public class DamageHandler {
 		for (int i = 0 ; i < number ; i++) {
 			damageMatrix[INFANTRY][i][0] = -1;
 			damageMatrix[RECON][i][0] = -1;
-			damageMatrix[APC][i][0] = -1;
-			damageMatrix[APC][i][1] = -1;
+			damageMatrix[APC_v][i][0] = -1;
+			damageMatrix[APC_v][i][1] = -1;
 			damageMatrix[ARTILLERY][i][1] = -1;
 			damageMatrix[ROCKET][i][1] = -1;
 			damageMatrix[A_AIR][i][1] = -1;
@@ -65,7 +65,7 @@ public class DamageHandler {
 		damageMatrix[INFANTRY][TANK][1] = 5;
 		damageMatrix[INFANTRY][MDTANK][1] = 1;
 		damageMatrix[INFANTRY][NEOTANK][1] = 1;
-		damageMatrix[INFANTRY][APC][1] = 14;
+		damageMatrix[INFANTRY][APC_v][1] = 14;
 		damageMatrix[INFANTRY][ARTILLERY][1] = 15;
 		damageMatrix[INFANTRY][ROCKET][1] = 25;
 		damageMatrix[INFANTRY][A_AIR][1] = 5;
@@ -92,8 +92,8 @@ public class DamageHandler {
 		damageMatrix[MECH][MDTANK][1] = 1;
 		damageMatrix[MECH][NEOTANK][0] = 15;
 		damageMatrix[MECH][NEOTANK][1] = 1;
-		damageMatrix[MECH][APC][0] = 75;
-		damageMatrix[MECH][APC][1] = 20;
+		damageMatrix[MECH][APC_v][0] = 75;
+		damageMatrix[MECH][APC_v][1] = 20;
 		damageMatrix[MECH][ARTILLERY][0] = 70;
 		damageMatrix[MECH][ARTILLERY][1] = 32;
 		damageMatrix[MECH][ROCKET][0] = 85;
@@ -126,7 +126,7 @@ public class DamageHandler {
 		damageMatrix[RECON][TANK][1] = 6;
 		damageMatrix[RECON][MDTANK][1] = 1;
 		damageMatrix[RECON][NEOTANK][1] = 1;
-		damageMatrix[RECON][APC][1] = 45;
+		damageMatrix[RECON][APC_v][1] = 45;
 		damageMatrix[RECON][ARTILLERY][1] = 45;
 		damageMatrix[RECON][ROCKET][1] = 55;
 		damageMatrix[RECON][A_AIR][1] = 4;
@@ -153,8 +153,8 @@ public class DamageHandler {
 		damageMatrix[TANK][MDTANK][1] = 1;
 		damageMatrix[TANK][NEOTANK][0] = 15;
 		damageMatrix[TANK][NEOTANK][1] = 1;
-		damageMatrix[TANK][APC][0] = 75;
-		damageMatrix[TANK][APC][1] = 45;
+		damageMatrix[TANK][APC_v][0] = 75;
+		damageMatrix[TANK][APC_v][1] = 45;
 		damageMatrix[TANK][ARTILLERY][0] = 70;
 		damageMatrix[TANK][ARTILLERY][1] = 45;
 		damageMatrix[TANK][ROCKET][0] = 85;
@@ -193,8 +193,8 @@ public class DamageHandler {
 		damageMatrix[MDTANK][MDTANK][1] = 1;
 		damageMatrix[MDTANK][NEOTANK][0] = 45;
 		damageMatrix[MDTANK][NEOTANK][1] = 1;
-		damageMatrix[MDTANK][APC][0] = 105;
-		damageMatrix[MDTANK][APC][1] = 45;
+		damageMatrix[MDTANK][APC_v][0] = 105;
+		damageMatrix[MDTANK][APC_v][1] = 45;
 		damageMatrix[MDTANK][ARTILLERY][0] = 105;
 		damageMatrix[MDTANK][ARTILLERY][1] = 45;
 		damageMatrix[MDTANK][ROCKET][0] = 105;
@@ -233,8 +233,8 @@ public class DamageHandler {
 		damageMatrix[NEOTANK][MDTANK][1] = 1;
 		damageMatrix[NEOTANK][NEOTANK][0] = 55;
 		damageMatrix[NEOTANK][NEOTANK][1] = 1;
-		damageMatrix[NEOTANK][APC][0] = 125;
-		damageMatrix[NEOTANK][APC][1] = 65;
+		damageMatrix[NEOTANK][APC_v][0] = 125;
+		damageMatrix[NEOTANK][APC_v][1] = 65;
 		damageMatrix[NEOTANK][ARTILLERY][0] = 115;
 		damageMatrix[NEOTANK][ARTILLERY][1] = 65;
 		damageMatrix[NEOTANK][ROCKET][0] = 125;
@@ -267,7 +267,7 @@ public class DamageHandler {
 		damageMatrix[ARTILLERY][TANK][0] = 70;
 		damageMatrix[ARTILLERY][MDTANK][0] = 45;
 		damageMatrix[ARTILLERY][NEOTANK][0] = 40;
-		damageMatrix[ARTILLERY][APC][0] = 70;
+		damageMatrix[ARTILLERY][APC_v][0] = 70;
 		damageMatrix[ARTILLERY][ARTILLERY][0] = 75;
 		damageMatrix[ARTILLERY][ROCKET][0] = 80;
 		damageMatrix[ARTILLERY][A_AIR][0] = 75;
@@ -288,7 +288,7 @@ public class DamageHandler {
 		damageMatrix[ROCKET][TANK][0] = 80;
 		damageMatrix[ROCKET][MDTANK][0] = 55;
 		damageMatrix[ROCKET][NEOTANK][0] = 50;
-		damageMatrix[ROCKET][APC][0] = 80;
+		damageMatrix[ROCKET][APC_v][0] = 80;
 		damageMatrix[ROCKET][ARTILLERY][0] = 80;
 		damageMatrix[ROCKET][ROCKET][0] = 85;
 		damageMatrix[ROCKET][A_AIR][0] = 85;
@@ -309,7 +309,7 @@ public class DamageHandler {
 		damageMatrix[A_AIR][TANK][0] = 25;
 		damageMatrix[A_AIR][MDTANK][0] = 10;
 		damageMatrix[A_AIR][NEOTANK][0] = 5;
-		damageMatrix[A_AIR][APC][0] = 50;
+		damageMatrix[A_AIR][APC_v][0] = 50;
 		damageMatrix[A_AIR][ARTILLERY][0] = 50;
 		damageMatrix[A_AIR][ROCKET][0] = 55;
 		damageMatrix[A_AIR][A_AIR][0] = 45;
@@ -330,7 +330,7 @@ public class DamageHandler {
 		damageMatrix[MISSILES][TANK][0] = -1;
 		damageMatrix[MISSILES][MDTANK][0] = -1;
 		damageMatrix[MISSILES][NEOTANK][0] = -1;
-		damageMatrix[MISSILES][APC][0] = -1;
+		damageMatrix[MISSILES][APC_v][0] = -1;
 		damageMatrix[MISSILES][ARTILLERY][0] = -1;
 		damageMatrix[MISSILES][ROCKET][0] = -1;
 		damageMatrix[MISSILES][A_AIR][0] = -1;
@@ -353,7 +353,7 @@ public class DamageHandler {
 		damageMatrix[FIGHTER][TANK][0] = -1;
 		damageMatrix[FIGHTER][MDTANK][0] = -1;
 		damageMatrix[FIGHTER][NEOTANK][0] = -1;
-		damageMatrix[FIGHTER][APC][0] = -1;
+		damageMatrix[FIGHTER][APC_v][0] = -1;
 		damageMatrix[FIGHTER][ARTILLERY][0] = -1;
 		damageMatrix[FIGHTER][ROCKET][0] = -1;
 		damageMatrix[FIGHTER][A_AIR][0] = -1;
@@ -374,7 +374,7 @@ public class DamageHandler {
 		damageMatrix[BOMBER][TANK][0] = 105;
 		damageMatrix[BOMBER][MDTANK][0] = 95;
 		damageMatrix[BOMBER][NEOTANK][0] = 90;
-		damageMatrix[BOMBER][APC][0] = 105;
+		damageMatrix[BOMBER][APC_v][0] = 105;
 		damageMatrix[BOMBER][ARTILLERY][0] = 105;
 		damageMatrix[BOMBER][ROCKET][0] = 105;
 		damageMatrix[BOMBER][A_AIR][0] = 95;
@@ -401,8 +401,8 @@ public class DamageHandler {
 		damageMatrix[BCOPTER][MDTANK][1] = 1;
 		damageMatrix[BCOPTER][NEOTANK][0] = 20;
 		damageMatrix[BCOPTER][NEOTANK][1] = 1;
-		damageMatrix[BCOPTER][APC][0] = 60;
-		damageMatrix[BCOPTER][APC][1] = 20;
+		damageMatrix[BCOPTER][APC_v][0] = 60;
+		damageMatrix[BCOPTER][APC_v][1] = 20;
 		damageMatrix[BCOPTER][ARTILLERY][0] = 65;
 		damageMatrix[BCOPTER][ARTILLERY][1] = 25;
 		damageMatrix[BCOPTER][ROCKET][0] = 65;
@@ -437,7 +437,7 @@ public class DamageHandler {
 		damageMatrix[BATTLESHIP][TANK][0] = 80;
 		damageMatrix[BATTLESHIP][MDTANK][0] = 55;
 		damageMatrix[BATTLESHIP][NEOTANK][0] = 50;
-		damageMatrix[BATTLESHIP][APC][0] = 80;
+		damageMatrix[BATTLESHIP][APC_v][0] = 80;
 		damageMatrix[BATTLESHIP][ARTILLERY][0] = 80;
 		damageMatrix[BATTLESHIP][ROCKET][0] = 85;
 		damageMatrix[BATTLESHIP][A_AIR][0] = 85;
@@ -464,8 +464,8 @@ public class DamageHandler {
 		damageMatrix[CRUISER][MDTANK][1] = -1;
 		damageMatrix[CRUISER][NEOTANK][0] = -1;
 		damageMatrix[CRUISER][NEOTANK][1] = -1;
-		damageMatrix[CRUISER][APC][0] = -1;
-		damageMatrix[CRUISER][APC][1] = -1;
+		damageMatrix[CRUISER][APC_v][0] = -1;
+		damageMatrix[CRUISER][APC_v][1] = -1;
 		damageMatrix[CRUISER][ARTILLERY][0] = -1;
 		damageMatrix[CRUISER][ARTILLERY][1] = -1;
 		damageMatrix[CRUISER][ROCKET][0] = -1;
@@ -547,6 +547,67 @@ public class DamageHandler {
 		int damageValue = attackingAffect * defendingAffect / 10;
 
 		defender.takeDamage(damageValue);
+
+		calculateStarPowerOpponent(attHero, defender, damageValue);
+		calculateStarPowerSelf(defHero, defender, damageValue);
+	}
+	
+	private static void calculateStarPowerOpponent(Hero hero, Unit unit, int damage) {
+		calculateStarPower(hero, unit, damage, 0.5);
+	}
+
+	private static void calculateStarPowerSelf(Hero hero, Unit unit, int damage) {
+		calculateStarPower(hero, unit, damage, 1);
+	}
+
+	private static void calculateStarPower(Hero hero, Unit unit, int damage, double starMultiplier) {
+		double worth = 0;
+		int starWorth = 18000; // how much money a star is "worth"
+		
+		if (unit instanceof Infantry) {
+			worth = Infantry.getPrice();
+		} else if (unit instanceof Mech) {
+			worth = Mech.getPrice();
+		} else if (unit instanceof Recon) {
+			worth = Recon.getPrice();
+		} else if (unit instanceof Tank) {
+			worth = Tank.getPrice();
+		} else if (unit instanceof MDTank) {
+			worth = MDTank.getPrice();
+		} else if (unit instanceof Neotank) {
+			worth = Neotank.getPrice();
+		} else if (unit instanceof APC) {
+			worth = APC.getPrice();
+		} else if (unit instanceof Artillery) {
+			worth = Artillery.getPrice();
+		} else if (unit instanceof Rocket) {
+			worth = Rocket.getPrice();
+		} else if (unit instanceof AAir) {
+			worth = AAir.getPrice();
+		} else if (unit instanceof Missiles) {
+			worth = Missiles.getPrice();
+		} else if (unit instanceof Fighter) {
+			worth = Fighter.getPrice();
+		} else if (unit instanceof Bomber) {
+			worth = Bomber.getPrice();
+		} else if (unit instanceof BCopter) {
+			worth = BCopter.getPrice();
+		} else if (unit instanceof TCopter) {
+			worth = TCopter.getPrice();
+		} else if (unit instanceof Battleship) {
+			worth = Battleship.getPrice();
+		} else if (unit instanceof Cruiser) {
+			worth = Cruiser.getPrice();
+		} else if (unit instanceof Lander) {
+			worth = Lander.getPrice();
+/*		} else if (unit instanceof Sub) {
+			worth = Sub.getPrice();
+*/
+		}
+		
+		worth = worth / starWorth * damage / 100 * starMultiplier;
+		
+		hero.addStarPower(worth);
 	}
 	
 	public static int getNonRNGDamageValue(Unit attacker, Hero attHero, Unit defender, Hero defHero, int defTerrainType) {
@@ -590,7 +651,7 @@ public class DamageHandler {
 		} else if (unit instanceof Neotank) {
 			return NEOTANK;
 		} else if (unit instanceof APC) {
-			return APC;
+			return APC_v;
 		} else if (unit instanceof Artillery) {
 			return ARTILLERY;
 		} else if (unit instanceof Rocket) {

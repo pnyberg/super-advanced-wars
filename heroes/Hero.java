@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Hero {
 	private int cash;
 	private int attackValue, defenceValue;
-	private int starPower;
+	private double starPower;
 	private int powerAmount, superPowerAmount;
 	private Color color;
 	private ArrayList<Unit> troops;
@@ -60,6 +60,10 @@ public class Hero {
 			}
 		}
 	}
+	
+	public void addStarPower(double value) {
+		starPower += value;
+	}
 
 	public int getAttackValue(int unitIndex) {
 		return attackValue;
@@ -85,7 +89,7 @@ public class Hero {
 		return color;
 	}
 
-	public int getStarPower() {
+	public double getStarPower() {
 		return starPower;
 	}
 
@@ -95,6 +99,14 @@ public class Hero {
 
 	public int getRequiredSuperPower() {
 		return superPowerAmount;
+	}
+	
+	public boolean powerUsable() {
+		return starPower >= powerAmount;
+	}
+
+	public boolean superPowerUsable() {
+		return starPower >= superPowerAmount;
 	}
 
 	public void paint(Graphics g, int x, int y) {

@@ -7,17 +7,18 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import graphics.PowerStar;
+
 public class HeroPortrait {
 	private ArrayList<Hero> heroes;
 	private Hero currentHero;
 	private int heroIndex;
 
 	private boolean leftSide;
-	private int mapWidth, mapHeight;
+	private int mapWidth;
 
-	public HeroPortrait(int mapWidth, int mapHeight) {
+	public HeroPortrait(int mapWidth) {
 		this.mapWidth = mapWidth;
-		this.mapHeight = mapHeight;
 
 		heroes = new ArrayList<Hero>();
 		currentHero = null;
@@ -139,6 +140,7 @@ public class HeroPortrait {
 		g.drawString("" + currentHero.getCash() + "", ox2 - 20 - cashAlign, oy1 + 15);
 
 		currentHero.paint(g, 0, 0);
+		drawHeroPowerStars(g, ox7, oy7);
 	}
 
 	private void paintRightSide(Graphics g) {
@@ -195,5 +197,31 @@ public class HeroPortrait {
 		g.drawString("" + currentHero.getCash() + "", ox2 - 20 - cashAlign, oy1 + 15);
 
 		currentHero.paint(g, 0, 0);
+		
+		drawHeroPowerStars(g, ox7, oy7);
+	}
+	
+	private void drawHeroPowerStars(Graphics g, int x, int y) {
+		int starX = x + 1;
+		int starY = y - 8;
+
+		int powerStars = currentHero.getRequiredPower();
+		int superPowerStars = currentHero.getRequiredSuperPower();
+		
+		double currentPower = currentHero.getStarPower();
+
+		for (int i = 0 ; i < powerStars ; i++) {
+			double amountFilled = Math.max(0, (currentPower - i));
+			PowerStar.paintNormal(g, starX, starY, amountFilled);
+			starX += PowerStar.smallSize;
+		}
+
+		starY -= PowerStar.bigSize - PowerStar.smallSize;
+
+		for (int i = 0 ; i < (superPowerStars - powerStars) ; i++) {
+			double amountFilled = Math.max(0, (currentPower - i - powerStars));
+			PowerStar.paintSuper(g, starX, starY,  amountFilled);
+			starX += PowerStar.bigSize;
+		}
 	}
 }

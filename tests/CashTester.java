@@ -13,7 +13,7 @@ public class CashTester {
 
 	@Before
 	public void init() {
-		portrait = new HeroPortrait(-1, -1);
+		portrait = new HeroPortrait(-1);
 		hero0 = new Hero(0);
 		hero1 = new Hero(1);
 
