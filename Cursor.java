@@ -3,16 +3,24 @@ import handlers.*;
 import java.awt.Color;
 import java.awt.Graphics;
 
+/***
+ * Class to handle the cursor used for the map
+ * 
+ * @author pernyberg
+ */
 public class Cursor {
 	private int x, y;
-	private final Color fillColor, edgeColor;
+
+	private final Color fillColor = Color.red;
+	private final Color edgeColor = Color.yellow;
+
+	private final int tileSize = MapHandler.tileSize;
+	private final int smallPiece = tileSize / 20 + 1; // dependent on "tileSize"
+	private final int bigPiece = smallPiece * 3; // dependend on "smallPiece" (and therefore "tileSize")
 
 	public Cursor(int x, int y) {
 		this.x = x;
 		this.y = y;
-
-		fillColor = Color.red;
-		edgeColor = Color.yellow;
 	}
 
 	public void moveUp() {
@@ -45,34 +53,31 @@ public class Cursor {
 	}
 
 	public void paint(Graphics g) {
-		int tileSize = MapHandler.tileSize;
-		int smallPiece = tileSize / 20 + 1;
-		int bigPiece = smallPiece * 3;
-
+		// Get position for the cursor
 		int posX = x * tileSize;
 		int posY = y * tileSize;
 
 		g.setColor(fillColor);
 
-		// upper left corner
+		// upper left corner (filling)
 		g.fillRect(posX, posY, smallPiece, bigPiece);
 		g.fillRect(posX, posY, bigPiece, smallPiece);
 
-		// upper right corner
+		// upper right corner (filling)
 		g.fillRect(posX + tileSize - smallPiece, posY, smallPiece, bigPiece);
 		g.fillRect(posX + tileSize - bigPiece, posY, bigPiece, smallPiece);
 
-		// lower left corner
+		// lower left corner (filling)
 		g.fillRect(posX, posY + tileSize - bigPiece, smallPiece, bigPiece);
 		g.fillRect(posX, posY + tileSize - smallPiece, bigPiece, smallPiece);
 
-		// lower right corner
+		// lower right corner (filling)
 		g.fillRect(posX + tileSize - smallPiece, posY + tileSize - bigPiece, smallPiece, bigPiece);
 		g.fillRect(posX + tileSize - bigPiece, posY + tileSize - smallPiece, bigPiece, smallPiece);
 
 		g.setColor(edgeColor);
 
-		// upper left corner
+		// upper left corner (border)
 		g.drawLine(posX, posY, posX + bigPiece, posY);
 		g.drawLine(posX + bigPiece, posY, posX + bigPiece, posY + smallPiece);
 		g.drawLine(posX + bigPiece, posY + smallPiece, posX + smallPiece, posY + smallPiece);
@@ -80,7 +85,7 @@ public class Cursor {
 		g.drawLine(posX + smallPiece, posY + bigPiece, posX, posY + bigPiece);
 		g.drawLine(posX, posY + bigPiece, posX, posY);
 
-		// upper right corner
+		// upper right corner (border)
 		g.drawLine(posX + tileSize - bigPiece, posY, posX + tileSize, posY);
 		g.drawLine(posX + tileSize, posY, posX + tileSize, posY + bigPiece);
 		g.drawLine(posX + tileSize, posY + bigPiece, posX + tileSize - smallPiece, posY + bigPiece);
@@ -88,7 +93,7 @@ public class Cursor {
 		g.drawLine(posX + tileSize - smallPiece, posY + smallPiece, posX + tileSize - bigPiece, posY + smallPiece);
 		g.drawLine(posX + tileSize - bigPiece, posY + smallPiece, posX + tileSize - bigPiece, posY);
 
-		// lower left corner
+		// lower left corner (border)
 		g.drawLine(posX, posY + tileSize - bigPiece, posX + smallPiece, posY + tileSize - bigPiece);
 		g.drawLine(posX + smallPiece, posY + tileSize - bigPiece, posX + smallPiece, posY + tileSize - smallPiece);
 		g.drawLine(posX + smallPiece, posY + tileSize - smallPiece, posX + bigPiece, posY + tileSize - smallPiece);
@@ -96,7 +101,7 @@ public class Cursor {
 		g.drawLine(posX + bigPiece, posY + tileSize, posX, posY + tileSize);
 		g.drawLine(posX, posY + tileSize, posX, posY + tileSize - bigPiece);
 
-		// lower right corner
+		// lower right corner (border)
 		g.drawLine(posX + tileSize - smallPiece, posY + tileSize - bigPiece, posX + tileSize, posY + tileSize - bigPiece);
 		g.drawLine(posX + tileSize, posY + tileSize - bigPiece, posX + tileSize, posY + tileSize);
 		g.drawLine(posX + tileSize, posY + tileSize, posX + tileSize - bigPiece, posY + tileSize);
