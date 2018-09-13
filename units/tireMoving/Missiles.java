@@ -1,7 +1,10 @@
-package units;
+package units.tireMoving;
 
 import java.awt.Color;
 import java.awt.Graphics;
+
+import units.IndirectUnit;
+import units.Unit;
 
 public class Missiles extends IndirectUnit {
 	private static int price = 12000;

@@ -1,7 +1,9 @@
-package units;
+package units.treadMoving;
 
 import java.awt.Color;
 import java.awt.Graphics;
+
+import units.Unit;
 
 public class Tank extends Unit {
 	private static int price = 7000;

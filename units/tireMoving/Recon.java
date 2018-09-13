@@ -1,7 +1,9 @@
-package units;
+package units.tireMoving;
 
 import java.awt.Color;
 import java.awt.Graphics;
+
+import units.Unit;
 
 public class Recon extends Unit {
 	private static int price = 4000;

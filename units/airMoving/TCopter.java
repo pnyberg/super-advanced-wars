@@ -1,7 +1,9 @@
-package units;
+package units.airMoving;
 
 import java.awt.Color;
 import java.awt.Graphics;
+
+import units.Unit;
 
 public class TCopter extends Unit {
 	private static int price = 5000;

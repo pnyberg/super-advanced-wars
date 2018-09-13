@@ -1,7 +1,10 @@
-package units;
+package units.seaMoving;
 
 import java.awt.Color;
 import java.awt.Graphics;
+
+import units.IndirectUnit;
+import units.Unit;
 
 public class Battleship extends IndirectUnit {
 	private static int price = 28000;

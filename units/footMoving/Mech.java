@@ -1,26 +1,28 @@
-package units;
+package units.footMoving;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Infantry extends Unit {
-	private static int price = 1000;
-	private static String typeName = "Infantry";
+import units.Unit;
 
-	public Infantry(int x, int y, Color color) {
+public class Mech extends Unit {
+	private static int price = 3000;
+	private static String typeName = "Mech";
+
+	public Mech(int x, int y, Color color) {
 		super(x, y, color);
 
-		movement = 3;
-		movementType = Unit.INFANTRY;
+		movement = 2;
+		movementType = Unit.MECH;
 		unitClass = Unit.FOOTMAN;
 
-		maxFuel = 99;
-		maxAmmo = 0;
+		maxFuel = 70;
+		maxAmmo = 3;
 		replentish();
 	}
 
 	public static void setPrice(int price) {
-		Infantry.price = price;
+		Mech.price = price;
 	}
 
 	public static int getPrice() {
@@ -32,6 +34,10 @@ public class Infantry extends Unit {
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
+		int rocketAlignX = tileSize / 20 * 3;
+		int rocketAlignY = tileSize / 20 * 4;
+		int rocketWidth = tileSize / 4 * 3;
+		int rocketHeight = tileSize / 10 * 3;
 		int headSize = tileSize / 2 - 4;
 		int headAlignX = tileSize / 4 + 2;
 		int headAlignY = tileSize / 10;
@@ -45,14 +51,21 @@ public class Infantry extends Unit {
 		int leftLegAlign = tileSize / 4 + 1;
 		int rightLegEnd = 3 * tileSize / 4 - 1;
 
+		// rocket
+		g.setColor(Color.gray);
+		g.fillRect(x * tileSize + rocketAlignX, y * tileSize + rocketAlignY, rocketWidth, rocketHeight);
+
+		g.setColor(Color.black);
+		g.drawRect(x * tileSize + rocketAlignX, y * tileSize + rocketAlignY, rocketWidth, rocketHeight);
+
+		// head
 		if (active) {
 			g.setColor(color);
 		} else {
 			g.setColor(restingColor);
 		}
-
-		// head
 		g.fillOval(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
+
 		g.setColor(Color.black);
 		g.drawOval(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
 

@@ -1,8 +1,10 @@
-package units;
+package units.seaMoving;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+
+import units.Unit;
 
 public class Cruiser extends Unit {
 	private static int price = 18000;

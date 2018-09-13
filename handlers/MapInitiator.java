@@ -8,21 +8,20 @@ import buildings.City;
 import buildings.Factory;
 import buildings.Port;
 import heroes.Hero;
-import units.AAir;
-import units.APC;
-import units.Artillery;
-import units.BCopter;
-import units.Battleship;
-import units.Bomber;
-import units.Cruiser;
-import units.Fighter;
-import units.Infantry;
-import units.Lander;
-import units.Mech;
-import units.Recon;
-import units.Rocket;
-import units.Tank;
-
+import units.airMoving.BCopter;
+import units.airMoving.Bomber;
+import units.airMoving.Fighter;
+import units.footMoving.Infantry;
+import units.footMoving.Mech;
+import units.seaMoving.Battleship;
+import units.seaMoving.Cruiser;
+import units.seaMoving.Lander;
+import units.tireMoving.Recon;
+import units.tireMoving.Rocket;
+import units.treadMoving.AAir;
+import units.treadMoving.APC;
+import units.treadMoving.Artillery;
+import units.treadMoving.Tank;
 import heroes.*;
 
 /**

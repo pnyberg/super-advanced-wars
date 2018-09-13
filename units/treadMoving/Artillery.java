@@ -1,7 +1,10 @@
-package units;
+package units.treadMoving;
 
 import java.awt.Color;
 import java.awt.Graphics;
+
+import units.IndirectUnit;
+import units.Unit;
 
 public class Artillery extends IndirectUnit {
 	private static int price = 6000;
