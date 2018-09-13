@@ -4,6 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class MapMenu extends Menu {
+	private String[] menuTexts = {	"CO", 
+									"Intel", 
+									"Power", 
+									"Super Power", 
+									"Options", 
+									"Save", 
+									"End turn"
+								};
 	private boolean power, superPower;
 
 	public MapMenu(int tileSize) {
@@ -11,52 +19,37 @@ public class MapMenu extends Menu {
 
 		power = false;
 		superPower = false;
-		numberOfRows = 5;
 	}
 
-	protected void updateNumberOfRows() {
-		numberOfRows = 5 + (power ? 1 : 0) + (superPower ? 1 : 0);
-	}
-
-	// updates if power/super power should be shown in the menu
-	public void updatePower(boolean power, boolean superPower) {
+	public void setPower(boolean power) {
 		this.power = power;
+	}
+	
+	public void setSuperPower(boolean superPower) {
 		this.superPower = superPower;
 	}
-
-	public boolean atEndRow() {
-		if (superPower) {
-			return menuIndex == 6;
-		} else if (power) {
-			return menuIndex == 5;
-		} else {
-			return menuIndex == 4;
-		}
+	
+	public int getNumberOfRows() {
+		return menuTexts.length + (power ? 0 : -1) + (superPower ? 0 : -1);
 	}
 
 	public void paint(Graphics g) {
-		menuHeight = 10 + numberOfRows * menuRowHeight;
-
-		int menuX = x * tileSize + tileSize / 2;
-		int menuY = y * tileSize + tileSize / 2;
+		int menuX = x * tileSize + tileSize / 2 + xAlign;
+		int menuY = y * tileSize + tileSize / 2 + yAlign;
 
 		paintMenuBackground(g);
 
-		int rowHelpIndex = 3;
-
-		g.drawString("CO", menuX + xAlign, menuY + yAlign + menuRowHeight);
-		g.drawString("Intel", menuX + xAlign, menuY + yAlign + menuRowHeight * 2);
-		if (power) {
-			g.drawString("Power", menuX + xAlign, menuY + yAlign + menuRowHeight * rowHelpIndex);
+		int rowHelpIndex = 1;
+		for (int k = 0 ; k < menuTexts.length ; k++) {
+			if (k == 2 && !power) {
+				continue;
+			}
+			if (k == 3 && !superPower) {
+				continue;
+			}
+			g.drawString(menuTexts[k], menuX, menuY + menuRowHeight * rowHelpIndex);
 			rowHelpIndex++;
 		}
-		if (superPower) {
-			g.drawString("Super Power", menuX + xAlign, menuY + yAlign + menuRowHeight * rowHelpIndex);
-			rowHelpIndex++;
-		}
-		g.drawString("Options", menuX + xAlign, menuY + yAlign + menuRowHeight * rowHelpIndex);
-		g.drawString("Save", menuX + xAlign, menuY + yAlign + menuRowHeight * (rowHelpIndex + 1));
-		g.drawString("End turn", menuX + xAlign, menuY + yAlign + menuRowHeight * (rowHelpIndex + 2));
 
 		paintArrow(g);
 	}
