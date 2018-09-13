@@ -71,7 +71,6 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		addKeyListener(this);
 
-		BuildingItem.createBuildingItems();
 		MapHandler.initMapHandler(mapWidth, mapHeight);
 		RouteHandler.initMovementMap(mapWidth, mapHeight);
 		DamageHandler.init();
@@ -787,21 +786,21 @@ public class Gameboard extends JPanel implements KeyListener {
 		|| hurtAtSamePosition) {
 			// @TODO fix join
 			if (hurtAtSamePosition) {
-				unitMenu.unitMayJoin();
+				unitMenu.getUnitMenuRowEntryBooleanHandler().allowJoin();
 			}
 
 			if (!hurtAtSamePosition && unitCanFire(cursorX, cursorY)) {
-				unitMenu.unitMayFire();
+				unitMenu.getUnitMenuRowEntryBooleanHandler().allowFire();
 			}
 
 			if (chosenUnit instanceof Infantry || chosenUnit instanceof Mech) {
 				if (footsoldierEnterableUnitAtPosition(cursorX, cursorY)) {
-					unitMenu.unitMayEnter();
+					unitMenu.getUnitMenuRowEntryBooleanHandler().allowEnter();
 				}
 			} else if (chosenUnit instanceof APC) {
 				// should only be allowed this when close to a friendly unit
 				if (mayAPCSUpply(cursorX, cursorY)) {
-					unitMenu.unitMaySupply();
+					unitMenu.getUnitMenuRowEntryBooleanHandler().allowSupply();
 				}
 
 				if (((APC)chosenUnit).isFull()) {
@@ -829,16 +828,16 @@ public class Gameboard extends JPanel implements KeyListener {
 
 			if (landbasedEnterableUnitAtPosition(cursorX, cursorY)) {
 				if (!(chosenUnit instanceof Lander)) {
-					unitMenu.unitMayEnter();
+					unitMenu.getUnitMenuRowEntryBooleanHandler().allowEnter();
 				}
 			} else if (copterEnterableUnitAtPosition(cursorX, cursorY)) {
 				if (!(chosenUnit instanceof Cruiser)) {
-					unitMenu.unitMayEnter();
+					unitMenu.getUnitMenuRowEntryBooleanHandler().allowEnter();
 				}
 			}
 
 			if (!MapHandler.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY)) {
-				unitMenu.unitMayWait();
+				unitMenu.getUnitMenuRowEntryBooleanHandler().allowWait();
 			}
 
 			unitMenu.openMenu(cursorX, cursorY);
