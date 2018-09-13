@@ -6,227 +6,109 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class UnitMenu extends Menu {
-	private boolean 	join, 
-						enter, 
-						fire, 
-						capt, 
-						launch, 
-						dive, 
-						emerge, 
-						supply, 
-						wait;
+	private final String[] unitMenuRowEntryText = {	"Join", 
+													"Enter", 
+													"Fire", 
+													"Capt", 
+													"Launch", 
+													"Dive", 
+													"Emerge", 
+													"Supply", 
+													"Wait"};
+	private UnitMenuRowEntryBooleanHandler unitMenuRowEntryBooleanHandler;
 
 	private ArrayList<Unit> cargo;
 
 	public UnitMenu(int tileSize) {
 		super(tileSize);
 
-		join = false;
-		enter = false;
-		fire = false;
-		capt = false;
-		launch = false;
-		dive = false;
-		emerge = false;
-		supply = false;
-		wait = false;
-
 		cargo = new ArrayList<Unit>();
+		unitMenuRowEntryBooleanHandler = new UnitMenuRowEntryBooleanHandler();
 	}
 
 	public void closeMenu() {
 		visible = false;
 		menuIndex = 0;		
 
-		join = false;
-		enter = false;
-		fire = false;
-		capt = false;
-		launch = false;
-		dive = false;
-		emerge = false;
-		supply = false;
-		wait = false;
-
+		unitMenuRowEntryBooleanHandler.clear();
 		cargo.clear();
-	}
-
-	protected void updateNumberOfRows() {
-		numberOfRows = 0;
-
-		if (join) { numberOfRows++; }
-		if (capt) { numberOfRows++; }
-		if (dive) { numberOfRows++; }
-		if (emerge) { numberOfRows++; }
-		if (fire) { numberOfRows++; }
-		if (launch) { numberOfRows++; }
-		if (supply) { numberOfRows++; }
-		if (enter) { numberOfRows++; }
-		if (wait) { numberOfRows++; }
-
-		if (cargo.size() > 0) {
-			numberOfRows += cargo.size();
-		}
-	}
-
-	public void unitMayJoin() {
-		join = true;
-	}
-
-	public void unitMayEnter() {
-		enter = true;
 	}
 
 	public void containedCargo(Unit containedUnit) {
 		cargo.add(containedUnit);
 	}
 
-	// Adds cargo (they will  appear in the menu)
 	public void containedCargo(ArrayList<Unit> containedCargo) {
 		for (int i = 0 ; i < containedCargo.size() ; i++) {
 			cargo.add(containedCargo.get(i));
 		}
 	}
 
-	public void unitMayFire() {
-		fire = true;
+	public int getNumberOfRows() {
+		int numberOfRows = unitMenuRowEntryBooleanHandler.getNumberOfExistingRows();
+
+		if (cargo.size() > 0) {
+			numberOfRows += cargo.size();
+		}
+		
+		return numberOfRows;
 	}
 
-	public void unitMayCapt() {
-		capt = true;
-	}
-
-	public void unitMayLaunch() {
-		launch = true;
-	}
-
-	public void unitMayDive() {
-		dive = true;
-	}
-
-	public void unitMayEmerge() {
-		emerge = true;
-	}
-
-	public void unitMaySupply() {
-		supply = true;
-	}
-
-	public void unitMayWait() {
-		wait = true;
-	}
-
-	// if units can be exited they will always come first
 	public boolean atUnitRow() {
 		return menuIndex < cargo.size();
 	}
 
 	public boolean atFireRow() {
-		if (!fire) {
+		if (!unitMenuRowEntryBooleanHandler.mayFire()) {
 			return false;
 		}
 
-		int comparisonIndex = 0;
-
-		if (join) { numberOfRows++; }
-		if (capt) { numberOfRows++; }
-		if (dive) { numberOfRows++; }
-		if (emerge) { numberOfRows++; }
-
-		return menuIndex == comparisonIndex;
+		return menuIndex == 0;
 	}
 
 	public boolean atSupplyRow() {
-		if (!supply) {
+		if (!unitMenuRowEntryBooleanHandler.maySupply()) {
 			return false;
 		}
 
-		// if there is units in the "cargo", then supply comes after the cargo
-		int comparisonIndex = cargo.size();
-
-		return menuIndex == comparisonIndex;
+		return menuIndex == cargo.size();
 	}
 
 	public boolean atEnterRow() {
-		if (!enter) {
+		if (!unitMenuRowEntryBooleanHandler.mayEnter()) {
 			return false;
 		}
 
-		int comparisonIndex = 0;
-
-		if (join) { comparisonIndex++; }
-
-		return menuIndex == comparisonIndex;
+		return menuIndex == 0;
 	}
 	
-	/**
-	 * Could maybe add so this works if there for some reason should be okay to join and do another action on the same tile
-	 * (if units could enter and join in the same context for instance)
-	 * 
-	 * @return
-	 */
 	public boolean atJoinRow() {
-		return join;
+		return unitMenuRowEntryBooleanHandler.mayJoin();
+	}
+
+	public UnitMenuRowEntryBooleanHandler getUnitMenuRowEntryBooleanHandler() {
+		return unitMenuRowEntryBooleanHandler;
 	}
 
 	public void paint(Graphics g) {
-		menuHeight = 10 + numberOfRows * menuRowHeight;
-
-		int menuX = x * tileSize + tileSize / 2;
-		int menuY = y * tileSize + tileSize / 2;
+		int menuX = x * tileSize + tileSize / 2 + xAlign;
+		int menuY = y * tileSize + tileSize / 2 + yAlign;
 
 		paintMenuBackground(g);
 
 		int rowHelpIndex = 1;
-
-		if (join) {
-			g.drawString("Join", menuX + xAlign, menuY + yAlign + menuRowHeight * rowHelpIndex);
-			rowHelpIndex++;
-		}
-
-		if (enter) {
-			g.drawString("Enter", menuX + xAlign, menuY + yAlign + menuRowHeight * rowHelpIndex);
-			rowHelpIndex++;
-		}
-
-		for (int i = 0 ; i < cargo.size() ; i++) {
-			g.drawString("Unit" + (i+1), menuX + xAlign, menuY + yAlign + menuRowHeight * rowHelpIndex);
-			rowHelpIndex++;
-		}
-
-		if (fire) {
-			g.drawString("Fire", menuX + xAlign, menuY + yAlign + menuRowHeight * rowHelpIndex);
-			rowHelpIndex++;
-		}
-
-		if (capt) {
-			g.drawString("Capt", menuX + xAlign, menuY + yAlign + menuRowHeight * rowHelpIndex);
-			rowHelpIndex++;
-		}
-
-		if (launch) {
-			g.drawString("Launch", menuX + xAlign, menuY + yAlign + menuRowHeight * rowHelpIndex);
-			rowHelpIndex++;
-		}
-
-		if (dive) {
-			g.drawString("Dive", menuX + xAlign, menuY + yAlign + menuRowHeight * rowHelpIndex);
-			rowHelpIndex++;
-		}
-
-		if (emerge) {
-			g.drawString("Emerge", menuX + xAlign, menuY + yAlign + menuRowHeight * rowHelpIndex);
-			rowHelpIndex++;
-		}
-
-		if (supply) {
-			g.drawString("Supply", menuX + xAlign, menuY + yAlign + menuRowHeight * rowHelpIndex);
-			rowHelpIndex++;
-		}
-
-		if (wait) {
-			g.drawString("Wait", menuX + xAlign, menuY + yAlign + menuRowHeight * rowHelpIndex);
-			rowHelpIndex++;
+		boolean[] unitMenuRowEntryBooleans = unitMenuRowEntryBooleanHandler.getAsBooleanArray();
+		for (int k = 0 ; k < unitMenuRowEntryBooleans.length ; k++) {
+			if (k == 2 && cargo.size() > 0) {
+				for (int i = 0 ; i < cargo.size() ; i++) {
+					g.drawString("Unit" + (i+1), menuX, menuY + menuRowHeight * rowHelpIndex);
+					rowHelpIndex++;
+				}
+			}
+			if (unitMenuRowEntryBooleans[k]) {
+				g.drawString(unitMenuRowEntryText[k], menuX + xAlign, menuY + menuRowHeight * rowHelpIndex);
+				rowHelpIndex++;
+			}
 		}
 
 		paintArrow(g);
