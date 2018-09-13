@@ -25,11 +25,15 @@ import handlers.*;
 import java.awt.Graphics;
 
 /**
- * Add so that item's can't be clicked if they cost to much
+ * TODO: Add so that item's can't be clicked if they cost to much
  */
 public class BuildingMenu extends Menu {
 	private final int priceAlign = 70;
-	private boolean factory, port, airport;
+	private boolean factory;
+	private boolean port;
+	private boolean airport;
+	private BuildingItemFactory buildingItemFactory;
+	private UnitCreatingFactory unitCreatingFactory;
 
 	public BuildingMenu(int tileSize) {
 		super(tileSize);
@@ -38,6 +42,8 @@ public class BuildingMenu extends Menu {
 		factory = false;
 		port = false;
 		airport = false;
+		buildingItemFactory = new BuildingItemFactory();
+		unitCreatingFactory = new UnitCreatingFactory();
 	}
 
 	public void openMenu(int x, int y) {
@@ -52,8 +58,6 @@ public class BuildingMenu extends Menu {
 		} else if (terrainType == MapHandler.PORT) {
 			port = true;
 		}
-
-		updateNumberOfRows();
 	}
 
 	public void closeMenu() {
@@ -64,26 +68,26 @@ public class BuildingMenu extends Menu {
 		port = false;
 	}
 
-	protected void updateNumberOfRows() {
+	public int getNumberOfRows() {
 		if (factory) {
-			numberOfRows = BuildingItem.getFactoryItems().length;
+			return buildingItemFactory.getStandardFactoryItems().length;
 		} else if (port) {
-			numberOfRows = BuildingItem.getPortItems().length;
+			return buildingItemFactory.getStandardPortItems().length;
 		} else if (airport) {
-			numberOfRows = BuildingItem.getAirportItems().length;
+			return buildingItemFactory.getStandardAirportItems().length;
 		}
+		return 0;
 	}
 
 	public void buySelectedTroop(HeroPortrait portrait) {
 		Hero currentHero = portrait.getCurrentHero();
-		int cash = currentHero.getCash();
 
 		if (factory) {
-			currentHero.manageCash(-BuildingItem.getFactoryItems()[menuIndex].getPrice());
+			currentHero.manageCash(-buildingItemFactory.getStandardFactoryItems()[menuIndex].getPrice());
 		} else if (port) {
-			currentHero.manageCash(-BuildingItem.getPortItems()[menuIndex].getPrice());
+			currentHero.manageCash(-buildingItemFactory.getStandardPortItems()[menuIndex].getPrice());
 		} else if (airport) {
-			currentHero.manageCash(-BuildingItem.getAirportItems()[menuIndex].getPrice());
+			currentHero.manageCash(-buildingItemFactory.getStandardAirportItems()[menuIndex].getPrice());
 		} else {
 			return;
 		}
@@ -96,89 +100,42 @@ public class BuildingMenu extends Menu {
 		String unitName = "";
 
 		if (factory) {
-			unitName = BuildingItem.getFactoryItems()[menuIndex].getName();
+			unitName = buildingItemFactory.getStandardFactoryItems()[menuIndex].getName();
 		} else if (port) {
-			unitName = BuildingItem.getPortItems()[menuIndex].getName();
+			unitName = buildingItemFactory.getStandardPortItems()[menuIndex].getName();
 		} else if (airport) {
-			unitName = BuildingItem.getAirportItems()[menuIndex].getName();
+			unitName = buildingItemFactory.getStandardAirportItems()[menuIndex].getName();
 		}
 
-		if (unitName.equals(Infantry.getTypeName())) {
-			return new Infantry(x, y, hero.getColor());
-		} else if (unitName.equals(Mech.getTypeName())) {
-			return new Mech(x, y, hero.getColor());
-		} else if (unitName.equals(Recon.getTypeName())) {
-			return new Recon(x, y, hero.getColor());
-		} else if (unitName.equals(Tank.getTypeName())) {
-			return new Tank(x, y, hero.getColor());
-		} else if (unitName.equals(MDTank.getTypeName())) {
-			return new MDTank(x, y, hero.getColor());
-		} else if (unitName.equals(Neotank.getTypeName())) {
-			return new Neotank(x, y, hero.getColor());
-		} else if (unitName.equals(APC.getTypeName())) {
-			return new APC(x, y, hero.getColor());
-		} else if (unitName.equals(Artillery.getTypeName())) {
-			return new Artillery(x, y, hero.getColor());
-		} else if (unitName.equals(Rocket.getTypeName())) {
-			return new Rocket(x, y, hero.getColor());
-		} else if (unitName.equals(AAir.getTypeName())) {
-			return new AAir(x, y, hero.getColor());
-		} else if (unitName.equals(Missiles.getTypeName())) {
-			return new Missiles(x, y, hero.getColor());
-		} else if (unitName.equals(Fighter.getTypeName())) {
-			return new Fighter(x, y, hero.getColor());
-		} else if (unitName.equals(Bomber.getTypeName())) {
-			return new Bomber(x, y, hero.getColor());
-		} else if (unitName.equals(BCopter.getTypeName())) {
-			return new BCopter(x, y, hero.getColor());
-		} else if (unitName.equals(TCopter.getTypeName())) {
-			return new TCopter(x, y, hero.getColor());
-		} else if (unitName.equals(Battleship.getTypeName())) {
-			return new Battleship(x, y, hero.getColor());
-		} else if (unitName.equals("Cruiser")) {
-			return new Cruiser(x, y, hero.getColor());
-		} else if (unitName.equals(Lander.getTypeName())) {
-			return new Lander(x, y, hero.getColor());
-//		} else if (unitName.equals("Sub")) {
-//			return new Sub(x, y, hero.getColor());
-		}
-
-		return null;
+		return unitCreatingFactory.createUnit(unitName, x, y, hero.getColor());
 	}
 
 	public void paint(Graphics g) {
-		menuHeight = 10 + numberOfRows * menuRowHeight;
-
-		int menuX = x * tileSize + tileSize / 2;
-		int menuY = y * tileSize + tileSize / 2;
-
+		int menuY = y * tileSize + tileSize / 2 + yAlign;
 		BuildingItem[] items = new BuildingItem[0];
 
 		if (factory) {
-			items = BuildingItem.getFactoryItems();
+			items = buildingItemFactory.getStandardFactoryItems();
 		} else if (airport) {
-			items = BuildingItem.getAirportItems();
+			items = buildingItemFactory.getStandardAirportItems();
 		} else if (port) {
-			items = BuildingItem.getPortItems();
+			items = buildingItemFactory.getStandardPortItems();
 		}
 
 		paintMenuBackground(g);
 
-		int rowHelpIndex = 3;
-
 		for (int k = 0 ; k < items.length ; k++) {
-			paintMenuItem(g, menuY + yAlign + menuRowHeight * (k + 1), items[k].getName(), items[k].getPrice());
+			paintMenuItem(g, menuY + menuRowHeight * (k + 1), items[k].getName(), items[k].getPrice());
 		}
 
 		paintArrow(g);
 	}
 
 	private void paintMenuItem(Graphics g, int y, String text, int price) {
-		int menuX = x * tileSize + tileSize / 2;
-
+		int menuX = x * tileSize + tileSize / 2 + xAlign;
 		int extraPriceAlign = (price >= 10000 ? 0 : 8);
 
-		g.drawString(text, menuX + xAlign, y);
-		g.drawString("" + price + "", menuX + xAlign + priceAlign + extraPriceAlign, y);
+		g.drawString(text, menuX, y);
+		g.drawString("" + price + "", menuX + priceAlign + extraPriceAlign, y);
 	}
 }
