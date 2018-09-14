@@ -9,6 +9,10 @@ public class HeroPowerMeter {
 		this.powerAmount = powerAmount;
 		this.superPowerAmount  = superPowerAmount;
 	}
+	
+	public void addStarPower(double value) {
+		starPower += value;
+	}
 
 	public double getStarPower() {
 		return starPower;
