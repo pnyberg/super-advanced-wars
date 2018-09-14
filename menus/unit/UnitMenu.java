@@ -1,9 +1,11 @@
-package menus;
+package menus.unit;
 
 import units.*;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+
+import menus.Menu;
 
 public class UnitMenu extends Menu {
 	private final String[] unitMenuRowEntryText = {	"Join", 

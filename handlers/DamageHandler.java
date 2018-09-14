@@ -555,9 +555,9 @@ public class DamageHandler {
 		}
 
 		int baseDamage = damageMatrix[attType][defType][weaponIndex];
-		int heroAttackValue = attHero.getAttackValue(attType);
+		int heroAttackValue = attHero.getAttackDefenceObject().getAttackValue(attType);
 		int rngNumber = ((int)(Math.random()*10)) % 10;
-		int heroDefenceValue = defHero.getDefenceValue(defType);
+		int heroDefenceValue = defHero.getAttackDefenceObject().getDefenceValue(defType);
 		int areaDefenceValue = (defender.getMovementType() == Unit.AIR ? 0 : MapHandler.getDefenceValue(defTerrainType));
 		
 		int attackingAffect = attacker.getHP() / 10 * ((baseDamage * heroAttackValue) / 100 + rngNumber) / 10;
@@ -625,7 +625,7 @@ public class DamageHandler {
 		
 		worth = worth / starWorth * damage / 100 * starMultiplier;
 		
-		hero.addStarPower(worth);
+		hero.getHeroPowerMeter().addStarPower(worth);
 	}
 	
 	public static int getNonRNGDamageValue(Unit attacker, Hero attHero, Unit defender, Hero defHero, int defTerrainType) {
@@ -635,8 +635,8 @@ public class DamageHandler {
 		int weaponIndex = getWeaponIndex(attacker, defender); // 0 or 1
 
 		int baseDamage = damageMatrix[attType][defType][weaponIndex];
-		int heroAttackValue = attHero.getAttackValue(attType);
-		int heroDefenceValue = defHero.getDefenceValue(defType);
+		int heroAttackValue = attHero.getAttackDefenceObject().getAttackValue(attType);
+		int heroDefenceValue = defHero.getAttackDefenceObject().getDefenceValue(defType);
 		int areaDefenceValue = (defender.getMovementType() == Unit.AIR ? 0 : MapHandler.getDefenceValue(defTerrainType));
 
 		int attackingAffect = attacker.getHP() / 10 * ((baseDamage * heroAttackValue) / 100) / 10;

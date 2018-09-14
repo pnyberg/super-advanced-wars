@@ -1,4 +1,4 @@
-package menus;
+package menus.unit;
 
 import java.awt.Color;
 

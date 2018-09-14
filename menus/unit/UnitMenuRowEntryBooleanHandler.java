@@ -1,4 +1,4 @@
-package menus;
+package menus.unit;
 
 public class UnitMenuRowEntryBooleanHandler {
 	private boolean join; 

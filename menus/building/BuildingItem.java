@@ -1,4 +1,4 @@
-package menus;
+package menus.building;
 
 public class BuildingItem {
 	private String name;

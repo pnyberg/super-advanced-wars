@@ -151,29 +151,29 @@ public class MapInitiator {
 		Hero hero1 = portrait.getHero(0);
 		Hero hero2 = portrait.getHero(1);
 
-		hero1.addTroop(new Infantry(3, 6, hero1.getColor()));
-		hero1.addTroop(new Mech(3, 3, hero1.getColor()));
-		hero1.addTroop(new Tank(4, 4, hero1.getColor()));
-		hero1.addTroop(new Recon(5, 5, hero1.getColor()));
-		hero1.addTroop(new Artillery(5, 2, hero1.getColor()));
-		hero1.addTroop(new Rocket(2, 5, hero1.getColor()));
-		hero1.addTroop(new Battleship(1, 3, hero1.getColor()));
-		hero1.addTroop(new APC(3, 2, hero1.getColor()));
-		hero1.addTroop(new AAir(3, 4, hero1.getColor()));
-		hero1.addTroop(new Lander(8, 5, hero1.getColor()));
-		hero1.addTroop(new Fighter(10, 2, hero1.getColor()));
-		hero1.addTroop(new Bomber(10, 4, hero1.getColor()));
-		hero1.addTroop(new BCopter(8, 2, hero1.getColor()));
-		hero1.addTroop(new Cruiser(8, 3, hero1.getColor()));
+		hero1.getTroopHandler().addTroop(new Infantry(3, 6, hero1.getColor()));
+		hero1.getTroopHandler().addTroop(new Mech(3, 3, hero1.getColor()));
+		hero1.getTroopHandler().addTroop(new Tank(4, 4, hero1.getColor()));
+		hero1.getTroopHandler().addTroop(new Recon(5, 5, hero1.getColor()));
+		hero1.getTroopHandler().addTroop(new Artillery(5, 2, hero1.getColor()));
+		hero1.getTroopHandler().addTroop(new Rocket(2, 5, hero1.getColor()));
+		hero1.getTroopHandler().addTroop(new Battleship(1, 3, hero1.getColor()));
+		hero1.getTroopHandler().addTroop(new APC(3, 2, hero1.getColor()));
+		hero1.getTroopHandler().addTroop(new AAir(3, 4, hero1.getColor()));
+		hero1.getTroopHandler().addTroop(new Lander(8, 5, hero1.getColor()));
+		hero1.getTroopHandler().addTroop(new Fighter(10, 2, hero1.getColor()));
+		hero1.getTroopHandler().addTroop(new Bomber(10, 4, hero1.getColor()));
+		hero1.getTroopHandler().addTroop(new BCopter(8, 2, hero1.getColor()));
+		hero1.getTroopHandler().addTroop(new Cruiser(8, 3, hero1.getColor()));
 
-		hero2.addTroop(new Infantry(6, 6, hero2.getColor()));
-		hero2.addTroop(new Infantry(5, 7, hero2.getColor()));
-		hero2.addTroop(new Battleship(6, 8, hero2.getColor()));
-		hero2.addTroop(new Lander(7, 9, hero2.getColor()));
-		hero2.addTroop(new Fighter(10, 8, hero2.getColor()));
+		hero2.getTroopHandler().addTroop(new Infantry(6, 6, hero2.getColor()));
+		hero2.getTroopHandler().addTroop(new Infantry(5, 7, hero2.getColor()));
+		hero2.getTroopHandler().addTroop(new Battleship(6, 8, hero2.getColor()));
+		hero2.getTroopHandler().addTroop(new Lander(7, 9, hero2.getColor()));
+		hero2.getTroopHandler().addTroop(new Fighter(10, 8, hero2.getColor()));
 
 		for (int h = 0 ; h < 2 ; h++) {
-			for (int k = 0 ; k < portrait.getHero(h).getTroopSize() ; k++) {
+			for (int k = 0 ; k < portrait.getHero(h).getTroopHandler().getTroopSize() ; k++) {
 				MapHandler.getUnitFromHero(h, k).regulateActive(true);
 			}
 		}

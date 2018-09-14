@@ -1,10 +1,7 @@
 package heroes;
 
-import units.*;
-
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.ArrayList;
 
 public class Hero {
 	private int cash;
@@ -39,7 +36,7 @@ public class Hero {
 		return color;
 	}
 	
-	public AttackDefenceObject attackDefenceObject() {
+	public AttackDefenceObject getAttackDefenceObject() {
 		return attackDefenceObject;
 	}
 	
@@ -47,7 +44,7 @@ public class Hero {
 		return heroPowerMeter;
 	}
 	
-	public TroopHandler geTroopHandler() {
+	public TroopHandler getTroopHandler() {
 		return troopHandler;
 	}
 

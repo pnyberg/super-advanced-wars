@@ -159,8 +159,9 @@ public class MapHandler {
 	}
 
 	private static void initHeroes() {
-		portrait.addHero(new Hero(0));
-		portrait.addHero(new Hero(1));
+		HeroFactory heroFactory = new HeroFactory();
+		portrait.addHero(heroFactory.createHero(0));
+		portrait.addHero(heroFactory.createHero(1));
 		portrait.selectStartHero();
 	}
 
@@ -188,8 +189,8 @@ public class MapHandler {
 
 	public static void fuelMaintenance() {
 		Hero hero = portrait.getCurrentHero();
-		for (int k = 0 ; k < hero.getTroopSize() ; k++) {
-			Unit unit = hero.getTroop(k);
+		for (int k = 0 ; k < hero.getTroopHandler().getTroopSize() ; k++) {
+			Unit unit = hero.getTroopHandler().getTroop(k);
 			
 			if (unit.getMovementType() == Unit.SHIP ||
 				unit.getMovementType() == Unit.TRANSPORT ||
@@ -201,14 +202,14 @@ public class MapHandler {
 
 	public static void resetActiveVariable() {
 		Hero hero = portrait.getCurrentHero();
-		for (int k = 0 ; k < hero.getTroopSize() ; k++) {
-			hero.getTroop(k).regulateActive(true);
+		for (int k = 0 ; k < hero.getTroopHandler().getTroopSize() ; k++) {
+			hero.getTroopHandler().getTroop(k).regulateActive(true);
 		}
 	}
 
 	public static Unit getAnyUnit(int x, int y) {
 		for (int h = 0 ; h < portrait.getNumberOfHeroes() ; h++) {
-			for (int k = 0 ; k < portrait.getHero(h).getTroopSize() ; k++) {
+			for (int k = 0 ; k < portrait.getHero(h).getTroopHandler().getTroopSize() ; k++) {
 				Unit unit = getUnitFromHero(h, k);
 				if (unit.getX() == x && unit.getY() == y && !unit.isHidden()) {
 					return unit;
@@ -224,7 +225,7 @@ public class MapHandler {
 			if (portrait.getHero(h) == hero) {
 				continue;
 			}
-			for (int k = 0 ; k < portrait.getHero(h).getTroopSize() ; k++) {
+			for (int k = 0 ; k < portrait.getHero(h).getTroopHandler().getTroopSize() ; k++) {
 				Unit unit = getUnitFromHero(h, k);
 				if (unit.getX() == x && unit.getY() == y && !unit.isHidden()) {
 					return unit;
@@ -357,19 +358,19 @@ public class MapHandler {
 	}
 
 	public static Unit getUnitFromHero(int hero, int index) {
-		return portrait.getHero(hero).getTroop(index);
+		return portrait.getHero(hero).getTroopHandler().getTroop(index);
 	}
 
 	public static Unit getFriendlyUnitFromCurrentHero(int index) {
-		return portrait.getCurrentHero().getTroop(index);
+		return portrait.getCurrentHero().getTroopHandler().getTroop(index);
 	}
 
 	public static int getTroopSize(int hero) {
-		return portrait.getHero(hero).getTroopSize();
+		return portrait.getHero(hero).getTroopHandler().getTroopSize();
 	}
 
 	public static int getFriendlyTroopSize() {
-		return portrait.getCurrentHero().getTroopSize();
+		return portrait.getCurrentHero().getTroopHandler().getTroopSize();
 	}
 
 	public static Building getBuilding(int x, int y) {

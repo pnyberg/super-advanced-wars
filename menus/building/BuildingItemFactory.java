@@ -1,4 +1,4 @@
-package menus;
+package menus.building;
 
 import units.airMoving.BCopter;
 import units.airMoving.Bomber;
