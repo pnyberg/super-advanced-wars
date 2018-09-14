@@ -17,6 +17,7 @@ import units.treadMoving.Neotank;
 import units.treadMoving.Tank;
 import menus.*;
 import menus.building.BuildingMenu;
+import menus.map.MapMenu;
 import menus.unit.UnitMenu;
 import buildings.*;
 import heroes.*;

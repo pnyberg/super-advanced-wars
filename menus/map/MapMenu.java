@@ -1,7 +1,8 @@
-package menus;
+package menus.map;
 
-import java.awt.Color;
 import java.awt.Graphics;
+
+import menus.Menu;
 
 public class MapMenu extends Menu {
 	private String[] menuTexts = {	"CO", 

@@ -3,7 +3,7 @@ package menus;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import menus.icons.MenuArrow;
+import graphics.MenuArrow;
 
 public abstract class Menu {
 	protected int x;
