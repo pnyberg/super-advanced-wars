@@ -9,13 +9,15 @@ import org.junit.Test;
 
 public class CashTester {
 	private HeroPortrait portrait;
+	private HeroFactory heroFactory;
 	private Hero hero0, hero1;
 
 	@Before
 	public void init() {
 		portrait = new HeroPortrait(-1);
-		hero0 = new Hero(0);
-		hero1 = new Hero(1);
+		heroFactory = new HeroFactory();
+		hero0 = heroFactory.createHero(0);
+		hero1 = heroFactory.createHero(1);
 
 		portrait.addHero(hero0);
 		portrait.addHero(hero1);
