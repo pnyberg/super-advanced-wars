@@ -62,10 +62,6 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		cursor = new Cursor(0, 0);
 
-		mapMenu = new MapMenu(MapHandler.tileSize);
-		unitMenu = new UnitMenu(MapHandler.tileSize);
-		buildingMenu = new BuildingMenu(MapHandler.tileSize);
-
 		chosenUnit = null;
 		rangeUnit = null;
 
@@ -74,6 +70,10 @@ public class Gameboard extends JPanel implements KeyListener {
 		MapHandler.initMapHandler(mapWidth, mapHeight);
 		RouteHandler.initMovementMap(mapWidth, mapHeight);
 		DamageHandler.init();
+
+		mapMenu = new MapMenu(MapHandler.tileSize);
+		unitMenu = new UnitMenu(MapHandler.tileSize);
+		buildingMenu = new BuildingMenu(MapHandler.tileSize, MapHandler.getHeroPortrait());
 
 		startTurnActions();
 
@@ -271,8 +271,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 				unitMenu.closeMenu();
 			} else if (buildingMenu.isVisible()) {
-				HeroPortrait portrait = MapHandler.getHeroPortrait();
-				buildingMenu.buySelectedTroop(portrait);
+				buildingMenu.buySelectedTroop();
 				buildingMenu.closeMenu();
 			} else if (chosenUnit != null && RouteHandler.movementMap(cursorX, cursorY) && rangeUnit == null) {
 				int x = chosenUnit.getX();
@@ -409,7 +408,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 
 		Hero unitsHero = MapHandler.getHeroPortrait().getHeroFromUnit(unit);
-		unitsHero.removeTroop(unit);
+		unitsHero.getTroopHandler().removeTroop(unit);
 	}
 
 	public void handleDroppingOff() {

@@ -22,6 +22,8 @@ import units.treadMoving.Tank;
 import heroes.*;
 import handlers.*;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 /**
@@ -34,10 +36,12 @@ public class BuildingMenu extends Menu {
 	private boolean airport;
 	private BuildingItemFactory buildingItemFactory;
 	private UnitCreatingFactory unitCreatingFactory;
+	private HeroPortrait heroPortrait;
 
-	public BuildingMenu(int tileSize) {
+	public BuildingMenu(int tileSize, HeroPortrait heroPortrait) {
 		super(tileSize);
 
+		this.heroPortrait = heroPortrait;
 		menuWidth = (tileSize * 9 / 3) - 2;
 		factory = false;
 		port = false;
@@ -79,35 +83,27 @@ public class BuildingMenu extends Menu {
 		return 0;
 	}
 
-	public void buySelectedTroop(HeroPortrait portrait) {
-		Hero currentHero = portrait.getCurrentHero();
-
-		if (factory) {
-			currentHero.manageCash(-buildingItemFactory.getStandardFactoryItems()[menuIndex].getPrice());
-		} else if (port) {
-			currentHero.manageCash(-buildingItemFactory.getStandardPortItems()[menuIndex].getPrice());
-		} else if (airport) {
-			currentHero.manageCash(-buildingItemFactory.getStandardAirportItems()[menuIndex].getPrice());
-		} else {
-			return;
-		}
-
+	public void buySelectedTroop() {
+		Hero currentHero = heroPortrait.getCurrentHero();
+		currentHero.manageCash(-getStandardItems()[menuIndex].getPrice());
 		Unit unit = createUnitFromIndex(currentHero);
-		currentHero.addTroop(unit);
+		currentHero.getTroopHandler().addTroop(unit);
 	}
 
 	private Unit createUnitFromIndex(Hero hero) {
-		String unitName = "";
-
-		if (factory) {
-			unitName = buildingItemFactory.getStandardFactoryItems()[menuIndex].getName();
-		} else if (port) {
-			unitName = buildingItemFactory.getStandardPortItems()[menuIndex].getName();
-		} else if (airport) {
-			unitName = buildingItemFactory.getStandardAirportItems()[menuIndex].getName();
-		}
-
+		String unitName = getStandardItems()[menuIndex].getName();
 		return unitCreatingFactory.createUnit(unitName, x, y, hero.getColor());
+	}
+	
+	private BuildingItem[] getStandardItems() {
+		if (factory) {
+			return buildingItemFactory.getStandardFactoryItems();
+		} else if (port) {
+			return buildingItemFactory.getStandardPortItems();
+		} else if (airport) {
+			return buildingItemFactory.getStandardAirportItems();
+		}
+		return null;
 	}
 
 	public void paint(Graphics g) {
@@ -123,18 +119,22 @@ public class BuildingMenu extends Menu {
 		}
 
 		paintMenuBackground(g);
-
 		for (int k = 0 ; k < items.length ; k++) {
 			paintMenuItem(g, menuY + menuRowHeight * (k + 1), items[k].getName(), items[k].getPrice());
 		}
-
 		paintArrow(g);
 	}
 
 	private void paintMenuItem(Graphics g, int y, String text, int price) {
+		int heroCash = heroPortrait.getCurrentHero().getCash();
 		int menuX = x * tileSize + tileSize / 2 + xAlign;
 		int extraPriceAlign = (price >= 10000 ? 0 : 8);
 
+		if (heroCash < price) {
+			g.setColor(Color.gray);
+		} else {
+			g.setColor(Color.black);
+		}
 		g.drawString(text, menuX, y);
 		g.drawString("" + price + "", menuX + priceAlign + extraPriceAlign, y);
 	}

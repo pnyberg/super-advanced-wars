@@ -58,8 +58,8 @@ public class HeroPortrait {
 
 	public Hero getHeroFromUnit(Unit testUnit) {
 		for (int h = 0 ; h < getNumberOfHeroes() ; h++) {
-			for (int k = 0 ; k < getHero(h).getTroopSize() ; k++) {
-				Unit unit = heroes.get(h).getTroop(k);
+			for (int k = 0 ; k < getHero(h).getTroopHandler().getTroopSize() ; k++) {
+				Unit unit = heroes.get(h).getTroopHandler().getTroop(k);
 				if (unit.getX() == testUnit.getX() && unit.getY() == testUnit.getY() && !unit.isHidden()) {
 					return getHero(h);
 				}
@@ -205,10 +205,10 @@ public class HeroPortrait {
 		int starX = x + 1;
 		int starY = y - 8;
 
-		int powerStars = currentHero.getRequiredPower();
-		int superPowerStars = currentHero.getRequiredSuperPower();
+		int powerStars = currentHero.getHeroPowerMeter().getRequiredPower();
+		int superPowerStars = currentHero.getHeroPowerMeter().getRequiredSuperPower();
 		
-		double currentPower = currentHero.getStarPower();
+		double currentPower = currentHero.getHeroPowerMeter().getStarPower();
 
 		for (int i = 0 ; i < powerStars ; i++) {
 			double amountFilled = Math.max(0, (currentPower - i));
