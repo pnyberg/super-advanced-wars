@@ -38,7 +38,7 @@ import javax.swing.JPanel;
  * - hero-abilities and powers
  * - removed recalculating route which also removes movement-control within accepted area (infantrys may take more than three steps)
  *   - infantry may go over two mountains (very bad)
- * - not crashing on recalculating route
+ * - fix so not crashing on recalculating route
  * - first attack take ages to calculate
  *
  * @TODO: substitute ArrayList with HashMap for better performance
@@ -54,9 +54,11 @@ public class Gameboard extends JPanel implements KeyListener {
 	private UnitMenu unitMenu;
 	private BuildingMenu buildingMenu;
 
+	private DamageHandler damageHandler;
+
 	private Unit chosenUnit, rangeUnit;
 	private Building selectedBuilding;
-
+	
 	public Gameboard(int width, int height) {
 		mapWidth = width;
 		mapHeight = height;
@@ -77,6 +79,8 @@ public class Gameboard extends JPanel implements KeyListener {
 		mapMenu = new MapMenu(MapHandler.tileSize);
 		unitMenu = new UnitMenu(MapHandler.tileSize);
 		buildingMenu = new BuildingMenu(MapHandler.tileSize, MapHandler.getHeroPortrait());
+		
+		damageHandler = new DamageHandler();
 
 		startTurnActions();
 
@@ -188,7 +192,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 			} else if (unitWantToFire()) {
 				Unit defendingUnit = MapHandler.getNonFriendlyUnit(cursorX, cursorY);
-				DamageHandler.handleAttack(chosenUnit, defendingUnit);
+				damageHandler.handleAttack(chosenUnit, defendingUnit);
 				chosenUnit.regulateAttack(false);
 
 				int x = chosenUnit.getX();
@@ -389,13 +393,13 @@ public class Gameboard extends JPanel implements KeyListener {
 			Unit east = MapHandler.getNonFriendlyUnit(x + 1, y);
 			Unit south = MapHandler.getNonFriendlyUnit(x, y + 1);
 			Unit west = MapHandler.getNonFriendlyUnit(x - 1, y);
-			if (y > 0 && north != null && DamageHandler.validTarget(chosenUnit, north)) {
+			if (y > 0 && north != null && damageHandler.validTarget(chosenUnit, north)) {
 				y--;
-			} else if (x < (mapWidth - 1) && east != null && DamageHandler.validTarget(chosenUnit, east)) {
+			} else if (x < (mapWidth - 1) && east != null && damageHandler.validTarget(chosenUnit, east)) {
 				x++;
-			} else if (south != null && DamageHandler.validTarget(chosenUnit, south)) {
+			} else if (south != null && damageHandler.validTarget(chosenUnit, south)) {
 				y++;
-			} else if (west != null && DamageHandler.validTarget(chosenUnit, west)) {
+			} else if (west != null && damageHandler.validTarget(chosenUnit, west)) {
 				x--;
 			} else {
 				return; // cannot drop unit off anywhere
@@ -668,44 +672,44 @@ public class Gameboard extends JPanel implements KeyListener {
 			Unit leftDown = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY + 1);
 			Unit leftOnly = MapHandler.getNonFriendlyUnit(cursorX - 2, cursorY);
 			Unit leftUp = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY - 1);
-			if (unitY < (mapHeight - 1) && leftDown != null && DamageHandler.validTarget(chosenUnit, leftDown)) {
+			if (unitY < (mapHeight - 1) && leftDown != null && damageHandler.validTarget(chosenUnit, leftDown)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
-			} else if (unitX > 0 && leftOnly != null && DamageHandler.validTarget(chosenUnit, leftOnly)) {
+			} else if (unitX > 0 && leftOnly != null && damageHandler.validTarget(chosenUnit, leftOnly)) {
 				cursor.setPosition(cursorX - 2, cursorY);
-			} else if (leftUp != null && DamageHandler.validTarget(chosenUnit, leftUp)) {
+			} else if (leftUp != null && damageHandler.validTarget(chosenUnit, leftUp)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			}
 		} else if (yDiff == 1) {
 			Unit upLeft = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY - 1);
 			Unit upOnly = MapHandler.getNonFriendlyUnit(cursorX, cursorY - 2);
 			Unit upRight = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY - 1);
-			if (unitX > 0 && upLeft != null && DamageHandler.validTarget(chosenUnit, upLeft)) {
+			if (unitX > 0 && upLeft != null && damageHandler.validTarget(chosenUnit, upLeft)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
-			} else if (unitY > 0 && upOnly != null && DamageHandler.validTarget(chosenUnit, upOnly)) {
+			} else if (unitY > 0 && upOnly != null && damageHandler.validTarget(chosenUnit, upOnly)) {
 				cursor.setPosition(cursorX, cursorY - 2);
-			} else if (upRight != null && DamageHandler.validTarget(chosenUnit, upRight)) {
+			} else if (upRight != null && damageHandler.validTarget(chosenUnit, upRight)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			}
 		} else if (xDiff == -1) {
 			Unit rightDown = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY - 1);
 			Unit rightOnly = MapHandler.getNonFriendlyUnit(cursorX + 2, cursorY);
 			Unit rightUp = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY + 1);
-			if (unitY > 0 && rightDown != null && DamageHandler.validTarget(chosenUnit, rightDown)) {
+			if (unitY > 0 && rightDown != null && damageHandler.validTarget(chosenUnit, rightDown)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
-			} else if (unitX < (mapWidth - 1) && rightOnly != null && DamageHandler.validTarget(chosenUnit, rightOnly)) {
+			} else if (unitX < (mapWidth - 1) && rightOnly != null && damageHandler.validTarget(chosenUnit, rightOnly)) {
 				cursor.setPosition(cursorX + 2, cursorY);
-			} else if (rightUp != null && DamageHandler.validTarget(chosenUnit, rightUp)) {
+			} else if (rightUp != null && damageHandler.validTarget(chosenUnit, rightUp)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			}
 		} else { // yDiff == -1
 			Unit downLeft = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY + 1);
 			Unit downOnly = MapHandler.getNonFriendlyUnit(cursorX, cursorY + 2);
 			Unit downRight = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY + 1);
-			if (unitX < (mapWidth - 1) && downLeft != null && DamageHandler.validTarget(chosenUnit, downLeft)) {
+			if (unitX < (mapWidth - 1) && downLeft != null && damageHandler.validTarget(chosenUnit, downLeft)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
-			} else if (unitY < (mapHeight - 1) && downOnly != null && DamageHandler.validTarget(chosenUnit, downOnly)) {
+			} else if (unitY < (mapHeight - 1) && downOnly != null && damageHandler.validTarget(chosenUnit, downOnly)) {
 				cursor.setPosition(cursorX, cursorY + 2);
-			} else if (downRight != null && DamageHandler.validTarget(chosenUnit, downRight)) {
+			} else if (downRight != null && damageHandler.validTarget(chosenUnit, downRight)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			}
 		}
@@ -725,44 +729,44 @@ public class Gameboard extends JPanel implements KeyListener {
 			Unit leftUp = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY - 1);
 			Unit leftOnly = MapHandler.getNonFriendlyUnit(cursorX - 2, cursorY);
 			Unit leftDown = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY + 1);
-			if (unitY > 0 && leftUp != null && DamageHandler.validTarget(chosenUnit, leftUp)) {
+			if (unitY > 0 && leftUp != null && damageHandler.validTarget(chosenUnit, leftUp)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
-			} else if (unitX > 0 && leftOnly != null && DamageHandler.validTarget(chosenUnit, leftOnly)) {
+			} else if (unitX > 0 && leftOnly != null && damageHandler.validTarget(chosenUnit, leftOnly)) {
 				cursor.setPosition(cursorX - 2, cursorY);
-			} else if (leftDown != null && DamageHandler.validTarget(chosenUnit, leftDown)) {
+			} else if (leftDown != null && damageHandler.validTarget(chosenUnit, leftDown)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			}
 		} else if (yDiff == 1) {
 			Unit upRight = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY - 1);
 			Unit upOnly = MapHandler.getNonFriendlyUnit(cursorX, cursorY - 2);
 			Unit upLeft = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY - 1);
-			if (unitX < (mapWidth - 1) && upRight != null && DamageHandler.validTarget(chosenUnit, upRight)) {
+			if (unitX < (mapWidth - 1) && upRight != null && damageHandler.validTarget(chosenUnit, upRight)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
-			} else if (unitY > 0 && upOnly != null && DamageHandler.validTarget(chosenUnit, upOnly)) {
+			} else if (unitY > 0 && upOnly != null && damageHandler.validTarget(chosenUnit, upOnly)) {
 				cursor.setPosition(cursorX, cursorY - 2);
-			} else if (upLeft != null && DamageHandler.validTarget(chosenUnit, upLeft)) {
+			} else if (upLeft != null && damageHandler.validTarget(chosenUnit, upLeft)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			}
 		} else if (xDiff == -1) {
 			Unit rightUp = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY + 1);
 			Unit rightOnly = MapHandler.getNonFriendlyUnit(cursorX + 2, cursorY);
 			Unit rightDown = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY - 1);
-			if (unitY < (mapHeight - 1) && rightUp != null && DamageHandler.validTarget(chosenUnit, rightUp)) {
+			if (unitY < (mapHeight - 1) && rightUp != null && damageHandler.validTarget(chosenUnit, rightUp)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
-			} else if (unitX < (mapWidth - 1) && rightOnly != null && DamageHandler.validTarget(chosenUnit, rightOnly)) {
+			} else if (unitX < (mapWidth - 1) && rightOnly != null && damageHandler.validTarget(chosenUnit, rightOnly)) {
 				cursor.setPosition(cursorX + 2, cursorY);
-			} else if (rightDown != null && DamageHandler.validTarget(chosenUnit, rightDown)) {
+			} else if (rightDown != null && damageHandler.validTarget(chosenUnit, rightDown)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			}
 		} else { // yDiff == -1
 			Unit downRight = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY + 1);
 			Unit downOnly = MapHandler.getNonFriendlyUnit(cursorX, cursorY + 2);
 			Unit downLeft = MapHandler.getNonFriendlyUnit(cursorX + 1, cursorY + 1);
-			if (unitX > 0 && downRight != null && DamageHandler.validTarget(chosenUnit, downRight)) {
+			if (unitX > 0 && downRight != null && damageHandler.validTarget(chosenUnit, downRight)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
-			} else if (unitY < (mapHeight - 1) && downOnly != null && DamageHandler.validTarget(chosenUnit, downOnly)) {
+			} else if (unitY < (mapHeight - 1) && downOnly != null && damageHandler.validTarget(chosenUnit, downOnly)) {
 				cursor.setPosition(cursorX, cursorY + 2);
-			} else if (downLeft != null && DamageHandler.validTarget(chosenUnit, downLeft)) {
+			} else if (downLeft != null && damageHandler.validTarget(chosenUnit, downLeft)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			}
 		}
@@ -976,7 +980,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				int distanceFromUnit = Math.abs(unitX - x) + Math.abs(unitY - y);
 				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
 					Unit targetUnit = MapHandler.getNonFriendlyUnit(x, y);
-					if (targetUnit != null && DamageHandler.validTarget(attackingUnit, targetUnit)) {
+					if (targetUnit != null && damageHandler.validTarget(attackingUnit, targetUnit)) {
 						return true;
 					}
 				}
@@ -992,10 +996,10 @@ public class Gameboard extends JPanel implements KeyListener {
 		Unit southernFront = MapHandler.getNonFriendlyUnit(cursorX, cursorY + 1);
 		Unit westernFront = MapHandler.getNonFriendlyUnit(cursorX - 1, cursorY);
 
-		return (northernFront != null && DamageHandler.validTarget(chosenUnit, northernFront)) 
-			|| (easternFront != null && DamageHandler.validTarget(chosenUnit, easternFront))
-			|| (southernFront != null && DamageHandler.validTarget(chosenUnit, southernFront))
-			|| (westernFront != null && DamageHandler.validTarget(chosenUnit, westernFront));
+		return (northernFront != null && damageHandler.validTarget(chosenUnit, northernFront)) 
+			|| (easternFront != null && damageHandler.validTarget(chosenUnit, easternFront))
+			|| (southernFront != null && damageHandler.validTarget(chosenUnit, southernFront))
+			|| (westernFront != null && damageHandler.validTarget(chosenUnit, westernFront));
 	}
 
 	private void findPossibleDirectAttackLocations(Unit chosenUnit) {
@@ -1075,7 +1079,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				
 				Unit target = MapHandler.getNonFriendlyUnit(x, y);
 				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange && 
-						 target != null && DamageHandler.validTarget(chosenUnit, target)) {
+						 target != null && damageHandler.validTarget(chosenUnit, target)) {
 					Point p = new Point(x, y);
 					indirectUnit.addFiringLocation(p);
 				}
