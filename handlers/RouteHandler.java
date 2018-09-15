@@ -1,3 +1,6 @@
+/**
+ * Handles the route-calculation
+ */
 package handlers;
 
 import point.*;
@@ -8,27 +11,23 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-/**
- * Handles the route-calculation
- */
 public class RouteHandler {
-	private static boolean[][] movementMap;
-	private static int mapWidth, mapHeight;
-	private static ArrayList<Point> arrowPoints;
+	private boolean[][] movementMap;
+	private int mapWidth, mapHeight;
+	private ArrayList<Point> arrowPoints;
 
-	public static void initMovementMap(int mapWidth, int mapHeight) {
-		RouteHandler.mapWidth = mapWidth;
-		RouteHandler.mapHeight = mapHeight;
+	public RouteHandler(int mapWidth, int mapHeight) {
+		this.mapWidth = mapWidth;
+		this.mapHeight = mapHeight;
 		movementMap = new boolean[mapWidth][mapHeight];
-
 		arrowPoints = new ArrayList<Point>();
 	}
 
-	public static void clearMovementMap() {
+	public void clearMovementMap() {
 		movementMap = new boolean[mapWidth][mapHeight];
 	}
 
-	public static void findPossibleMovementLocations(Unit chosenUnit) {
+	public void findPossibleMovementLocations(Unit chosenUnit) {
 		int x = chosenUnit.getX();
 		int y = chosenUnit.getY();
 		int movementSteps = chosenUnit.getMovement();
@@ -44,7 +43,7 @@ public class RouteHandler {
 		checkPath(x, y - 1, movementSteps, movementType, hero);
 	}
 
-	private static void checkPath(int x, int y, int movementSteps, int movementType, Hero hero) {
+	private void checkPath(int x, int y, int movementSteps, int movementType, Hero hero) {
 		if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight) {
 			return;
 		}
@@ -68,11 +67,11 @@ public class RouteHandler {
 		checkPath(x, y - 1, movementSteps, movementType, hero);
 	}
 
-	public static void initArrowPoint(int newX, int newY) {
+	public void initArrowPoint(int newX, int newY) {
 		arrowPoints.add(new Point(newX, newY));
 	}
 
-	public static void addArrowPoint(int newX, int newY, Unit chosenUnit) {
+	public void addArrowPoint(int newX, int newY, Unit chosenUnit) {
 		int newLast = -1;
 
 		for (int i = 0 ; i < arrowPoints.size() ; i++) {
@@ -89,7 +88,7 @@ public class RouteHandler {
 			for (int i = arrowPoints.size() - 1 ; i > newLast ; i--) {
 				arrowPoints.remove(i);
 			}
-		} else if (RouteHandler.movementMap(newX, newY)) {
+		} else if (movementMap(newX, newY)) {
 			arrowPoints.add(new Point(newX, newY));
 
 			if (newPointNotConnectedToPreviousPoint()) {
@@ -104,11 +103,11 @@ public class RouteHandler {
 		}
 	}
 
-	public static void clearArrowPoints() {
+	public void clearArrowPoints() {
 		arrowPoints.clear();
 	}
 
-	private static boolean invalidCurrentPath(Unit chosenUnit) {
+	private boolean invalidCurrentPath(Unit chosenUnit) {
 		int maximumMovement = chosenUnit.getMovement();
 		int movementType = chosenUnit.getMovementType();
 
@@ -127,7 +126,7 @@ public class RouteHandler {
 	// @TODO: also, if (+2,0) is wood, (+3,0) is wood, if (+2,+1) is wood, (+3,+1) is wood and the 
 	//        rest is road, what happens if you try to move the cursor from (+4,+2)->(+4,+1)->(+3,+1)
 	//        result: will get stuck
-	private static void recountPath(int newX, int newY, Unit chosenUnit) {
+	private void recountPath(int newX, int newY, Unit chosenUnit) {
 		int mainX = chosenUnit.getX();
 		int mainY = chosenUnit.getY();
 		int movementType = chosenUnit.getMovementType();
@@ -171,7 +170,7 @@ public class RouteHandler {
 		}
 	}
 
-	private static boolean newPointNotConnectedToPreviousPoint() {
+	private boolean newPointNotConnectedToPreviousPoint() {
 		int size = arrowPoints.size();
 
 		int x1 = arrowPoints.get(size - 2).getX();
@@ -182,7 +181,7 @@ public class RouteHandler {
 		return Math.abs(x1 - x2) + Math.abs(y1 - y2) > 1;
 	}
 
-	public static int getFuelFromArrows(Unit unit) {
+	public int getFuelFromArrows(Unit unit) {
 		int fuelUsed = 0;
 
 		int movementType = unit.getMovementType();
@@ -196,15 +195,15 @@ public class RouteHandler {
 		return fuelUsed;
 	}
 
-	public static boolean movementMap(int x, int y) {
+	public boolean movementMap(int x, int y) {
 		return movementMap[x][y];
 	}
 
-	public static Point getArrowPoint(int index) {
+	public Point getArrowPoint(int index) {
 		return arrowPoints.get(index);
 	}
 
-	public static void paintArrow(Graphics g) {
+	public void paintArrow(Graphics g) {
 		int tileSize = MapHandler.tileSize;
 
 		if (arrowPoints.size() < 2) {

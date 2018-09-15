@@ -25,7 +25,7 @@ public class DamageHandler {
 	private static DamageCalculator damageCalculator;
 	private static StarPowerCalculator starPowerCalculator;
 
-	public static void init() {
+	public DamageHandler() {
 		damageCalculator = new DamageCalculator();
 		starPowerCalculator = new StarPowerCalculator();
 	}

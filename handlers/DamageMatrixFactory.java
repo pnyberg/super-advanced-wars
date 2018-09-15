@@ -1,3 +1,8 @@
+/**
+ * TODO:
+ *  - add Sub
+ *  - read values from file
+ */
 package handlers;
 
 import units.Unit;
@@ -10,7 +15,6 @@ public class DamageMatrixFactory {
 
 	public int[][][] getDamageMatrix() {
 		damageMatrix = new int[number][number][2]; // the last one is for secondary weapons
-
 		implementDamageMatrix();
 		return damageMatrix;
 	}
@@ -59,7 +63,7 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitTypes.INFANTRY.unitIndex()][UnitTypes.LANDER.unitIndex()][1] = -1;
 //		damageMatrix[UnitTypes.INFANTRY.unitIndex()][UnitTypes.SUB.unitIndex()][1] = -1;
 
-		// @UnitTypes.MECH.unitIndex()
+		// @mech
 		damageMatrix[UnitTypes.MECH.unitIndex()][UnitTypes.INFANTRY.unitIndex()][0] = -1;
 		damageMatrix[UnitTypes.MECH.unitIndex()][UnitTypes.INFANTRY.unitIndex()][1] = 65;
 		damageMatrix[UnitTypes.MECH.unitIndex()][UnitTypes.MECH.unitIndex()][0] = -1;
@@ -99,7 +103,7 @@ public class DamageMatrixFactory {
 //		damageMatrix[UnitTypes.MECH.unitIndex()][UnitTypes.SUB.unitIndex()][0] = -1;
 //		damageMatrix[UnitTypes.MECH.unitIndex()][UnitTypes.SUB.unitIndex()][1] = -1;
 
-		// @UnitTypes.RECON.unitIndex()
+		// @recon
 		damageMatrix[UnitTypes.RECON.unitIndex()][UnitTypes.INFANTRY.unitIndex()][1] = 70;
 		damageMatrix[UnitTypes.RECON.unitIndex()][UnitTypes.MECH.unitIndex()][1] = 65;
 		damageMatrix[UnitTypes.RECON.unitIndex()][UnitTypes.RECON.unitIndex()][1] = 35;
@@ -200,7 +204,7 @@ public class DamageMatrixFactory {
 //		damageMatrix[UnitTypes.MDTANK.unitIndex()][UnitTypes.SUB.unitIndex()][0] = 10;
 //		damageMatrix[UnitTypes.MDTANK.unitIndex()][UnitTypes.SUB.unitIndex()][1] = -1;
 
-		// @UnitTypes.NEOTANK.unitIndex()
+		// @neotank
 		damageMatrix[UnitTypes.NEOTANK.unitIndex()][UnitTypes.INFANTRY.unitIndex()][0] = 35; // will not be used
 		damageMatrix[UnitTypes.NEOTANK.unitIndex()][UnitTypes.INFANTRY.unitIndex()][1] = 125;
 		damageMatrix[UnitTypes.NEOTANK.unitIndex()][UnitTypes.MECH.unitIndex()][0] = 35; // will not be used
@@ -303,7 +307,7 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitTypes.A_AIR.unitIndex()][UnitTypes.LANDER.unitIndex()][0] = -1;
 //		damageMatrix[UnitTypes.A_AIR.unitIndex()][UnitTypes.SUB.unitIndex()][0] = -1;
 
-		// @UnitTypes.MISSILES.unitIndex()
+		// @missiles
 		damageMatrix[UnitTypes.MISSILES.unitIndex()][UnitTypes.INFANTRY.unitIndex()][0] = -1;
 		damageMatrix[UnitTypes.MISSILES.unitIndex()][UnitTypes.MECH.unitIndex()][0] = -1;
 		damageMatrix[UnitTypes.MISSILES.unitIndex()][UnitTypes.RECON.unitIndex()][0] = -1;

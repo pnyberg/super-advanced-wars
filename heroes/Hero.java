@@ -1,3 +1,6 @@
+/**
+ * TODO: paint Hero
+ */
 package heroes;
 
 import java.awt.Color;

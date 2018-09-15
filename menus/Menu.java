@@ -1,3 +1,6 @@
+/**
+ * TODO: take DimensionValues as parameter instead
+ */
 package menus;
 
 import java.awt.Color;
@@ -17,13 +20,12 @@ public abstract class Menu {
 		x = 0;
 		y = 0;
 		menuIndex = 0;
-		
 		visible = false;
 		dimensionValues = new DimensionValues();
 		dimensionValues.tileSize = tileSize;
 		dimensionValues.xAlign = 4;
 		dimensionValues.yAlign = 3;
-		dimensionValues.menuRowWidth = 70; // =200/3
+		dimensionValues.menuRowWidth = 70;
 		dimensionValues.menuRowHeight = 15;
 		arrow = new MenuArrow(dimensionValues);
 	}

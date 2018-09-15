@@ -1,3 +1,11 @@
+/**
+ * TODO:
+ * - contains movementcost and movementability (should perhaps be put in RouteHandler?)
+ * - should probably read from a file?
+ * - make into an object
+ * 
+ *
+ */
 package handlers;
 
 import java.util.ArrayList;
@@ -24,11 +32,6 @@ import units.treadMoving.Artillery;
 import units.treadMoving.Tank;
 import heroes.*;
 
-/**
- * Handles the map
- * - contains movementcost and movementability (should perhaps be put in RouteHandler?)
- *
- */
 public class MapInitiator {
 	private static int mapWidth, mapHeight;
 	protected static int[][] map;

@@ -55,6 +55,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	private BuildingMenu buildingMenu;
 
 	private DamageHandler damageHandler;
+	private RouteHandler routeHandler;
 
 	private Unit chosenUnit, rangeUnit;
 	private Building selectedBuilding;
@@ -72,9 +73,9 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		addKeyListener(this);
 
-		MapHandler.initMapHandler(mapWidth, mapHeight);
-		RouteHandler.initMovementMap(mapWidth, mapHeight);
-		DamageHandler.init();
+		damageHandler = new DamageHandler();
+		routeHandler = new RouteHandler(mapWidth, mapHeight);
+		MapHandler.initMapHandler(mapWidth, mapHeight, routeHandler);
 
 		mapMenu = new MapMenu(MapHandler.tileSize);
 		unitMenu = new UnitMenu(MapHandler.tileSize);
@@ -110,7 +111,7 @@ public class Gameboard extends JPanel implements KeyListener {
 					moveFiringCursorCounterclockwise();
 				}
 			} else if (cursorY > 0 && !menuVisible) {
-				RouteHandler.addArrowPoint(cursorX, cursorY - 1, chosenUnit);
+				routeHandler.addArrowPoint(cursorX, cursorY - 1, chosenUnit);
 				cursor.moveUp();
 			} else if (mapMenu.isVisible()) {
 				mapMenu.moveArrowUp();
@@ -134,7 +135,7 @@ public class Gameboard extends JPanel implements KeyListener {
 					moveFiringCursorClockwise();
 				}
 			} else if (cursorY < (mapHeight - 1) && !menuVisible) {
-				RouteHandler.addArrowPoint(cursorX, cursorY + 1, chosenUnit);
+				routeHandler.addArrowPoint(cursorX, cursorY + 1, chosenUnit);
 				cursor.moveDown();
 			} else if (mapMenu.isVisible()) {
 				mapMenu.moveArrowDown();
@@ -145,12 +146,12 @@ public class Gameboard extends JPanel implements KeyListener {
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			if (cursorX > 0 && !menuVisible && !unitIsDroppingOff() && !unitWantToFire()) {
-				RouteHandler.addArrowPoint(cursorX - 1, cursorY, chosenUnit);
+				routeHandler.addArrowPoint(cursorX - 1, cursorY, chosenUnit);
 				cursor.moveLeft();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			if (cursorX < (mapWidth - 1) && !menuVisible && !unitIsDroppingOff() && !unitWantToFire()) {
-				RouteHandler.addArrowPoint(cursorX + 1, cursorY, chosenUnit);
+				routeHandler.addArrowPoint(cursorX + 1, cursorY, chosenUnit);
 				cursor.moveRight();
 			}
 		}
@@ -185,8 +186,8 @@ public class Gameboard extends JPanel implements KeyListener {
 
 					chosenUnit.regulateActive(false);
 					chosenUnit = null;
-					RouteHandler.clearMovementMap();
-					RouteHandler.clearArrowPoints();
+					routeHandler.clearMovementMap();
+					routeHandler.clearArrowPoints();
 				} else {
 					// If all drop-slots are occupied, pressing 'A' won't do anything
 				}
@@ -207,8 +208,8 @@ public class Gameboard extends JPanel implements KeyListener {
 
 				chosenUnit.regulateActive(false);
 				chosenUnit = null;
-				RouteHandler.clearMovementMap();
-				RouteHandler.clearArrowPoints();
+				routeHandler.clearMovementMap();
+				routeHandler.clearArrowPoints();
 				if (chosenUnit instanceof IndirectUnit) {
 					((IndirectUnit)chosenUnit).clearFiringLocations();
 				}
@@ -272,15 +273,15 @@ public class Gameboard extends JPanel implements KeyListener {
 
 					chosenUnit.regulateActive(false);
 					chosenUnit = null;
-					RouteHandler.clearMovementMap();
-					RouteHandler.clearArrowPoints();
+					routeHandler.clearMovementMap();
+					routeHandler.clearArrowPoints();
 				}
 
 				unitMenu.closeMenu();
 			} else if (buildingMenu.isVisible()) {
 				buildingMenu.buySelectedTroop();
 				buildingMenu.closeMenu();
-			} else if (chosenUnit != null && RouteHandler.movementMap(cursorX, cursorY) && rangeUnit == null) {
+			} else if (chosenUnit != null && routeHandler.movementMap(cursorX, cursorY) && rangeUnit == null) {
 				int x = chosenUnit.getX();
 				int y = chosenUnit.getY();
 				if (MapHandler.getFriendlyUnit(x, y) != null) {
@@ -298,9 +299,8 @@ public class Gameboard extends JPanel implements KeyListener {
 //				chosenUnit = MapHandler.getFriendlyUnit(cursorX, cursorY);
 
 				if (chosenUnit != null) {
-					RouteHandler.findPossibleMovementLocations(chosenUnit);
-
-					RouteHandler.initArrowPoint(chosenUnit.getX(), chosenUnit.getY());
+					routeHandler.findPossibleMovementLocations(chosenUnit);
+					routeHandler.initArrowPoint(chosenUnit.getX(), chosenUnit.getY());
 				}
 			}
 		}
@@ -337,7 +337,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				buildingMenu.closeMenu();
 			} else if (chosenUnit != null) {
 				// the start-position of the unit before movement
-				Point unitStartPoint = RouteHandler.getArrowPoint(0);
+				Point unitStartPoint = routeHandler.getArrowPoint(0);
 				int unitStartX = unitStartPoint.getX();
 				int unitStartY = unitStartPoint.getY();
 
@@ -348,8 +348,8 @@ public class Gameboard extends JPanel implements KeyListener {
 					cursor.setPosition(unitStartX, unitStartY);
 					chosenUnit.moveTo(unitStartX, unitStartY);
 					chosenUnit = null;
-					RouteHandler.clearMovementMap();
-					RouteHandler.clearArrowPoints();
+					routeHandler.clearMovementMap();
+					routeHandler.clearArrowPoints();
 				}
 			} else {
 				rangeUnit = getAnyUnit(cursorX, cursorY);
@@ -1003,11 +1003,11 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private void findPossibleDirectAttackLocations(Unit chosenUnit) {
-		RouteHandler.findPossibleMovementLocations(chosenUnit);
+		routeHandler.findPossibleMovementLocations(chosenUnit);
 
 		for (int n = 0 ; n < mapHeight ; n++) {
 			for (int i = 0 ; i < mapWidth ; i++) {
-				if (RouteHandler.movementMap(i, n)) {
+				if (routeHandler.movementMap(i, n)) {
 					if (i > 0) {
 						rangeMap[i - 1][n] = true;
 					}
@@ -1023,8 +1023,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 			}
 		}
-
-		RouteHandler.clearMovementMap();
+		routeHandler.clearMovementMap();
 	}
 
 	private void createRangeAttackLocations(Unit chosenUnit) {
@@ -1096,7 +1095,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private int calculateFuelUsed() {
-		return RouteHandler.getFuelFromArrows(chosenUnit);
+		return routeHandler.getFuelFromArrows(chosenUnit);
 	}
 
 	private void endTurn() {
@@ -1138,7 +1137,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		if (chosenUnit != null) {
 			if (!unitMenu.isVisible() && !unitIsDroppingOff() && !unitWantToFire()) {
-				RouteHandler.paintArrow(g);
+				routeHandler.paintArrow(g);
 			}
 
 			chosenUnit.paint(g, MapHandler.tileSize);

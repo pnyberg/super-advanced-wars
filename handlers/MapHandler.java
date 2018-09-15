@@ -1,3 +1,9 @@
+/**
+ * TODO:
+ * - contains movementcost and movementability (should perhaps be put in RouteHandler?)
+ * - refactor code to make it shorter
+ *
+ */
 package handlers;
 
 import units.*;
@@ -8,11 +14,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-/**
- * Handles the map
- * - contains movementcost and movementability (should perhaps be put in RouteHandler?)
- *
- */
 public class MapHandler {
 	public static final int 	ROAD = 0,
 								PLAIN = 1,
@@ -39,10 +40,12 @@ public class MapHandler {
 	private static int[][] map, movementCostMatrix;
 	private static boolean[][] moveabilityCostMatrix;
 	private static HeroPortrait portrait;
+	private static RouteHandler routeHandler;
 	private static ArrayList<Building> buildings;
 
-	public static void initMapHandler(int mapWidth, int mapHeight) {
+	public static void initMapHandler(int mapWidth, int mapHeight, RouteHandler routeHandler) {
 		portrait = new HeroPortrait(mapWidth);
+		MapHandler.routeHandler = routeHandler;
 		initHeroes();
 
 		initMovementCostMatrix();
@@ -395,7 +398,7 @@ public class MapHandler {
 
 	public static void paintArea(Graphics g, int x, int y, boolean rangeAble) {
 		int areaNumber = MapInitiator.map[x][y];
-		boolean movementAble = RouteHandler.movementMap(x, y);
+		boolean movementAble = routeHandler.movementMap(x, y);
 
 		if (areaNumber == ROAD) {
 			if (movementAble) {

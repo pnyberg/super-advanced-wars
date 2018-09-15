@@ -1,3 +1,6 @@
+/**
+ * TODO: add Sub
+ */
 package handlers;
 
 import units.Unit;
@@ -8,13 +11,11 @@ import units.tireMoving.*;
 import units.treadMoving.*;
 
 public class WeaponIndexChooser {
-	public WeaponIndexChooser() {
-		
-	}
+	public WeaponIndexChooser() {}
 
 	public int getWeaponIndex(Unit attacker, Unit defender) {
 		boolean tankOrMechOrCopterVsFootOrCopter = 
-										defender instanceof Infantry 
+										   defender instanceof Infantry 
 										|| defender instanceof Mech 
 										|| defender instanceof BCopter
 										|| defender instanceof TCopter;

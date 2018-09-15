@@ -3,10 +3,7 @@ package heroes;
 import java.awt.Color;
 
 public class HeroFactory {
-
-	public HeroFactory() {
-		
-	}
+	public HeroFactory() {}
 	
 	public Hero createHero(int heroIndex) {
 		if (heroIndex == 0) {

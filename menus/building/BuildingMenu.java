@@ -1,3 +1,6 @@
+/**
+ * TODO: Add so that item's can't be clicked if they cost to much
+ */
 package menus.building;
 
 import units.*;
@@ -8,9 +11,6 @@ import handlers.*;
 
 import java.awt.Graphics;
 
-/**
- * TODO: Add so that item's can't be clicked if they cost to much
- */
 public class BuildingMenu extends Menu {
 	private final int priceAlign = 70;
 	private boolean factory;
@@ -23,9 +23,8 @@ public class BuildingMenu extends Menu {
 
 	public BuildingMenu(int tileSize, HeroPortrait heroPortrait) {
 		super(tileSize);
-
 		this.heroPortrait = heroPortrait;
-		dimensionValues.menuRowWidth = 118; // * 9 / 3 - 2
+		dimensionValues.menuRowWidth = 118;
 		factory = false;
 		port = false;
 		airport = false;

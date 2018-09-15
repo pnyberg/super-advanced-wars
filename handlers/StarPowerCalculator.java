@@ -1,3 +1,6 @@
+/**
+ * TODO: add Sub
+ */
 package handlers;
 
 import heroes.Hero;
@@ -9,9 +12,7 @@ import units.tireMoving.*;
 import units.treadMoving.*;
 
 public class StarPowerCalculator {
-	public StarPowerCalculator() {
-		
-	}
+	public StarPowerCalculator() {}
 
 	public void calculateStarPowerOpponent(Hero hero, Unit unit, int damage) {
 		calculateStarPower(hero, unit, damage, 0.5);

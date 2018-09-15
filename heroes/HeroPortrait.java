@@ -29,7 +29,6 @@ public class HeroPortrait {
 
 	public void nextHero() {
 		heroIndex = (heroIndex + 1) % heroes.size();
-
 		currentHero = heroes.get(heroIndex);
 	}
 
@@ -62,7 +61,6 @@ public class HeroPortrait {
 				}
 			}
 		}
-
 		return null;
 	}
 

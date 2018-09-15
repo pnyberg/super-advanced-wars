@@ -73,7 +73,6 @@ public class HeroPortraitPainter {
 
 	public void paintRightSide(Graphics g, Hero currentHero) {
 		int tileSize = MapHandler.tileSize;
-
 		int borderThickness = 2;
 		int cashBarHeight = 25;
 		int cashAlign = 8 * (String.valueOf(currentHero.getCash()).length() - 1);
@@ -125,17 +124,14 @@ public class HeroPortraitPainter {
 		g.drawString("" + currentHero.getCash() + "", ox2 - 20 - cashAlign, oy1 + 15);
 
 		currentHero.paint(g, 0, 0);
-		
 		drawHeroPowerStars(g, currentHero, ox7, oy7);
 	}	
 
 	private void drawHeroPowerStars(Graphics g, Hero currentHero, int x, int y) {
 		int starX = x + 1;
 		int starY = y - 8;
-
 		int powerStars = currentHero.getHeroPowerMeter().getRequiredPower();
 		int superPowerStars = currentHero.getHeroPowerMeter().getRequiredSuperPower();
-		
 		double currentPower = currentHero.getHeroPowerMeter().getStarPower();
 
 		for (int i = 0 ; i < powerStars ; i++) {
@@ -145,7 +141,6 @@ public class HeroPortraitPainter {
 		}
 
 		starY -= PowerStar.bigSize - PowerStar.smallSize;
-
 		for (int i = 0 ; i < (superPowerStars - powerStars) ; i++) {
 			double amountFilled = Math.max(0, (currentPower - i - powerStars));
 			PowerStar.paintSuper(g, starX, starY,  amountFilled);
