@@ -6,7 +6,6 @@ import menus.Menu;
 import menus.unit.UnitCreatingFactory;
 import handlers.*;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 /**
@@ -20,24 +19,24 @@ public class BuildingMenu extends Menu {
 	private BuildingItemFactory buildingItemFactory;
 	private UnitCreatingFactory unitCreatingFactory;
 	private HeroPortrait heroPortrait;
+	private BuildingMenuPainter buildingMenuPainter;
 
 	public BuildingMenu(int tileSize, HeroPortrait heroPortrait) {
 		super(tileSize);
 
 		this.heroPortrait = heroPortrait;
-		menuWidth = (tileSize * 9 / 3) - 2;
+		dimensionValues.menuRowWidth = 118; // * 9 / 3 - 2
 		factory = false;
 		port = false;
 		airport = false;
 		buildingItemFactory = new BuildingItemFactory();
 		unitCreatingFactory = new UnitCreatingFactory();
+		buildingMenuPainter = new BuildingMenuPainter(heroPortrait, dimensionValues, priceAlign);
 	}
 
 	public void openMenu(int x, int y) {
 		super.openMenu(x, y);
-
 		int terrainType = MapHandler.map(x, y);
-
 		if (terrainType == MapHandler.FACTORY) {
 			factory = true;
 		} else if (terrainType == MapHandler.AIRPORT) {
@@ -49,7 +48,6 @@ public class BuildingMenu extends Menu {
 
 	public void closeMenu() {
 		super.closeMenu();
-
 		factory = false;
 		airport = false;
 		port = false;
@@ -90,9 +88,8 @@ public class BuildingMenu extends Menu {
 	}
 
 	public void paint(Graphics g) {
-		int menuY = y * tileSize + tileSize / 2 + yAlign;
+		int menuY = y * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2 + dimensionValues.getAlignY();
 		BuildingItem[] items = new BuildingItem[0];
-
 		if (factory) {
 			items = buildingItemFactory.getStandardFactoryItems();
 		} else if (airport) {
@@ -102,23 +99,7 @@ public class BuildingMenu extends Menu {
 		}
 
 		paintMenuBackground(g);
-		for (int k = 0 ; k < items.length ; k++) {
-			paintMenuItem(g, menuY + menuRowHeight * (k + 1), items[k].getName(), items[k].getPrice());
-		}
+		buildingMenuPainter.paint(g, x, menuY, items);
 		paintArrow(g);
-	}
-
-	private void paintMenuItem(Graphics g, int y, String text, int price) {
-		int heroCash = heroPortrait.getCurrentHero().getCash();
-		int menuX = x * tileSize + tileSize / 2 + xAlign;
-		int extraPriceAlign = (price >= 10000 ? 0 : 8);
-
-		if (heroCash < price) {
-			g.setColor(Color.gray);
-		} else {
-			g.setColor(Color.black);
-		}
-		g.drawString(text, menuX, y);
-		g.drawString("" + price + "", menuX + priceAlign + extraPriceAlign, y);
 	}
 }

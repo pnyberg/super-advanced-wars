@@ -1,3 +1,6 @@
+/**
+ * TODO: write cargo as actual unit and not "Unit " + [number]
+ */
 package menus.unit;
 
 import units.*;
@@ -93,8 +96,8 @@ public class UnitMenu extends Menu {
 	}
 
 	public void paint(Graphics g) {
-		int menuX = x * tileSize + tileSize / 2 + xAlign;
-		int menuY = y * tileSize + tileSize / 2 + yAlign;
+		int menuX = x * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2 + 2 * dimensionValues.getAlignX();
+		int menuY = y * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2 + dimensionValues.getAlignY();
 
 		paintMenuBackground(g);
 
@@ -103,12 +106,13 @@ public class UnitMenu extends Menu {
 		for (int k = 0 ; k < unitMenuRowEntryBooleans.length ; k++) {
 			if (k == 2 && cargo.size() > 0) {
 				for (int i = 0 ; i < cargo.size() ; i++) {
-					g.drawString("Unit" + (i+1), menuX, menuY + menuRowHeight * rowHelpIndex);
+					// TODO: write the actual unit (type)
+					g.drawString("Unit" + (i+1), menuX, menuY + dimensionValues.getMenuRowHeight() * rowHelpIndex);
 					rowHelpIndex++;
 				}
 			}
 			if (unitMenuRowEntryBooleans[k]) {
-				g.drawString(unitMenuRowEntryText[k], menuX + xAlign, menuY + menuRowHeight * rowHelpIndex);
+				g.drawString(unitMenuRowEntryText[k], menuX, menuY + dimensionValues.getMenuRowHeight() * rowHelpIndex);
 				rowHelpIndex++;
 			}
 		}

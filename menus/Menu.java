@@ -9,24 +9,23 @@ public abstract class Menu {
 	protected int x;
 	protected int y;
 	protected int menuIndex;
-	protected int tileSize;
-	protected int menuWidth;
 	protected boolean visible;
-	
+	protected DimensionValues dimensionValues;	
 	private MenuArrow arrow;
-
-	protected final int menuRowHeight = 15;
-	protected final int xAlign = 4;
-	protected final int yAlign = 3;
 
 	public Menu(int tileSize) {
 		x = 0;
 		y = 0;
 		menuIndex = 0;
-		this.tileSize = tileSize;
-		menuWidth = (tileSize * 5 / 3);
+		
 		visible = false;
-		arrow = new MenuArrow(tileSize, menuRowHeight, yAlign);
+		dimensionValues = new DimensionValues();
+		dimensionValues.tileSize = tileSize;
+		dimensionValues.xAlign = 4;
+		dimensionValues.yAlign = 3;
+		dimensionValues.menuRowWidth = 70; // =200/3
+		dimensionValues.menuRowHeight = 15;
+		arrow = new MenuArrow(dimensionValues);
 	}
 
 	public void openMenu(int x, int y) {
@@ -75,17 +74,17 @@ public abstract class Menu {
 	}
 
 	protected void paintMenuBackground(Graphics g) {
-		int menuHeight = getNumberOfRows() * menuRowHeight + 10;
-		int menuX = x * tileSize + tileSize / 2;
-		int menuY = y * tileSize + tileSize / 2;
+		int menuHeight = getNumberOfRows() * dimensionValues.getMenuRowHeight() + 10;
+		int menuX = x * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2;
+		int menuY = y * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2;
 
 		g.setColor(Color.white);
-		g.fillRect(menuX, menuY, menuWidth, menuHeight);
+		g.fillRect(menuX, menuY, dimensionValues.getMenuRowWidth(), menuHeight);
 		g.setColor(Color.black);
-		g.fillRect(menuX, menuY, menuWidth, 2); 
+		g.fillRect(menuX, menuY, dimensionValues.getMenuRowWidth(), 2); 
 		g.fillRect(menuX, menuY, 2, menuHeight); 
-		g.fillRect(menuX + menuWidth - 2, menuY, 2, menuHeight); 
-		g.fillRect(menuX, menuY + menuHeight - 2, menuWidth, 2);
+		g.fillRect(menuX + dimensionValues.getMenuRowWidth() - 2, menuY, 2, menuHeight); 
+		g.fillRect(menuX, menuY + menuHeight - 2, dimensionValues.getMenuRowWidth(), 2);
 	}
 
 	protected void paintArrow(Graphics g) {

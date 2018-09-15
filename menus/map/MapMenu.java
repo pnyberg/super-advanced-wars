@@ -35,8 +35,8 @@ public class MapMenu extends Menu {
 	}
 
 	public void paint(Graphics g) {
-		int menuX = x * tileSize + tileSize / 2 + xAlign;
-		int menuY = y * tileSize + tileSize / 2 + yAlign;
+		int menuX = x * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2 + dimensionValues.getAlignX();
+		int menuY = y * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2 + dimensionValues.getAlignY();
 
 		paintMenuBackground(g);
 
@@ -48,7 +48,7 @@ public class MapMenu extends Menu {
 			if (k == 3 && !superPower) {
 				continue;
 			}
-			g.drawString(menuTexts[k], menuX, menuY + menuRowHeight * rowHelpIndex);
+			g.drawString(menuTexts[k], menuX, menuY + dimensionValues.getMenuRowHeight() * rowHelpIndex);
 			rowHelpIndex++;
 		}
 
