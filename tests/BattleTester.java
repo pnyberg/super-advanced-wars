@@ -42,25 +42,27 @@ import org.junit.Test;
  */
 
 public class BattleTester {
-	private static Infantry infantry;
-	private static Mech mech;
-	private static Recon recon;
-	private static Tank tank;
-	private static MDTank mdTank;
-	private static Neotank neotank;
-	private static APC apc;
-	private static Artillery artillery;
-	private static Rocket rocket;
-	private static AAir a_air;
-	private static Missiles missiles;
-	private static Fighter fighter;
-	private static Bomber bomber;
-	private static BCopter bCopter;
-	private static TCopter tCopter;
-	private static Battleship battleship;
-	private static Cruiser cruiser;
-	private static Lander lander;
-	//private static Sub sub;
+	private Infantry infantry;
+	private Mech mech;
+	private Recon recon;
+	private Tank tank;
+	private MDTank mdTank;
+	private Neotank neotank;
+	private APC apc;
+	private Artillery artillery;
+	private Rocket rocket;
+	private AAir a_air;
+	private Missiles missiles;
+	private Fighter fighter;
+	private Bomber bomber;
+	private BCopter bCopter;
+	private TCopter tCopter;
+	private Battleship battleship;
+	private Cruiser cruiser;
+	private Lander lander;
+	//private Sub sub;
+	
+	private DamageHandler damageHandler;
 
 	/***
 	 * Creates units of every type and implements the damage-matrix (in the DamageHandler) 
@@ -87,7 +89,7 @@ public class BattleTester {
 		lander = new Lander(-1, -1, Color.white);
 //		sub = new Sub(-1, -1, Color.white);
 
-		DamageHandler.init();
+		damageHandler = new DamageHandler();
 	}
 
 	/***

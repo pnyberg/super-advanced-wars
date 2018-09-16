@@ -1,4 +1,4 @@
-package buildings;
+package area.buildings;
 
 import heroes.*;
 

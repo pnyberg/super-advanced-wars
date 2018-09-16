@@ -7,26 +7,15 @@
 package handlers;
 
 import units.*;
-import buildings.*;
 import heroes.*;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-public class MapHandler {
-	public static final int 	ROAD = 0,
-								PLAIN = 1,
-								WOOD = 2,
-								MOUNTAIN = 3,
-								SEA = 4,
-								CITY = 5,
-								PORT = 6,
-								AIRPORT = 7,
-								FACTORY = 8,
-								REEF = 9,
-								SHORE = 10;
+import area.buildings.*;
 
+public class MapHandler {
 	// appearance-variable
 	public static final int tileSize = 40;
 	
@@ -37,15 +26,16 @@ public class MapHandler {
 	// ruling-variable
 	private static final int fuelMaintenancePerTurn = 5;
 
-	private static int[][] map, movementCostMatrix;
-	private static boolean[][] moveabilityCostMatrix;
-	private static HeroPortrait portrait;
-	private static RouteHandler routeHandler;
-	private static ArrayList<Building> buildings;
+	private int[][] map, movementCostMatrix;
+	private boolean[][] moveabilityCostMatrix;
+	private HeroPortrait portrait;
+	private MapInitiator mapInitiator;
+	private RouteHandler routeHandler;
+	private ArrayList<Building> buildings;
 
-	public static void initMapHandler(int mapWidth, int mapHeight, RouteHandler routeHandler) {
+	public MapHandler(int mapWidth, int mapHeight, RouteHandler routeHandler) {
 		portrait = new HeroPortrait(mapWidth);
-		MapHandler.routeHandler = routeHandler;
+		this.routeHandler = routeHandler;
 		initHeroes();
 
 		initMovementCostMatrix();
@@ -59,7 +49,7 @@ public class MapHandler {
 		Building.init(1000);
 	}
 
-	private static void initMovementCostMatrix() {
+	private void initMovementCostMatrix() {
 		// number of types of units x number of types of terrain
 		movementCostMatrix = new int[numberOfMovementTypes][numberOfAreaTypes];
 
@@ -77,7 +67,7 @@ public class MapHandler {
 		movementCostMatrix[Unit.TRANSPORT][REEF] = 2;
 	}
 
-	private static void initMoveabilityMatrix() {
+	private void initMoveabilityMatrix() {
 		// number of types of units x number of types of terrain
 		moveabilityCostMatrix = new boolean[numberOfMovementTypes][numberOfAreaTypes];
 
@@ -145,11 +135,11 @@ public class MapHandler {
 		moveabilityCostMatrix[Unit.AIR][AIRPORT] = true;
 	}
 
-	private static void initMapAndTroops(int mapWidth, int mapHeight, int index) {
-		MapInitiator.initMap(mapWidth, mapHeight, map, buildings, portrait, index);
+	private void initMapAndTroops(int mapWidth, int mapHeight, int index) {
+		mapInitiator = new MapInitiator(mapWidth, mapHeight, map, buildings, portrait, index);
 	}
 
-	private static void setOwnerships(Hero[][] ownerMap) {
+	private void setOwnerships(Hero[][] ownerMap) {
 		for (Building building : buildings) {
 			int x = building.getX();
 			int y = building.getY();
@@ -161,22 +151,22 @@ public class MapHandler {
 		}
 	}
 
-	private static void initHeroes() {
+	private void initHeroes() {
 		HeroFactory heroFactory = new HeroFactory();
 		portrait.addHero(heroFactory.createHero(0));
 		portrait.addHero(heroFactory.createHero(1));
 		portrait.selectStartHero();
 	}
 
-	public static void updatePortraitSideChoice(int cursorX, int cursorY) {
+	public void updatePortraitSideChoice(int cursorX, int cursorY) {
 		portrait.updateSideChoice(cursorX, cursorY);
 	}
 
-	public static void changeHero() {
+	public void changeHero() {
 		portrait.nextHero();
 	}
 
-	public static void updateCash() {
+	public void updateCash() {
 		int numberOfCashgivers = 0;
 		Hero hero = portrait.getCurrentHero();
 
@@ -190,7 +180,7 @@ public class MapHandler {
 		hero.manageCash(newCash);
 	}
 
-	public static void fuelMaintenance() {
+	public void fuelMaintenance() {
 		Hero hero = portrait.getCurrentHero();
 		for (int k = 0 ; k < hero.getTroopHandler().getTroopSize() ; k++) {
 			Unit unit = hero.getTroopHandler().getTroop(k);
@@ -203,14 +193,14 @@ public class MapHandler {
 		}
 	}
 
-	public static void resetActiveVariable() {
+	public void resetActiveVariable() {
 		Hero hero = portrait.getCurrentHero();
 		for (int k = 0 ; k < hero.getTroopHandler().getTroopSize() ; k++) {
 			hero.getTroopHandler().getTroop(k).regulateActive(true);
 		}
 	}
 
-	public static Unit getAnyUnit(int x, int y) {
+	public Unit getAnyUnit(int x, int y) {
 		for (int h = 0 ; h < portrait.getNumberOfHeroes() ; h++) {
 			for (int k = 0 ; k < portrait.getHero(h).getTroopHandler().getTroopSize() ; k++) {
 				Unit unit = getUnitFromHero(h, k);
@@ -223,7 +213,7 @@ public class MapHandler {
 		return null;
 	}
 
-	public static Unit getNonFriendlyUnit(int x, int y, Hero hero) {
+	public Unit getNonFriendlyUnit(int x, int y, Hero hero) {
 		for (int h = 0 ; h < portrait.getNumberOfHeroes() ; h++) {
 			if (portrait.getHero(h) == hero) {
 				continue;
@@ -239,11 +229,11 @@ public class MapHandler {
 		return null;
 	}
 
-	public static Unit getNonFriendlyUnit(int x, int y) {
+	public Unit getNonFriendlyUnit(int x, int y) {
 		return getNonFriendlyUnit(x, y, portrait.getCurrentHero());
 	}
 
-	public static Unit getFriendlyUnit(int x, int y) {
+	public Unit getFriendlyUnit(int x, int y) {
 		for (int k = 0 ; k < getFriendlyTroopSize() ; k++) {
 			Unit unit = getFriendlyUnitFromCurrentHero(k);
 			if (unit.getX() == x && unit.getY() == y && !unit.isHidden()) {
@@ -254,7 +244,7 @@ public class MapHandler {
 		return null;
 	}
 
-	public static Unit getFriendlyUnitExceptSelf(Unit notUnit, int x, int y) {
+	public Unit getFriendlyUnitExceptSelf(Unit notUnit, int x, int y) {
 		for (int k = 0 ; k < getFriendlyTroopSize() ; k++) {
 			Unit unit = getFriendlyUnitFromCurrentHero(k);
 			if (unit.getX() == x && unit.getY() == y && unit != notUnit && !unit.isHidden()) {
@@ -265,7 +255,7 @@ public class MapHandler {
 		return null;
 	}
 
-	public static boolean areaOccupiedByAny(Unit chosenUnit, int x, int y) {
+	public boolean areaOccupiedByAny(Unit chosenUnit, int x, int y) {
 		Unit testAnyUnit = getAnyUnit(x, y);
 
 		if (chosenUnit == testAnyUnit) {
@@ -275,7 +265,7 @@ public class MapHandler {
 		return testAnyUnit != null;
 	}
 
-	public static boolean areaOccupiedByFriendly(Unit chosenUnit, int x, int y) {
+	public boolean areaOccupiedByFriendly(Unit chosenUnit, int x, int y) {
 		Unit testFriendlyUnit = getFriendlyUnit(x, y);
 
 		if (chosenUnit == testFriendlyUnit) {
@@ -285,20 +275,20 @@ public class MapHandler {
 		return testFriendlyUnit != null;
 	}
 
-	public static boolean areaOccupiedByNonFriendly(int x, int y, Hero hero) {
+	public boolean areaOccupiedByNonFriendly(int x, int y, Hero hero) {
 		Unit testAnyUnit = getNonFriendlyUnit(x, y, hero);
 
 		return testAnyUnit != null;
 	}
 
-	public static boolean areaOccupiedByNonFriendly(int x, int y) {
+	public boolean areaOccupiedByNonFriendly(int x, int y) {
 		return areaOccupiedByNonFriendly(x, y, portrait.getCurrentHero());
 	}
 
 	/***
 	 * Used to check if a positions can be moved to by a specific movement-type
 	 ***/
-	public static boolean allowedMovementPosition(int x, int y, int movementType, Hero hero) {
+	public boolean allowedMovementPosition(int x, int y, int movementType, Hero hero) {
 		int terrainType = map[x][y];
 
 		if (areaOccupiedByNonFriendly(x, y, hero)) {
@@ -308,7 +298,7 @@ public class MapHandler {
 		return moveabilityCostMatrix[movementType][terrainType];
 	}
 
-	public static boolean allowedMovementPosition(int x, int y, int movementType) {
+	public boolean allowedMovementPosition(int x, int y, int movementType) {
 		return allowedMovementPosition(x, y, movementType, portrait.getCurrentHero());
 	}
 
@@ -319,19 +309,19 @@ public class MapHandler {
 	 * @param unit
 	 * @return
 	 */
-	public static boolean unitOnLand(int x, int y) {
+	public boolean unitOnLand(int x, int y) {
 		int terrainType = map[x][y];
 		
 		return moveabilityCostMatrix[Unit.INFANTRY][terrainType];
 	}
 	
-	public static int movementCost(int x, int y, int movementType) {
+	public int movementCost(int x, int y, int movementType) {
 		int terrainType = map[x][y];
 
 		return movementCostMatrix[movementType][terrainType];
 	}
 
-	public static int getDefenceValue(int terrainType) {
+	public int getDefenceValue(int terrainType) {
 		if (terrainType == ROAD ||
 			terrainType == SEA ||
 			terrainType == SHORE) {
@@ -352,31 +342,31 @@ public class MapHandler {
 		return -1;
 	}
 
-	public static HeroPortrait getHeroPortrait() {
+	public HeroPortrait getHeroPortrait() {
 		return portrait;
 	}
 
-	public static int map(int x, int y) {
+	public int map(int x, int y) {
 		return map[x][y];
 	}
 
-	public static Unit getUnitFromHero(int hero, int index) {
+	public Unit getUnitFromHero(int hero, int index) {
 		return portrait.getHero(hero).getTroopHandler().getTroop(index);
 	}
 
-	public static Unit getFriendlyUnitFromCurrentHero(int index) {
+	public Unit getFriendlyUnitFromCurrentHero(int index) {
 		return portrait.getCurrentHero().getTroopHandler().getTroop(index);
 	}
 
-	public static int getTroopSize(int hero) {
+	public int getTroopSize(int hero) {
 		return portrait.getHero(hero).getTroopHandler().getTroopSize();
 	}
 
-	public static int getFriendlyTroopSize() {
+	public int getFriendlyTroopSize() {
 		return portrait.getCurrentHero().getTroopHandler().getTroopSize();
 	}
 
-	public static Building getBuilding(int x, int y) {
+	public Building getBuilding(int x, int y) {
 		for (Building building : buildings) {
 			if (building.getX() == x && building.getY() == y) {
 				return building;
@@ -386,7 +376,7 @@ public class MapHandler {
 		return null;
 	}
 
-	public static Building getFriendlyBuilding(int x, int y) {
+	public Building getFriendlyBuilding(int x, int y) {
 		Building building = getBuilding(x, y);
 
 		if (building != null && building.getOwner() == portrait.getCurrentHero()) {
@@ -396,8 +386,8 @@ public class MapHandler {
 		return null;
 	}
 
-	public static void paintArea(Graphics g, int x, int y, boolean rangeAble) {
-		int areaNumber = MapInitiator.map[x][y];
+	public void paintArea(Graphics g, int x, int y, boolean rangeAble) {
+		int areaNumber = mapInitiator.map[x][y];
 		boolean movementAble = routeHandler.movementMap(x, y);
 
 		if (areaNumber == ROAD) {
@@ -463,7 +453,7 @@ public class MapHandler {
 		}
 	}
 
-	public static void paintUnits(Graphics g, Unit chosenUnit) {
+	public void paintUnits(Graphics g, Unit chosenUnit) {
 		for (int t = 0 ; t < 2 ; t++) {
 			for (int k = 0 ; k < getTroopSize(t) ; k++) {
 				Unit unit = getUnitFromHero(t, k);
@@ -476,7 +466,7 @@ public class MapHandler {
 		}
 	}
 
-	public static void paintPortrait(Graphics g) {
+	public void paintPortrait(Graphics g) {
 		portrait.paint(g);
 	}
 }

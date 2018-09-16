@@ -19,7 +19,6 @@ import menus.*;
 import menus.building.BuildingMenu;
 import menus.map.MapMenu;
 import menus.unit.UnitMenu;
-import buildings.*;
 import heroes.*;
 import handlers.*;
 
@@ -28,6 +27,8 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JPanel;
+
+import area.buildings.*;
 
 /**
  * TODO-list

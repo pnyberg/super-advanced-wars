@@ -10,11 +10,11 @@ package handlers;
 
 import java.util.ArrayList;
 
-import buildings.Airport;
-import buildings.Building;
-import buildings.City;
-import buildings.Factory;
-import buildings.Port;
+import area.buildings.Airport;
+import area.buildings.Building;
+import area.buildings.City;
+import area.buildings.Factory;
+import area.buildings.Port;
 import heroes.Hero;
 import units.airMoving.BCopter;
 import units.airMoving.Bomber;
