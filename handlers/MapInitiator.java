@@ -2,8 +2,8 @@
  * TODO:
  * - contains movementcost and movementability (should perhaps be put in RouteHandler?)
  * - should probably read from a file?
- * - make into an object
- * 
+ * - add HQ
+ * - add Silo
  *
  */
 package handlers;
@@ -33,17 +33,17 @@ import units.treadMoving.Tank;
 import heroes.*;
 
 public class MapInitiator {
-	private static int mapWidth, mapHeight;
-	protected static int[][] map;
-	private static ArrayList<Building> buildings;
-	private static HeroPortrait portrait;
+	private int mapWidth, mapHeight;
+	protected int[][] map;
+	private ArrayList<Building> buildings;
+	private HeroPortrait portrait;
 
-	protected static void initMap(int mapWidth, int mapHeight, int[][] map, ArrayList<Building> buildings, HeroPortrait portrait, int index) {
-		MapInitiator.mapWidth = mapWidth;
-		MapInitiator.mapHeight = mapHeight;
-		MapInitiator.map = map;
-		MapInitiator.buildings = buildings;
-		MapInitiator.portrait = portrait;
+	public MapInitiator(int mapWidth, int mapHeight, int[][] map, ArrayList<Building> buildings, HeroPortrait portrait, int index) {
+		this.mapWidth = mapWidth;
+		this.mapHeight = mapHeight;
+		this.map = map;
+		this.buildings = buildings;
+		this.portrait = portrait;
 
 		if (index == 1) {
 			
@@ -53,7 +53,7 @@ public class MapInitiator {
 		}
 	}
 	
-	private static void initTestMap() {
+	private void initTestMap() {
 		for (int n = 0 ; n < 2 ; n++) {
 			for (int i = 0 ; i < mapWidth ; i++) {
 				map[i][n] = MapHandler.SEA;
@@ -130,7 +130,7 @@ public class MapInitiator {
 		building.setOwnership(portrait.getCurrentHero());
 	}
 
-	private static void initBuildings() {
+	private void initBuildings() {
 		for (int x = 0 ; x < map.length ; x++) {
 			for (int y = 0 ; y < map[0].length ; y++) {
 				if (map[x][y] == MapHandler.CITY) {
@@ -150,7 +150,7 @@ public class MapInitiator {
 		}
 	}
 
-	private static void initTestTroops() {
+	private void initTestTroops() {
 		Hero hero1 = portrait.getHero(0);
 		Hero hero2 = portrait.getHero(1);
 
