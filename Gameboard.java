@@ -301,7 +301,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 				if (chosenUnit != null) {
 					routeHandler.findPossibleMovementLocations(chosenUnit, mapHandler);
-					routeHandler.initArrowPoint(chosenUnit.getX(), chosenUnit.getY());
+					routeHandler.addNewArrowPoint(chosenUnit.getX(), chosenUnit.getY());
 				}
 			}
 		}
@@ -338,7 +338,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				buildingMenu.closeMenu();
 			} else if (chosenUnit != null) {
 				// the start-position of the unit before movement
-				Point unitStartPoint = routeHandler.getArrowPoint(0);
+				Point unitStartPoint = routeHandler.getRouteArrowPath().getArrowPoint(0);
 				int unitStartX = unitStartPoint.getX();
 				int unitStartY = unitStartPoint.getY();
 
@@ -1138,10 +1138,10 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		if (chosenUnit != null) {
 			if (!unitMenu.isVisible() && !unitIsDroppingOff() && !unitWantToFire()) {
-				routeHandler.paintArrow(g);
+				routeHandler.getRouteArrowPath().paintArrow(g);
 			}
 
-			chosenUnit.paint(g, mapHandler.tileSize);
+			chosenUnit.paint(g, MapHandler.tileSize);
 		}
 
 		paintRange(g);

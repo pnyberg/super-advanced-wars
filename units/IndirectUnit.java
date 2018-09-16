@@ -28,7 +28,6 @@ public abstract class IndirectUnit extends Unit {
 	}
 
 	public Point getNextFiringLocation() {
-		System.out.println(possibleFiringLocationList.size() + " - " + firingIndex);
 		if (possibleFiringLocationList.isEmpty()) {
 			return null;
 		}

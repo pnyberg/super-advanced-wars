@@ -70,31 +70,45 @@ public class MapInitiator {
 		}
 
 		map[2][2] = TerrainType.CITY;
+		map[3][2] = TerrainType.ROAD;
 		map[4][2] = TerrainType.PLAIN;
 		map[5][2] = TerrainType.PLAIN;
 		map[6][2] = TerrainType.MOUNTAIN;
 		map[7][2] = TerrainType.MOUNTAIN;
 
 		map[2][3] = TerrainType.PLAIN;
+		map[3][3] = TerrainType.ROAD;
+		map[4][3] = TerrainType.ROAD;
+		map[5][3] = TerrainType.ROAD;
+		map[6][3] = TerrainType.ROAD;
 		map[7][3] = TerrainType.AIRPORT;
 
 		map[2][4] = TerrainType.FACTORY;
+		map[3][4] = TerrainType.ROAD;
 		map[4][4] = TerrainType.WOOD;
 		map[5][4] = TerrainType.WOOD;
+		map[6][4] = TerrainType.ROAD;
 		map[7][4] = TerrainType.PLAIN;
 
 		map[2][5] = TerrainType.PLAIN;
+		map[3][5] = TerrainType.ROAD;
 		map[4][5] = TerrainType.WOOD;
 		map[5][5] = TerrainType.WOOD;
+		map[6][5] = TerrainType.ROAD;
 		map[7][5] = TerrainType.PLAIN;
 
 		map[2][6] = TerrainType.MOUNTAIN;
+		map[3][6] = TerrainType.ROAD;
+		map[4][6] = TerrainType.ROAD;
+		map[5][6] = TerrainType.ROAD;
+		map[6][6] = TerrainType.ROAD;
 		map[7][6] = TerrainType.PLAIN;
 
 		map[2][7] = TerrainType.MOUNTAIN;
 		map[3][7] = TerrainType.MOUNTAIN;
 		map[4][7] = TerrainType.PLAIN;
 		map[5][7] = TerrainType.PLAIN;
+		map[6][7] = TerrainType.ROAD;
 		map[7][7] = TerrainType.CITY;
 
 		for (int i = 8 ; i < mapWidth ; i++) {

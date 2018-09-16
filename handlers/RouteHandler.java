@@ -14,13 +14,13 @@ import java.util.ArrayList;
 public class RouteHandler {
 	private boolean[][] movementMap;
 	private int mapWidth, mapHeight;
-	private ArrayList<Point> arrowPoints;
+	private RouteArrowPath routeArrowPath;
 
 	public RouteHandler(int mapWidth, int mapHeight) {
 		this.mapWidth = mapWidth;
 		this.mapHeight = mapHeight;
 		movementMap = new boolean[mapWidth][mapHeight];
-		arrowPoints = new ArrayList<Point>();
+		routeArrowPath = new RouteArrowPath();
 	}
 
 	public void clearMovementMap() {
@@ -67,16 +67,16 @@ public class RouteHandler {
 		checkPath(x, y - 1, movementSteps, movementType, hero, mapHandler);
 	}
 
-	public void initArrowPoint(int newX, int newY) {
-		arrowPoints.add(new Point(newX, newY));
+	public void addNewArrowPoint(int newX, int newY) {
+		routeArrowPath.addArrowPoint(new Point(newX, newY));
 	}
 
 	public void addArrowPoint(int newX, int newY, Unit chosenUnit, MapHandler mapHandler) {
 		int newLast = -1;
 
-		for (int i = 0 ; i < arrowPoints.size() ; i++) {
-			int arrowX = arrowPoints.get(i).getX();
-			int arrowY = arrowPoints.get(i).getY();
+		for (int i = 0 ; i < routeArrowPath.getNumberOfArrowPoints() ; i++) {
+			int arrowX = routeArrowPath.getArrowPoint(i).getX();
+			int arrowY = routeArrowPath.getArrowPoint(i).getY();
 
 			if (arrowX == newX && arrowY == newY) {
 				newLast = i;
@@ -85,11 +85,11 @@ public class RouteHandler {
 		}
 
 		if (newLast > -1) {
-			for (int i = arrowPoints.size() - 1 ; i > newLast ; i--) {
-				arrowPoints.remove(i);
+			for (int i = routeArrowPath.getNumberOfArrowPoints() - 1 ; i > newLast ; i--) {
+				routeArrowPath.removeArrowPoint(i);
 			}
 		} else if (movementMap(newX, newY)) {
-			arrowPoints.add(new Point(newX, newY));
+			routeArrowPath.addArrowPoint(new Point(newX, newY));
 
 			if (newPointNotConnectedToPreviousPoint()) {
 				recountPath(newX, newY, chosenUnit, mapHandler);
@@ -104,7 +104,7 @@ public class RouteHandler {
 	}
 
 	public void clearArrowPoints() {
-		arrowPoints.clear();
+		routeArrowPath.clear();
 	}
 
 	private boolean invalidCurrentPath(Unit chosenUnit, MapHandler mapHandler) {
@@ -113,9 +113,9 @@ public class RouteHandler {
 
 		int currentMovementValue = 0;
 
-		for (int i = 1 ; i < arrowPoints.size() ; i++) {
-			int x = arrowPoints.get(i).getX();
-			int y = arrowPoints.get(i).getY();
+		for (int i = 1 ; i < routeArrowPath.getNumberOfArrowPoints() ; i++) {
+			int x = routeArrowPath.getArrowPoint(i).getX();
+			int y = routeArrowPath.getArrowPoint(i).getY();
 			currentMovementValue += mapHandler.movementCost(x, y, movementType);
 		}
 
@@ -134,14 +134,14 @@ public class RouteHandler {
 		int diffX = newX - mainX;
 		int diffY = newY - mainY;
 
-		arrowPoints.clear();
-		arrowPoints.add(new Point(mainX, mainY));
+		routeArrowPath.clear();
+		routeArrowPath.addArrowPoint(new Point(mainX, mainY));
 
 
 		while(Math.abs(diffX) > 0 || Math.abs(diffY) > 0) {
-			int last = arrowPoints.size() - 1;
-			int prevX = arrowPoints.get(last).getX();
-			int prevY = arrowPoints.get(last).getY();
+			int last = routeArrowPath.getNumberOfArrowPoints() - 1;
+			int prevX = routeArrowPath.getArrowPoint(last).getX();
+			int prevY = routeArrowPath.getArrowPoint(last).getY();
 
 			if (prevX == newX && prevY == newY) {
 				break;
@@ -158,12 +158,12 @@ public class RouteHandler {
 
 			if (xAxle == 1) {
 				int diff = diffX / Math.abs(diffX);
-				arrowPoints.add(new Point(prevX + diff, prevY));
+				routeArrowPath.addArrowPoint(new Point(prevX + diff, prevY));
 				int movementCost = mapHandler.movementCost(prevX + diff, prevY, movementType);
 				diffX -= diff * movementCost;
 			} else { // yAxel
 				int diff = diffY / Math.abs(diffY);
-				arrowPoints.add(new Point(prevX, prevY + diff));
+				routeArrowPath.addArrowPoint(new Point(prevX, prevY + diff));
 				int movementCost = mapHandler.movementCost(prevX, prevY + diff, movementType);
 				diffY -= diff * movementCost;
 			}
@@ -171,78 +171,25 @@ public class RouteHandler {
 	}
 
 	private boolean newPointNotConnectedToPreviousPoint() {
-		int size = arrowPoints.size();
+		int size = routeArrowPath.getNumberOfArrowPoints();
 
-		int x1 = arrowPoints.get(size - 2).getX();
-		int y1 = arrowPoints.get(size - 2).getY();
-		int x2 = arrowPoints.get(size - 1).getX();
-		int y2 = arrowPoints.get(size - 1).getY();
+		int x1 = routeArrowPath.getArrowPoint(size - 2).getX();
+		int y1 = routeArrowPath.getArrowPoint(size - 2).getY();
+		int x2 = routeArrowPath.getArrowPoint(size - 1).getX();
+		int y2 = routeArrowPath.getArrowPoint(size - 1).getY();
 
 		return Math.abs(x1 - x2) + Math.abs(y1 - y2) > 1;
 	}
 
 	public int getFuelFromArrows(Unit unit, MapHandler mapHandler) {
-		int fuelUsed = 0;
-
-		int movementType = unit.getMovementType();
-
-		for (int i = 1 ; i < arrowPoints.size() ; i++) {
-			int x = arrowPoints.get(i).getX();
-			int y = arrowPoints.get(i).getY();
-			fuelUsed += mapHandler.movementCost(x, y, movementType);
-		}
-
-		return fuelUsed;
+		return routeArrowPath.calculateFuelUsed(mapHandler, unit.getMovementType());
 	}
 
 	public boolean movementMap(int x, int y) {
 		return movementMap[x][y];
 	}
-
-	public Point getArrowPoint(int index) {
-		return arrowPoints.get(index);
-	}
-
-	public void paintArrow(Graphics g) {
-		int tileSize = MapHandler.tileSize;
-
-		if (arrowPoints.size() < 2) {
-			return;
-		}
-
-		for (int i = 1 ; i < arrowPoints.size() ; i++) {
-			int x1 = arrowPoints.get(i - 1).getX() * tileSize + tileSize / 2;
-			int y1 = arrowPoints.get(i - 1).getY() * tileSize + tileSize / 2;
-			int x2 = arrowPoints.get(i).getX() * tileSize + tileSize / 2;
-			int y2 = arrowPoints.get(i).getY() * tileSize + tileSize / 2;
-
-			g.setColor(Color.red);
-			g.drawLine(x1, y1, x2, y2);
-		}
-
-		int size = arrowPoints.size();
-
-		int xNext = arrowPoints.get(size - 2).getX() * tileSize;
-		int yNext = arrowPoints.get(size - 2).getY() * tileSize;
-		int xLast = arrowPoints.get(size - 1).getX() * tileSize;
-		int yLast = arrowPoints.get(size - 1).getY() * tileSize;
-
-		if (xNext == xLast) {
-			if (yNext < yLast) {
-				g.drawLine(xLast - 3 + tileSize / 2, yLast - 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
-				g.drawLine(xLast + 3 + tileSize / 2, yLast - 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
-			} else {
-				g.drawLine(xLast - 3 + tileSize / 2, yLast + 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
-				g.drawLine(xLast + 3 + tileSize / 2, yLast + 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
-			}
-		} else {
-			if (xNext < xLast) {
-				g.drawLine(xLast - 3 + tileSize / 2, yLast - 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
-				g.drawLine(xLast - 3 + tileSize / 2, yLast + 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
-			} else {
-				g.drawLine(xLast + 3 + tileSize / 2, yLast - 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
-				g.drawLine(xLast + 3 + tileSize / 2, yLast + 3 + tileSize / 2, xLast + tileSize / 2, yLast + tileSize / 2);
-			}
-		}
+	
+	public RouteArrowPath getRouteArrowPath() {
+		return routeArrowPath;
 	}
 }

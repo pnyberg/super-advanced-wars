@@ -21,26 +21,26 @@ public class MapHandler {
 	public static final int tileSize = 40;
 	
 	// logic-variables
-	private static final int numberOfMovementTypes = 7;
-	private static final int numberOfAreaTypes = 11;
+	public static final int numberOfMovementTypes = 7;
+	public static final int numberOfAreaTypes = 11;
 
 	// ruling-variable
 	private static final int fuelMaintenancePerTurn = 5;
 
-	private int[][] movementCostMatrix;
 	private TerrainType[][] map;
 	private boolean[][] moveabilityCostMatrix;
 	private HeroPortrait portrait;
 	private MapInitiator mapInitiator;
 	private RouteHandler routeHandler;
+	private MovementCostMatrixFactory movementCostMatrixFactory;
 	private ArrayList<Building> buildings;
 
 	public MapHandler(int mapWidth, int mapHeight, RouteHandler routeHandler) {
 		portrait = new HeroPortrait(mapWidth);
 		this.routeHandler = routeHandler;
+		movementCostMatrixFactory = new MovementCostMatrixFactory();
 		initHeroes();
 
-		initMovementCostMatrix();
 		initMoveabilityMatrix();
 
 		map = new TerrainType[mapWidth][mapHeight];
@@ -48,25 +48,7 @@ public class MapHandler {
 
 		initMapAndTroops(mapWidth, mapHeight, 0);
 
-		Building.init(1000);
-	}
-
-	private void initMovementCostMatrix() {
-		// number of types of units x number of types of terrain
-		movementCostMatrix = new int[numberOfMovementTypes][numberOfAreaTypes];
-
-		for (int unitIndex = 0 ; unitIndex < movementCostMatrix.length ; unitIndex++) {
-			for (int terrainIndex = 0 ; terrainIndex < movementCostMatrix[0].length ; terrainIndex++) {
-				movementCostMatrix[unitIndex][terrainIndex] = 1;
-			}
-		}
-
-		movementCostMatrix[Unit.TIRE][TerrainType.PLAIN.terrainTypeIndex()] = 2;
-		movementCostMatrix[Unit.BAND][TerrainType.WOOD.terrainTypeIndex()] = 2;
-		movementCostMatrix[Unit.TIRE][TerrainType.WOOD.terrainTypeIndex()] = 3;
-		movementCostMatrix[Unit.INFANTRY][TerrainType.MOUNTAIN.terrainTypeIndex()] = 2;
-		movementCostMatrix[Unit.SHIP][TerrainType.REEF.terrainTypeIndex()] = 2;
-		movementCostMatrix[Unit.TRANSPORT][TerrainType.REEF.terrainTypeIndex()] = 2;
+		Building.init(1000);		
 	}
 
 	private void initMoveabilityMatrix() {
@@ -320,7 +302,7 @@ public class MapHandler {
 	public int movementCost(int x, int y, int movementType) {
 		TerrainType terrainType = map[x][y];
 
-		return movementCostMatrix[movementType][terrainType.terrainTypeIndex()];
+		return movementCostMatrixFactory.getMovementCost(movementType, terrainType);
 	}
 
 	public int getDefenceValue(TerrainType terrainType) {
