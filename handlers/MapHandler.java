@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import area.TerrainType;
 import area.buildings.*;
 
 public class MapHandler {
@@ -26,7 +27,8 @@ public class MapHandler {
 	// ruling-variable
 	private static final int fuelMaintenancePerTurn = 5;
 
-	private int[][] map, movementCostMatrix;
+	private int[][] movementCostMatrix;
+	private TerrainType[][] map;
 	private boolean[][] moveabilityCostMatrix;
 	private HeroPortrait portrait;
 	private MapInitiator mapInitiator;
@@ -41,7 +43,7 @@ public class MapHandler {
 		initMovementCostMatrix();
 		initMoveabilityMatrix();
 
-		map = new int[mapWidth][mapHeight];
+		map = new TerrainType[mapWidth][mapHeight];
 		buildings = new ArrayList<Building>();
 
 		initMapAndTroops(mapWidth, mapHeight, 0);
@@ -59,84 +61,84 @@ public class MapHandler {
 			}
 		}
 
-		movementCostMatrix[Unit.TIRE][PLAIN] = 2;
-		movementCostMatrix[Unit.BAND][WOOD] = 2;
-		movementCostMatrix[Unit.TIRE][WOOD] = 3;
-		movementCostMatrix[Unit.INFANTRY][MOUNTAIN] = 2;
-		movementCostMatrix[Unit.SHIP][REEF] = 2;
-		movementCostMatrix[Unit.TRANSPORT][REEF] = 2;
+		movementCostMatrix[Unit.TIRE][TerrainType.PLAIN.terrainTypeIndex()] = 2;
+		movementCostMatrix[Unit.BAND][TerrainType.WOOD.terrainTypeIndex()] = 2;
+		movementCostMatrix[Unit.TIRE][TerrainType.WOOD.terrainTypeIndex()] = 3;
+		movementCostMatrix[Unit.INFANTRY][TerrainType.MOUNTAIN.terrainTypeIndex()] = 2;
+		movementCostMatrix[Unit.SHIP][TerrainType.REEF.terrainTypeIndex()] = 2;
+		movementCostMatrix[Unit.TRANSPORT][TerrainType.REEF.terrainTypeIndex()] = 2;
 	}
 
 	private void initMoveabilityMatrix() {
 		// number of types of units x number of types of terrain
 		moveabilityCostMatrix = new boolean[numberOfMovementTypes][numberOfAreaTypes];
 
-		moveabilityCostMatrix[Unit.INFANTRY][ROAD] = true;
-		moveabilityCostMatrix[Unit.MECH][ROAD] = true;
-		moveabilityCostMatrix[Unit.BAND][ROAD] = true;
-		moveabilityCostMatrix[Unit.TIRE][ROAD] = true;
-		moveabilityCostMatrix[Unit.AIR][ROAD] = true;
+		moveabilityCostMatrix[Unit.INFANTRY][TerrainType.ROAD.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.MECH][TerrainType.ROAD.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.BAND][TerrainType.ROAD.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.TIRE][TerrainType.ROAD.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.AIR][TerrainType.ROAD.terrainTypeIndex()] = true;
 
-		moveabilityCostMatrix[Unit.INFANTRY][PLAIN] = true;
-		moveabilityCostMatrix[Unit.MECH][PLAIN] = true;
-		moveabilityCostMatrix[Unit.BAND][PLAIN] = true;
-		moveabilityCostMatrix[Unit.TIRE][PLAIN] = true;
-		moveabilityCostMatrix[Unit.AIR][PLAIN] = true;
+		moveabilityCostMatrix[Unit.INFANTRY][TerrainType.PLAIN.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.MECH][TerrainType.PLAIN.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.BAND][TerrainType.PLAIN.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.TIRE][TerrainType.PLAIN.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.AIR][TerrainType.PLAIN.terrainTypeIndex()] = true;
 
-		moveabilityCostMatrix[Unit.INFANTRY][WOOD] = true;
-		moveabilityCostMatrix[Unit.MECH][WOOD] = true;
-		moveabilityCostMatrix[Unit.BAND][WOOD] = true;
-		moveabilityCostMatrix[Unit.TIRE][WOOD] = true;
-		moveabilityCostMatrix[Unit.AIR][WOOD] = true;
+		moveabilityCostMatrix[Unit.INFANTRY][TerrainType.WOOD.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.MECH][TerrainType.WOOD.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.BAND][TerrainType.WOOD.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.TIRE][TerrainType.WOOD.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.AIR][TerrainType.WOOD.terrainTypeIndex()] = true;
 
-		moveabilityCostMatrix[Unit.INFANTRY][MOUNTAIN] = true;
-		moveabilityCostMatrix[Unit.MECH][MOUNTAIN] = true;
-		moveabilityCostMatrix[Unit.AIR][MOUNTAIN] = true;
+		moveabilityCostMatrix[Unit.INFANTRY][TerrainType.MOUNTAIN.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.MECH][TerrainType.MOUNTAIN.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.AIR][TerrainType.MOUNTAIN.terrainTypeIndex()] = true;
 
-		moveabilityCostMatrix[Unit.SHIP][SEA] = true;
-		moveabilityCostMatrix[Unit.TRANSPORT][SEA] = true;
-		moveabilityCostMatrix[Unit.AIR][SEA] = true;
+		moveabilityCostMatrix[Unit.SHIP][TerrainType.SEA.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.TRANSPORT][TerrainType.SEA.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.AIR][TerrainType.SEA.terrainTypeIndex()] = true;
 
-		moveabilityCostMatrix[Unit.SHIP][REEF] = true;
-		moveabilityCostMatrix[Unit.TRANSPORT][REEF] = true;
-		moveabilityCostMatrix[Unit.AIR][REEF] = true;
+		moveabilityCostMatrix[Unit.SHIP][TerrainType.REEF.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.TRANSPORT][TerrainType.REEF.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.AIR][TerrainType.REEF.terrainTypeIndex()] = true;
 
-		moveabilityCostMatrix[Unit.INFANTRY][SHORE] = true;
-		moveabilityCostMatrix[Unit.MECH][SHORE] = true;
-		moveabilityCostMatrix[Unit.BAND][SHORE] = true;
-		moveabilityCostMatrix[Unit.TIRE][SHORE] = true;
-		moveabilityCostMatrix[Unit.TRANSPORT][SHORE] = true;
-		moveabilityCostMatrix[Unit.AIR][SHORE] = true;
+		moveabilityCostMatrix[Unit.INFANTRY][TerrainType.SHORE.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.MECH][TerrainType.SHORE.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.BAND][TerrainType.SHORE.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.TIRE][TerrainType.SHORE.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.TRANSPORT][TerrainType.SHORE.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.AIR][TerrainType.SHORE.terrainTypeIndex()] = true;
 
-		moveabilityCostMatrix[Unit.INFANTRY][CITY] = true;
-		moveabilityCostMatrix[Unit.MECH][CITY] = true;
-		moveabilityCostMatrix[Unit.BAND][CITY] = true;
-		moveabilityCostMatrix[Unit.TIRE][CITY] = true;
-		moveabilityCostMatrix[Unit.AIR][CITY] = true;
+		moveabilityCostMatrix[Unit.INFANTRY][TerrainType.CITY.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.MECH][TerrainType.CITY.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.BAND][TerrainType.CITY.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.TIRE][TerrainType.CITY.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.AIR][TerrainType.CITY.terrainTypeIndex()] = true;
 		
-		moveabilityCostMatrix[Unit.INFANTRY][FACTORY] = true;
-		moveabilityCostMatrix[Unit.MECH][FACTORY] = true;
-		moveabilityCostMatrix[Unit.BAND][FACTORY] = true;
-		moveabilityCostMatrix[Unit.TIRE][FACTORY] = true;
-		moveabilityCostMatrix[Unit.AIR][FACTORY] = true;
+		moveabilityCostMatrix[Unit.INFANTRY][TerrainType.FACTORY.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.MECH][TerrainType.FACTORY.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.BAND][TerrainType.FACTORY.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.TIRE][TerrainType.FACTORY.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.AIR][TerrainType.FACTORY.terrainTypeIndex()] = true;
 
-		moveabilityCostMatrix[Unit.INFANTRY][PORT] = true;
-		moveabilityCostMatrix[Unit.MECH][PORT] = true;
-		moveabilityCostMatrix[Unit.BAND][PORT] = true;
-		moveabilityCostMatrix[Unit.TIRE][PORT] = true;
-		moveabilityCostMatrix[Unit.SHIP][PORT] = true;
-		moveabilityCostMatrix[Unit.TRANSPORT][PORT] = true;
-		moveabilityCostMatrix[Unit.AIR][PORT] = true;
+		moveabilityCostMatrix[Unit.INFANTRY][TerrainType.PORT.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.MECH][TerrainType.PORT.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.BAND][TerrainType.PORT.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.TIRE][TerrainType.PORT.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.SHIP][TerrainType.PORT.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.TRANSPORT][TerrainType.PORT.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.AIR][TerrainType.PORT.terrainTypeIndex()] = true;
 
-		moveabilityCostMatrix[Unit.INFANTRY][AIRPORT] = true;
-		moveabilityCostMatrix[Unit.MECH][AIRPORT] = true;
-		moveabilityCostMatrix[Unit.BAND][AIRPORT] = true;
-		moveabilityCostMatrix[Unit.TIRE][AIRPORT] = true;
-		moveabilityCostMatrix[Unit.AIR][AIRPORT] = true;
+		moveabilityCostMatrix[Unit.INFANTRY][TerrainType.AIRPORT.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.MECH][TerrainType.AIRPORT.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.BAND][TerrainType.AIRPORT.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.TIRE][TerrainType.AIRPORT.terrainTypeIndex()] = true;
+		moveabilityCostMatrix[Unit.AIR][TerrainType.AIRPORT.terrainTypeIndex()] = true;
 	}
 
 	private void initMapAndTroops(int mapWidth, int mapHeight, int index) {
-		mapInitiator = new MapInitiator(mapWidth, mapHeight, map, buildings, portrait, index);
+		mapInitiator = new MapInitiator(mapWidth, mapHeight, this, map, buildings, portrait, index);
 	}
 
 	private void setOwnerships(Hero[][] ownerMap) {
@@ -289,13 +291,13 @@ public class MapHandler {
 	 * Used to check if a positions can be moved to by a specific movement-type
 	 ***/
 	public boolean allowedMovementPosition(int x, int y, int movementType, Hero hero) {
-		int terrainType = map[x][y];
+		TerrainType terrainType = map[x][y];
 
 		if (areaOccupiedByNonFriendly(x, y, hero)) {
 			return false;
 		}
 
-		return moveabilityCostMatrix[movementType][terrainType];
+		return moveabilityCostMatrix[movementType][terrainType.terrainTypeIndex()];
 	}
 
 	public boolean allowedMovementPosition(int x, int y, int movementType) {
@@ -310,33 +312,33 @@ public class MapHandler {
 	 * @return
 	 */
 	public boolean unitOnLand(int x, int y) {
-		int terrainType = map[x][y];
+		TerrainType terrainType = map[x][y];
 		
-		return moveabilityCostMatrix[Unit.INFANTRY][terrainType];
+		return moveabilityCostMatrix[Unit.INFANTRY][terrainType.terrainTypeIndex()];
 	}
 	
 	public int movementCost(int x, int y, int movementType) {
-		int terrainType = map[x][y];
+		TerrainType terrainType = map[x][y];
 
-		return movementCostMatrix[movementType][terrainType];
+		return movementCostMatrix[movementType][terrainType.terrainTypeIndex()];
 	}
 
-	public int getDefenceValue(int terrainType) {
-		if (terrainType == ROAD ||
-			terrainType == SEA ||
-			terrainType == SHORE) {
+	public int getDefenceValue(TerrainType terrainType) {
+		if (terrainType == TerrainType.ROAD ||
+			terrainType == TerrainType.SEA ||
+			terrainType == TerrainType.SHORE) {
 			return 0;
-		} else if (terrainType == PLAIN ||
-					terrainType == REEF) {
+		} else if (terrainType == TerrainType.PLAIN ||
+					terrainType == TerrainType.REEF) {
 			return 1;
-		} else if (terrainType == WOOD) {
+		} else if (terrainType == TerrainType.WOOD) {
 			return 2;
-		} else if (terrainType == CITY ||
-					terrainType == FACTORY ||
-					terrainType == AIRPORT ||
-					terrainType == PORT) {
+		} else if (terrainType == TerrainType.CITY ||
+					terrainType == TerrainType.FACTORY ||
+					terrainType == TerrainType.AIRPORT ||
+					terrainType == TerrainType.PORT) {
 			return 3;
-		} else if (terrainType == MOUNTAIN) {
+		} else if (terrainType == TerrainType.MOUNTAIN) {
 			return 4;
 		} 
 		return -1;
@@ -346,7 +348,7 @@ public class MapHandler {
 		return portrait;
 	}
 
-	public int map(int x, int y) {
+	public TerrainType map(int x, int y) {
 		return map[x][y];
 	}
 
@@ -387,46 +389,46 @@ public class MapHandler {
 	}
 
 	public void paintArea(Graphics g, int x, int y, boolean rangeAble) {
-		int areaNumber = mapInitiator.map[x][y];
+		TerrainType areaType = mapInitiator.map[x][y];
 		boolean movementAble = routeHandler.movementMap(x, y);
 
-		if (areaNumber == ROAD) {
+		if (areaType == TerrainType.ROAD) {
 			if (movementAble) {
 				g.setColor(Color.lightGray);
 			} else {
 				g.setColor(Color.gray);
 			}
-		} else if (areaNumber == PLAIN) {
+		} else if (areaType == TerrainType.PLAIN) {
 			if (movementAble) {
 				g.setColor(new Color(255,250,205)); // lighter yellow
 			} else {
 				g.setColor(new Color(204,204,0)); // darker yellow
 			}
-		} else if (areaNumber == WOOD) {
+		} else if (areaType == TerrainType.WOOD) {
 			if (movementAble) {
 				g.setColor(new Color(50,205,50)); // limegreen
 			} else {
 				g.setColor(new Color(0,128,0)); // green
 			}
-		} else if (areaNumber == MOUNTAIN) {
+		} else if (areaType == TerrainType.MOUNTAIN) {
 			if (movementAble) {
 				g.setColor(new Color(205,133,63)); // lighter brown
 			} else {
 				g.setColor(new Color(142,101,64)); // brown
 			}
-		} else if (areaNumber == SEA) {
+		} else if (areaType == TerrainType.SEA) {
 			if (movementAble) {
 				g.setColor(new Color(30,144,255)); // lighter blue
 			} else {
 				g.setColor(Color.blue);
 			}
-		} else if (areaNumber == REEF) {
+		} else if (areaType == TerrainType.REEF) {
 			if (movementAble) {
 				g.setColor(new Color(30,144,255)); // lighter blue
 			} else {
 				g.setColor(Color.blue);
 			}
-		} else if (areaNumber == SHORE) {
+		} else if (areaType == TerrainType.SHORE) {
 			if (movementAble) {
 				g.setColor(new Color(30,144,145)); // lighter blue
 			} else {
@@ -447,7 +449,7 @@ public class MapHandler {
 		g.setColor(Color.black);
 		g.drawRect(paintX, paintY, tileSize, tileSize);
 
-		if (areaNumber == REEF && !rangeAble) {
+		if (areaType == TerrainType.REEF && !rangeAble) {
 			g.fillRect(paintX + tileSize / 4, paintY + tileSize / 4, tileSize / 4, tileSize / 4);
 			g.fillRect(paintX + 5 * tileSize / 8, paintY + 5 * tileSize / 8, tileSize / 4, tileSize / 4);
 		}

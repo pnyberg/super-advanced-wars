@@ -89,7 +89,7 @@ public class BattleTester {
 		lander = new Lander(-1, -1, Color.white);
 //		sub = new Sub(-1, -1, Color.white);
 
-		damageHandler = new DamageHandler();
+		damageHandler = new DamageHandler(new MapHandler(0, 0, new RouteHandler(0, 0)));
 	}
 
 	/***
@@ -259,9 +259,9 @@ public class BattleTester {
 	 */
 	private void testXvsY(Unit att, Unit def, boolean expectedSuccess) {
 		if (expectedSuccess) {
-			assertTrue(att.getClass() + " should be able to attack " + def.getClass(), new DamageHandler().validTarget(att, def));
+			assertTrue(att.getClass() + " should be able to attack " + def.getClass(), damageHandler.validTarget(att, def));
 		} else {
-			assertFalse(att.getClass() + " shouldn't be able to attack " + def.getClass(), new DamageHandler().validTarget(att, def));
+			assertFalse(att.getClass() + " shouldn't be able to attack " + def.getClass(), damageHandler.validTarget(att, def));
 		}
 	}
 

@@ -27,33 +27,33 @@ public class RouteHandler {
 		movementMap = new boolean[mapWidth][mapHeight];
 	}
 
-	public void findPossibleMovementLocations(Unit chosenUnit) {
+	public void findPossibleMovementLocations(Unit chosenUnit, MapHandler mapHandler) {
 		int x = chosenUnit.getX();
 		int y = chosenUnit.getY();
 		int movementSteps = chosenUnit.getMovement();
 		int movementType = chosenUnit.getMovementType();
 
-		Hero hero = MapHandler.getHeroPortrait().getHeroFromUnit(chosenUnit);
+		Hero hero = mapHandler.getHeroPortrait().getHeroFromUnit(chosenUnit);
 
 		movementMap[x][y] = true;
 
-		checkPath(x + 1, y, movementSteps, movementType, hero);
-		checkPath(x, y + 1, movementSteps, movementType, hero);
-		checkPath(x - 1, y, movementSteps, movementType, hero);
-		checkPath(x, y - 1, movementSteps, movementType, hero);
+		checkPath(x + 1, y, movementSteps, movementType, hero, mapHandler);
+		checkPath(x, y + 1, movementSteps, movementType, hero, mapHandler);
+		checkPath(x - 1, y, movementSteps, movementType, hero, mapHandler);
+		checkPath(x, y - 1, movementSteps, movementType, hero, mapHandler);
 	}
 
-	private void checkPath(int x, int y, int movementSteps, int movementType, Hero hero) {
+	private void checkPath(int x, int y, int movementSteps, int movementType, Hero hero, MapHandler mapHandler) {
 		if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight) {
 			return;
 		}
 
 		// @TODO: enable allowed movement in team-play
-		if (!MapHandler.allowedMovementPosition(x, y, movementType, hero)) {
+		if (!mapHandler.allowedMovementPosition(x, y, movementType, hero)) {
 			return;
 		}
 
-		movementSteps -= MapHandler.movementCost(x, y, movementType);
+		movementSteps -= mapHandler.movementCost(x, y, movementType);
 
 		if (movementSteps < 0) {
 			return;
@@ -61,17 +61,17 @@ public class RouteHandler {
 
 		movementMap[x][y] = true;
 
-		checkPath(x + 1, y, movementSteps, movementType, hero);
-		checkPath(x, y + 1, movementSteps, movementType, hero);
-		checkPath(x - 1, y, movementSteps, movementType, hero);
-		checkPath(x, y - 1, movementSteps, movementType, hero);
+		checkPath(x + 1, y, movementSteps, movementType, hero, mapHandler);
+		checkPath(x, y + 1, movementSteps, movementType, hero, mapHandler);
+		checkPath(x - 1, y, movementSteps, movementType, hero, mapHandler);
+		checkPath(x, y - 1, movementSteps, movementType, hero, mapHandler);
 	}
 
 	public void initArrowPoint(int newX, int newY) {
 		arrowPoints.add(new Point(newX, newY));
 	}
 
-	public void addArrowPoint(int newX, int newY, Unit chosenUnit) {
+	public void addArrowPoint(int newX, int newY, Unit chosenUnit, MapHandler mapHandler) {
 		int newLast = -1;
 
 		for (int i = 0 ; i < arrowPoints.size() ; i++) {
@@ -92,13 +92,13 @@ public class RouteHandler {
 			arrowPoints.add(new Point(newX, newY));
 
 			if (newPointNotConnectedToPreviousPoint()) {
-				recountPath(newX, newY, chosenUnit);
+				recountPath(newX, newY, chosenUnit, mapHandler);
 				// @TODO: add what happens when you make a "jump" between accepted locations
 			}
 
 			// @TODO: if movement is changed due to for example mountains, what happens?
-			while (invalidCurrentPath(chosenUnit)) {
-				recountPath(newX, newY, chosenUnit);
+			while (invalidCurrentPath(chosenUnit, mapHandler)) {
+				recountPath(newX, newY, chosenUnit, mapHandler);
 			}
 		}
 	}
@@ -107,7 +107,7 @@ public class RouteHandler {
 		arrowPoints.clear();
 	}
 
-	private boolean invalidCurrentPath(Unit chosenUnit) {
+	private boolean invalidCurrentPath(Unit chosenUnit, MapHandler mapHandler) {
 		int maximumMovement = chosenUnit.getMovement();
 		int movementType = chosenUnit.getMovementType();
 
@@ -116,7 +116,7 @@ public class RouteHandler {
 		for (int i = 1 ; i < arrowPoints.size() ; i++) {
 			int x = arrowPoints.get(i).getX();
 			int y = arrowPoints.get(i).getY();
-			currentMovementValue += MapHandler.movementCost(x, y, movementType);
+			currentMovementValue += mapHandler.movementCost(x, y, movementType);
 		}
 
 		return currentMovementValue > maximumMovement;
@@ -126,7 +126,7 @@ public class RouteHandler {
 	// @TODO: also, if (+2,0) is wood, (+3,0) is wood, if (+2,+1) is wood, (+3,+1) is wood and the 
 	//        rest is road, what happens if you try to move the cursor from (+4,+2)->(+4,+1)->(+3,+1)
 	//        result: will get stuck
-	private void recountPath(int newX, int newY, Unit chosenUnit) {
+	private void recountPath(int newX, int newY, Unit chosenUnit, MapHandler mapHandler) {
 		int mainX = chosenUnit.getX();
 		int mainY = chosenUnit.getY();
 		int movementType = chosenUnit.getMovementType();
@@ -159,12 +159,12 @@ public class RouteHandler {
 			if (xAxle == 1) {
 				int diff = diffX / Math.abs(diffX);
 				arrowPoints.add(new Point(prevX + diff, prevY));
-				int movementCost = MapHandler.movementCost(prevX + diff, prevY, movementType);
+				int movementCost = mapHandler.movementCost(prevX + diff, prevY, movementType);
 				diffX -= diff * movementCost;
 			} else { // yAxel
 				int diff = diffY / Math.abs(diffY);
 				arrowPoints.add(new Point(prevX, prevY + diff));
-				int movementCost = MapHandler.movementCost(prevX, prevY + diff, movementType);
+				int movementCost = mapHandler.movementCost(prevX, prevY + diff, movementType);
 				diffY -= diff * movementCost;
 			}
 		}
@@ -181,7 +181,7 @@ public class RouteHandler {
 		return Math.abs(x1 - x2) + Math.abs(y1 - y2) > 1;
 	}
 
-	public int getFuelFromArrows(Unit unit) {
+	public int getFuelFromArrows(Unit unit, MapHandler mapHandler) {
 		int fuelUsed = 0;
 
 		int movementType = unit.getMovementType();
@@ -189,7 +189,7 @@ public class RouteHandler {
 		for (int i = 1 ; i < arrowPoints.size() ; i++) {
 			int x = arrowPoints.get(i).getX();
 			int y = arrowPoints.get(i).getY();
-			fuelUsed += MapHandler.movementCost(x, y, movementType);
+			fuelUsed += mapHandler.movementCost(x, y, movementType);
 		}
 
 		return fuelUsed;

@@ -11,6 +11,8 @@ import handlers.*;
 
 import java.awt.Graphics;
 
+import area.TerrainType;
+
 public class BuildingMenu extends Menu {
 	private final int priceAlign = 70;
 	private boolean factory;
@@ -20,8 +22,9 @@ public class BuildingMenu extends Menu {
 	private UnitCreatingFactory unitCreatingFactory;
 	private HeroPortrait heroPortrait;
 	private BuildingMenuPainter buildingMenuPainter;
+	private MapHandler mapHandler;
 
-	public BuildingMenu(int tileSize, HeroPortrait heroPortrait) {
+	public BuildingMenu(int tileSize, HeroPortrait heroPortrait, MapHandler mapHandler) {
 		super(tileSize);
 		this.heroPortrait = heroPortrait;
 		dimensionValues.menuRowWidth = 118;
@@ -31,16 +34,17 @@ public class BuildingMenu extends Menu {
 		buildingItemFactory = new BuildingItemFactory();
 		unitCreatingFactory = new UnitCreatingFactory();
 		buildingMenuPainter = new BuildingMenuPainter(heroPortrait, dimensionValues, priceAlign);
+		this.mapHandler = mapHandler;
 	}
 
 	public void openMenu(int x, int y) {
 		super.openMenu(x, y);
-		int terrainType = MapHandler.map(x, y);
-		if (terrainType == MapHandler.FACTORY) {
+		TerrainType terrainType = mapHandler.map(x, y);
+		if (terrainType == TerrainType.FACTORY) {
 			factory = true;
-		} else if (terrainType == MapHandler.AIRPORT) {
+		} else if (terrainType == TerrainType.AIRPORT) {
 			airport = true;
-		} else if (terrainType == MapHandler.PORT) {
+		} else if (terrainType == TerrainType.PORT) {
 			port = true;
 		}
 	}

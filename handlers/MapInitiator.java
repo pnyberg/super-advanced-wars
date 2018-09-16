@@ -10,6 +10,7 @@ package handlers;
 
 import java.util.ArrayList;
 
+import area.TerrainType;
 import area.buildings.Airport;
 import area.buildings.Building;
 import area.buildings.City;
@@ -34,16 +35,18 @@ import heroes.*;
 
 public class MapInitiator {
 	private int mapWidth, mapHeight;
-	protected int[][] map;
+	protected TerrainType[][] map;
 	private ArrayList<Building> buildings;
 	private HeroPortrait portrait;
+	private MapHandler mapHandler;
 
-	public MapInitiator(int mapWidth, int mapHeight, int[][] map, ArrayList<Building> buildings, HeroPortrait portrait, int index) {
+	public MapInitiator(int mapWidth, int mapHeight, MapHandler mapHandler, TerrainType[][] map, ArrayList<Building> buildings, HeroPortrait portrait, int index) {
 		this.mapWidth = mapWidth;
 		this.mapHeight = mapHeight;
 		this.map = map;
 		this.buildings = buildings;
 		this.portrait = portrait;
+		this.mapHandler = mapHandler;
 
 		if (index == 1) {
 			
@@ -56,90 +59,90 @@ public class MapInitiator {
 	private void initTestMap() {
 		for (int n = 0 ; n < 2 ; n++) {
 			for (int i = 0 ; i < mapWidth ; i++) {
-				map[i][n] = MapHandler.SEA;
+				map[i][n] = TerrainType.SEA;
 			}
 		}
 
 		for (int i = 0 ; i < 2 ; i++) {
 			for (int n = 2 ; n < 8 ; n++) {
-				map[i][n] = MapHandler.SEA;
+				map[i][n] = TerrainType.SEA;
 			}
 		}
 
-		map[2][2] = MapHandler.CITY;
-		map[4][2] = MapHandler.PLAIN;
-		map[5][2] = MapHandler.PLAIN;
-		map[6][2] = MapHandler.MOUNTAIN;
-		map[7][2] = MapHandler.MOUNTAIN;
+		map[2][2] = TerrainType.CITY;
+		map[4][2] = TerrainType.PLAIN;
+		map[5][2] = TerrainType.PLAIN;
+		map[6][2] = TerrainType.MOUNTAIN;
+		map[7][2] = TerrainType.MOUNTAIN;
 
-		map[2][3] = MapHandler.PLAIN;
-		map[7][3] = MapHandler.AIRPORT;
+		map[2][3] = TerrainType.PLAIN;
+		map[7][3] = TerrainType.AIRPORT;
 
-		map[2][4] = MapHandler.FACTORY;
-		map[4][4] = MapHandler.WOOD;
-		map[5][4] = MapHandler.WOOD;
-		map[7][4] = MapHandler.PLAIN;
+		map[2][4] = TerrainType.FACTORY;
+		map[4][4] = TerrainType.WOOD;
+		map[5][4] = TerrainType.WOOD;
+		map[7][4] = TerrainType.PLAIN;
 
-		map[2][5] = MapHandler.PLAIN;
-		map[4][5] = MapHandler.WOOD;
-		map[5][5] = MapHandler.WOOD;
-		map[7][5] = MapHandler.PLAIN;
+		map[2][5] = TerrainType.PLAIN;
+		map[4][5] = TerrainType.WOOD;
+		map[5][5] = TerrainType.WOOD;
+		map[7][5] = TerrainType.PLAIN;
 
-		map[2][6] = MapHandler.MOUNTAIN;
-		map[7][6] = MapHandler.PLAIN;
+		map[2][6] = TerrainType.MOUNTAIN;
+		map[7][6] = TerrainType.PLAIN;
 
-		map[2][7] = MapHandler.MOUNTAIN;
-		map[3][7] = MapHandler.MOUNTAIN;
-		map[4][7] = MapHandler.PLAIN;
-		map[5][7] = MapHandler.PLAIN;
-		map[7][7] = MapHandler.CITY;
+		map[2][7] = TerrainType.MOUNTAIN;
+		map[3][7] = TerrainType.MOUNTAIN;
+		map[4][7] = TerrainType.PLAIN;
+		map[5][7] = TerrainType.PLAIN;
+		map[7][7] = TerrainType.CITY;
 
 		for (int i = 8 ; i < mapWidth ; i++) {
 			for (int n = 2 ; n < 8 ; n++) {
-				map[i][n] = MapHandler.SEA;
+				map[i][n] = TerrainType.SEA;
 			}
 		}
 
 		for (int n = 8 ; n < mapHeight ; n++) {
 			for (int i = 0 ; i < mapWidth ; i++) {
-				map[i][n] = MapHandler.SEA;
+				map[i][n] = TerrainType.SEA;
 			}
 		}
 
-		map[9][0] = MapHandler.REEF;
-		map[1][1] = MapHandler.REEF;
+		map[9][0] = TerrainType.REEF;
+		map[1][1] = TerrainType.REEF;
 
-		map[8][4] = MapHandler.SHORE;
-		map[8][5] = MapHandler.SHORE;
+		map[8][4] = TerrainType.SHORE;
+		map[8][5] = TerrainType.SHORE;
 
-		map[4][8] = MapHandler.PORT;
+		map[4][8] = TerrainType.PORT;
 
-		map[8][8] = MapHandler.REEF;
-		map[0][9] = MapHandler.REEF;
+		map[8][8] = TerrainType.REEF;
+		map[0][9] = TerrainType.REEF;
 
 		// buildings-part
 		initBuildings();
 
-		Building building = MapHandler.getBuilding(2, 4); // factory
+		Building building = mapHandler.getBuilding(2, 4); // factory
 
 		building.setOwnership(portrait.getCurrentHero());
 
-		building = MapHandler.getBuilding(4, 8); // port
+		building = mapHandler.getBuilding(4, 8); // port
 		building.setOwnership(portrait.getCurrentHero());
-		building = MapHandler.getBuilding(7, 3); // airport
+		building = mapHandler.getBuilding(7, 3); // airport
 		building.setOwnership(portrait.getCurrentHero());
 	}
 
 	private void initBuildings() {
 		for (int x = 0 ; x < map.length ; x++) {
 			for (int y = 0 ; y < map[0].length ; y++) {
-				if (map[x][y] == MapHandler.CITY) {
+				if (map[x][y] == TerrainType.CITY) {
 					buildings.add(new City(x, y));
-				} else if (map[x][y] == MapHandler.PORT) {
+				} else if (map[x][y] == TerrainType.PORT) {
 					buildings.add(new Port(x, y));
-				} else if (map[x][y] == MapHandler.AIRPORT) {
+				} else if (map[x][y] == TerrainType.AIRPORT) {
 					buildings.add(new Airport(x, y));
-				} else if (map[x][y] == MapHandler.FACTORY) {
+				} else if (map[x][y] == TerrainType.FACTORY) {
 					buildings.add(new Factory(x, y));
 //				} else if (map[x][y] == HQ) {
 //					buildings.add(new HQ(x, y));
@@ -177,7 +180,7 @@ public class MapInitiator {
 
 		for (int h = 0 ; h < 2 ; h++) {
 			for (int k = 0 ; k < portrait.getHero(h).getTroopHandler().getTroopSize() ; k++) {
-				MapHandler.getUnitFromHero(h, k).regulateActive(true);
+				mapHandler.getUnitFromHero(h, k).regulateActive(true);
 			}
 		}
 	}

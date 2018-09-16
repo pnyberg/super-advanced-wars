@@ -19,19 +19,22 @@ import units.treadMoving.Artillery;
 import units.treadMoving.MDTank;
 import units.treadMoving.Neotank;
 import units.treadMoving.Tank;
+import area.TerrainType;
 import heroes.*;
 
 public class DamageHandler {
-	private static DamageCalculator damageCalculator;
-	private static StarPowerCalculator starPowerCalculator;
+	private DamageCalculator damageCalculator;
+	private MapHandler mapHandler;
+	private StarPowerCalculator starPowerCalculator;
 
-	public DamageHandler() {
-		damageCalculator = new DamageCalculator();
+	public DamageHandler(MapHandler mapHandler) {
+		damageCalculator = new DamageCalculator(mapHandler);
+		this.mapHandler = mapHandler;
 		starPowerCalculator = new StarPowerCalculator();
 	}
 
 	public void handleAttack(Unit attacking, Unit defending) {
-		HeroPortrait portrait = MapHandler.getHeroPortrait();
+		HeroPortrait portrait = mapHandler.getHeroPortrait();
 		Hero attackingHero = portrait.getHeroFromUnit(attacking);
 		Hero defendingHero = portrait.getHeroFromUnit(defending); 
 		int attX = attacking.getX();
@@ -39,7 +42,7 @@ public class DamageHandler {
 		int defX = defending.getX();
 		int defY = defending.getY();
 
-		int defendingTerrainType = MapHandler.map(defX, defY);
+		TerrainType defendingTerrainType = mapHandler.map(defX, defY);
 
 		// deal damage from attacker to defender
 		performDamageCalculation(attacking, attackingHero, defending, defendingHero, defendingTerrainType);
@@ -56,12 +59,12 @@ public class DamageHandler {
 			return;
 		}
 
-		int attackingTerrainType = MapHandler.map(attX, attY);
+		TerrainType attackingTerrainType = mapHandler.map(attX, attY);
 		// deal damage from defender to attacker (counterattack)
 		performDamageCalculation(defending, defendingHero, attacking, attackingHero, attackingTerrainType);
 	}
 
-	private void performDamageCalculation(Unit attacker, Hero attHero, Unit defender, Hero defHero, int defTerrainType) {
+	private void performDamageCalculation(Unit attacker, Hero attHero, Unit defender, Hero defHero, TerrainType defTerrainType) {
 		int damageValue = damageCalculator.calculateRNGDamage(attacker, attHero, defender, defHero, defTerrainType);
 		defender.takeDamage(damageValue);
 
@@ -69,7 +72,7 @@ public class DamageHandler {
 		starPowerCalculator.calculateStarPowerSelf(defHero, defender, damageValue);
 	}
 	
-	public static int getNonRNGDamageValue(Unit attacker, Hero attHero, Unit defender, Hero defHero, int defTerrainType) {
+	public int getNonRNGDamageValue(Unit attacker, Hero attHero, Unit defender, Hero defHero, TerrainType defTerrainType) {
 		return damageCalculator.calculateNonRNGDamage(attacker, attHero, defender, defHero, defTerrainType);
 	}
 
