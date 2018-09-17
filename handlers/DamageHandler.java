@@ -51,17 +51,11 @@ public class DamageHandler {
 			return;
 		}
 
-		if (attacking instanceof IndirectUnit
-			|| defending instanceof IndirectUnit
-			|| defending instanceof APC
-			|| defending instanceof Lander
-			|| defending instanceof TCopter) {
-			return;
+		if (counterAttackAble(attacking, defending)) {
+			TerrainType attackingTerrainType = mapHandler.map(attX, attY);
+			// deal damage from defender to attacker (counterattack)
+			performDamageCalculation(defending, defendingHero, attacking, attackingHero, attackingTerrainType);
 		}
-
-		TerrainType attackingTerrainType = mapHandler.map(attX, attY);
-		// deal damage from defender to attacker (counterattack)
-		performDamageCalculation(defending, defendingHero, attacking, attackingHero, attackingTerrainType);
 	}
 
 	private void performDamageCalculation(Unit attacker, Hero attHero, Unit defender, Hero defHero, TerrainType defTerrainType) {
@@ -70,6 +64,14 @@ public class DamageHandler {
 
 		starPowerCalculator.calculateStarPowerOpponent(attHero, defender, damageValue);
 		starPowerCalculator.calculateStarPowerSelf(defHero, defender, damageValue);
+	}
+	
+	private boolean counterAttackAble(Unit attacking, Unit defending) {
+		return attacking instanceof IndirectUnit
+				|| defending instanceof IndirectUnit
+				|| defending instanceof APC
+				|| defending instanceof Lander
+				|| defending instanceof TCopter;
 	}
 	
 	public int getNonRNGDamageValue(Unit attacker, Hero attHero, Unit defender, Hero defHero, TerrainType defTerrainType) {

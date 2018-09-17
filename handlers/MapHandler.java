@@ -27,6 +27,7 @@ public class MapHandler {
 	// ruling-variable
 	private static final int fuelMaintenancePerTurn = 5;
 
+	private MapDimension mapDimension;
 	private TerrainType[][] map;
 	private boolean[][] moveabilityCostMatrix;
 	private HeroPortrait portrait;
@@ -35,18 +36,19 @@ public class MapHandler {
 	private MovementCostMatrixFactory movementCostMatrixFactory;
 	private ArrayList<Building> buildings;
 
-	public MapHandler(int mapWidth, int mapHeight, RouteHandler routeHandler) {
-		portrait = new HeroPortrait(mapWidth);
+	public MapHandler(MapDimension mapDimension, RouteHandler routeHandler) {
+		this.mapDimension = mapDimension;
+		portrait = new HeroPortrait(mapDimension.width);
 		this.routeHandler = routeHandler;
 		movementCostMatrixFactory = new MovementCostMatrixFactory();
 		initHeroes();
 
 		initMoveabilityMatrix();
 
-		map = new TerrainType[mapWidth][mapHeight];
+		map = new TerrainType[mapDimension.width][mapDimension.height];
 		buildings = new ArrayList<Building>();
 
-		initMapAndTroops(mapWidth, mapHeight, 0);
+		initMapAndTroops(mapDimension.width, mapDimension.height, 0);
 
 		Building.init(1000);		
 	}
@@ -368,6 +370,10 @@ public class MapHandler {
 		}
 
 		return null;
+	}
+	
+	public MapDimension getMapDimension() {
+		return mapDimension;
 	}
 
 	public void paintArea(Graphics g, int x, int y, boolean rangeAble) {
