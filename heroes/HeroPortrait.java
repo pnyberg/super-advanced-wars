@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import graphics.HeroPortraitPainter;
+import handlers.MapDimension;
 
 public class HeroPortrait {
 	private ArrayList<Hero> heroes;
@@ -15,12 +16,12 @@ public class HeroPortrait {
 	private boolean leftSide;
 	private HeroPortraitPainter heroPortraitPainter;
 
-	public HeroPortrait(int mapWidth) {
+	public HeroPortrait(MapDimension mapDimension) {
 		heroes = new ArrayList<Hero>();
 		currentHero = null;
 		heroIndex = 0;
 		leftSide = true;
-		heroPortraitPainter = new HeroPortraitPainter(mapWidth);
+		heroPortraitPainter = new HeroPortraitPainter(mapDimension);
 	}
 
 	public void selectStartHero() {
@@ -70,6 +71,22 @@ public class HeroPortrait {
 
 	public Hero getCurrentHero() {
 		return currentHero;
+	}
+
+	public Unit getUnitFromHero(int hero, int index) {
+		return getHero(hero).getTroopHandler().getTroop(index);
+	}
+
+	public Unit getUnitFromCurrentHero(int index) {
+		return getCurrentHero().getTroopHandler().getTroop(index);
+	}
+
+	public int getTroopSize(int hero) {
+		return getHero(hero).getTroopHandler().getTroopSize();
+	}
+
+	public int getCurrentHeroTroopSize() {
+		return getCurrentHero().getTroopHandler().getTroopSize();
 	}
 
 	public void paint(Graphics g) {

@@ -4,12 +4,19 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import handlers.MapDimension;
 import handlers.MapHandler;
 import point.Point;
 
 public class RouteArrowPathPainter {
+	private MapDimension mapDimension;
+	
+	public RouteArrowPathPainter(MapDimension mapDimension) {
+		this.mapDimension = mapDimension;
+	}
+
 	public void paint(Graphics g, ArrayList<Point> arrowPoints) {
-		int tileSize = MapHandler.tileSize;
+		int tileSize = mapDimension.tileSize;
 
 		if (arrowPoints.size() < 2) {
 			return;

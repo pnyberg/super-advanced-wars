@@ -3,18 +3,19 @@ package graphics;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import handlers.MapDimension;
 import handlers.MapHandler;
 import heroes.Hero;
 
 public class HeroPortraitPainter {
-	private int mapWidth;
+	private MapDimension mapDimension;
 	
-	public HeroPortraitPainter(int mapWidth) {
-		this.mapWidth = mapWidth;
+	public HeroPortraitPainter(MapDimension mapDimension) {
+		this.mapDimension = mapDimension;
 	}
 
 	public void paintLeftSide(Graphics g, Hero currentHero) {
-		int tileSize = MapHandler.tileSize;
+		int tileSize = mapDimension.tileSize;
 
 		int borderThickness = 2;
 		int cashBarHeight = 25;
@@ -72,18 +73,18 @@ public class HeroPortraitPainter {
 	}
 
 	public void paintRightSide(Graphics g, Hero currentHero) {
-		int tileSize = MapHandler.tileSize;
+		int tileSize = mapDimension.tileSize;
 		int borderThickness = 2;
 		int cashBarHeight = 25;
 		int cashAlign = 8 * (String.valueOf(currentHero.getCash()).length() - 1);
 
-		int ox1 = mapWidth * tileSize - (tileSize * 4);
-		int ox2 = mapWidth * tileSize;
-		int ox3 = mapWidth * tileSize;
-		int ox4 = mapWidth * tileSize - tileSize / 4;
-		int ox5 = mapWidth * tileSize - (3 * tileSize) / 5;
-		int ox6 = mapWidth * tileSize - (5 * tileSize) / 4;
-		int ox7 = mapWidth * tileSize - (tileSize * 4);
+		int ox1 = mapDimension.width * tileSize - (tileSize * 4);
+		int ox2 = mapDimension.width * tileSize;
+		int ox3 = mapDimension.width * tileSize;
+		int ox4 = mapDimension.width * tileSize - tileSize / 4;
+		int ox5 = mapDimension.width * tileSize - (3 * tileSize) / 5;
+		int ox6 = mapDimension.width * tileSize - (5 * tileSize) / 4;
+		int ox7 = mapDimension.width * tileSize - (tileSize * 4);
 
 		int oy1 = 0;
 		int oy2 = 0;

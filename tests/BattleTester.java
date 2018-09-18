@@ -89,7 +89,8 @@ public class BattleTester {
 		lander = new Lander(-1, -1, Color.white);
 //		sub = new Sub(-1, -1, Color.white);
 
-		damageHandler = new DamageHandler(new MapHandler(new MapDimension(0, 0), new RouteHandler(0, 0)));
+		MapDimension mapDimension = new MapDimension(0, 0, 0);
+		damageHandler = new DamageHandler(new MapHandler(mapDimension, new RouteHandler(mapDimension)));
 	}
 
 	/***

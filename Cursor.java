@@ -14,13 +14,16 @@ public class Cursor {
 	private final Color fillColor = Color.red;
 	private final Color edgeColor = Color.yellow;
 
-	private final int tileSize = MapHandler.tileSize;
-	private final int smallPiece = tileSize / 20 + 1; // dependent on "tileSize"
-	private final int bigPiece = smallPiece * 3; // dependend on "smallPiece" (and therefore "tileSize")
+	private int tileSize;
+	private int smallPiece;
+	private int bigPiece;
 
-	public Cursor(int x, int y) {
+	public Cursor(int x, int y, int tileSize) {
 		this.x = x;
 		this.y = y;
+		this.tileSize = tileSize;
+		smallPiece = tileSize / 20 + 1;
+		bigPiece = smallPiece * 3;
 	}
 
 	public void moveUp() {

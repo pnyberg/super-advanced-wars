@@ -2,6 +2,9 @@ package units;
 
 import java.awt.Color;
 import java.awt.Graphics;
+
+import point.Point;
+
 import java.awt.Font;
 
 public abstract class Unit {
@@ -105,6 +108,10 @@ public abstract class Unit {
 
 	public int getY() {
 		return y;
+	}
+	
+	public Point getPoint() {
+		return new Point(x, y);
 	}
 
 	public int getHP() {

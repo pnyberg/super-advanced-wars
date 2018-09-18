@@ -5,10 +5,11 @@ import handlers.MapDimension;
 public class SuperAdvanceWars extends JFrame {
 	private Gameboard board;
 	private final int	width = 20, 
-						height = 15;
+						height = 15,
+						tileSize = 40;
 
 	public SuperAdvanceWars() {
-		board = new Gameboard(new MapDimension(width, height));
+		board = new Gameboard(new MapDimension(width, height, tileSize));
 
 		add(board);
 

@@ -8,15 +8,18 @@ import units.UnitTypes;
 public class DamageCalculator {
 	private int[][][] damageMatrix;
 	private WeaponIndexChooser weaponIndexChooser;
+	private DefenceValueCalculator defenceValueCalculator;
 	private MapHandler mapHandler;
 	
 	public DamageCalculator(MapHandler mapHandler) {
 		damageMatrix = new DamageMatrixFactory().getDamageMatrix();
 		weaponIndexChooser = new WeaponIndexChooser();
+		defenceValueCalculator = new DefenceValueCalculator();
 		this.mapHandler = mapHandler;
 	}
 
 	public int getBaseDamageValue(int attType, int defType, int gunNumber) {
+		System.out.println(attType + " " + defType + " " + gunNumber);
 		return damageMatrix[attType][defType][gunNumber];
 	}
 
@@ -27,7 +30,7 @@ public class DamageCalculator {
 		int baseDamage = damageMatrix[attType][defType][weaponIndex];
 		int heroAttackValue = attHero.getAttackDefenceObject().getAttackValue(attType);
 		int heroDefenceValue = defHero.getAttackDefenceObject().getDefenceValue(defType);
-		int areaDefenceValue = (defender.getMovementType() == Unit.AIR ? 0 : mapHandler.getDefenceValue(defTerrainType));
+		int areaDefenceValue = (defender.getMovementType() == Unit.AIR ? 0 : defenceValueCalculator.getDefenceValue(defTerrainType));
 		int attackingAffect = attacker.getHP() / 10 * ((baseDamage * heroAttackValue) / 100) / 10;
 		int defendingAffect = (200 - (heroDefenceValue + areaDefenceValue * defender.getHP() / 10)) / 10;
 
@@ -49,7 +52,7 @@ public class DamageCalculator {
 		int heroAttackValue = attHero.getAttackDefenceObject().getAttackValue(attType);
 		int rngNumber = ((int)(Math.random()*10)) % 10;
 		int heroDefenceValue = defHero.getAttackDefenceObject().getDefenceValue(defType);
-		int areaDefenceValue = (defender.getMovementType() == Unit.AIR ? 0 : mapHandler.getDefenceValue(defTerrainType));
+		int areaDefenceValue = (defender.getMovementType() == Unit.AIR ? 0 : defenceValueCalculator.getDefenceValue(defTerrainType));
 		
 		int attackingAffect = attacker.getHP() / 10 * ((baseDamage * heroAttackValue) / 100 + rngNumber) / 10;
 		int defendingAffect = (200 - (heroDefenceValue + areaDefenceValue * defender.getHP() / 10)) / 10;

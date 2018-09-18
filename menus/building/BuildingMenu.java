@@ -24,9 +24,9 @@ public class BuildingMenu extends Menu {
 	private BuildingMenuPainter buildingMenuPainter;
 	private MapHandler mapHandler;
 
-	public BuildingMenu(int tileSize, HeroPortrait heroPortrait, MapHandler mapHandler) {
+	public BuildingMenu(int tileSize, MapHandler mapHandler) {
 		super(tileSize);
-		this.heroPortrait = heroPortrait;
+		this.heroPortrait = mapHandler.getHeroPortrait();
 		dimensionValues.menuRowWidth = 118;
 		factory = false;
 		port = false;
@@ -39,7 +39,7 @@ public class BuildingMenu extends Menu {
 
 	public void openMenu(int x, int y) {
 		super.openMenu(x, y);
-		TerrainType terrainType = mapHandler.map(x, y);
+		TerrainType terrainType = mapHandler.map(x, y).getTerrainType();
 		if (terrainType == TerrainType.FACTORY) {
 			factory = true;
 		} else if (terrainType == TerrainType.AIRPORT) {

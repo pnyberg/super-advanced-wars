@@ -7,13 +7,11 @@ public class MovementCostMatrixFactory {
 	private int[][] movementCostMatrix;
 	
 	public MovementCostMatrixFactory() {
+		movementCostMatrix = new int[MapHandler.numberOfMovementTypes][MapHandler.numberOfAreaTypes]; // number of types of units x number of types of terrain
 		initMovementCostMatrix();
 	}
 
 	private void initMovementCostMatrix() {
-		// number of types of units x number of types of terrain
-		movementCostMatrix = new int[MapHandler.numberOfMovementTypes][MapHandler.numberOfAreaTypes];
-
 		for (int unitIndex = 0 ; unitIndex < movementCostMatrix.length ; unitIndex++) {
 			for (int terrainIndex = 0 ; terrainIndex < movementCostMatrix[0].length ; terrainIndex++) {
 				movementCostMatrix[unitIndex][terrainIndex] = 1;
@@ -28,7 +26,7 @@ public class MovementCostMatrixFactory {
 		movementCostMatrix[Unit.TRANSPORT][TerrainType.REEF.terrainTypeIndex()] = 2;
 	}
 	
-	public int getMovementCost(int movementType, TerrainType terrainType) {
-		return movementCostMatrix[movementType][terrainType.terrainTypeIndex()];
+	public int[][] getMovementCostMatrix() {
+		return movementCostMatrix;
 	}
 }

@@ -42,7 +42,7 @@ public class DamageHandler {
 		int defX = defending.getX();
 		int defY = defending.getY();
 
-		TerrainType defendingTerrainType = mapHandler.map(defX, defY);
+		TerrainType defendingTerrainType = mapHandler.map(defX, defY).getTerrainType();
 
 		// deal damage from attacker to defender
 		performDamageCalculation(attacking, attackingHero, defending, defendingHero, defendingTerrainType);
@@ -52,7 +52,7 @@ public class DamageHandler {
 		}
 
 		if (counterAttackAble(attacking, defending)) {
-			TerrainType attackingTerrainType = mapHandler.map(attX, attY);
+			TerrainType attackingTerrainType = mapHandler.map(attX, attY).getTerrainType();
 			// deal damage from defender to attacker (counterattack)
 			performDamageCalculation(defending, defendingHero, attacking, attackingHero, attackingTerrainType);
 		}
@@ -67,11 +67,11 @@ public class DamageHandler {
 	}
 	
 	private boolean counterAttackAble(Unit attacking, Unit defending) {
-		return attacking instanceof IndirectUnit
+		return !(attacking instanceof IndirectUnit
 				|| defending instanceof IndirectUnit
 				|| defending instanceof APC
 				|| defending instanceof Lander
-				|| defending instanceof TCopter;
+				|| defending instanceof TCopter);
 	}
 	
 	public int getNonRNGDamageValue(Unit attacker, Hero attHero, Unit defender, Hero defHero, TerrainType defTerrainType) {

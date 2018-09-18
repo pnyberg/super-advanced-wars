@@ -9,18 +9,17 @@ import units.Unit;
 import units.UnitTypes;
 
 public class DamageMatrixFactory {
-	private static final int number = Unit.numberOfUnitTypes;
+	private static final int numberOfUnitTypes = Unit.numberOfUnitTypes;
 	
 	private int[][][] damageMatrix;
-
-	public int[][][] getDamageMatrix() {
-		damageMatrix = new int[number][number][2]; // the last one is for secondary weapons
+	
+	public DamageMatrixFactory() {
+		damageMatrix = new int[numberOfUnitTypes][numberOfUnitTypes][2]; // the last one is for secondary weapons
 		implementDamageMatrix();
-		return damageMatrix;
 	}
 	
 	private void implementDamageMatrix() {
-		for (int i = 0 ; i < number ; i++) {
+		for (int i = 0 ; i < numberOfUnitTypes ; i++) {
 			damageMatrix[UnitTypes.INFANTRY.unitIndex()][i][0] = -1;
 			damageMatrix[UnitTypes.RECON.unitIndex()][i][0] = -1;
 			damageMatrix[UnitTypes.APC_v.unitIndex()][i][0] = -1;
@@ -474,5 +473,9 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitTypes.CRUISER.unitIndex()][UnitTypes.LANDER.unitIndex()][1] = -1;
 //		damageMatrix[UnitTypes.CRUISER.unitIndex()][UnitTypes.SUB.unitIndex()][0] = 90;
 //		damageMatrix[UnitTypes.CRUISER.unitIndex()][UnitTypes.SUB.unitIndex()][1] = -1;
+	}
+
+	public int[][][] getDamageMatrix() {
+		return damageMatrix;
 	}
 }

@@ -13,24 +13,23 @@ import java.util.ArrayList;
 
 public class RouteHandler {
 	private boolean[][] movementMap;
-	private int mapWidth, mapHeight;
+	private MapDimension mapDimension;
 	private RouteArrowPath routeArrowPath;
 
-	public RouteHandler(int mapWidth, int mapHeight) {
-		this.mapWidth = mapWidth;
-		this.mapHeight = mapHeight;
+	public RouteHandler(MapDimension mapDimension) {
+		this.mapDimension = mapDimension;
 		clearMovementMap();
-		routeArrowPath = new RouteArrowPath();
+		routeArrowPath = new RouteArrowPath(mapDimension);
 	}
 
 	// TODO: which one should stay
-	public void addNewArrowPoint(int newX, int newY) {
-		routeArrowPath.addArrowPoint(new Point(newX, newY));
+	public void addNewArrowPoint(Point point) {
+		routeArrowPath.addArrowPoint(point);
 	}
 
 	// TODO: which one should stay
-	public void addArrowPoint(int newX, int newY, Unit chosenUnit, MapHandler mapHandler) {
-		routeArrowPath.addArrowPoint(newX, newY, chosenUnit, mapHandler, movementMap);
+	public void updateArrowPath(Point point, Unit chosenUnit, MapHandler mapHandler) {
+		routeArrowPath.updateArrowPath(point, chosenUnit, mapHandler, movementMap);
 	}
 	
 	public void findPossibleMovementLocations(MapHandler mapHandler, Unit checkedUnit) {
@@ -39,7 +38,7 @@ public class RouteHandler {
 	}
 
 	public void clearMovementMap() {
-		movementMap = new boolean[mapWidth][mapHeight];
+		movementMap = new boolean[mapDimension.width][mapDimension.height];
 	}
 
 	public void clearArrowPoints() {
