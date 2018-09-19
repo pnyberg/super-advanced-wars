@@ -7,7 +7,7 @@ public class MovementCostMatrixFactory {
 	private int[][] movementCostMatrix;
 	
 	public MovementCostMatrixFactory() {
-		movementCostMatrix = new int[MapHandler.numberOfMovementTypes][MapHandler.numberOfAreaTypes]; // number of types of units x number of types of terrain
+		movementCostMatrix = new int[Unit.numberOfMovementTypes][TerrainType.numberOfAreaTypes]; // number of types of units x number of types of terrain
 		initMovementCostMatrix();
 	}
 

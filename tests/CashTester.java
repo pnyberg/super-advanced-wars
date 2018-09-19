@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import handlers.HeroHandler;
 import handlers.MapDimension;
 
 public class CashTester {
@@ -18,13 +19,13 @@ public class CashTester {
 	@Before
 	public void init() {
 		mapDimension = new MapDimension(0, 0, 0);
-		portrait = new HeroPortrait(mapDimension);
+		portrait = new HeroPortrait(mapDimension, new HeroHandler());
 		heroFactory = new HeroFactory();
 		hero0 = heroFactory.createHero(0);
 		hero1 = heroFactory.createHero(1);
 
-		portrait.addHero(hero0);
-		portrait.addHero(hero1);
+		portrait.getHeroHandler().addHero(hero0);
+		portrait.getHeroHandler().addHero(hero1);
 	}
 
 	@Test

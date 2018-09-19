@@ -26,8 +26,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JPanel;
 
+import area.Area;
 import area.TerrainType;
 import area.buildings.*;
 
@@ -56,6 +60,8 @@ public class Gameboard extends JPanel implements KeyListener {
 	private UnitMenu unitMenu;
 	private BuildingMenu buildingMenu;
 
+	private MovementMap movementMap;
+	private RouteChecker routeChecker; 
 	private RouteHandler routeHandler;
 	private MapHandler mapHandler;
 	private DamageHandler damageHandler;
@@ -63,7 +69,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	private Unit chosenUnit, rangeUnit;
 	private Building selectedBuilding;
 	
-	public Gameboard(MapDimension mapDimension) {
+	public Gameboard(MapDimension mapDimension, HeroHandler heroHandler, GameProperties gameProperties) {
 		this.mapDimension = mapDimension;
 
 		rangeMap = new boolean[mapDimension.width][mapDimension.height];
@@ -75,8 +81,10 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		addKeyListener(this);
 
-		routeHandler = new RouteHandler(mapDimension);
-		mapHandler = new MapHandler(mapDimension, routeHandler);
+		movementMap = new MovementMap(mapDimension);
+		routeHandler = new RouteHandler(mapDimension, movementMap);
+		mapHandler = new MapHandler(mapDimension, routeHandler, heroHandler, gameProperties);
+		routeChecker = new RouteChecker(mapHandler, movementMap);
 		damageHandler = new DamageHandler(mapHandler);
 
 		mapMenu = new MapMenu(mapDimension.tileSize);
@@ -186,13 +194,13 @@ public class Gameboard extends JPanel implements KeyListener {
 
 					chosenUnit.regulateActive(false);
 					chosenUnit = null;
-					routeHandler.clearMovementMap();
+					movementMap.clearMovementMap();
 					routeHandler.clearArrowPoints();
 				} else {
 					// If all drop-slots are occupied, pressing 'A' won't do anything
 				}
 			} else if (unitWantToFire()) {
-				Unit defendingUnit = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX, cursorY);
+				Unit defendingUnit = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX, cursorY);
 				damageHandler.handleAttack(chosenUnit, defendingUnit);
 				chosenUnit.regulateAttack(false);
 
@@ -208,7 +216,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 				chosenUnit.regulateActive(false);
 				chosenUnit = null;
-				routeHandler.clearMovementMap();
+				movementMap.clearMovementMap();
 				routeHandler.clearArrowPoints();
 				if (chosenUnit instanceof IndirectUnit) {
 					((IndirectUnit)chosenUnit).clearFiringLocations();
@@ -230,7 +238,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				} else if (unitMenu.atFireRow()) {
 					handleFiring();
 				} else if (unitMenu.atEnterRow()) {
-					Unit entryUnit = mapHandler.getUnitGetter().getFriendlyUnitExceptSelf(chosenUnit, cursorX, cursorY);
+					Unit entryUnit = mapHandler.getMapGettersObject().unitGetter.getFriendlyUnitExceptSelf(chosenUnit, cursorX, cursorY);
 					if (entryUnit instanceof APC) {
 						((APC)entryUnit).addUnit(chosenUnit);
 					} else if (entryUnit instanceof TCopter) {
@@ -246,10 +254,10 @@ public class Gameboard extends JPanel implements KeyListener {
 					int x = chosenUnit.getX();
 					int y = chosenUnit.getY();
 
-					Unit north = mapHandler.getUnitGetter().getFriendlyUnit(x, y - 1);
-					Unit east = mapHandler.getUnitGetter().getFriendlyUnit(x + 1, y);
-					Unit south = mapHandler.getUnitGetter().getFriendlyUnit(x, y + 1);
-					Unit west = mapHandler.getUnitGetter().getFriendlyUnit(x - 1, y);
+					Unit north = mapHandler.getMapGettersObject().unitGetter.getFriendlyUnit(x, y - 1);
+					Unit east = mapHandler.getMapGettersObject().unitGetter.getFriendlyUnit(x + 1, y);
+					Unit south = mapHandler.getMapGettersObject().unitGetter.getFriendlyUnit(x, y + 1);
+					Unit west = mapHandler.getMapGettersObject().unitGetter.getFriendlyUnit(x - 1, y);
 
 					replentishUnit(north);
 					replentishUnit(east);
@@ -258,7 +266,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				} else if (unitMenu.atJoinRow()) {
 					int x = chosenUnit.getX();
 					int y = chosenUnit.getY();
-					Unit unit = mapHandler.getUnitGetter().getFriendlyUnitExceptSelf(chosenUnit, x, y);
+					Unit unit = mapHandler.getMapGettersObject().unitGetter.getFriendlyUnitExceptSelf(chosenUnit, x, y);
 					
 					unit.heal(chosenUnit.getHP());
 					chosenUnit.kill();
@@ -273,7 +281,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 					chosenUnit.regulateActive(false);
 					chosenUnit = null;
-					routeHandler.clearMovementMap();
+					movementMap.clearMovementMap();
 					routeHandler.clearArrowPoints();
 				}
 
@@ -281,25 +289,25 @@ public class Gameboard extends JPanel implements KeyListener {
 			} else if (buildingMenu.isVisible()) {
 				buildingMenu.buySelectedTroop();
 				buildingMenu.closeMenu();
-			} else if (chosenUnit != null && routeHandler.movementMap(cursorX, cursorY) && rangeUnit == null) {
+			} else if (chosenUnit != null && movementMap.isAcceptedMove(cursorX, cursorY) && rangeUnit == null) {
 				int x = chosenUnit.getX();
 				int y = chosenUnit.getY();
-				if (mapHandler.getUnitGetter().getFriendlyUnit(x, y) != null) {
+				if (mapHandler.getMapGettersObject().unitGetter.getFriendlyUnit(x, y) != null) {
 					handleOpenUnitMenu(cursorX, cursorY);
 				}
 			} else if (!unitSelected && !unitSelectable(cursorX, cursorY)) {
-				selectedBuilding = mapHandler.getBuildingGetter().getFriendlyBuilding(cursorX, cursorY);
+				selectedBuilding = mapHandler.getMapGettersObject().buildingGetter.getFriendlyBuilding(cursorX, cursorY);
 
 				if (selectedBuilding != null) {
 					handleOpenBuildingMenu(cursorX, cursorY);
 				}
 			} else if (!unitSelected) {
 				// @TODO 
-				chosenUnit = mapHandler.getUnitGetter().getAnyUnit(cursorX, cursorY);
+				chosenUnit = mapHandler.getMapGettersObject().unitGetter.getAnyUnit(cursorX, cursorY);
 //				chosenUnit = mapHandler.getFriendlyUnit(cursorX, cursorY);
 
 				if (chosenUnit != null) {
-					routeHandler.findPossibleMovementLocations(mapHandler, chosenUnit);
+					routeChecker.findPossibleMovementLocations(chosenUnit);
 					routeHandler.addNewArrowPoint(chosenUnit.getPoint());
 				}
 			}
@@ -348,7 +356,7 @@ public class Gameboard extends JPanel implements KeyListener {
 					cursor.setPosition(unitStartX, unitStartY);
 					chosenUnit.moveTo(unitStartX, unitStartY);
 					chosenUnit = null;
-					routeHandler.clearMovementMap();
+					movementMap.clearMovementMap();
 					routeHandler.clearArrowPoints();
 				}
 			} else {
@@ -389,10 +397,10 @@ public class Gameboard extends JPanel implements KeyListener {
 			x = p.getX();
 			y = p.getY();
 		} else {
-			Unit north = mapHandler.getUnitGetter().getNonFriendlyUnit(x, y - 1);
-			Unit east = mapHandler.getUnitGetter().getNonFriendlyUnit(x + 1, y);
-			Unit south = mapHandler.getUnitGetter().getNonFriendlyUnit(x, y + 1);
-			Unit west = mapHandler.getUnitGetter().getNonFriendlyUnit(x - 1, y);
+			Unit north = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(x, y - 1);
+			Unit east = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(x + 1, y);
+			Unit south = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(x, y + 1);
+			Unit west = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(x - 1, y);
 			if (y > 0 && north != null && damageHandler.validTarget(chosenUnit, north)) {
 				y--;
 			} else if (x < (mapDimension.width - 1) && east != null && damageHandler.validTarget(chosenUnit, east)) {
@@ -414,7 +422,7 @@ public class Gameboard extends JPanel implements KeyListener {
 			return;
 		}
 
-		Hero unitsHero = mapHandler.getHeroPortrait().getHeroFromUnit(unit);
+		Hero unitsHero = mapHandler.getHeroPortrait().getHeroHandler().getHeroFromUnit(unit);
 		unitsHero.getTroopHandler().removeTroop(unit);
 	}
 
@@ -530,7 +538,8 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private boolean landerAtDroppingOffPosition(int x, int y) {
-		TerrainType areaValue = mapHandler.map(x, y).getTerrainType();
+		Area[][] map = mapHandler.getMap();
+		TerrainType areaValue = map[x][y].getTerrainType();
 
 		if (areaValue == TerrainType.SHORE || areaValue == TerrainType.PORT) {
 			return true;
@@ -665,9 +674,9 @@ public class Gameboard extends JPanel implements KeyListener {
 		int yDiff = cursorY - unitY;
 
 		if (xDiff == 1) {
-			Unit leftDown = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX - 1, cursorY + 1);
-			Unit leftOnly = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX - 2, cursorY);
-			Unit leftUp = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX - 1, cursorY - 1);
+			Unit leftDown = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX - 1, cursorY + 1);
+			Unit leftOnly = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX - 2, cursorY);
+			Unit leftUp = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX - 1, cursorY - 1);
 			if (unitY < (mapDimension.height - 1) && leftDown != null && damageHandler.validTarget(chosenUnit, leftDown)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			} else if (unitX > 0 && leftOnly != null && damageHandler.validTarget(chosenUnit, leftOnly)) {
@@ -676,9 +685,9 @@ public class Gameboard extends JPanel implements KeyListener {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			}
 		} else if (yDiff == 1) {
-			Unit upLeft = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX - 1, cursorY - 1);
-			Unit upOnly = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX, cursorY - 2);
-			Unit upRight = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX + 1, cursorY - 1);
+			Unit upLeft = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX - 1, cursorY - 1);
+			Unit upOnly = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX, cursorY - 2);
+			Unit upRight = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX + 1, cursorY - 1);
 			if (unitX > 0 && upLeft != null && damageHandler.validTarget(chosenUnit, upLeft)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			} else if (unitY > 0 && upOnly != null && damageHandler.validTarget(chosenUnit, upOnly)) {
@@ -687,9 +696,9 @@ public class Gameboard extends JPanel implements KeyListener {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			}
 		} else if (xDiff == -1) {
-			Unit rightDown = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX + 1, cursorY - 1);
-			Unit rightOnly = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX + 2, cursorY);
-			Unit rightUp = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX + 1, cursorY + 1);
+			Unit rightDown = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX + 1, cursorY - 1);
+			Unit rightOnly = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX + 2, cursorY);
+			Unit rightUp = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX + 1, cursorY + 1);
 			if (unitY > 0 && rightDown != null && damageHandler.validTarget(chosenUnit, rightDown)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			} else if (unitX < (mapDimension.width - 1) && rightOnly != null && damageHandler.validTarget(chosenUnit, rightOnly)) {
@@ -698,9 +707,9 @@ public class Gameboard extends JPanel implements KeyListener {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			}
 		} else { // yDiff == -1
-			Unit downLeft = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX + 1, cursorY + 1);
-			Unit downOnly = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX, cursorY + 2);
-			Unit downRight = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX - 1, cursorY + 1);
+			Unit downLeft = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX + 1, cursorY + 1);
+			Unit downOnly = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX, cursorY + 2);
+			Unit downRight = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX - 1, cursorY + 1);
 			if (unitX < (mapDimension.width - 1) && downLeft != null && damageHandler.validTarget(chosenUnit, downLeft)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			} else if (unitY < (mapDimension.height - 1) && downOnly != null && damageHandler.validTarget(chosenUnit, downOnly)) {
@@ -721,9 +730,9 @@ public class Gameboard extends JPanel implements KeyListener {
 		int yDiff = cursorY - unitY;
 
 		if (xDiff == 1) {
-			Unit leftUp = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX - 1, cursorY - 1);
-			Unit leftOnly = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX - 2, cursorY);
-			Unit leftDown = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX - 1, cursorY + 1);
+			Unit leftUp = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX - 1, cursorY - 1);
+			Unit leftOnly = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX - 2, cursorY);
+			Unit leftDown = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX - 1, cursorY + 1);
 			if (unitY > 0 && leftUp != null && damageHandler.validTarget(chosenUnit, leftUp)) {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			} else if (unitX > 0 && leftOnly != null && damageHandler.validTarget(chosenUnit, leftOnly)) {
@@ -732,9 +741,9 @@ public class Gameboard extends JPanel implements KeyListener {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			}
 		} else if (yDiff == 1) {
-			Unit upRight = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX + 1, cursorY - 1);
-			Unit upOnly = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX, cursorY - 2);
-			Unit upLeft = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX - 1, cursorY - 1);
+			Unit upRight = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX + 1, cursorY - 1);
+			Unit upOnly = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX, cursorY - 2);
+			Unit upLeft = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX - 1, cursorY - 1);
 			if (unitX < (mapDimension.width - 1) && upRight != null && damageHandler.validTarget(chosenUnit, upRight)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			} else if (unitY > 0 && upOnly != null && damageHandler.validTarget(chosenUnit, upOnly)) {
@@ -743,9 +752,9 @@ public class Gameboard extends JPanel implements KeyListener {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			}
 		} else if (xDiff == -1) {
-			Unit rightUp = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX + 1, cursorY + 1);
-			Unit rightOnly = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX + 2, cursorY);
-			Unit rightDown = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX + 1, cursorY - 1);
+			Unit rightUp = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX + 1, cursorY + 1);
+			Unit rightOnly = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX + 2, cursorY);
+			Unit rightDown = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX + 1, cursorY - 1);
 			if (unitY < (mapDimension.height - 1) && rightUp != null && damageHandler.validTarget(chosenUnit, rightUp)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			} else if (unitX < (mapDimension.width - 1) && rightOnly != null && damageHandler.validTarget(chosenUnit, rightOnly)) {
@@ -754,9 +763,9 @@ public class Gameboard extends JPanel implements KeyListener {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			}
 		} else { // yDiff == -1
-			Unit downRight = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX - 1, cursorY + 1);
-			Unit downOnly = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX, cursorY + 2);
-			Unit downLeft = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX + 1, cursorY + 1);
+			Unit downRight = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX - 1, cursorY + 1);
+			Unit downOnly = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX, cursorY + 2);
+			Unit downLeft = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX + 1, cursorY + 1);
 			if (unitX > 0 && downRight != null && damageHandler.validTarget(chosenUnit, downRight)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			} else if (unitY < (mapDimension.height - 1) && downOnly != null && damageHandler.validTarget(chosenUnit, downOnly)) {
@@ -768,8 +777,8 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private boolean validPosition(Unit unit, int testX, int testY) {
-		return !mapHandler.areaOccupiedByAny(unit, testX, testY) 
-			&& mapHandler.allowedMovementPosition(testX, testY, unit.getMovementType());
+		return !mapHandler.getAreaChecker().areaOccupiedByAny(unit, testX, testY) 
+			&& routeChecker.allowedMovementPosition(testX, testY, unit.getMovementType());
 	}
 
 	private boolean unitSelectable(int x, int y) {
@@ -777,12 +786,12 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private Unit getAnyUnit(int x, int y) {
-		return mapHandler.getUnitGetter().getAnyUnit(x, y);
+		return mapHandler.getMapGettersObject().unitGetter.getAnyUnit(x, y);
 	}
 
 	private void handleOpenUnitMenu(int cursorX, int cursorY) {
 		boolean hurtAtSamePosition = hurtSameTypeUnitAtPosition(chosenUnit, cursorX, cursorY);
-		if (!mapHandler.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY) 
+		if (!mapHandler.getAreaChecker().areaOccupiedByFriendly(chosenUnit, cursorX, cursorY) 
 		|| unitEntryingContainerUnit(chosenUnit, cursorX, cursorY)
 		|| hurtAtSamePosition) {
 			// @TODO fix join
@@ -809,7 +818,7 @@ public class Gameboard extends JPanel implements KeyListener {
 					unitMenu.containedCargo(holdUnit);
 				}
 			} else if (chosenUnit instanceof TCopter) {
-				if (((TCopter)chosenUnit).isFull() && mapHandler.unitOnLand(cursorX, cursorY)) {
+				if (((TCopter)chosenUnit).isFull() && mapHandler.isLand(cursorX, cursorY)) {
 					Unit holdUnit = ((TCopter)chosenUnit).getUnit();
 					unitMenu.containedCargo(holdUnit);
 				}
@@ -837,7 +846,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 			}
 
-			if (!mapHandler.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY)) {
+			if (!mapHandler.getAreaChecker().areaOccupiedByFriendly(chosenUnit, cursorX, cursorY)) {
 				unitMenu.getUnitMenuRowEntryBooleanHandler().allowWait();
 			}
 
@@ -879,7 +888,7 @@ public class Gameboard extends JPanel implements KeyListener {
 			return true;
 		}
 
-		Unit unit = mapHandler.getUnitGetter().getFriendlyUnit(x, y);
+		Unit unit = mapHandler.getMapGettersObject().unitGetter.getFriendlyUnit(x, y);
 
 		if (unit instanceof APC && !((APC)unit).isFull()) {
 			return true;
@@ -891,7 +900,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private boolean landbasedEnterableUnitAtPosition(int x, int y) {
-		Unit unit = mapHandler.getUnitGetter().getFriendlyUnit(x, y);
+		Unit unit = mapHandler.getMapGettersObject().unitGetter.getFriendlyUnit(x, y);
 
 		if (unit instanceof Lander && !((Lander)unit).isFull()) {
 			return true;
@@ -901,7 +910,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 	
 	private boolean copterEnterableUnitAtPosition(int x, int y) {
-		Unit unit = mapHandler.getUnitGetter().getFriendlyUnit(x, y);
+		Unit unit = mapHandler.getMapGettersObject().unitGetter.getFriendlyUnit(x, y);
 
 		if (unit instanceof Cruiser && !((Cruiser)unit).isFull()) {
 			return true;
@@ -911,13 +920,13 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private boolean mayAPCSUpply(int x, int y) {
-		if (mapHandler.getUnitGetter().getFriendlyUnit(x + 1, y) != null) {
+		if (mapHandler.getMapGettersObject().unitGetter.getFriendlyUnit(x + 1, y) != null) {
 			return true;
-		} else if (mapHandler.getUnitGetter().getFriendlyUnit(x, y + 1) != null) {
+		} else if (mapHandler.getMapGettersObject().unitGetter.getFriendlyUnit(x, y + 1) != null) {
 			return true;
-		} else if (mapHandler.getUnitGetter().getFriendlyUnit(x - 1, y) != null) {
+		} else if (mapHandler.getMapGettersObject().unitGetter.getFriendlyUnit(x - 1, y) != null) {
 			return true;
-		} else if (mapHandler.getUnitGetter().getFriendlyUnit(x, y - 1) != null) {
+		} else if (mapHandler.getMapGettersObject().unitGetter.getFriendlyUnit(x, y - 1) != null) {
 			return true;
 		}
 
@@ -925,7 +934,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private boolean hurtSameTypeUnitAtPosition(Unit unit, int x, int y) {
-		Unit testUnit = mapHandler.getUnitGetter().getFriendlyUnitExceptSelf(unit, x, y);
+		Unit testUnit = mapHandler.getMapGettersObject().unitGetter.getFriendlyUnitExceptSelf(unit, x, y);
 
 		if (testUnit == null) {
 			return false;
@@ -974,7 +983,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 				int distanceFromUnit = Math.abs(unitX - x) + Math.abs(unitY - y);
 				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
-					Unit targetUnit = mapHandler.getUnitGetter().getNonFriendlyUnit(x, y);
+					Unit targetUnit = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(x, y);
 					if (targetUnit != null && damageHandler.validTarget(attackingUnit, targetUnit)) {
 						return true;
 					}
@@ -986,10 +995,10 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private boolean directUnitCanFire(int cursorX, int cursorY) {
-		Unit northernFront = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX, cursorY - 1);
-		Unit easternFront = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX + 1, cursorY);
-		Unit southernFront = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX, cursorY + 1);
-		Unit westernFront = mapHandler.getUnitGetter().getNonFriendlyUnit(cursorX - 1, cursorY);
+		Unit northernFront = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX, cursorY - 1);
+		Unit easternFront = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX + 1, cursorY);
+		Unit southernFront = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX, cursorY + 1);
+		Unit westernFront = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX - 1, cursorY);
 
 		return (northernFront != null && damageHandler.validTarget(chosenUnit, northernFront)) 
 			|| (easternFront != null && damageHandler.validTarget(chosenUnit, easternFront))
@@ -998,11 +1007,11 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	private void findPossibleDirectAttackLocations(Unit chosenUnit) {
-		routeHandler.findPossibleMovementLocations(mapHandler, chosenUnit);
+		routeChecker.findPossibleMovementLocations(chosenUnit);
 
 		for (int n = 0 ; n < mapDimension.height ; n++) {
 			for (int i = 0 ; i < mapDimension.width ; i++) {
-				if (routeHandler.movementMap(i, n)) {
+				if (movementMap.isAcceptedMove(i, n)) {
 					if (i > 0) {
 						rangeMap[i - 1][n] = true;
 					}
@@ -1018,7 +1027,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 			}
 		}
-		routeHandler.clearMovementMap();
+		movementMap.clearMovementMap();
 	}
 
 	private void createRangeAttackLocations(Unit chosenUnit) {
@@ -1071,7 +1080,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 				int distanceFromUnit = Math.abs(unitX - x) + Math.abs(unitY - y);
 				
-				Unit target = mapHandler.getUnitGetter().getNonFriendlyUnit(x, y);
+				Unit target = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(x, y);
 				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange && 
 						 target != null && damageHandler.validTarget(chosenUnit, target)) {
 					Point p = new Point(x, y);
@@ -1101,7 +1110,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	private void endTurnActions() {
 		mapMenu.closeMenu();
 		mapHandler.resetActiveVariable();
-		mapHandler.getHeroPortrait().nextHero();
+		mapHandler.getHeroPortrait().getHeroHandler().nextHero();
 	}
 
 	private void startTurnActions() {
@@ -1126,7 +1135,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		for (int y = 0 ; y < mapDimension.height ; y++) {
 			for (int x = 0 ; x < mapDimension.width ; x++) {
-				mapHandler.paintArea(g, x, y, rangeMap[x][y]);
+				mapHandler.getMapPainter().paintArea(g, x, y, rangeMap[x][y]);
 			}
 		}
 
@@ -1140,7 +1149,7 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		paintRange(g);
 
-		mapHandler.paintUnits(g, chosenUnit);
+		mapHandler.getMapPainter().paintUnits(g, chosenUnit);
 
 		// when the mapMenu is open the cursor is hidden
 		if (mapMenu.isVisible()) {
@@ -1155,7 +1164,7 @@ public class Gameboard extends JPanel implements KeyListener {
 			cursor.paint(g);
 		}
 
-		mapHandler.paintPortrait(g);
+		mapHandler.getMapPainter().paintPortrait(g);
 	}
 
 	private void paintRange(Graphics g) {
@@ -1185,13 +1194,14 @@ public class Gameboard extends JPanel implements KeyListener {
 		int xDiff = x - chosenUnit.getX();
 		int yDiff = y - chosenUnit.getY();
 
-		Unit targetUnit = mapHandler.getUnitGetter().getNonFriendlyUnit(x, y);
+		Unit targetUnit = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(x, y);
 
 		HeroPortrait portrait = mapHandler.getHeroPortrait();
-		Hero chosenHero = portrait.getCurrentHero();
-		Hero targetHero = portrait.getHeroFromUnit(targetUnit);
+		Hero chosenHero = portrait.getHeroHandler().getCurrentHero();
+		Hero targetHero = portrait.getHeroHandler().getHeroFromUnit(targetUnit);
 		
-		TerrainType terrainType = mapHandler.map(x, y).getTerrainType();
+		Area[][] map = mapHandler.getMap();
+		TerrainType terrainType = map[x][y].getTerrainType();
 //		int areaDefenceValue = mapHandler.getDefenceValue(terrainType);
 
 		int damage = damageHandler.getNonRNGDamageValue(chosenUnit, chosenHero, targetUnit, targetHero, terrainType); 

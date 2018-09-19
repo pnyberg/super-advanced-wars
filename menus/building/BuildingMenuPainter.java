@@ -24,7 +24,7 @@ public class BuildingMenuPainter {
 	}
 
 	private void paintMenuItem(Graphics g, int x, int y, String text, int price) {
-		int heroCash = heroPortrait.getCurrentHero().getCash();
+		int heroCash = heroPortrait.getHeroHandler().getCurrentHero().getCash();
 		int menuX = x * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2 + dimensionValues.getAlignX();
 		int extraPriceAlign = (price >= 10000 ? 0 : 8);
 

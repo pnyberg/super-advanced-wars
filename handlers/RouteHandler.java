@@ -12,14 +12,12 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class RouteHandler {
-	private boolean[][] movementMap;
-	private MapDimension mapDimension;
 	private RouteArrowPath routeArrowPath;
+	private MovementMap movementMap;
 
-	public RouteHandler(MapDimension mapDimension) {
-		this.mapDimension = mapDimension;
-		clearMovementMap();
+	public RouteHandler(MapDimension mapDimension, MovementMap movementMap) {
 		routeArrowPath = new RouteArrowPath(mapDimension);
+		this.movementMap = movementMap;
 	}
 
 	// TODO: which one should stay
@@ -32,15 +30,6 @@ public class RouteHandler {
 		routeArrowPath.updateArrowPath(point, chosenUnit, mapHandler, movementMap);
 	}
 	
-	public void findPossibleMovementLocations(MapHandler mapHandler, Unit checkedUnit) {
-		RouteChecker routeChecker = new RouteChecker(mapHandler, movementMap, checkedUnit);
-		routeChecker.findPossibleMovementLocations();
-	}
-
-	public void clearMovementMap() {
-		movementMap = new boolean[mapDimension.width][mapDimension.height];
-	}
-
 	public void clearArrowPoints() {
 		routeArrowPath.clear();
 	}
@@ -49,11 +38,11 @@ public class RouteHandler {
 		return routeArrowPath.calculateFuelUsed(mapHandler, unit.getMovementType());
 	}
 
-	public boolean movementMap(int x, int y) {
-		return movementMap[x][y];
+	public MovementMap getMovementMap() {
+		return movementMap;
 	}
 	
 	public RouteArrowPath getRouteArrowPath() {
 		return routeArrowPath;
-	}
+	}	
 }

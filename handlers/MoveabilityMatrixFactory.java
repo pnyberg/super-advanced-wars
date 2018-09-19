@@ -4,8 +4,8 @@ import area.TerrainType;
 import units.Unit;
 
 public class MoveabilityMatrixFactory {
-	private static final int numberOfMovementTypes = MapHandler.numberOfMovementTypes;
-	private static final int numberOfAreaTypes = MapHandler.numberOfAreaTypes;
+	private static final int numberOfMovementTypes = Unit.numberOfMovementTypes;
+	private static final int numberOfAreaTypes = TerrainType.numberOfAreaTypes;
 	
 	private boolean[][] moveabilityMatrix;
 

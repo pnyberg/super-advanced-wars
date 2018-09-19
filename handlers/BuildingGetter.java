@@ -27,7 +27,7 @@ public class BuildingGetter {
 	public Building getFriendlyBuilding(int x, int y) {
 		Building building = getBuilding(x, y);
 
-		if (building != null && building.getOwner() == portrait.getCurrentHero()) {
+		if (building != null && building.getOwner() == portrait.getHeroHandler().getCurrentHero()) {
 			return building;
 		}
 

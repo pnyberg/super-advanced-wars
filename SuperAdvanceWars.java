@@ -1,6 +1,9 @@
 import javax.swing.JFrame;
 
+import handlers.GameProperties;
+import handlers.HeroHandler;
 import handlers.MapDimension;
+import heroes.HeroFactory;
 
 public class SuperAdvanceWars extends JFrame {
 	private Gameboard board;
@@ -9,7 +12,15 @@ public class SuperAdvanceWars extends JFrame {
 						tileSize = 40;
 
 	public SuperAdvanceWars() {
-		board = new Gameboard(new MapDimension(width, height, tileSize));
+		HeroHandler heroHandler = new HeroHandler();
+		HeroFactory heroFactory = new HeroFactory();
+		heroHandler.addHero(heroFactory.createHero(0));
+		heroHandler.addHero(heroFactory.createHero(1));
+		heroHandler.selectStartHero();
+		
+		GameProperties gameProperties = new GameProperties(5);
+		
+		board = new Gameboard(new MapDimension(width, height, tileSize), heroHandler, gameProperties);
 
 		add(board);
 

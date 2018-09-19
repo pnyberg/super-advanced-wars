@@ -19,6 +19,7 @@ import units.treadMoving.Artillery;
 import units.treadMoving.MDTank;
 import units.treadMoving.Neotank;
 import units.treadMoving.Tank;
+import area.Area;
 import area.TerrainType;
 import heroes.*;
 
@@ -35,14 +36,15 @@ public class DamageHandler {
 
 	public void handleAttack(Unit attacking, Unit defending) {
 		HeroPortrait portrait = mapHandler.getHeroPortrait();
-		Hero attackingHero = portrait.getHeroFromUnit(attacking);
-		Hero defendingHero = portrait.getHeroFromUnit(defending); 
+		Hero attackingHero = portrait.getHeroHandler().getHeroFromUnit(attacking);
+		Hero defendingHero = portrait.getHeroHandler().getHeroFromUnit(defending); 
 		int attX = attacking.getX();
 		int attY = attacking.getY();
 		int defX = defending.getX();
 		int defY = defending.getY();
-
-		TerrainType defendingTerrainType = mapHandler.map(defX, defY).getTerrainType();
+		Area[][] map = mapHandler.getMap();
+		
+		TerrainType defendingTerrainType = map[defX][defY].getTerrainType();
 
 		// deal damage from attacker to defender
 		performDamageCalculation(attacking, attackingHero, defending, defendingHero, defendingTerrainType);
@@ -52,7 +54,7 @@ public class DamageHandler {
 		}
 
 		if (counterAttackAble(attacking, defending)) {
-			TerrainType attackingTerrainType = mapHandler.map(attX, attY).getTerrainType();
+			TerrainType attackingTerrainType = map[attX][attY].getTerrainType();
 			// deal damage from defender to attacker (counterattack)
 			performDamageCalculation(defending, defendingHero, attacking, attackingHero, attackingTerrainType);
 		}

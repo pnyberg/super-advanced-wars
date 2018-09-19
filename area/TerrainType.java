@@ -13,6 +13,8 @@ public enum TerrainType {
 	REEF(9),
 	SHORE(10);
 
+	public static final int numberOfAreaTypes = 11;
+
 	private final int terrainTypeIndex;
 
 	TerrainType(int terrainTypeIndex) {

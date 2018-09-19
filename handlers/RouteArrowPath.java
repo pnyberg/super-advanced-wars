@@ -29,14 +29,14 @@ public class RouteArrowPath {
 		arrowPoints.add(point);
 	}
 	
-	public void updateArrowPath(Point newPosition, Unit chosenUnit, MapHandler mapHandler, boolean[][] movementMap) {
+	public void updateArrowPath(Point newPosition, Unit chosenUnit, MapHandler mapHandler, MovementMap movementMap) {
 		int repeatedPositionIndex = getRepeatedPositionIndex(newPosition);
 
 		if (repeatedPositionIndex > -1) {
 			for (int i = arrowPoints.size() - 1 ; i > repeatedPositionIndex ; i--) {
 				removeArrowPoint(i);
 			}
-		} else if (movementMap[newPosition.getX()][newPosition.getY()]) {
+		} else if (movementMap.isAcceptedMove(newPosition.getX(), newPosition.getY())) {
 			addArrowPoint(newPosition);
 
 			if (newPointNotConnectedToPreviousPoint()) {

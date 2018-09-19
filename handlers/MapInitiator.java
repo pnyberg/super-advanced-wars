@@ -125,14 +125,14 @@ public class MapInitiator {
 		// buildings-part
 		initBuildings();
 
-		Building building = mapHandler.getBuilding(2, 4); // factory
+		Building building = mapHandler.getMapGettersObject().buildingGetter.getBuilding(2, 4); // factory
 
-		building.setOwnership(portrait.getCurrentHero());
+		building.setOwnership(portrait.getHeroHandler().getCurrentHero());
 
-		building = mapHandler.getBuilding(4, 8); // port
-		building.setOwnership(portrait.getCurrentHero());
-		building = mapHandler.getBuilding(7, 3); // airport
-		building.setOwnership(portrait.getCurrentHero());
+		building = mapHandler.getMapGettersObject().buildingGetter.getBuilding(4, 8); // port
+		building.setOwnership(portrait.getHeroHandler().getCurrentHero());
+		building = mapHandler.getMapGettersObject().buildingGetter.getBuilding(7, 3); // airport
+		building.setOwnership(portrait.getHeroHandler().getCurrentHero());
 	}
 	
 	private void addAreaObject(int x, int y, TerrainType terrainType) {
@@ -160,8 +160,8 @@ public class MapInitiator {
 	}
 
 	private void initTestTroops() {
-		Hero hero1 = portrait.getHero(0);
-		Hero hero2 = portrait.getHero(1);
+		Hero hero1 = portrait.getHeroHandler().getHero(0);
+		Hero hero2 = portrait.getHeroHandler().getHero(1);
 
 		hero1.getTroopHandler().addTroop(new Infantry(3, 6, hero1.getColor()));
 		hero1.getTroopHandler().addTroop(new Mech(3, 3, hero1.getColor()));
@@ -185,8 +185,8 @@ public class MapInitiator {
 		hero2.getTroopHandler().addTroop(new Fighter(10, 8, hero2.getColor()));
 
 		for (int h = 0 ; h < 2 ; h++) {
-			for (int k = 0 ; k < portrait.getHero(h).getTroopHandler().getTroopSize() ; k++) {
-				mapHandler.getHeroPortrait().getUnitFromHero(h, k).regulateActive(true);
+			for (int k = 0 ; k < portrait.getHeroHandler().getHero(h).getTroopHandler().getTroopSize() ; k++) {
+				mapHandler.getHeroPortrait().getHeroHandler().getUnitFromHero(h, k).regulateActive(true);
 			}
 		}
 	}

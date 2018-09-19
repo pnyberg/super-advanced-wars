@@ -39,7 +39,7 @@ public class BuildingMenu extends Menu {
 
 	public void openMenu(int x, int y) {
 		super.openMenu(x, y);
-		TerrainType terrainType = mapHandler.map(x, y).getTerrainType();
+		TerrainType terrainType = mapHandler.getMap()[x][y].getTerrainType();
 		if (terrainType == TerrainType.FACTORY) {
 			factory = true;
 		} else if (terrainType == TerrainType.AIRPORT) {
@@ -68,7 +68,7 @@ public class BuildingMenu extends Menu {
 	}
 
 	public void buySelectedTroop() {
-		Hero currentHero = heroPortrait.getCurrentHero();
+		Hero currentHero = heroPortrait.getHeroHandler().getCurrentHero();
 		currentHero.manageCash(-getStandardItems()[menuIndex].getPrice());
 		Unit unit = createUnitFromIndex(currentHero);
 		currentHero.getTroopHandler().addTroop(unit);

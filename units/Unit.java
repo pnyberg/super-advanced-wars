@@ -8,6 +8,8 @@ import point.Point;
 import java.awt.Font;
 
 public abstract class Unit {
+	public static final int numberOfMovementTypes = 7;
+
 	// Movement-type
 	public static final int 	INFANTRY = 0,
 								MECH = 1,

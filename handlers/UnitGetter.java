@@ -12,9 +12,9 @@ public class UnitGetter {
 	}
 
 	public Unit getAnyUnit(int x, int y) {
-		for (int h = 0 ; h < portrait.getNumberOfHeroes() ; h++) {
-			for (int k = 0 ; k < portrait.getHero(h).getTroopHandler().getTroopSize() ; k++) {
-				Unit unit = portrait.getUnitFromHero(h, k);
+		for (int h = 0 ; h < portrait.getHeroHandler().getNumberOfHeroes() ; h++) {
+			for (int k = 0 ; k < portrait.getHeroHandler().getHero(h).getTroopHandler().getTroopSize() ; k++) {
+				Unit unit = portrait.getHeroHandler().getUnitFromHero(h, k);
 				if (unit.getX() == x && unit.getY() == y && !unit.isHidden()) {
 					return unit;
 				}
@@ -25,12 +25,12 @@ public class UnitGetter {
 	}
 
 	public Unit getNonFriendlyUnit(int x, int y, Hero hero) {
-		for (int h = 0 ; h < portrait.getNumberOfHeroes() ; h++) {
-			if (portrait.getHero(h) == hero) {
+		for (int h = 0 ; h < portrait.getHeroHandler().getNumberOfHeroes() ; h++) {
+			if (portrait.getHeroHandler().getHero(h) == hero) {
 				continue;
 			}
-			for (int k = 0 ; k < portrait.getHero(h).getTroopHandler().getTroopSize() ; k++) {
-				Unit unit = portrait.getUnitFromHero(h, k);
+			for (int k = 0 ; k < portrait.getHeroHandler().getHero(h).getTroopHandler().getTroopSize() ; k++) {
+				Unit unit = portrait.getHeroHandler().getUnitFromHero(h, k);
 				if (unit.getX() == x && unit.getY() == y && !unit.isHidden()) {
 					return unit;
 				}
@@ -41,12 +41,12 @@ public class UnitGetter {
 	}
 
 	public Unit getNonFriendlyUnit(int x, int y) {
-		return getNonFriendlyUnit(x, y, portrait.getCurrentHero());
+		return getNonFriendlyUnit(x, y, portrait.getHeroHandler().getCurrentHero());
 	}
 
 	public Unit getFriendlyUnit(int x, int y) {
-		for (int k = 0 ; k < portrait.getCurrentHeroTroopSize() ; k++) {
-			Unit unit = portrait.getUnitFromCurrentHero(k);
+		for (int k = 0 ; k < portrait.getHeroHandler().getCurrentHeroTroopSize() ; k++) {
+			Unit unit = portrait.getHeroHandler().getUnitFromCurrentHero(k);
 			if (unit.getX() == x && unit.getY() == y && !unit.isHidden()) {
 				return unit;
 			}
@@ -56,8 +56,8 @@ public class UnitGetter {
 	}
 
 	public Unit getFriendlyUnitExceptSelf(Unit notUnit, int x, int y) {
-		for (int k = 0 ; k < portrait.getCurrentHeroTroopSize() ; k++) {
-			Unit unit = portrait.getUnitFromCurrentHero(k);
+		for (int k = 0 ; k < portrait.getHeroHandler().getCurrentHeroTroopSize() ; k++) {
+			Unit unit = portrait.getHeroHandler().getUnitFromCurrentHero(k);
 			if (unit.getX() == x && unit.getY() == y && unit != notUnit && !unit.isHidden()) {
 				return unit;
 			}
