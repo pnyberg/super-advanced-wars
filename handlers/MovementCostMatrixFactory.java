@@ -1,13 +1,13 @@
 package handlers;
 
 import area.TerrainType;
-import units.Unit;
+import units.MovementType;
 
 public class MovementCostMatrixFactory {
 	private int[][] movementCostMatrix;
 	
 	public MovementCostMatrixFactory() {
-		movementCostMatrix = new int[Unit.numberOfMovementTypes][TerrainType.numberOfAreaTypes]; // number of types of units x number of types of terrain
+		movementCostMatrix = new int[MovementType.numberOfMovementTypes][TerrainType.numberOfAreaTypes]; // number of types of units x number of types of terrain
 		initMovementCostMatrix();
 	}
 
@@ -18,12 +18,12 @@ public class MovementCostMatrixFactory {
 			}
 		}
 
-		movementCostMatrix[Unit.TIRE][TerrainType.PLAIN.terrainTypeIndex()] = 2;
-		movementCostMatrix[Unit.BAND][TerrainType.WOOD.terrainTypeIndex()] = 2;
-		movementCostMatrix[Unit.TIRE][TerrainType.WOOD.terrainTypeIndex()] = 3;
-		movementCostMatrix[Unit.INFANTRY][TerrainType.MOUNTAIN.terrainTypeIndex()] = 2;
-		movementCostMatrix[Unit.SHIP][TerrainType.REEF.terrainTypeIndex()] = 2;
-		movementCostMatrix[Unit.TRANSPORT][TerrainType.REEF.terrainTypeIndex()] = 2;
+		movementCostMatrix[MovementType.TIRE.movementTypeIndex()][TerrainType.PLAIN.terrainTypeIndex()] = 2;
+		movementCostMatrix[MovementType.BAND.movementTypeIndex()][TerrainType.WOOD.terrainTypeIndex()] = 2;
+		movementCostMatrix[MovementType.TIRE.movementTypeIndex()][TerrainType.WOOD.terrainTypeIndex()] = 3;
+		movementCostMatrix[MovementType.INFANTRY.movementTypeIndex()][TerrainType.MOUNTAIN.terrainTypeIndex()] = 2;
+		movementCostMatrix[MovementType.SHIP.movementTypeIndex()][TerrainType.REEF.terrainTypeIndex()] = 2;
+		movementCostMatrix[MovementType.TRANSPORT.movementTypeIndex()][TerrainType.REEF.terrainTypeIndex()] = 2;
 	}
 	
 	public int[][] getMovementCostMatrix() {

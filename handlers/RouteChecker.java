@@ -8,6 +8,7 @@ package handlers;
 import area.Area;
 import area.TerrainType;
 import heroes.Hero;
+import units.MovementType;
 import units.Unit;
 
 public class RouteChecker {
@@ -47,7 +48,7 @@ public class RouteChecker {
 		}
 	}
 
-	public boolean allowedMovementPosition(int x, int y, int movementType, Hero hero) {
+	public boolean allowedMovementPosition(int x, int y, MovementType movementType, Hero hero) {
 		Area[][] map = mapHandler.getMap();
 		TerrainType terrainType = map[x][y].getTerrainType();
 
@@ -56,10 +57,10 @@ public class RouteChecker {
 		}
 
 		boolean[][] moveabilityMatrix = mapHandler.getMoveabilityMatrix();
-		return moveabilityMatrix[movementType][terrainType.terrainTypeIndex()];
+		return moveabilityMatrix[movementType.movementTypeIndex()][terrainType.terrainTypeIndex()];
 	}
 
-	public boolean allowedMovementPosition(int x, int y, int movementType) {
+	public boolean allowedMovementPosition(int x, int y, MovementType movementType) {
 		return allowedMovementPosition(x, y, movementType, mapHandler.getHeroPortrait().getHeroHandler().getCurrentHero());
 	}
 }

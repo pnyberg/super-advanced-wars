@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import graphics.RouteArrowPathPainter;
 import point.Point;
+import units.MovementType;
 import units.Unit;
 
 public class RouteArrowPath {
@@ -101,7 +102,7 @@ public class RouteArrowPath {
 	//        rest is road, what happens if you try to move the cursor from (+4,+2)->(+4,+1)->(+3,+1)
 	//        result: will get stuck
 	public void recountPath(Point newPosition, Unit chosenUnit, MapHandler mapHandler) {
-		int movementType = chosenUnit.getMovementType();
+		MovementType movementType = chosenUnit.getMovementType();
 		int diffX = newPosition.getX() - chosenUnit.getX();
 		int diffY = newPosition.getY() - chosenUnit.getY();
 
@@ -140,7 +141,7 @@ public class RouteArrowPath {
 		}
 	}
 	
-	public int calculateFuelUsed(MapHandler mapHandler, int movementType) {
+	public int calculateFuelUsed(MapHandler mapHandler, MovementType movementType) {
 		int fuelUsed = 0;
 		for (Point arrowPoint : arrowPoints) {
 			fuelUsed += mapHandler.movementCost(arrowPoint.getX(), arrowPoint.getY(), movementType);

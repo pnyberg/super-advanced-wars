@@ -25,24 +25,24 @@ import heroes.*;
 
 public class DamageHandler {
 	private DamageCalculator damageCalculator;
-	private MapHandler mapHandler;
 	private StarPowerCalculator starPowerCalculator;
+	private HeroHandler heroHandler;
+	private Area[][] map;
 
-	public DamageHandler(MapHandler mapHandler) {
-		damageCalculator = new DamageCalculator(mapHandler);
-		this.mapHandler = mapHandler;
+	public DamageHandler(HeroHandler heroHandler, Area[][] map) {
+		damageCalculator = new DamageCalculator();
 		starPowerCalculator = new StarPowerCalculator();
+		this.heroHandler = heroHandler;
+		this.map = map;
 	}
 
 	public void handleAttack(Unit attacking, Unit defending) {
-		HeroPortrait portrait = mapHandler.getHeroPortrait();
-		Hero attackingHero = portrait.getHeroHandler().getHeroFromUnit(attacking);
-		Hero defendingHero = portrait.getHeroHandler().getHeroFromUnit(defending); 
+		Hero attackingHero = heroHandler.getHeroFromUnit(attacking);
+		Hero defendingHero = heroHandler.getHeroFromUnit(defending); 
 		int attX = attacking.getX();
 		int attY = attacking.getY();
 		int defX = defending.getX();
 		int defY = defending.getY();
-		Area[][] map = mapHandler.getMap();
 		
 		TerrainType defendingTerrainType = map[defX][defY].getTerrainType();
 
@@ -81,8 +81,8 @@ public class DamageHandler {
 	}
 
 	public boolean validTarget(Unit attackingUnit, Unit targetUnit) {
-		int attUnitType = UnitTypes.getTypeFromUnit(attackingUnit);
-		int targetUnitType = UnitTypes.getTypeFromUnit(targetUnit);
+		int attUnitType = UnitType.getTypeFromUnit(attackingUnit);
+		int targetUnitType = UnitType.getTypeFromUnit(targetUnit);
 
 		return (attackingUnit.hasAmmo() && getBaseDamageValue(attUnitType, targetUnitType, 0) > -1)
 			|| getBaseDamageValue(attUnitType, targetUnitType, 1) > -1;

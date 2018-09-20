@@ -85,7 +85,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		routeHandler = new RouteHandler(mapDimension, movementMap);
 		mapHandler = new MapHandler(mapDimension, routeHandler, heroHandler, gameProperties);
 		routeChecker = new RouteChecker(mapHandler, movementMap);
-		damageHandler = new DamageHandler(mapHandler);
+		damageHandler = new DamageHandler(heroHandler, mapHandler.getMap());
 
 		mapMenu = new MapMenu(mapDimension.tileSize);
 		unitMenu = new UnitMenu(mapDimension.tileSize);
@@ -363,9 +363,9 @@ public class Gameboard extends JPanel implements KeyListener {
 				rangeUnit = getAnyUnit(cursorX, cursorY);
 
 				if (rangeUnit != null) {
-					if (rangeUnit.getAttackType() == Unit.DIRECT_ATTACK) {
+					if (rangeUnit.getAttackType() == AttackType.DIRECT_ATTACK) {
 						findPossibleDirectAttackLocations(rangeUnit);
-					} else if (rangeUnit.getAttackType() == Unit.INDIRECT_ATTACK) {
+					} else if (rangeUnit.getAttackType() == AttackType.INDIRECT_ATTACK) {
 						createRangeAttackLocations(rangeUnit);
 					}
 				}

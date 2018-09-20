@@ -8,32 +8,6 @@ import point.Point;
 import java.awt.Font;
 
 public abstract class Unit {
-	public static final int numberOfMovementTypes = 7;
-
-	// Movement-type
-	public static final int 	INFANTRY = 0,
-								MECH = 1,
-								BAND = 2,
-								TIRE = 3,
-								SHIP = 4,
-								TRANSPORT = 5,
-								AIR = 6;
-
-	// Unit-type
-	public static final int 	FOOTMAN = 0,
-								VEHICLE = 1,
-								PLANE = 2,
-								COPTER = 3,
-								BOAT = 4,
-								SUB = 5;
-
-	public static final int numberOfUnitTypes = 18;
-
-	// Attack-type
-	public static final int 	NONE = 0,
-								DIRECT_ATTACK = 1,
-								INDIRECT_ATTACK = 2;
-
 	protected static int price;
 	protected static String typeName;
 
@@ -41,7 +15,9 @@ public abstract class Unit {
 	protected boolean hidden, attacking, active;
 	protected Color color, restingColor;
 
-	protected int movement, movementType, attackType, unitClass;
+	protected int movement, unitClass;
+	protected AttackType attackType;
+	protected MovementType movementType;
 
 	public Unit(int x, int y, Color color) {
 		this.x = x;
@@ -57,7 +33,7 @@ public abstract class Unit {
 		maxFuel = 0;
 		maxAmmo = 0;
 
-		attackType = Unit.DIRECT_ATTACK;
+		attackType = AttackType.DIRECT_ATTACK;
 	}
 
 	public void replentish() {
@@ -140,11 +116,11 @@ public abstract class Unit {
 		return movement;
 	}
 
-	public int getMovementType() {
+	public MovementType getMovementType() {
 		return movementType;
 	}
 
-	public int getAttackType() {
+	public AttackType getAttackType() {
 		return attackType;
 	}
 

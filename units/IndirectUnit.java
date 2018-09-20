@@ -3,7 +3,6 @@ package units;
 import point.Point;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.util.ArrayList;
 
 public abstract class IndirectUnit extends Unit {
@@ -13,9 +12,8 @@ public abstract class IndirectUnit extends Unit {
 	public IndirectUnit(int x, int y, Color color) {
 		super(x, y, color);
 
-		attackType = Unit.INDIRECT_ATTACK;
+		attackType = AttackType.INDIRECT_ATTACK;
 		firingIndex = -1;
-
 		possibleFiringLocationList = new ArrayList<Point>();
 	}
 
@@ -33,13 +31,10 @@ public abstract class IndirectUnit extends Unit {
 		}
 
 		firingIndex = (firingIndex + 1) % possibleFiringLocationList.size();
-		Point p = possibleFiringLocationList.get(firingIndex);
-
-		return p;
+		return possibleFiringLocationList.get(firingIndex);
 	}
 
 	public Point getPreviousFiringLocation() {
-		System.out.println(possibleFiringLocationList.size() + " - " + firingIndex);
 		if (possibleFiringLocationList.isEmpty()) {
 			return null;
 		}

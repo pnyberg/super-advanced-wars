@@ -63,9 +63,9 @@ public class MapHandler {
 		for (int k = 0 ; k < hero.getTroopHandler().getTroopSize() ; k++) {
 			Unit unit = hero.getTroopHandler().getTroop(k);
 			
-			if (unit.getMovementType() == Unit.SHIP ||
-				unit.getMovementType() == Unit.TRANSPORT ||
-				unit.getMovementType() == Unit.AIR) {
+			if (unit.getMovementType() == MovementType.SHIP ||
+				unit.getMovementType() == MovementType.TRANSPORT ||
+				unit.getMovementType() == MovementType.AIR) {
 				unit.useFuel(gameProperties.fuelMaintenancePerTurn);
 			}
 		}
@@ -80,12 +80,12 @@ public class MapHandler {
 
 	public boolean isLand(int x, int y) {
 		TerrainType terrainType = map[x][y].getTerrainType();
-		return moveabilityMatrix[Unit.INFANTRY][terrainType.terrainTypeIndex()];
+		return moveabilityMatrix[UnitType.INFANTRY.unitIndex()][terrainType.terrainTypeIndex()];
 	}
 	
-	public int movementCost(int x, int y, int movementType) {
+	public int movementCost(int x, int y, MovementType movementType) {
 		TerrainType terrainType = map[x][y].getTerrainType();
-		return movementCostMatrix[movementType][terrainType.terrainTypeIndex()];
+		return movementCostMatrix[movementType.movementTypeIndex()][terrainType.terrainTypeIndex()];
 	}
 
 	public HeroPortrait getHeroPortrait() {

@@ -1,11 +1,14 @@
+/**
+ * @TODO
+ * - possibly add feature to remove units to be built
+ * - define which units can be built in factory?
+ */
+
 package area.buildings;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
-// === @TODO ====
-// * possibly add feature to remove units to be built
-// * define which units can be built in factory?
 public class Port extends Building {
 	public Port(int x, int y) {
 		super(x, y);		
