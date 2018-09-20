@@ -19,7 +19,7 @@ import units.treadMoving.MDTank;
 import units.treadMoving.Neotank;
 import units.treadMoving.Tank;
 
-public enum UnitTypes {
+public enum UnitType {
 	INFANTRY (0),
 	MECH (1),
 	RECON (2),
@@ -40,9 +40,11 @@ public enum UnitTypes {
 	LANDER (17);
 //	SUB (18);
 
+	public static final int numberOfUnitTypes = 18;
+
 	private final int unitIndex;
 
-	UnitTypes(int unitIndex) {
+	UnitType(int unitIndex) {
 		this.unitIndex = unitIndex;
 	}
 	
@@ -52,41 +54,41 @@ public enum UnitTypes {
 
 	public static int getTypeFromUnit(Unit unit) {
 		if (unit instanceof Infantry) {
-			return UnitTypes.INFANTRY.unitIndex();
+			return UnitType.INFANTRY.unitIndex();
 		} else if (unit instanceof Mech) {
-			return UnitTypes.MECH.unitIndex();
+			return UnitType.MECH.unitIndex();
 		} else if (unit instanceof Recon) {
-			return UnitTypes.RECON.unitIndex();
+			return UnitType.RECON.unitIndex();
 		} else if (unit instanceof Tank) {
-			return UnitTypes.TANK.unitIndex();
+			return UnitType.TANK.unitIndex();
 		} else if (unit instanceof MDTank) {
-			return UnitTypes.MDTANK.unitIndex();
+			return UnitType.MDTANK.unitIndex();
 		} else if (unit instanceof Neotank) {
-			return UnitTypes.NEOTANK.unitIndex();
+			return UnitType.NEOTANK.unitIndex();
 		} else if (unit instanceof APC) {
-			return UnitTypes.APC_v.unitIndex();
+			return UnitType.APC_v.unitIndex();
 		} else if (unit instanceof Artillery) {
-			return UnitTypes.ARTILLERY.unitIndex();
+			return UnitType.ARTILLERY.unitIndex();
 		} else if (unit instanceof Rocket) {
-			return UnitTypes.ROCKET.unitIndex();
+			return UnitType.ROCKET.unitIndex();
 		} else if (unit instanceof AAir) {
-			return UnitTypes.A_AIR.unitIndex();
+			return UnitType.A_AIR.unitIndex();
 		} else if (unit instanceof Missiles) {
-			return UnitTypes.MISSILES.unitIndex();
+			return UnitType.MISSILES.unitIndex();
 		} else if (unit instanceof Fighter) {
-			return UnitTypes.FIGHTER.unitIndex();
+			return UnitType.FIGHTER.unitIndex();
 		} else if (unit instanceof Bomber) {
-			return UnitTypes.BOMBER.unitIndex();
+			return UnitType.BOMBER.unitIndex();
 		} else if (unit instanceof BCopter) {
-			return UnitTypes.BCOPTER.unitIndex();
+			return UnitType.BCOPTER.unitIndex();
 		} else if (unit instanceof TCopter) {
-			return UnitTypes.TCOPTER.unitIndex();
+			return UnitType.TCOPTER.unitIndex();
 		} else if (unit instanceof Battleship) {
-			return UnitTypes.BATTLESHIP.unitIndex();
+			return UnitType.BATTLESHIP.unitIndex();
 		} else if (unit instanceof Cruiser) {
-			return UnitTypes.CRUISER.unitIndex();
+			return UnitType.CRUISER.unitIndex();
 		} else if (unit instanceof Lander) {
-			return UnitTypes.LANDER.unitIndex();
+			return UnitType.LANDER.unitIndex();
 /*		} else if (unit instanceof Sub) {
 			return UnitTypes.SUB.unitIndex();*/
 		}
