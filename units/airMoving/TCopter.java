@@ -3,7 +3,11 @@ package units.airMoving;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import units.AttackType;
+import units.MovementType;
 import units.Unit;
+import units.UnitCategory;
+import units.UnitSupply;
 
 public class TCopter extends Unit {
 	private static int price = 5000;
@@ -16,13 +20,10 @@ public class TCopter extends Unit {
 		super(x, y, color);
 
 		movement = 6;
-		movementType = Unit.AIR;
-		attackType = Unit.NONE;
-		unitClass = Unit.COPTER;
-
-		maxFuel = 99;
-		maxAmmo = 0;
-		replentish();
+		movementType = MovementType.AIR;
+		attackType = AttackType.NONE;
+		unitClass = UnitCategory.COPTER;
+		unitSupply = new UnitSupply(99, 0);
 
 		containedUnit = null;
 		droppingOff = false;
@@ -99,14 +100,14 @@ public class TCopter extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillOval(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.fillOval(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 
 		g.setColor(Color.black);
-		g.drawOval(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.drawOval(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 		
-		g.drawLine(x * tileSize + firstCrossLeftX, y * tileSize + crossUpperY, x * tileSize + firstCrossRightX, y * tileSize + crossLowerY);
-		g.drawLine(x * tileSize + firstCrossLeftX, y * tileSize + crossLowerY, x * tileSize + firstCrossRightX, y * tileSize + crossUpperY);
-		g.drawLine(x * tileSize + secondCrossLeftX, y * tileSize + crossUpperY, x * tileSize + secondCrossRightX, y * tileSize + crossLowerY);
-		g.drawLine(x * tileSize + secondCrossLeftX, y * tileSize + crossLowerY, x * tileSize + secondCrossRightX, y * tileSize + crossUpperY);
+		g.drawLine(point.getX() * tileSize + firstCrossLeftX, point.getY() * tileSize + crossUpperY, point.getX() * tileSize + firstCrossRightX, point.getY() * tileSize + crossLowerY);
+		g.drawLine(point.getX() * tileSize + firstCrossLeftX, point.getY() * tileSize + crossLowerY, point.getX() * tileSize + firstCrossRightX, point.getY() * tileSize + crossUpperY);
+		g.drawLine(point.getX() * tileSize + secondCrossLeftX, point.getY() * tileSize + crossUpperY, point.getX() * tileSize + secondCrossRightX, point.getY() * tileSize + crossLowerY);
+		g.drawLine(point.getX() * tileSize + secondCrossLeftX, point.getY() * tileSize + crossLowerY, point.getX() * tileSize + secondCrossRightX, point.getY() * tileSize + crossUpperY);
 	}
 }

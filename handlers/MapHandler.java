@@ -66,7 +66,7 @@ public class MapHandler {
 			if (unit.getMovementType() == MovementType.SHIP ||
 				unit.getMovementType() == MovementType.TRANSPORT ||
 				unit.getMovementType() == MovementType.AIR) {
-				unit.useFuel(gameProperties.fuelMaintenancePerTurn);
+				unit.getUnitSupply().useFuel(gameProperties.fuelMaintenancePerTurn);
 			}
 		}
 	}

@@ -3,7 +3,10 @@ package units.treadMoving;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import units.MovementType;
 import units.Unit;
+import units.UnitCategory;
+import units.UnitSupply;
 
 public class Tank extends Unit {
 	private static int price = 7000;
@@ -13,12 +16,10 @@ public class Tank extends Unit {
 		super(x, y, color);
 
 		movement = 6;
-		movementType = Unit.BAND;
-		unitClass = Unit.VEHICLE;
+		movementType = MovementType.BAND;
+		unitClass = UnitCategory.VEHICLE;
 
-		maxFuel = 70;
-		maxAmmo = 9;
-		replentish();
+		unitSupply = new UnitSupply(70, 9);
 	}
 
 	public static void setPrice(int price) {
@@ -54,10 +55,10 @@ public class Tank extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
+		g.fillRect(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headSize, headSize);
 
 		g.setColor(Color.black);
-		g.drawRect(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
+		g.drawRect(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headSize, headSize);
 
 		// cannon
 		if (active) {
@@ -65,10 +66,10 @@ public class Tank extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(x * tileSize + cannonAlignX, y * tileSize + cannonAlignY, cannonWidth, cannonHeight);
+		g.fillRect(point.getX() * tileSize + cannonAlignX, point.getY() * tileSize + cannonAlignY, cannonWidth, cannonHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(x * tileSize + cannonAlignX, y * tileSize + cannonAlignY, cannonWidth, cannonHeight);
+		g.drawRect(point.getX() * tileSize + cannonAlignX, point.getY() * tileSize + cannonAlignY, cannonWidth, cannonHeight);
 
 		// body
 		if (active) {
@@ -76,9 +77,9 @@ public class Tank extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.fillRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.drawRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 	}
 }

@@ -45,7 +45,8 @@ public class HeroHandler {
 		for (int h = 0 ; h < getNumberOfHeroes() ; h++) {
 			for (int k = 0 ; k < getHero(h).getTroopHandler().getTroopSize() ; k++) {
 				Unit unit = heroes.get(h).getTroopHandler().getTroop(k);
-				if (unit.getX() == testUnit.getX() && unit.getY() == testUnit.getY() && !unit.isHidden()) {
+				if (unit.getPoint().getX() == testUnit.getPoint().getX() 
+						&& unit.getPoint().getY() == testUnit.getPoint().getY() && !unit.isHidden()) {
 					return getHero(h);
 				}
 			}

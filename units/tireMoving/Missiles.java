@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import units.IndirectUnit;
+import units.MovementType;
 import units.Unit;
+import units.UnitCategory;
+import units.UnitSupply;
 
 public class Missiles extends IndirectUnit {
 	private static int price = 12000;
@@ -14,14 +17,11 @@ public class Missiles extends IndirectUnit {
 		super(x, y, color);
 
 		movement = 4;
-		movementType = Unit.TIRE;
-		unitClass = Unit.VEHICLE;
+		movementType = MovementType.TIRE;
+		unitClass = UnitCategory.VEHICLE;
 		minimumRange = 3;
 		maximumRange = 5;
-
-		maxFuel = 50;
-		maxAmmo = 6;
-		replentish();
+		unitSupply = new UnitSupply(50, 6);
 	}
 
 	public static void setPrice(int price) {
@@ -37,14 +37,14 @@ public class Missiles extends IndirectUnit {
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
-		int cx1 = x * tileSize + 2 * tileSize / 3 + 1;
-		int cy1 = y * tileSize + tileSize / 10 - 1;
-		int cx2 = x * tileSize + 8 * tileSize / 10;
-		int cy2 = y * tileSize + tileSize / 4 + 4;
-		int cx3 = x * tileSize + tileSize / 4 - 2;
-		int cy3 = y * tileSize + tileSize / 2 + 5;
-		int cx4 = x * tileSize + tileSize / 5 - 4;
-		int cy4 = y * tileSize + 2 * tileSize / 5 - 2;
+		int cx1 = point.getX() * tileSize + 2 * tileSize / 3 + 1;
+		int cy1 = point.getY() * tileSize + tileSize / 10 - 1;
+		int cx2 = point.getX() * tileSize + 8 * tileSize / 10;
+		int cy2 = point.getY() * tileSize + tileSize / 4 + 4;
+		int cx3 = point.getX() * tileSize + tileSize / 4 - 2;
+		int cy3 = point.getY() * tileSize + tileSize / 2 + 5;
+		int cx4 = point.getX() * tileSize + tileSize / 5 - 4;
+		int cy4 = point.getY() * tileSize + 2 * tileSize / 5 - 2;
 
 		int bodyWidth = 2 * tileSize / 5 + 5;
 		int bodyHeight = tileSize / 4 + 3;
@@ -57,10 +57,10 @@ public class Missiles extends IndirectUnit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.fillRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.drawRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 
 		// cannon
 		int[] cannonX = {cx1, cx2, cx3, cx4};

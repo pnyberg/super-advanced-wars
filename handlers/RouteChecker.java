@@ -21,7 +21,8 @@ public class RouteChecker {
 	}
 
 	public void findPossibleMovementLocations(Unit checkedUnit) {
-		findPossibleMovementLocations(checkedUnit.getX(), checkedUnit.getY(), checkedUnit.getMovement(), checkedUnit);
+		findPossibleMovementLocations(checkedUnit.getPoint().getX(), checkedUnit.getPoint().getY(), 
+										checkedUnit.getMovement(), checkedUnit);
 	}
 
 	public void findPossibleMovementLocations(int x, int y, int movementSteps, Unit checkedUnit) {

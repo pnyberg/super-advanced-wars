@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import units.IndirectUnit;
+import units.MovementType;
 import units.Unit;
+import units.UnitCategory;
+import units.UnitSupply;
 
 public class Battleship extends IndirectUnit {
 	private static int price = 28000;
@@ -14,14 +17,11 @@ public class Battleship extends IndirectUnit {
 		super(x, y, color);
 
 		movement = 5;
-		movementType = Unit.SHIP;
-		unitClass = Unit.BOAT;
+		movementType = MovementType.SHIP;
+		unitClass = UnitCategory.BOAT;
 		minimumRange = 2;
 		maximumRange = 6;
-
-		maxFuel = 99;
-		maxAmmo = 9;
-		replentish();
+		unitSupply = new UnitSupply(99, 9);
 	}
 
 	public static void setPrice(int price) {
@@ -37,14 +37,14 @@ public class Battleship extends IndirectUnit {
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
-		int cx1 = x * tileSize + tileSize / 8;
-		int cy1 = y * tileSize + 3 * tileSize / 5;
-		int cx2 = x * tileSize + 7 * tileSize / 8;
-		int cy2 = y * tileSize + 3 * tileSize / 5;
-		int cx3 = x * tileSize + 3 * tileSize / 4;
-		int cy3 = y * tileSize + 5 * tileSize / 6;
-		int cx4 = x * tileSize + tileSize / 4;
-		int cy4 = y * tileSize + 5 * tileSize / 6;
+		int cx1 = point.getX() * tileSize + tileSize / 8;
+		int cy1 = point.getY() * tileSize + 3 * tileSize / 5;
+		int cx2 = point.getX() * tileSize + 7 * tileSize / 8;
+		int cy2 = point.getY() * tileSize + 3 * tileSize / 5;
+		int cx3 = point.getX() * tileSize + 3 * tileSize / 4;
+		int cy3 = point.getY() * tileSize + 5 * tileSize / 6;
+		int cx4 = point.getX() * tileSize + tileSize / 4;
+		int cy4 = point.getY() * tileSize + 5 * tileSize / 6;
 
 		int headWidth = tileSize / 4;
 		int headHeight = tileSize / 4;
@@ -77,10 +77,10 @@ public class Battleship extends IndirectUnit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(x * tileSize + headAlignX, y * tileSize + headAlignY, headWidth, headHeight);
+		g.fillRect(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headWidth, headHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(x * tileSize + headAlignX, y * tileSize + headAlignY, headWidth, headHeight);
+		g.drawRect(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headWidth, headHeight);
 
 		// cannon
 		if (active) {
@@ -88,9 +88,9 @@ public class Battleship extends IndirectUnit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(x * tileSize + cannonAlignX, y * tileSize + cannonAlignY, cannonWidth, cannonHeight);
+		g.fillRect(point.getX() * tileSize + cannonAlignX, point.getY() * tileSize + cannonAlignY, cannonWidth, cannonHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(x * tileSize + cannonAlignX, y * tileSize + cannonAlignY, cannonWidth, cannonHeight);
+		g.drawRect(point.getX() * tileSize + cannonAlignX, point.getY() * tileSize + cannonAlignY, cannonWidth, cannonHeight);
 	}
 }

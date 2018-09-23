@@ -50,8 +50,6 @@ import area.buildings.*;
  * @TODO: substitute ArrayList with HashMap for better performance
  */
 public class Gameboard extends JPanel implements KeyListener {
-	private boolean[][] rangeMap;
-
 	private MapDimension mapDimension;
 
 	private Cursor cursor;
@@ -65,14 +63,14 @@ public class Gameboard extends JPanel implements KeyListener {
 	private RouteHandler routeHandler;
 	private MapHandler mapHandler;
 	private DamageHandler damageHandler;
+	private AttackHandler attackHandler;
+	private AttackRangeHandler attackRangeHandler;
 
 	private Unit chosenUnit, rangeUnit;
 	private Building selectedBuilding;
 	
 	public Gameboard(MapDimension mapDimension, HeroHandler heroHandler, GameProperties gameProperties) {
 		this.mapDimension = mapDimension;
-
-		rangeMap = new boolean[mapDimension.width][mapDimension.height];
 
 		cursor = new Cursor(0, 0, mapDimension.tileSize);
 
@@ -86,6 +84,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		mapHandler = new MapHandler(mapDimension, routeHandler, heroHandler, gameProperties);
 		routeChecker = new RouteChecker(mapHandler, movementMap);
 		damageHandler = new DamageHandler(heroHandler, mapHandler.getMap());
+		attackRangeHandler = new AttackRangeHandler();
 
 		mapMenu = new MapMenu(mapDimension.tileSize);
 		unitMenu = new UnitMenu(mapDimension.tileSize);
@@ -190,7 +189,7 @@ public class Gameboard extends JPanel implements KeyListener {
 					}
 
 					int fuelUse = calculateFuelUsed();
-					chosenUnit.useFuel(fuelUse);
+					chosenUnit.getUnitSupply().useFuel(fuelUse);
 
 					chosenUnit.regulateActive(false);
 					chosenUnit = null;
@@ -204,15 +203,15 @@ public class Gameboard extends JPanel implements KeyListener {
 				damageHandler.handleAttack(chosenUnit, defendingUnit);
 				chosenUnit.regulateAttack(false);
 
-				int x = chosenUnit.getX();
-				int y = chosenUnit.getY();
+				int x = chosenUnit.getPoint().getX();
+				int y = chosenUnit.getPoint().getY();
 				cursor.setPosition(x, y);
 
 				removeUnitIfDead(defendingUnit);
 				removeUnitIfDead(chosenUnit);
 
 				int fuelUse = calculateFuelUsed();
-				chosenUnit.useFuel(fuelUse);
+				chosenUnit.getUnitSupply().useFuel(fuelUse);
 
 				chosenUnit.regulateActive(false);
 				chosenUnit = null;
@@ -236,7 +235,7 @@ public class Gameboard extends JPanel implements KeyListener {
 					}
 					handleDroppingOff();
 				} else if (unitMenu.atFireRow()) {
-					handleFiring();
+					attackHandler.handleFiring();
 				} else if (unitMenu.atEnterRow()) {
 					Unit entryUnit = mapHandler.getMapGettersObject().unitGetter.getFriendlyUnitExceptSelf(chosenUnit, cursorX, cursorY);
 					if (entryUnit instanceof APC) {
@@ -251,8 +250,8 @@ public class Gameboard extends JPanel implements KeyListener {
 
 					// @TODO cargo-unit enters other unit
 				} else if (unitMenu.atSupplyRow()) {
-					int x = chosenUnit.getX();
-					int y = chosenUnit.getY();
+					int x = chosenUnit.getPoint().getX();
+					int y = chosenUnit.getPoint().getY();
 
 					Unit north = mapHandler.getMapGettersObject().unitGetter.getFriendlyUnit(x, y - 1);
 					Unit east = mapHandler.getMapGettersObject().unitGetter.getFriendlyUnit(x + 1, y);
@@ -264,20 +263,21 @@ public class Gameboard extends JPanel implements KeyListener {
 					replentishUnit(south);
 					replentishUnit(west);
 				} else if (unitMenu.atJoinRow()) {
-					int x = chosenUnit.getX();
-					int y = chosenUnit.getY();
+					int x = chosenUnit.getPoint().getX();
+					int y = chosenUnit.getPoint().getY();
 					Unit unit = mapHandler.getMapGettersObject().unitGetter.getFriendlyUnitExceptSelf(chosenUnit, x, y);
 					
-					unit.heal(chosenUnit.getHP());
-					chosenUnit.kill();
+					unit.getUnitHealth().heal(chosenUnit.getUnitHealth().getHP());
+					chosenUnit.getUnitHealth().kill();
 					removeUnitIfDead(chosenUnit);
 				}
 
 				if (!unitIsDroppingOff() && !unitWantToFire()) {
 					// using fuel
 					int fuelUse = calculateFuelUsed();
-					chosenUnit.useFuel(fuelUse);
-					System.out.println("Fuel + Ammo: " + chosenUnit.getFuel() + " - " + chosenUnit.getAmmo());
+					chosenUnit.getUnitSupply().useFuel(fuelUse);
+					System.out.println("Fuel + Ammo: " + chosenUnit.getUnitSupply().getFuel() + 
+										" - " + chosenUnit.getUnitSupply().getAmmo());
 
 					chosenUnit.regulateActive(false);
 					chosenUnit = null;
@@ -290,8 +290,8 @@ public class Gameboard extends JPanel implements KeyListener {
 				buildingMenu.buySelectedTroop();
 				buildingMenu.closeMenu();
 			} else if (chosenUnit != null && movementMap.isAcceptedMove(cursorX, cursorY) && rangeUnit == null) {
-				int x = chosenUnit.getX();
-				int y = chosenUnit.getY();
+				int x = chosenUnit.getPoint().getX();
+				int y = chosenUnit.getPoint().getY();
 				if (mapHandler.getMapGettersObject().unitGetter.getFriendlyUnit(x, y) != null) {
 					handleOpenUnitMenu(cursorX, cursorY);
 				}
@@ -315,8 +315,8 @@ public class Gameboard extends JPanel implements KeyListener {
 
 		if (e.getKeyCode() == KeyEvent.VK_B) {
 			if (unitIsDroppingOff()) {
-				int x = chosenUnit.getX();
-				int y = chosenUnit.getY();
+				int x = chosenUnit.getPoint().getX();
+				int y = chosenUnit.getPoint().getY();
 				cursor.setPosition(x, y);
 				handleOpenUnitMenu(x, y);
 
@@ -333,8 +333,8 @@ public class Gameboard extends JPanel implements KeyListener {
 				if (chosenUnit instanceof IndirectUnit) {
 					((IndirectUnit)chosenUnit).clearFiringLocations();
 				}
-				int x = chosenUnit.getX();
-				int y = chosenUnit.getY();
+				int x = chosenUnit.getPoint().getX();
+				int y = chosenUnit.getPoint().getY();
 				cursor.setPosition(x, y);
 				handleOpenUnitMenu(x, y);
 
@@ -364,9 +364,9 @@ public class Gameboard extends JPanel implements KeyListener {
 
 				if (rangeUnit != null) {
 					if (rangeUnit.getAttackType() == AttackType.DIRECT_ATTACK) {
-						findPossibleDirectAttackLocations(rangeUnit);
+						attackRangeHandler.findPossibleDirectAttackLocations(rangeUnit);
 					} else if (rangeUnit.getAttackType() == AttackType.INDIRECT_ATTACK) {
-						createRangeAttackLocations(rangeUnit);
+						attackRangeHandler.createRangeAttackLocations(rangeUnit);
 					}
 				}
 			}
@@ -384,41 +384,8 @@ public class Gameboard extends JPanel implements KeyListener {
 		repaint();
 	}
 
-	public void handleFiring() {
-		chosenUnit.regulateAttack(true);
-
-		int x = chosenUnit.getX();
-		int y = chosenUnit.getY();
-
-		if (chosenUnit instanceof IndirectUnit) {
-			IndirectUnit indirectUnit = (IndirectUnit)chosenUnit;
-			calculatePossibleAttackLocations(indirectUnit);
-			Point p = indirectUnit.getNextFiringLocation();
-			x = p.getX();
-			y = p.getY();
-		} else {
-			Unit north = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(x, y - 1);
-			Unit east = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(x + 1, y);
-			Unit south = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(x, y + 1);
-			Unit west = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(x - 1, y);
-			if (y > 0 && north != null && damageHandler.validTarget(chosenUnit, north)) {
-				y--;
-			} else if (x < (mapDimension.width - 1) && east != null && damageHandler.validTarget(chosenUnit, east)) {
-				x++;
-			} else if (south != null && damageHandler.validTarget(chosenUnit, south)) {
-				y++;
-			} else if (west != null && damageHandler.validTarget(chosenUnit, west)) {
-				x--;
-			} else {
-				return; // cannot drop unit off anywhere
-			}
-		}
-
-		cursor.setPosition(x, y);
-	}
-
 	public void removeUnitIfDead(Unit unit) {
-		if (!unit.isDead()) {
+		if (!unit.getUnitHealth().isDead()) {
 			return;
 		}
 
@@ -446,8 +413,8 @@ public class Gameboard extends JPanel implements KeyListener {
 			return;
 		}
 
-		int x = chosenUnit.getX();
-		int y = chosenUnit.getY();
+		int x = chosenUnit.getPoint().getX();
+		int y = chosenUnit.getPoint().getY();
 
 		if (y > 0 && validPosition(containedUnit, x, y - 1)) {
 			y--;
@@ -464,7 +431,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		if (unitCanBeDroppedOff()) {
 			cursor.setPosition(x, y);
 		} else {
-			cursor.setPosition(chosenUnit.getX(), chosenUnit.getY());
+			cursor.setPosition(chosenUnit.getPoint().getX(), chosenUnit.getPoint().getY());
 		}
 	}
 
@@ -521,8 +488,8 @@ public class Gameboard extends JPanel implements KeyListener {
 			return false;
 		}
 
-		int x = chosenUnit.getX();
-		int y = chosenUnit.getY();
+		int x = chosenUnit.getPoint().getX();
+		int y = chosenUnit.getPoint().getY();
 
 		if (y > 0 && validPosition(unit, x, y - 1)) {
 			return true;
@@ -549,8 +516,8 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	public void moveDroppingOffCursorClockwise() {
-		int unitX = chosenUnit.getX();
-		int unitY = chosenUnit.getY();
+		int unitX = chosenUnit.getPoint().getX();
+		int unitY = chosenUnit.getPoint().getY();
 		int cursorX = cursor.getX();
 		int cursorY = cursor.getY();
 
@@ -607,8 +574,8 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	public void moveDroppingOffCursorCounterclockwise() {
-		int unitX = chosenUnit.getX();
-		int unitY = chosenUnit.getY();
+		int unitX = chosenUnit.getPoint().getX();
+		int unitY = chosenUnit.getPoint().getY();
 		int cursorX = cursor.getX();
 		int cursorY = cursor.getY();
 
@@ -665,8 +632,8 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	public void moveFiringCursorClockwise() {
-		int unitX = chosenUnit.getX();
-		int unitY = chosenUnit.getY();
+		int unitX = chosenUnit.getPoint().getX();
+		int unitY = chosenUnit.getPoint().getY();
 		int cursorX = cursor.getX();
 		int cursorY = cursor.getY();
 
@@ -721,8 +688,8 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	public void moveFiringCursorCounterclockwise() {
-		int unitX = chosenUnit.getX();
-		int unitY = chosenUnit.getY();
+		int unitX = chosenUnit.getPoint().getX();
+		int unitY = chosenUnit.getPoint().getY();
 		int cursorX = cursor.getX();
 		int cursorY = cursor.getY();
 
@@ -799,7 +766,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				unitMenu.getUnitMenuRowEntryBooleanHandler().allowJoin();
 			}
 
-			if (!hurtAtSamePosition && unitCanFire(cursorX, cursorY)) {
+			if (!hurtAtSamePosition && attackRangeHandler.unitCanFire(cursorX, cursorY)) {
 				unitMenu.getUnitMenuRowEntryBooleanHandler().allowFire();
 			}
 
@@ -940,162 +907,15 @@ public class Gameboard extends JPanel implements KeyListener {
 			return false;
 		}
 
-		return testUnit.isHurt() && testUnit.getClass().equals(unit.getClass());
+		return testUnit.getUnitHealth().isHurt() && testUnit.getClass().equals(unit.getClass());
 	}
 
-	private boolean unitCanFire(int cursorX, int cursorY) {
-		if (chosenUnit instanceof IndirectUnit) {
-			return indirectUnitCanFire(cursorX, cursorY);
-		} else if (chosenUnit instanceof APC
-					|| chosenUnit instanceof Lander
-					|| chosenUnit instanceof TCopter) {
-			return false;
-		}
-
-		return directUnitCanFire(cursorX, cursorY);
-	}
-
-	private boolean indirectUnitCanFire(int cursorX, int cursorY) {
-		IndirectUnit attackingUnit = (IndirectUnit)chosenUnit;
-
-		int unitX = attackingUnit.getX();
-		int unitY = attackingUnit.getY();
-		int minRange = attackingUnit.getMinRange();
-		int maxRange = attackingUnit.getMaxRange();
-
-
-		if (unitX != cursorX || unitY != cursorY) {
-			return false;
-		}
-
-		for (int y = unitY - maxRange ; y <= (unitY + maxRange) ; y++) {
-			if (y < 0) {
-				continue;
-			} else if (y >= mapDimension.height) {
-				break;
-			}
-			for (int x = unitX - maxRange ; x <= (unitX + maxRange) ; x++) {
-				if (x < 0) {
-					continue;
-				} else if (x >= mapDimension.width) {
-					break;
-				}
-
-				int distanceFromUnit = Math.abs(unitX - x) + Math.abs(unitY - y);
-				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
-					Unit targetUnit = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(x, y);
-					if (targetUnit != null && damageHandler.validTarget(attackingUnit, targetUnit)) {
-						return true;
-					}
-				}
-			}
-		}
-
-		return false;
-	}
-
-	private boolean directUnitCanFire(int cursorX, int cursorY) {
-		Unit northernFront = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX, cursorY - 1);
-		Unit easternFront = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX + 1, cursorY);
-		Unit southernFront = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX, cursorY + 1);
-		Unit westernFront = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(cursorX - 1, cursorY);
-
-		return (northernFront != null && damageHandler.validTarget(chosenUnit, northernFront)) 
-			|| (easternFront != null && damageHandler.validTarget(chosenUnit, easternFront))
-			|| (southernFront != null && damageHandler.validTarget(chosenUnit, southernFront))
-			|| (westernFront != null && damageHandler.validTarget(chosenUnit, westernFront));
-	}
-
-	private void findPossibleDirectAttackLocations(Unit chosenUnit) {
-		routeChecker.findPossibleMovementLocations(chosenUnit);
-
-		for (int n = 0 ; n < mapDimension.height ; n++) {
-			for (int i = 0 ; i < mapDimension.width ; i++) {
-				if (movementMap.isAcceptedMove(i, n)) {
-					if (i > 0) {
-						rangeMap[i - 1][n] = true;
-					}
-					if (i < (mapDimension.width - 1)) {
-						rangeMap[i + 1][n] = true;
-					}
-					if (n > 0) {
-						rangeMap[i][n - 1] = true;
-					}
-					if (n < (mapDimension.height - 1)) {
-						rangeMap[i][n + 1] = true;
-					}
-				}
-			}
-		}
-		movementMap.clearMovementMap();
-	}
-
-	private void createRangeAttackLocations(Unit chosenUnit) {
-		IndirectUnit unit = (IndirectUnit)chosenUnit;
-
-		int unitX = unit.getX();
-		int unitY = unit.getY();
-		int minRange = unit.getMinRange();
-		int maxRange = unit.getMaxRange();
-
-		for (int y = unitY - maxRange ; y <= (unitY + maxRange) ; y++) {
-			if (y < 0) {
-				continue;
-			} else if (y >= mapDimension.height) {
-				break;
-			}
-			for (int x = unitX - maxRange ; x <= (unitX + maxRange) ; x++) {
-				if (x < 0) {
-					continue;
-				} else if (x >= mapDimension.width) {
-					break;
-				}
-
-				int distanceFromUnit = Math.abs(unitX - x) + Math.abs(unitY - y);
-				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
-					rangeMap[x][y] = true;
-				}
-			}
-		}
-	}
-
-	private void calculatePossibleAttackLocations(IndirectUnit indirectUnit) {
-		int unitX = indirectUnit.getX();
-		int unitY = indirectUnit.getY();
-		int minRange = indirectUnit.getMinRange();
-		int maxRange = indirectUnit.getMaxRange();
-
-		for (int y = unitY - maxRange ; y <= (unitY + maxRange) ; y++) {
-			if (y < 0) {
-				continue;
-			} else if (y >= mapDimension.height) {
-				break;
-			}
-			for (int x = unitX - maxRange ; x <= (unitX + maxRange) ; x++) {
-				if (x < 0) {
-					continue;
-				} else if (x >= mapDimension.width) {
-					break;
-				}
-
-				int distanceFromUnit = Math.abs(unitX - x) + Math.abs(unitY - y);
-				
-				Unit target = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(x, y);
-				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange && 
-						 target != null && damageHandler.validTarget(chosenUnit, target)) {
-					Point p = new Point(x, y);
-					indirectUnit.addFiringLocation(p);
-				}
-			}
-		}
-	}
-	
 	private void replentishUnit(Unit unit) {
 		if (unit == null) {
 			return;
 		}
 		
-		unit.replentish();
+		unit.getUnitSupply().replentish();
 	}
 
 	private int calculateFuelUsed() {
@@ -1147,7 +967,7 @@ public class Gameboard extends JPanel implements KeyListener {
 			chosenUnit.paint(g, mapDimension.tileSize);
 		}
 
-		paintRange(g);
+		attackRangeHandler.paintRange(g);
 
 		mapHandler.getMapPainter().paintUnits(g, chosenUnit);
 
@@ -1159,89 +979,11 @@ public class Gameboard extends JPanel implements KeyListener {
 		} else if (buildingMenu.isVisible()) {
 			buildingMenu.paint(g);
 		} else if (unitWantToFire()) {
-			paintFiringCursor(g);
+			attackRangeHandler.paintFiringCursor(g);
 		} else {
 			cursor.paint(g);
 		}
 
 		mapHandler.getMapPainter().paintPortrait(g);
-	}
-
-	private void paintRange(Graphics g) {
-		int tileSize = mapDimension.tileSize;
-
-		for (int n = 0 ; n < mapDimension.height ; n++) {
-			for (int i = 0 ; i < mapDimension.width ; i++) {
-				if (rangeMap[i][n]) {
-					int paintX = i * tileSize;
-					int paintY = n * tileSize;
-
-					g.setColor(Color.red);
-					g.fillRect(paintX, paintY, tileSize, tileSize);
-					g.setColor(Color.black);
-					g.drawRect(paintX, paintY, tileSize, tileSize);
-				}
-			}
-		}
-	}
-
-	private void paintFiringCursor(Graphics g) {
-		int tileSize = mapDimension.tileSize;
-
-		int x = cursor.getX();
-		int y = cursor.getY();
-
-		int xDiff = x - chosenUnit.getX();
-		int yDiff = y - chosenUnit.getY();
-
-		Unit targetUnit = mapHandler.getMapGettersObject().unitGetter.getNonFriendlyUnit(x, y);
-
-		HeroPortrait portrait = mapHandler.getHeroPortrait();
-		Hero chosenHero = portrait.getHeroHandler().getCurrentHero();
-		Hero targetHero = portrait.getHeroHandler().getHeroFromUnit(targetUnit);
-		
-		Area[][] map = mapHandler.getMap();
-		TerrainType terrainType = map[x][y].getTerrainType();
-//		int areaDefenceValue = mapHandler.getDefenceValue(terrainType);
-
-		int damage = damageHandler.getNonRNGDamageValue(chosenUnit, chosenHero, targetUnit, targetHero, terrainType); 
-				
-		int damageFieldWidth = (damage <= 9 ? 3 * tileSize / 5 : 
-									(damage <= 99 ? 4 * tileSize / 5
-										: tileSize - 3));
-		int damageFieldHeight = 3 * tileSize / 5;
-
-		int paintX = x * tileSize + 2;
-		int paintY = y * tileSize + 2;
-		int dmgFieldX = x * tileSize; // will be changed
-		int dmgFieldY = y * tileSize; // will be changed
-
-		g.setColor(Color.black);
-		g.drawOval(paintX, paintY, tileSize - 4, tileSize - 4);
-		g.drawOval(paintX + 2, paintY + 2, tileSize - 8, tileSize - 8);
-
-		g.setColor(Color.white);
-		g.drawOval(paintX + 1, paintY + 1, tileSize - 6, tileSize - 6);
-
-		if (yDiff == -1) {
-			dmgFieldX += tileSize;
-			dmgFieldY += -damageFieldHeight;
-		} else if (xDiff == 1) {
-			dmgFieldX += tileSize;
-			dmgFieldY += tileSize;
-		} else if (yDiff == 1) {
-			dmgFieldX += -damageFieldWidth;
-			dmgFieldY += tileSize;
-		} else { // xDiff == -1
-			dmgFieldX += -damageFieldWidth;
-			dmgFieldY += -damageFieldHeight;
-		}
-
-		g.setColor(Color.red);
-		g.fillRect(dmgFieldX, dmgFieldY, damageFieldWidth, damageFieldHeight);
-		g.setColor(Color.black);
-		g.drawRect(dmgFieldX, dmgFieldY, damageFieldWidth, damageFieldHeight);
-		g.setColor(Color.white);
-		g.drawString("" + damage + "%", dmgFieldX + damageFieldWidth / 10, dmgFieldY + 2 * damageFieldHeight / 3);
 	}
 }

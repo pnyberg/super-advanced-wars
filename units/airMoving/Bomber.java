@@ -3,7 +3,10 @@ package units.airMoving;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import units.MovementType;
 import units.Unit;
+import units.UnitCategory;
+import units.UnitSupply;
 
 public class Bomber extends Unit {
 	private static int price = 22000;
@@ -13,12 +16,9 @@ public class Bomber extends Unit {
 		super(x, y, color);
 
 		movement = 7;
-		movementType = Unit.AIR;
-		unitClass = Unit.PLANE;
-
-		maxFuel = 99;
-		maxAmmo = 9;
-		replentish();
+		movementType = MovementType.AIR;
+		unitClass = UnitCategory.PLANE;
+		unitSupply = new UnitSupply(99, 9);
 	}
 
 	public static void setPrice(int price) {
@@ -39,12 +39,12 @@ public class Bomber extends Unit {
 		int bodyAlignX = 3 * tileSize / 20;
 		int bodyAlignY = tileSize / 5 + 3;
 
-		int x1 = x * tileSize + tileSize / 3 - 3;
-		int x2 = x * tileSize + 2 * tileSize / 5 - 3;
-		int x3 = x * tileSize + 3 * tileSize / 5 + 4;
-		int x4 = x * tileSize + 3 * tileSize / 4 + 1;
-		int y1 = y * tileSize + 5 * tileSize / 10;
-		int y2 = y * tileSize + 9 * tileSize / 10;
+		int x1 = point.getX() * tileSize + tileSize / 3 - 3;
+		int x2 = point.getX() * tileSize + 2 * tileSize / 5 - 3;
+		int x3 = point.getX() * tileSize + 3 * tileSize / 5 + 4;
+		int x4 = point.getX() * tileSize + 3 * tileSize / 4 + 1;
+		int y1 = point.getY() * tileSize + 5 * tileSize / 10;
+		int y2 = point.getY() * tileSize + 9 * tileSize / 10;
 		int y3 = y2;
 		int y4 = y1;
 
@@ -58,10 +58,10 @@ public class Bomber extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillOval(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.fillOval(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 
 		g.setColor(Color.black);
-		g.drawOval(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.drawOval(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 
 		// wings
 		if (active) {

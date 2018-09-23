@@ -33,8 +33,8 @@ public class UnitBattleInteractionHandler {
 	 */
 	public void testMachineGunVsUnit(Unit attacker) {
 		// if the attacking unit normally has main weapon, empty it
-		while(attacker.hasAmmo()) {
-			attacker.useAmmo();
+		while(attacker.getUnitSupply().hasAmmo()) {
+			attacker.getUnitSupply().useAmmo();
 		}
 
 		Unit[] acceptedUnits = unitCollection.getNonPlaneNonSeaUnits();
@@ -44,7 +44,7 @@ public class UnitBattleInteractionHandler {
 		testNonCruiserOrSubVsSub(attacker, false);
 
 		// reset the ammo
-		attacker.replentish();
+		attacker.getUnitSupply().replentish();
 	}
 
 	/**
@@ -122,14 +122,14 @@ public class UnitBattleInteractionHandler {
 //		testXvsY(attacker, sub, true);
 
 		// shouldn't be able to attack subs with machine gun (if Cruiser)
-		while(attacker.hasAmmo()) {
-			attacker.useAmmo();
+		while(attacker.getUnitSupply().hasAmmo()) {
+			attacker.getUnitSupply().useAmmo();
 		}
 		
 //		testXvsY(attacker, sub, false);
 		//sub.emerge();
 //		testXvsY(attacker, sub, false);
 		
-		unitCollection.cruiser.replentish();
+		unitCollection.cruiser.getUnitSupply().replentish();
 	}
 }

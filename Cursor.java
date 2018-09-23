@@ -1,5 +1,3 @@
-import handlers.*;
-
 import java.awt.Color;
 import java.awt.Graphics;
 
@@ -9,7 +7,8 @@ import java.awt.Graphics;
  * @author pernyberg
  */
 public class Cursor {
-	private int x, y;
+	private int x;
+	private int y;
 
 	private final Color fillColor = Color.red;
 	private final Color edgeColor = Color.yellow;

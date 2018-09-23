@@ -39,17 +39,17 @@ public class DamageHandler {
 	public void handleAttack(Unit attacking, Unit defending) {
 		Hero attackingHero = heroHandler.getHeroFromUnit(attacking);
 		Hero defendingHero = heroHandler.getHeroFromUnit(defending); 
-		int attX = attacking.getX();
-		int attY = attacking.getY();
-		int defX = defending.getX();
-		int defY = defending.getY();
+		int attX = attacking.getPoint().getX();
+		int attY = attacking.getPoint().getY();
+		int defX = defending.getPoint().getX();
+		int defY = defending.getPoint().getY();
 		
 		TerrainType defendingTerrainType = map[defX][defY].getTerrainType();
 
 		// deal damage from attacker to defender
 		performDamageCalculation(attacking, attackingHero, defending, defendingHero, defendingTerrainType);
 
-		if (defending.getHP() <= 0) {
+		if (defending.getUnitHealth().getHP() <= 0) {
 			return;
 		}
 
@@ -62,7 +62,7 @@ public class DamageHandler {
 
 	private void performDamageCalculation(Unit attacker, Hero attHero, Unit defender, Hero defHero, TerrainType defTerrainType) {
 		int damageValue = damageCalculator.calculateRNGDamage(attacker, attHero, defender, defHero, defTerrainType);
-		defender.takeDamage(damageValue);
+		defender.getUnitHealth().takeDamage(damageValue);
 
 		starPowerCalculator.calculateStarPowerOpponent(attHero, defender, damageValue);
 		starPowerCalculator.calculateStarPowerSelf(defHero, defender, damageValue);
@@ -84,7 +84,7 @@ public class DamageHandler {
 		int attUnitType = UnitType.getTypeFromUnit(attackingUnit);
 		int targetUnitType = UnitType.getTypeFromUnit(targetUnit);
 
-		return (attackingUnit.hasAmmo() && getBaseDamageValue(attUnitType, targetUnitType, 0) > -1)
+		return (attackingUnit.getUnitSupply().hasAmmo() && getBaseDamageValue(attUnitType, targetUnitType, 0) > -1)
 			|| getBaseDamageValue(attUnitType, targetUnitType, 1) > -1;
 	}
 

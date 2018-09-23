@@ -3,7 +3,10 @@ package units.treadMoving;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import units.MovementType;
 import units.Unit;
+import units.UnitCategory;
+import units.UnitSupply;
 
 public class AAir extends Unit {
 	private static int price = 8000;
@@ -13,12 +16,9 @@ public class AAir extends Unit {
 		super(x, y, color);
 
 		movement = 6;
-		movementType = Unit.BAND;
-		unitClass = Unit.VEHICLE;
-
-		maxFuel = 60;
-		maxAmmo = 9;
-		replentish();
+		movementType = MovementType.BAND;
+		unitClass = UnitCategory.VEHICLE;
+		unitSupply = new UnitSupply(60, 9);
 	}
 
 	public static void setPrice(int price) {
@@ -34,8 +34,8 @@ public class AAir extends Unit {
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
-		int paintX = x * tileSize;
-		int paintY = y * tileSize;
+		int paintX = point.getX() * tileSize;
+		int paintY = point.getY() * tileSize;
 
 		int headAlignX = paintX + tileSize / 3 - 1;
 		int headAlignY = paintY + tileSize / 5;

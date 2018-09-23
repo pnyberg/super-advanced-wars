@@ -30,8 +30,8 @@ public class DamageCalculator {
 		int heroAttackValue = attHero.getAttackDefenceObject().getAttackValue(attType);
 		int heroDefenceValue = defHero.getAttackDefenceObject().getDefenceValue(defType);
 		int areaDefenceValue = (defender.getMovementType() == MovementType.AIR ? 0 : defenceValueCalculator.getDefenceValue(defTerrainType));
-		int attackingAffect = attacker.getHP() / 10 * ((baseDamage * heroAttackValue) / 100) / 10;
-		int defendingAffect = (200 - (heroDefenceValue + areaDefenceValue * defender.getHP() / 10)) / 10;
+		int attackingAffect = attacker.getUnitHealth().getHP() / 10 * ((baseDamage * heroAttackValue) / 100) / 10;
+		int defendingAffect = (200 - (heroDefenceValue + areaDefenceValue * defender.getUnitHealth().getHP() / 10)) / 10;
 
 		int damageValue = attackingAffect * defendingAffect / 10;
 		return damageValue;
@@ -44,7 +44,7 @@ public class DamageCalculator {
 		int weaponIndex = weaponIndexChooser.getWeaponIndex(attacker, defender); // 0 or 1
 
 		if (weaponIndex == 0) {
-			attacker.useAmmo();
+			attacker.getUnitSupply().useAmmo();
 		}
 
 		int baseDamage = getBaseDamageValue(attType, defType, weaponIndex);
@@ -53,8 +53,8 @@ public class DamageCalculator {
 		int heroDefenceValue = defHero.getAttackDefenceObject().getDefenceValue(defType);
 		int areaDefenceValue = (defender.getMovementType() == MovementType.AIR ? 0 : defenceValueCalculator.getDefenceValue(defTerrainType));
 		
-		int attackingAffect = attacker.getHP() / 10 * ((baseDamage * heroAttackValue) / 100 + rngNumber) / 10;
-		int defendingAffect = (200 - (heroDefenceValue + areaDefenceValue * defender.getHP() / 10)) / 10;
+		int attackingAffect = attacker.getUnitHealth().getHP() / 10 * ((baseDamage * heroAttackValue) / 100 + rngNumber) / 10;
+		int defendingAffect = (200 - (heroDefenceValue + areaDefenceValue * defender.getUnitHealth().getHP() / 10)) / 10;
 		int damageValue = attackingAffect * defendingAffect / 10;
 		
 		return damageValue;

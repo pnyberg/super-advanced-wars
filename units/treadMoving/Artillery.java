@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import units.IndirectUnit;
+import units.MovementType;
 import units.Unit;
+import units.UnitCategory;
+import units.UnitSupply;
 
 public class Artillery extends IndirectUnit {
 	private static int price = 6000;
@@ -14,14 +17,11 @@ public class Artillery extends IndirectUnit {
 		super(x, y, color);
 
 		movement = 5;
-		movementType = Unit.BAND;
-		unitClass = Unit.VEHICLE;
+		movementType = MovementType.BAND;
+		unitClass = UnitCategory.VEHICLE;
 		minimumRange = 2;
 		maximumRange = 3;
-
-		maxFuel = 50;
-		maxAmmo = 9;
-		replentish();
+		unitSupply = new UnitSupply(50, 9);
 	}
 
 	public static void setPrice(int price) {
@@ -37,16 +37,16 @@ public class Artillery extends IndirectUnit {
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
-		int cx1 = x * tileSize + 3 * tileSize / 4;
-		int cy1 = y * tileSize + tileSize / 8;
+		int cx1 = point.getX() * tileSize + 3 * tileSize / 4;
+		int cy1 = point.getY() * tileSize + tileSize / 8;
 
-		int cx2 = x * tileSize + 7 * tileSize / 8;
-		int cy2 = y * tileSize + tileSize / 4;
+		int cx2 = point.getX() * tileSize + 7 * tileSize / 8;
+		int cy2 = point.getY() * tileSize + tileSize / 4;
 
-		int cx3 = x * tileSize + 3 * tileSize / 4 - 3;
-		int cy3 = y * tileSize + 7 * tileSize / 20 + 3;
-		int cx4 = x * tileSize + tileSize / 4 + 5;
-		int cy4 = y * tileSize + 7 * tileSize / 20 + 3;
+		int cx3 = point.getX() * tileSize + 3 * tileSize / 4 - 3;
+		int cy3 = point.getY() * tileSize + 7 * tileSize / 20 + 3;
+		int cx4 = point.getX() * tileSize + tileSize / 4 + 5;
+		int cy4 = point.getY() * tileSize + 7 * tileSize / 20 + 3;
 
 		int bodyWidth = 2 * tileSize / 5 + 1;
 		int bodyHeight = tileSize / 4 + 3;
@@ -74,9 +74,9 @@ public class Artillery extends IndirectUnit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.fillRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.drawRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 	}
 }

@@ -3,7 +3,10 @@ package units.footMoving;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import units.MovementType;
 import units.Unit;
+import units.UnitCategory;
+import units.UnitSupply;
 
 public class Mech extends Unit {
 	private static int price = 3000;
@@ -13,12 +16,9 @@ public class Mech extends Unit {
 		super(x, y, color);
 
 		movement = 2;
-		movementType = Unit.MECH;
-		unitClass = Unit.FOOTMAN;
-
-		maxFuel = 70;
-		maxAmmo = 3;
-		replentish();
+		movementType = MovementType.MECH;
+		unitClass = UnitCategory.FOOTMAN;
+		unitSupply = new UnitSupply(70, 3);
 	}
 
 	public static void setPrice(int price) {
@@ -53,10 +53,10 @@ public class Mech extends Unit {
 
 		// rocket
 		g.setColor(Color.gray);
-		g.fillRect(x * tileSize + rocketAlignX, y * tileSize + rocketAlignY, rocketWidth, rocketHeight);
+		g.fillRect(point.getX() * tileSize + rocketAlignX, point.getY() * tileSize + rocketAlignY, rocketWidth, rocketHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(x * tileSize + rocketAlignX, y * tileSize + rocketAlignY, rocketWidth, rocketHeight);
+		g.drawRect(point.getX() * tileSize + rocketAlignX, point.getY() * tileSize + rocketAlignY, rocketWidth, rocketHeight);
 
 		// head
 		if (active) {
@@ -64,19 +64,19 @@ public class Mech extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillOval(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
+		g.fillOval(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headSize, headSize);
 
 		g.setColor(Color.black);
-		g.drawOval(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
+		g.drawOval(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headSize, headSize);
 
 		// body
-		g.drawLine(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, x * tileSize + bodyAlignX, y * tileSize + bodyEndY);
+		g.drawLine(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyEndY);
 
 		// arms
-		g.drawLine(x * tileSize + leftArmAlign, y * tileSize + armAlignY, x * tileSize + rightArmEnd, y * tileSize + armAlignY);
+		g.drawLine(point.getX() * tileSize + leftArmAlign, point.getY() * tileSize + armAlignY, point.getX() * tileSize + rightArmEnd, point.getY() * tileSize + armAlignY);
 
 		// legs
-		g.drawLine(x * tileSize + leftLegAlign, y * tileSize + feetLevel, x * tileSize + bodyAlignX, y * tileSize + bodyEndY);
-		g.drawLine(x * tileSize + bodyAlignX, y * tileSize + bodyEndY, x * tileSize + rightLegEnd, y * tileSize + feetLevel);
+		g.drawLine(point.getX() * tileSize + leftLegAlign, point.getY() * tileSize + feetLevel, point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyEndY);
+		g.drawLine(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyEndY, point.getX() * tileSize + rightLegEnd, point.getY() * tileSize + feetLevel);
 	}
 }

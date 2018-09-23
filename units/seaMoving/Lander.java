@@ -4,7 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import units.AttackType;
+import units.MovementType;
 import units.Unit;
+import units.UnitCategory;
+import units.UnitSupply;
 
 public class Lander extends Unit {
 	private static int price = 12000;
@@ -18,14 +22,10 @@ public class Lander extends Unit {
 		super(x, y, color);
 
 		movement = 6;
-		movementType = Unit.TRANSPORT;
-		attackType = Unit.NONE;
-		unitClass = Unit.BOAT;
-
-		maxFuel = 99;
-		maxAmmo = 0;
-		replentish();
-
+		movementType = MovementType.TRANSPORT;
+		attackType = AttackType.NONE;
+		unitClass = UnitCategory.BOAT;
+		unitSupply = new UnitSupply(99, 0);
 		containedUnits = new ArrayList<Unit>();
 		droppingOff = false;
 		chosenIndex = -1;
@@ -98,14 +98,14 @@ public class Lander extends Unit {
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
-		int cx1 = x * tileSize + tileSize / 8;
-		int cy1 = y * tileSize + 3 * tileSize / 5;
-		int cx2 = x * tileSize + 7 * tileSize / 8;
-		int cy2 = y * tileSize + 3 * tileSize / 5;
-		int cx3 = x * tileSize + 3 * tileSize / 4;
-		int cy3 = y * tileSize + 5 * tileSize / 6;
-		int cx4 = x * tileSize + tileSize / 4;
-		int cy4 = y * tileSize + 5 * tileSize / 6;
+		int cx1 = point.getX() * tileSize + tileSize / 8;
+		int cy1 = point.getY() * tileSize + 3 * tileSize / 5;
+		int cx2 = point.getX() * tileSize + 7 * tileSize / 8;
+		int cy2 = point.getY() * tileSize + 3 * tileSize / 5;
+		int cx3 = point.getX() * tileSize + 3 * tileSize / 4;
+		int cy3 = point.getY() * tileSize + 5 * tileSize / 6;
+		int cx4 = point.getX() * tileSize + tileSize / 4;
+		int cy4 = point.getY() * tileSize + 5 * tileSize / 6;
 
 		// body
 		int[] cannonX = {cx1, cx2, cx3, cx4};

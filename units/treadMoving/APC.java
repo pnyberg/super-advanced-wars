@@ -3,7 +3,11 @@ package units.treadMoving;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import units.AttackType;
+import units.MovementType;
 import units.Unit;
+import units.UnitCategory;
+import units.UnitSupply;
 
 public class APC extends Unit {
 	private static int price = 6000;
@@ -16,14 +20,10 @@ public class APC extends Unit {
 		super(x, y, color);
 
 		movement = 6;
-		movementType = Unit.BAND;
-		attackType = Unit.NONE;
-		unitClass = Unit.VEHICLE;
-
-		maxFuel = 70;
-		maxAmmo = 0;
-		replentish();
-
+		movementType = MovementType.BAND;
+		attackType = AttackType.NONE;
+		unitClass = UnitCategory.VEHICLE;
+		unitSupply = new UnitSupply(70, 0);
 		containedUnit = null;
 		droppingOff = false;
 	}
@@ -91,9 +91,9 @@ public class APC extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.fillRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.drawRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 	}
 }

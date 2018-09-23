@@ -3,7 +3,10 @@ package units.footMoving;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import units.MovementType;
 import units.Unit;
+import units.UnitCategory;
+import units.UnitSupply;
 
 public class Infantry extends Unit {
 	private static int price = 1000;
@@ -13,12 +16,9 @@ public class Infantry extends Unit {
 		super(x, y, color);
 
 		movement = 3;
-		movementType = Unit.INFANTRY;
-		unitClass = Unit.FOOTMAN;
-
-		maxFuel = 99;
-		maxAmmo = 0;
-		replentish();
+		movementType = MovementType.INFANTRY;
+		unitClass = UnitCategory.FOOTMAN;
+		unitSupply = new UnitSupply(99, 0);
 	}
 
 	public static void setPrice(int price) {
@@ -54,18 +54,18 @@ public class Infantry extends Unit {
 		}
 
 		// head
-		g.fillOval(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
+		g.fillOval(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headSize, headSize);
 		g.setColor(Color.black);
-		g.drawOval(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
+		g.drawOval(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headSize, headSize);
 
 		// body
-		g.drawLine(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, x * tileSize + bodyAlignX, y * tileSize + bodyEndY);
+		g.drawLine(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyEndY);
 
 		// arms
-		g.drawLine(x * tileSize + leftArmAlign, y * tileSize + armAlignY, x * tileSize + rightArmEnd, y * tileSize + armAlignY);
+		g.drawLine(point.getX() * tileSize + leftArmAlign, point.getY() * tileSize + armAlignY, point.getX() * tileSize + rightArmEnd, point.getY() * tileSize + armAlignY);
 
 		// legs
-		g.drawLine(x * tileSize + leftLegAlign, y * tileSize + feetLevel, x * tileSize + bodyAlignX, y * tileSize + bodyEndY);
-		g.drawLine(x * tileSize + bodyAlignX, y * tileSize + bodyEndY, x * tileSize + rightLegEnd, y * tileSize + feetLevel);
+		g.drawLine(point.getX() * tileSize + leftLegAlign, point.getY() * tileSize + feetLevel, point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyEndY);
+		g.drawLine(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyEndY, point.getX() * tileSize + rightLegEnd, point.getY() * tileSize + feetLevel);
 	}
 }

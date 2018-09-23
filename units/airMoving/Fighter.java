@@ -3,7 +3,10 @@ package units.airMoving;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import units.MovementType;
 import units.Unit;
+import units.UnitCategory;
+import units.UnitSupply;
 
 public class Fighter extends Unit {
 	private static int price = 20000;
@@ -13,12 +16,9 @@ public class Fighter extends Unit {
 		super(x, y, color);
 
 		movement = 9;
-		movementType = Unit.AIR;
-		unitClass = Unit.PLANE;
-
-		maxFuel = 99;
-		maxAmmo = 9;
-		replentish();
+		movementType = MovementType.AIR;
+		unitClass = UnitCategory.PLANE;
+		unitSupply = new UnitSupply(99, 9);
 	}
 
 	public static void setPrice(int price) {
@@ -43,12 +43,12 @@ public class Fighter extends Unit {
 		int headAlignX = 3 * tileSize / 5 + 2;
 		int headAlignY = bodyAlignY - 2;
 
-		int x1 = x * tileSize + tileSize / 3 - 2;
-		int x2 = x * tileSize + 2 * tileSize / 5 - 2;
-		int x3 = x * tileSize + 3 * tileSize / 5 - 2;
-		int x4 = x * tileSize + 2 * tileSize / 3 - 2;
-		int y1 = y * tileSize + 3 * tileSize / 5;
-		int y2 = y * tileSize + 9 * tileSize / 10;
+		int x1 = point.getX() * tileSize + tileSize / 3 - 2;
+		int x2 = point.getX() * tileSize + 2 * tileSize / 5 - 2;
+		int x3 = point.getX() * tileSize + 3 * tileSize / 5 - 2;
+		int x4 = point.getX() * tileSize + 2 * tileSize / 3 - 2;
+		int y1 = point.getY() * tileSize + 3 * tileSize / 5;
+		int y2 = point.getY() * tileSize + 9 * tileSize / 10;
 		int y3 = y2;
 		int y4 = y1;
 
@@ -62,10 +62,10 @@ public class Fighter extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.fillRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(x * tileSize + bodyAlignX, y * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.drawRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
 
 		// head
 		if (active) {
@@ -73,10 +73,10 @@ public class Fighter extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillOval(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
+		g.fillOval(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headSize, headSize);
 
 		g.setColor(Color.black);
-		g.drawOval(x * tileSize + headAlignX, y * tileSize + headAlignY, headSize, headSize);
+		g.drawOval(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headSize, headSize);
 
 		// wings
 		if (active) {

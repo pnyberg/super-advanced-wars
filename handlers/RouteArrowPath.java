@@ -103,8 +103,8 @@ public class RouteArrowPath {
 	//        result: will get stuck
 	public void recountPath(Point newPosition, Unit chosenUnit, MapHandler mapHandler) {
 		MovementType movementType = chosenUnit.getMovementType();
-		int diffX = newPosition.getX() - chosenUnit.getX();
-		int diffY = newPosition.getY() - chosenUnit.getY();
+		int diffX = newPosition.getX() - chosenUnit.getPoint().getX();
+		int diffY = newPosition.getY() - chosenUnit.getPoint().getY();
 
 		clear();
 		addArrowPoint(chosenUnit.getPoint());

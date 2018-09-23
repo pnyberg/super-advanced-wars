@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import units.MovementType;
 import units.Unit;
+import units.UnitCategory;
+import units.UnitSupply;
 
 public class Cruiser extends Unit {
 	private static int price = 18000;
@@ -18,13 +21,9 @@ public class Cruiser extends Unit {
 		super(x, y, color);
 
 		movement = 6;
-		movementType = Unit.SHIP;
-		unitClass = Unit.BOAT;
-
-		maxFuel = 99;
-		maxAmmo = 9;
-		replentish();
-
+		movementType = MovementType.SHIP;
+		unitClass = UnitCategory.BOAT;
+		unitSupply = new UnitSupply(99, 9);
 		containedUnits = new ArrayList<Unit>();
 		droppingOff = false;
 		chosenIndex = -1;
@@ -97,14 +96,14 @@ public class Cruiser extends Unit {
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
-		int cx1 = x * tileSize + tileSize / 8;
-		int cy1 = y * tileSize + 3 * tileSize / 5;
-		int cx2 = x * tileSize + 7 * tileSize / 8;
-		int cy2 = y * tileSize + 3 * tileSize / 5;
-		int cx3 = x * tileSize + 3 * tileSize / 4;
-		int cy3 = y * tileSize + 5 * tileSize / 6;
-		int cx4 = x * tileSize + tileSize / 4;
-		int cy4 = y * tileSize + 5 * tileSize / 6;
+		int cx1 = point.getX() * tileSize + tileSize / 8;
+		int cy1 = point.getY() * tileSize + 3 * tileSize / 5;
+		int cx2 = point.getX() * tileSize + 7 * tileSize / 8;
+		int cy2 = point.getY() * tileSize + 3 * tileSize / 5;
+		int cx3 = point.getX() * tileSize + 3 * tileSize / 4;
+		int cy3 = point.getY() * tileSize + 5 * tileSize / 6;
+		int cx4 = point.getX() * tileSize + tileSize / 4;
+		int cy4 = point.getY() * tileSize + 5 * tileSize / 6;
 
 		int headWidth = tileSize / 4;
 		int headHeight = tileSize / 4;
@@ -137,10 +136,10 @@ public class Cruiser extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(x * tileSize + headAlignX, y * tileSize + headAlignY, headWidth, headHeight);
-		g.fillRect(x * tileSize + miniHeadAlignX, y * tileSize + miniHeadAlignY, miniHeadWidth, miniHeadHeight);
+		g.fillRect(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headWidth, headHeight);
+		g.fillRect(point.getX() * tileSize + miniHeadAlignX, point.getY() * tileSize + miniHeadAlignY, miniHeadWidth, miniHeadHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(x * tileSize + headAlignX, y * tileSize + headAlignY, headWidth, headHeight);
+		g.drawRect(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headWidth, headHeight);
 	}
 }
