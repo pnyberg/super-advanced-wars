@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import heroes.Hero;
 import heroes.HeroPortrait;
-import map.area.buildings.Building;
+import map.buildings.Building;
 
 public class CashHandler {
 	private HeroPortrait heroPortrait;

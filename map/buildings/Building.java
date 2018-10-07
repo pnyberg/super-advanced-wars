@@ -1,4 +1,4 @@
-package map.area.buildings;
+package map.buildings;
 
 import heroes.*;
 
@@ -6,9 +6,10 @@ import java.awt.Graphics;
 
 public abstract class Building {
 	private static int income;
-
 	protected Hero owner;
-	protected int x, y, captingValue;
+	protected int x;
+	protected int y;
+	protected int captingValue;
 
 	// static since all buildings should generate the same amount of cash
 	public static void init(int income) {
@@ -22,6 +23,7 @@ public abstract class Building {
 
 	public void setOwnership(Hero hero) {
 		owner = hero;
+		captingValue = 0;
 	}
 
 	public void capt(int captingValue) {

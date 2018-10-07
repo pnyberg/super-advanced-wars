@@ -1,4 +1,3 @@
-package main;
 /**
  * TODO-list
  * - capting
@@ -13,6 +12,8 @@ package main;
  *
  * @TODO: substitute ArrayList with HashMap for better performance
  */
+package main;
+
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -21,18 +22,17 @@ import javax.swing.JPanel;
 import combat.AttackHandler;
 import cursors.Cursor;
 import gameObjects.GameProp;
-import gameObjects.MapDim;
 import menus.unit.UnitMenu;
 import units.ContUnitHandler;
 import units.Unit;
 
 public class Gameboard extends JPanel implements KeyListener {
 	private InternalStructureObject internalStructureObject;
-	private MapDim mapDim;
+	private GameProp gameProp;
 	
-	public Gameboard(MapDim mapDim, HeroHandler heroHandler, GameProp gameProp) {
-		internalStructureObject = new InternalStructureObject(mapDim, heroHandler, gameProp); 
-		this.mapDim = mapDim;
+	public Gameboard(GameProp gameProp, HeroHandler heroHandler) {
+		internalStructureObject = new InternalStructureObject(gameProp, heroHandler); 
+		this.gameProp = gameProp;
 		
 		addKeyListener(this);
 		init();
@@ -75,9 +75,9 @@ public class Gameboard extends JPanel implements KeyListener {
 		super.paintComponent(g);
 		
 		AttackHandler attackHandler = internalStructureObject.getAttackHandler();
-		Unit chosenUnit = internalStructureObject.getChosenObject().chosenUnit;
+		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
 		Cursor cursor = internalStructureObject.getCursor();
-		UnitMenu unitMenu = internalStructureObject.getUnitMenu();
+		UnitMenu unitMenu = internalStructureObject.getUnitMenuHandler().getUnitMenu();
 		ContUnitHandler contUnitHandler = internalStructureObject.getContUnitHandler();
 
 		internalStructureObject.getMapPainter().paintMap(g);
@@ -87,7 +87,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				internalStructureObject.getRouteHandler().getRouteArrowPath().paintArrow(g);
 			}
 
-			chosenUnit.paint(g, mapDim.tileSize);
+			chosenUnit.paint(g, gameProp.getMapDim().tileSize);
 		}
 
 		internalStructureObject.getAttackRangeHandler().paintRange(g);
@@ -96,8 +96,8 @@ public class Gameboard extends JPanel implements KeyListener {
 		// when the mapMenu is open the cursor is hidden
 		if (internalStructureObject.getMapMenu().isVisible()) {
 			internalStructureObject.getMapMenu().paint(g);
-		} else if (internalStructureObject.getUnitMenu().isVisible()) {
-			internalStructureObject.getUnitMenu().paint(g);
+		} else if (unitMenu.isVisible()) {
+			unitMenu.paint(g);
 		} else if (internalStructureObject.getBuildingMenu().isVisible()) {
 			internalStructureObject.getBuildingMenu().paint(g);
 		} else if (attackHandler.unitWantsToFire(chosenUnit)) {

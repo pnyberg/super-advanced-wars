@@ -2,6 +2,7 @@ package units;
 
 import cursors.Cursor;
 import gameObjects.ChosenObject;
+import gameObjects.GameProp;
 import gameObjects.MapDim;
 import map.UnitGetter;
 import map.area.Area;
@@ -25,17 +26,15 @@ import units.treadMoving.Neotank;
 import units.treadMoving.Tank;
 
 public class ContUnitHandler {
-	private MapDim mapDimension;
-	private ChosenObject chosenObject;
+	private GameProp gameProp;
 	private Area[][] map;
 	private Cursor cursor;
 	private UnitGetter unitGetter;
 	private AreaChecker areaChecker;
 	private RouteChecker routeChecker;
 	
-	public ContUnitHandler(MapDim mapDimension, ChosenObject chosenObject, Area[][] map, Cursor cursor, UnitGetter unitGetter, AreaChecker areaChecker, RouteChecker routeChecker) {
-		this.mapDimension = mapDimension;
-		this.chosenObject = chosenObject;
+	public ContUnitHandler(GameProp gameProp, Area[][] map, Cursor cursor, UnitGetter unitGetter, AreaChecker areaChecker, RouteChecker routeChecker) {
+		this.gameProp = gameProp;
 		this.map = map;
 		this.cursor = cursor;
 		this.unitGetter = unitGetter;
@@ -45,30 +44,31 @@ public class ContUnitHandler {
 
 	public void handleDroppingOff() {
 		Unit containedUnit = null;
-		if (chosenObject.chosenUnit instanceof APC) {
-			((APC)chosenObject.chosenUnit).regulateDroppingOff(true);
-			containedUnit = ((APC)chosenObject.chosenUnit).getUnit();
-		} else if (chosenObject.chosenUnit instanceof TCopter) {
-			((TCopter)chosenObject.chosenUnit).regulateDroppingOff(true);
-			containedUnit = ((TCopter)chosenObject.chosenUnit).getUnit();
-		} else if (chosenObject.chosenUnit instanceof Lander) {
-			((Lander)chosenObject.chosenUnit).regulateDroppingOff(true);
-			containedUnit = ((Lander)chosenObject.chosenUnit).getChosenUnit();
-		} else if (chosenObject.chosenUnit instanceof Cruiser) {
-			((Cruiser)chosenObject.chosenUnit).regulateDroppingOff(true);
-			containedUnit = ((Cruiser)chosenObject.chosenUnit).getChosenUnit();
+		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
+		if (chosenUnit instanceof APC) {
+			((APC)chosenUnit).regulateDroppingOff(true);
+			containedUnit = ((APC)chosenUnit).getUnit();
+		} else if (chosenUnit instanceof TCopter) {
+			((TCopter)chosenUnit).regulateDroppingOff(true);
+			containedUnit = ((TCopter)chosenUnit).getUnit();
+		} else if (chosenUnit instanceof Lander) {
+			((Lander)chosenUnit).regulateDroppingOff(true);
+			containedUnit = ((Lander)chosenUnit).getChosenUnit();
+		} else if (chosenUnit instanceof Cruiser) {
+			((Cruiser)chosenUnit).regulateDroppingOff(true);
+			containedUnit = ((Cruiser)chosenUnit).getChosenUnit();
 		}
 
 		if (containedUnit == null) {
 			return;
 		}
 
-		int x = chosenObject.chosenUnit.getPoint().getX();
-		int y = chosenObject.chosenUnit.getPoint().getY();
+		int x = chosenUnit.getPoint().getX();
+		int y = chosenUnit.getPoint().getY();
 
 		if (y > 0 && validPosition(containedUnit, x, y - 1)) {
 			y--;
-		} else if (x < (mapDimension.width - 1) && validPosition(containedUnit, x + 1, y)) {
+		} else if (x < (gameProp.getMapDim().width - 1) && validPosition(containedUnit, x + 1, y)) {
 			x++;
 		} else if (validPosition(containedUnit, x, y + 1)) {
 			y++;
@@ -81,25 +81,26 @@ public class ContUnitHandler {
 		if (unitCanBeDroppedOff()) {
 			cursor.setPosition(x, y);
 		} else {
-			cursor.setPosition(chosenObject.chosenUnit.getPoint().getX(), chosenObject.chosenUnit.getPoint().getY());
+			cursor.setPosition(chosenUnit.getPoint().getX(), chosenUnit.getPoint().getY());
 		}
 	}
 
 	public boolean unitIsDroppingOff() {
-		if (chosenObject.chosenUnit instanceof APC) {
-			if (((APC)chosenObject.chosenUnit).isDroppingOff()) {
+		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
+		if (chosenUnit instanceof APC) {
+			if (((APC)chosenUnit).isDroppingOff()) {
 				return true;
 			}
-		} else if (chosenObject.chosenUnit instanceof TCopter) {
-			if (((TCopter)chosenObject.chosenUnit).isDroppingOff()) {
+		} else if (chosenUnit instanceof TCopter) {
+			if (((TCopter)chosenUnit).isDroppingOff()) {
 				return true;
 			}
-		} else if (chosenObject.chosenUnit instanceof Lander) {
-			if (((Lander)chosenObject.chosenUnit).isDroppingOff()) {
+		} else if (chosenUnit instanceof Lander) {
+			if (((Lander)chosenUnit).isDroppingOff()) {
 				return true;
 			}
-		} else if (chosenObject.chosenUnit instanceof Cruiser) {
-			if (((Cruiser)chosenObject.chosenUnit).isDroppingOff()) {
+		} else if (chosenUnit instanceof Cruiser) {
+			if (((Cruiser)chosenUnit).isDroppingOff()) {
 				return true;
 			}
 		}
@@ -108,18 +109,19 @@ public class ContUnitHandler {
 	}
 
 	public boolean unitCanBeDroppedOff() {
-		if (chosenObject.chosenUnit instanceof APC) {
-			((APC)chosenObject.chosenUnit).regulateDroppingOff(true);
-			return unitCanBeDroppedOff(((APC)chosenObject.chosenUnit).getUnit());
-		} else if (chosenObject.chosenUnit instanceof TCopter) {
-			((TCopter)chosenObject.chosenUnit).regulateDroppingOff(true);
-			return unitCanBeDroppedOff(((TCopter)chosenObject.chosenUnit).getUnit());
-		} else if (chosenObject.chosenUnit instanceof Lander) {
-			((Lander)chosenObject.chosenUnit).regulateDroppingOff(true);
-			return unitCanBeDroppedOff(((Lander)chosenObject.chosenUnit).getChosenUnit());
-		} else if (chosenObject.chosenUnit instanceof Cruiser) {
-			((Cruiser)chosenObject.chosenUnit).regulateDroppingOff(true);
-			return unitCanBeDroppedOff(((Cruiser)chosenObject.chosenUnit).getChosenUnit());
+		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
+		if (chosenUnit instanceof APC) {
+			((APC)chosenUnit).regulateDroppingOff(true);
+			return unitCanBeDroppedOff(((APC)chosenUnit).getUnit());
+		} else if (chosenUnit instanceof TCopter) {
+			((TCopter)chosenUnit).regulateDroppingOff(true);
+			return unitCanBeDroppedOff(((TCopter)chosenUnit).getUnit());
+		} else if (chosenUnit instanceof Lander) {
+			((Lander)chosenUnit).regulateDroppingOff(true);
+			return unitCanBeDroppedOff(((Lander)chosenUnit).getChosenUnit());
+		} else if (chosenUnit instanceof Cruiser) {
+			((Cruiser)chosenUnit).regulateDroppingOff(true);
+			return unitCanBeDroppedOff(((Cruiser)chosenUnit).getChosenUnit());
 		}
 
 		return false;
@@ -129,15 +131,15 @@ public class ContUnitHandler {
 		if (unit == null) {
 			return false;
 		}
-
-		int x = chosenObject.chosenUnit.getPoint().getX();
-		int y = chosenObject.chosenUnit.getPoint().getY();
+		MapDim mapDim = gameProp.getMapDim();
+		int x = gameProp.getChosenObject().chosenUnit.getPoint().getX();
+		int y = gameProp.getChosenObject().chosenUnit.getPoint().getY();
 
 		if (y > 0 && validPosition(unit, x, y - 1)) {
 			return true;
-		} else if (x < (mapDimension.width - 1) && validPosition(unit, x + 1, y)) {
+		} else if (x < (mapDim.width - 1) && validPosition(unit, x + 1, y)) {
 			return true;
-		} else if (y < (mapDimension.height - 1) && validPosition(unit, x, y + 1)) {
+		} else if (y < (mapDim.height - 1) && validPosition(unit, x, y + 1)) {
 			return true;
 		} else if (x > 0 && validPosition(unit, x - 1, y)) {
 			return true;
@@ -157,30 +159,30 @@ public class ContUnitHandler {
 	}
 
 	public void moveDroppingOffCursorClockwise() {
-		int unitX = chosenObject.chosenUnit.getPoint().getX();
-		int unitY = chosenObject.chosenUnit.getPoint().getY();
+		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
+		MapDim mapDim = gameProp.getMapDim();
+		int unitX = chosenUnit.getPoint().getX();
+		int unitY = chosenUnit.getPoint().getY();
 		int cursorX = cursor.getX();
 		int cursorY = cursor.getY();
-
 		int xDiff = cursorX - unitX;
 		int yDiff = cursorY - unitY;
-
 		Unit containedUnit = null;
 
-		if (chosenObject.chosenUnit instanceof APC) {
-			containedUnit = ((APC)chosenObject.chosenUnit).getUnit();
-		} else if (chosenObject.chosenUnit instanceof TCopter) {
-			containedUnit = ((TCopter)chosenObject.chosenUnit).getUnit();
-		} else if (chosenObject.chosenUnit instanceof Lander) {
-			containedUnit = ((Lander)chosenObject.chosenUnit).getChosenUnit();
-		} else if (chosenObject.chosenUnit instanceof Cruiser) {
-			containedUnit = ((Cruiser)chosenObject.chosenUnit).getChosenUnit();
+		if (chosenUnit instanceof APC) {
+			containedUnit = ((APC)chosenUnit).getUnit();
+		} else if (chosenUnit instanceof TCopter) {
+			containedUnit = ((TCopter)chosenUnit).getUnit();
+		} else if (chosenUnit instanceof Lander) {
+			containedUnit = ((Lander)chosenUnit).getChosenUnit();
+		} else if (chosenUnit instanceof Cruiser) {
+			containedUnit = ((Cruiser)chosenUnit).getChosenUnit();
 		} else {
 			return; // shouldn't be able to get here
 		}
 
 		if (xDiff == 1) {
-			if (unitY < (mapDimension.height - 1) && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
+			if (unitY < (mapDim.height - 1) && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			} else if (unitX > 0 && validPosition(containedUnit, cursorX - 2, cursorY)) {
 				cursor.setPosition(cursorX - 2, cursorY);
@@ -192,21 +194,21 @@ public class ContUnitHandler {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			} else if (unitY > 0 && validPosition(containedUnit, cursorX, cursorY - 2)) {
 				cursor.setPosition(cursorX, cursorY - 2);
-			} else if (unitX < (mapDimension.width - 1) && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
+			} else if (unitX < (mapDim.width - 1) && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			}
 		} else if (xDiff == -1) {
 			if (unitY > 0 && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
-			} else if (unitX < (mapDimension.width - 1) && validPosition(containedUnit, cursorX + 2, cursorY)) {
+			} else if (unitX < (mapDim.width - 1) && validPosition(containedUnit, cursorX + 2, cursorY)) {
 				cursor.setPosition(cursorX + 2, cursorY);
-			} else if (unitY < (mapDimension.height - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
+			} else if (unitY < (mapDim.height - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			}
 		} else { // yDiff == -1
-			if (unitX < (mapDimension.width - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
+			if (unitX < (mapDim.width - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
-			} else if (unitY < (mapDimension.height - 1) && validPosition(containedUnit, cursorX, cursorY + 2)) {
+			} else if (unitY < (mapDim.height - 1) && validPosition(containedUnit, cursorX, cursorY + 2)) {
 				cursor.setPosition(cursorX, cursorY + 2);
 			} else if (unitX > 0 && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
@@ -215,24 +217,24 @@ public class ContUnitHandler {
 	}
 
 	public void moveDroppingOffCursorCounterclockwise() {
-		int unitX = chosenObject.chosenUnit.getPoint().getX();
-		int unitY = chosenObject.chosenUnit.getPoint().getY();
+		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
+		MapDim mapDim = gameProp.getMapDim();
+		int unitX = chosenUnit.getPoint().getX();
+		int unitY = chosenUnit.getPoint().getY();
 		int cursorX = cursor.getX();
 		int cursorY = cursor.getY();
-
 		int xDiff = cursorX - unitX;
 		int yDiff = cursorY - unitY;
-
 		Unit containedUnit = null;
 
-		if (chosenObject.chosenUnit instanceof APC) {
-			containedUnit = ((APC)chosenObject.chosenUnit).getUnit();
-		} else if (chosenObject.chosenUnit instanceof TCopter) {
-			containedUnit = ((TCopter)chosenObject.chosenUnit).getUnit();
-		} else if (chosenObject.chosenUnit instanceof Lander) {
-			containedUnit = ((Lander)chosenObject.chosenUnit).getChosenUnit();
-		} else if (chosenObject.chosenUnit instanceof Cruiser) {
-			containedUnit = ((Cruiser)chosenObject.chosenUnit).getChosenUnit();
+		if (chosenUnit instanceof APC) {
+			containedUnit = ((APC)chosenUnit).getUnit();
+		} else if (chosenUnit instanceof TCopter) {
+			containedUnit = ((TCopter)chosenUnit).getUnit();
+		} else if (chosenUnit instanceof Lander) {
+			containedUnit = ((Lander)chosenUnit).getChosenUnit();
+		} else if (chosenUnit instanceof Cruiser) {
+			containedUnit = ((Cruiser)chosenUnit).getChosenUnit();
 		} else {
 			return; // shouldn't be able to get here
 		}
@@ -242,11 +244,11 @@ public class ContUnitHandler {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			} else if (unitX > 0 && validPosition(containedUnit, cursorX - 2, cursorY)) {
 				cursor.setPosition(cursorX - 2, cursorY);
-			} else if (unitY < (mapDimension.height - 1) && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
+			} else if (unitY < (mapDim.height - 1) && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			}
 		} else if (yDiff == 1) {
-			if (unitX < (mapDimension.width - 1) && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
+			if (unitX < (mapDim.width - 1) && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			} else if (unitY > 0 && validPosition(containedUnit, cursorX, cursorY - 2)) {
 				cursor.setPosition(cursorX, cursorY - 2);
@@ -254,9 +256,9 @@ public class ContUnitHandler {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			}
 		} else if (xDiff == -1) {
-			if (unitY < (mapDimension.height - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
+			if (unitY < (mapDim.height - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
-			} else if (unitX < (mapDimension.width - 1) && validPosition(containedUnit, cursorX + 2, cursorY)) {
+			} else if (unitX < (mapDim.width - 1) && validPosition(containedUnit, cursorX + 2, cursorY)) {
 				cursor.setPosition(cursorX + 2, cursorY);
 			} else if (unitY > 0 && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
@@ -264,9 +266,9 @@ public class ContUnitHandler {
 		} else { // yDiff == -1
 			if (unitX > 0 && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
-			} else if (unitY < (mapDimension.height - 1) && validPosition(containedUnit, cursorX, cursorY + 2)) {
+			} else if (unitY < (mapDim.height - 1) && validPosition(containedUnit, cursorX, cursorY + 2)) {
 				cursor.setPosition(cursorX, cursorY + 2);
-			} else if (unitX < (mapDimension.width - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
+			} else if (unitX < (mapDim.width - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			}
 		}

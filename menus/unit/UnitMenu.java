@@ -21,7 +21,6 @@ public class UnitMenu extends Menu {
 													"Supply", 
 													"Wait"};
 	private UnitMenuRowEntryBooleanHandler unitMenuRowEntryBooleanHandler;
-
 	private ArrayList<Unit> cargo;
 
 	public UnitMenu(int tileSize) {
@@ -63,20 +62,8 @@ public class UnitMenu extends Menu {
 		return menuIndex < cargo.size();
 	}
 
-	public boolean atFireRow() {
-		if (!unitMenuRowEntryBooleanHandler.mayFire()) {
-			return false;
-		}
-
-		return menuIndex == 0;
-	}
-
-	public boolean atSupplyRow() {
-		if (!unitMenuRowEntryBooleanHandler.maySupply()) {
-			return false;
-		}
-
-		return menuIndex == cargo.size();
+	public boolean atJoinRow() {
+		return unitMenuRowEntryBooleanHandler.mayJoin();
 	}
 
 	public boolean atEnterRow() {
@@ -87,8 +74,31 @@ public class UnitMenu extends Menu {
 		return menuIndex == 0;
 	}
 	
-	public boolean atJoinRow() {
-		return unitMenuRowEntryBooleanHandler.mayJoin();
+	public boolean atFireRow() {
+		if (!unitMenuRowEntryBooleanHandler.mayFire()) {
+			return false;
+		}
+
+		return menuIndex == 0;
+	}
+	
+	public boolean atCaptRow() {
+		if (!unitMenuRowEntryBooleanHandler.mayCapt()) {
+			return false;
+		}
+		if (unitMenuRowEntryBooleanHandler.mayFire()) {
+			return menuIndex == 1;
+		} else {
+			return menuIndex == 0;
+		}
+	}
+
+	public boolean atSupplyRow() {
+		if (!unitMenuRowEntryBooleanHandler.maySupply()) {
+			return false;
+		}
+
+		return menuIndex == cargo.size();
 	}
 
 	public UnitMenuRowEntryBooleanHandler getUnitMenuRowEntryBooleanHandler() {

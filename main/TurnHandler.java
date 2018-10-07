@@ -1,5 +1,6 @@
 package main;
 
+import gameObjects.GameProp;
 import heroes.Hero;
 import menus.map.MapMenu;
 
@@ -9,9 +10,9 @@ public class TurnHandler {
 	private HeroHandler heroHandler;
 	private MapMenu mapMenu;
 
-	public TurnHandler(CashHandler cashHandler, FuelHandler fuelHandler, HeroHandler heroHandler, MapMenu mapMenu) {
+	public TurnHandler(GameProp gameProp, CashHandler cashHandler, HeroHandler heroHandler, MapMenu mapMenu) {
 		this.cashHandler = cashHandler;
-		this.fuelHandler = fuelHandler;
+		fuelHandler = new FuelHandler(gameProp, heroHandler);
 		this.heroHandler = heroHandler;
 		this.mapMenu = mapMenu;
 	}

@@ -1,5 +1,5 @@
 package gameObjects;
-import map.area.buildings.Building;
+import map.buildings.Building;
 import units.Unit;
 
 public class ChosenObject {

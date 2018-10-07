@@ -15,7 +15,7 @@ import heroes.Hero;
 import main.HeroHandler;
 import map.area.Area;
 import map.area.TerrainType;
-import map.area.buildings.*;
+import map.buildings.*;
 import point.Point;
 import units.airMoving.*;
 import units.footMoving.*;
@@ -29,10 +29,10 @@ public class MapInitiator {
 	protected Area[][] map;
 	private ArrayList<Building> buildings;
 	private HeroPortrait portrait;
-	private BuildingGetter buildingGetter;
+	private BuildingHandler buildingGetter;
 	private HeroHandler heroHandler;
 
-	public MapInitiator(MapDim mapDimension, BuildingGetter buildingGetter, HeroHandler heroHandler, Area[][] map, ArrayList<Building> buildings, HeroPortrait portrait) {
+	public MapInitiator(MapDim mapDimension, BuildingHandler buildingGetter, HeroHandler heroHandler, Area[][] map, ArrayList<Building> buildings, HeroPortrait portrait) {
 		this.mapDimension = mapDimension;
 		this.map = map;
 		this.buildings = buildings;

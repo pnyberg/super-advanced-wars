@@ -1,10 +1,12 @@
 package map;
 
+import map.buildings.BuildingHandler;
+
 public class MapGettersObject {
 	public final UnitGetter unitGetter;
-	public final BuildingGetter buildingGetter;
+	public final BuildingHandler buildingGetter;
 
-	public MapGettersObject(UnitGetter unitGetter, BuildingGetter buildingGetter) {
+	public MapGettersObject(UnitGetter unitGetter, BuildingHandler buildingGetter) {
 		this.unitGetter = unitGetter;
 		this.buildingGetter = buildingGetter;
 	}

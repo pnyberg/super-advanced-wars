@@ -5,9 +5,9 @@ import java.awt.Graphics;
 import combat.AttackRangeHandler;
 import gameObjects.MapDim;
 import main.HeroHandler;
-import map.BuildingGetter;
 import map.area.Area;
-import map.area.buildings.Building;
+import map.buildings.Building;
+import map.buildings.BuildingHandler;
 import routing.RouteHandler;
 import units.Unit;
 
@@ -17,9 +17,9 @@ public class MapPainter {
 	private Area[][] map;
 	private RouteHandler routeHandler;
 	private AttackRangeHandler attackRangeHandler;
-	private BuildingGetter buildingGetter;
+	private BuildingHandler buildingGetter;
 	
-	public MapPainter(HeroHandler heroHandler, MapDim mapDimension, Area[][] map, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler, BuildingGetter buildingGetter) {
+	public MapPainter(HeroHandler heroHandler, MapDim mapDimension, Area[][] map, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler, BuildingHandler buildingGetter) {
 		this.heroHandler = heroHandler;
 		this.mapDimension = mapDimension;
 		this.map = map;

@@ -36,11 +36,13 @@ public class UnitHealth {
 	public int getHP() {
 		return hp;
 	}
+	
+	public int getShowHP() {
+		return (hp + 9) / 10;
+	}
 
 	protected void paintHP(Graphics g, int x, int y, int tileSize) {
-		int showHP = (hp + 9) / 10;
-
-		if (showHP == 10) {
+		if (getShowHP() == 10) {
 			return;
 		}
 
@@ -53,7 +55,7 @@ public class UnitHealth {
 		g.setColor(Color.black);
 		g.fillRect(paintHPX, paintHPY, tileSize / 4, tileSize / 4);
 		g.setColor(Color.white);
-		g.drawString("" + showHP + "", paintHPX + 3, paintHPY + tileSize / 8 + 4);
+		g.drawString("" + getShowHP() + "", paintHPX + 3, paintHPY + tileSize / 8 + 4);
 
 		g.setFont(currentFont);
 	}

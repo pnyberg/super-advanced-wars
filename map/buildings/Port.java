@@ -4,7 +4,7 @@
  * - define which units can be built in factory?
  */
 
-package map.area.buildings;
+package map.buildings;
 
 import java.awt.Color;
 import java.awt.Graphics;
