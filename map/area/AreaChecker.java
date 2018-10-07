@@ -1,6 +1,6 @@
 package map.area;
 
-import heroes.Hero;
+import hero.Hero;
 import main.HeroHandler;
 import map.UnitGetter;
 import units.Unit;

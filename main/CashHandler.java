@@ -2,8 +2,8 @@ package main;
 
 import java.util.ArrayList;
 
-import heroes.Hero;
-import heroes.HeroPortrait;
+import hero.Hero;
+import hero.HeroPortrait;
 import map.buildings.Building;
 
 public class CashHandler {

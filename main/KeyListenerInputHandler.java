@@ -10,7 +10,7 @@ import cursors.FiringCursorHandler;
 import gameObjects.ChosenObject;
 import gameObjects.GameProp;
 import gameObjects.MapDim;
-import heroes.Hero;
+import hero.Hero;
 import map.UnitGetter;
 import map.buildings.BuildingHandler;
 import map.buildings.City;
@@ -262,14 +262,20 @@ public class KeyListenerInputHandler {
 			gameProp.getChosenObject().chosenUnit.getUnitSupply().useFuel(fuelUse);
 
 			gameProp.getChosenObject().chosenUnit.regulateActive(false);
-			gameProp.getChosenObject().chosenUnit = null;
-			movementMap.clearMovementMap();
-			routeHandler.clearArrowPoints();
 			if (gameProp.getChosenObject().chosenUnit instanceof IndirectUnit) {
 				((IndirectUnit)gameProp.getChosenObject().chosenUnit).clearFiringLocations();
 			}
+			gameProp.getChosenObject().chosenUnit = null;
+			movementMap.clearMovementMap();
+			routeHandler.clearArrowPoints();
 		} else if (mapMenu.isVisible()) {
-			if (mapMenu.atEndRow()) {
+			if (mapMenu.atPowerRow()) {
+				heroHandler.getCurrentHero().setPowerActive(true);
+				mapMenu.closeMenu();
+			} else if (mapMenu.atSuperPowerRow()) {
+				heroHandler.getCurrentHero().setSuperPowerActive(true);
+				mapMenu.closeMenu();
+			} else if (mapMenu.atEndRow()) {
 				turnHandler.endTurn();
 			}
 		} else if (unitMenuHandler.getUnitMenu().isVisible()) {

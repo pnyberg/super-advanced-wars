@@ -11,7 +11,7 @@ package map;
 import java.util.ArrayList;
 
 import gameObjects.MapDim;
-import heroes.Hero;
+import hero.*;
 import main.HeroHandler;
 import map.area.Area;
 import map.area.TerrainType;
@@ -22,7 +22,6 @@ import units.footMoving.*;
 import units.seaMoving.*;
 import units.tireMoving.*;
 import units.treadMoving.*;
-import heroes.*;
 
 public class MapInitiator {
 	private MapDim mapDimension;
@@ -189,6 +188,13 @@ public class MapInitiator {
 		hero2.getTroopHandler().addTroop(new Battleship(6, 8, hero2.getColor()));
 		hero2.getTroopHandler().addTroop(new Lander(7, 9, hero2.getColor()));
 		hero2.getTroopHandler().addTroop(new Fighter(10, 8, hero2.getColor()));
+		hero2.getTroopHandler().addTroop(new Cruiser(10, 9, hero2.getColor()));
+		hero2.getTroopHandler().addTroop(new Cruiser(11, 9, hero2.getColor()));
+		hero2.getTroopHandler().addTroop(new Cruiser(12, 9, hero2.getColor()));
+		hero2.getTroopHandler().addTroop(new Cruiser(10, 10, hero2.getColor()));
+		hero2.getTroopHandler().addTroop(new Cruiser(11, 10, hero2.getColor()));
+		hero2.getTroopHandler().addTroop(new Cruiser(12, 10, hero2.getColor()));
+		hero2.getTroopHandler().addTroop(new Cruiser(10, 11, hero2.getColor()));
 
 		for (int h = 0 ; h < 2 ; h++) {
 			for (int k = 0 ; k < portrait.getHeroHandler().getHero(h).getTroopHandler().getTroopSize() ; k++) {

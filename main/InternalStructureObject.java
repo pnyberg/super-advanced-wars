@@ -10,7 +10,7 @@ import gameObjects.ChosenObject;
 import gameObjects.GameProp;
 import gameObjects.MapDim;
 import graphics.MapPainter;
-import heroes.HeroPortrait;
+import hero.HeroPortrait;
 import map.MapInitiator;
 import map.UnitGetter;
 import map.UnitPositionChecker;
@@ -64,7 +64,7 @@ public class InternalStructureObject {
 		cursor = new Cursor(0, 0, gameProp.getMapDim().tileSize);
 		heroPortrait = new HeroPortrait(gameProp.getMapDim(), heroHandler);
 		map = new Area[gameProp.getMapDim().width][gameProp.getMapDim().height];
-		mapMenu = new MapMenu(gameProp.getMapDim().tileSize);
+		mapMenu = new MapMenu(gameProp.getMapDim().tileSize, heroHandler);
 		moveabilityMatrix = new MoveabilityMatrixFactory().getMoveabilityMatrix();
 		movementMap = new MovementMap(gameProp.getMapDim());
 		unitGetter = new UnitGetter(heroHandler);

@@ -25,7 +25,7 @@ public abstract class Menu {
 		dimensionValues.tileSize = tileSize;
 		dimensionValues.xAlign = 4;
 		dimensionValues.yAlign = 3;
-		dimensionValues.menuRowWidth = 70;
+		dimensionValues.menuRowWidth = 80;
 		dimensionValues.menuRowHeight = 15;
 		arrow = new MenuArrow(dimensionValues);
 	}

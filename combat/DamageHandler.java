@@ -19,7 +19,7 @@ import units.treadMoving.Artillery;
 import units.treadMoving.MDTank;
 import units.treadMoving.Neotank;
 import units.treadMoving.Tank;
-import heroes.*;
+import hero.*;
 import main.HeroHandler;
 import main.StarPowerCalculator;
 import map.area.Area;

@@ -1,4 +1,4 @@
-package heroes;
+package hero;
 
 public class AttackDefenceObject {
 	private int attackValue;

@@ -5,8 +5,8 @@ import java.awt.Graphics;
 
 import combat.DamageHandler;
 import gameObjects.MapDim;
-import heroes.Hero;
-import heroes.HeroPortrait;
+import hero.Hero;
+import hero.HeroPortrait;
 import main.HeroHandler;
 import map.UnitGetter;
 import map.area.Area;

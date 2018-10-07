@@ -1,6 +1,5 @@
 package tests;
 
-import heroes.*;
 import main.HeroHandler;
 
 import static org.junit.Assert.*;
@@ -9,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import gameObjects.MapDim;
+import hero.*;
 
 public class CashTester {
 	private MapDim mapDimension;

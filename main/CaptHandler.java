@@ -1,7 +1,7 @@
 package main;
 
 import cursors.Cursor;
-import heroes.Hero;
+import hero.Hero;
 import map.buildings.Building;
 import map.buildings.BuildingHandler;
 import units.Unit;

@@ -1,8 +1,9 @@
-package heroes;
+package hero.heroPower;
 
 public class HeroPowerMeter {
 	private double starPower;
-	private int powerAmount, superPowerAmount;
+	private int powerAmount;
+	private int superPowerAmount;
 
 	public HeroPowerMeter(int powerAmount, int superPowerAmount) {
 		starPower = 0;
@@ -12,6 +13,10 @@ public class HeroPowerMeter {
 	
 	public void addStarPower(double value) {
 		starPower += value;
+	}
+	
+	public void clearStarPower() {
+		starPower = 0;
 	}
 
 	public double getStarPower() {

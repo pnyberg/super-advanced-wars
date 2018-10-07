@@ -1,7 +1,7 @@
 package main;
 
 import gameObjects.GameProp;
-import heroes.Hero;
+import hero.Hero;
 import menus.map.MapMenu;
 
 public class TurnHandler {
@@ -25,6 +25,11 @@ public class TurnHandler {
 	public void startTurnActions() {
 		cashHandler.updateCash();
 		fuelHandler.fuelMaintenance();
+		if (heroHandler.getCurrentHero().isPowerActive()) {
+			heroHandler.getCurrentHero().setPowerActive(false);
+		} else if (heroHandler.getCurrentHero().isSuperPowerActive()) {
+			heroHandler.getCurrentHero().setSuperPowerActive(false);
+		}
 	}
 
 	public void endTurnActions() {

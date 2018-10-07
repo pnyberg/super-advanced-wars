@@ -6,7 +6,7 @@
 package routing;
 
 import gameObjects.MapDim;
-import heroes.Hero;
+import hero.Hero;
 import main.HeroHandler;
 import map.area.Area;
 import map.area.AreaChecker;

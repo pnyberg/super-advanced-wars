@@ -3,7 +3,7 @@
  */
 package main;
 
-import heroes.Hero;
+import hero.Hero;
 import units.Unit;
 import units.airMoving.*;
 import units.footMoving.*;
@@ -69,6 +69,6 @@ public class StarPowerCalculator {
 		
 		worth = worth / starWorth * damage / 100 * starMultiplier;
 		
-		hero.getHeroPowerMeter().addStarPower(worth);
+		hero.getHeroPower().getHeroPowerMeter().addStarPower(worth);
 	}
 }

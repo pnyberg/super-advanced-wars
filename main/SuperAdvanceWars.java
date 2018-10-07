@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 import gameObjects.ChosenObject;
 import gameObjects.GameProp;
 import gameObjects.MapDim;
-import heroes.HeroFactory;
+import hero.HeroFactory;
 
 public class SuperAdvanceWars extends JFrame {
 	private Gameboard board;

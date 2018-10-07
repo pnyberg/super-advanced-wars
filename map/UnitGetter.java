@@ -1,7 +1,7 @@
 package map;
 
-import heroes.Hero;
-import heroes.HeroPortrait;
+import hero.Hero;
+import hero.HeroPortrait;
 import main.HeroHandler;
 import units.Unit;
 

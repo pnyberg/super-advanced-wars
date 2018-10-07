@@ -5,13 +5,13 @@ package routing;
 
 import point.*;
 import units.*;
-import heroes.*;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
 import gameObjects.MapDim;
+import hero.*;
 
 public class RouteHandler {
 	private RouteArrowPath routeArrowPath;

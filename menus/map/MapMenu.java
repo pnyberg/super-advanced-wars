@@ -2,6 +2,8 @@ package menus.map;
 
 import java.awt.Graphics;
 
+import hero.heroPower.HeroPowerMeter;
+import main.HeroHandler;
 import menus.Menu;
 
 public class MapMenu extends Menu {
@@ -13,28 +15,35 @@ public class MapMenu extends Menu {
 									"Save", 
 									"End turn"
 								};
-	private boolean power, superPower;
+	private HeroHandler heroHandler;
 
-	public MapMenu(int tileSize) {
+	public MapMenu(int tileSize, HeroHandler heroHandler) {
 		super(tileSize);
 
-		power = false;
-		superPower = false;
+		this.heroHandler = heroHandler;
 	}
 
-	public void setPower(boolean power) {
-		this.power = power;
-	}
-	
-	public void setSuperPower(boolean superPower) {
-		this.superPower = superPower;
-	}
-	
 	public int getNumberOfRows() {
-		return menuTexts.length + (power ? 0 : -1) + (superPower ? 0 : -1);
+		HeroPowerMeter heroPowerMeter = heroHandler.getCurrentHero().getHeroPower().getHeroPowerMeter();
+		return menuTexts.length + (heroPowerMeter.powerUsable() ? 0 : -1) + (heroPowerMeter.superPowerUsable() ? 0 : -1);
+	}
+	
+	public boolean atPowerRow() {
+		if (!heroHandler.getCurrentHero().getHeroPower().getHeroPowerMeter().powerUsable()) {
+			return false;
+		}
+		return menuIndex == 2;
+	}
+	
+	public boolean atSuperPowerRow() {
+		if (!heroHandler.getCurrentHero().getHeroPower().getHeroPowerMeter().superPowerUsable()) {
+			return false;
+		}
+		return menuIndex == 3;
 	}
 
 	public void paint(Graphics g) {
+		HeroPowerMeter heroPowerMeter = heroHandler.getCurrentHero().getHeroPower().getHeroPowerMeter();
 		int menuX = x * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2 + dimensionValues.getAlignX();
 		int menuY = y * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2 + dimensionValues.getAlignY();
 
@@ -42,10 +51,10 @@ public class MapMenu extends Menu {
 
 		int rowHelpIndex = 1;
 		for (int k = 0 ; k < menuTexts.length ; k++) {
-			if (k == 2 && !power) {
+			if (k == 2 && !heroPowerMeter.powerUsable()) {
 				continue;
 			}
-			if (k == 3 && !superPower) {
+			if (k == 3 && !heroPowerMeter.superPowerUsable()) {
 				continue;
 			}
 			g.drawString(menuTexts[k], menuX, menuY + dimensionValues.getMenuRowHeight() * rowHelpIndex);

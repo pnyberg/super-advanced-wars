@@ -2,7 +2,7 @@ package main;
 
 import java.util.ArrayList;
 
-import heroes.Hero;
+import hero.Hero;
 import units.Unit;
 
 public class HeroHandler {

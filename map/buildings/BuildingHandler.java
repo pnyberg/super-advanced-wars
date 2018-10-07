@@ -2,7 +2,7 @@ package map.buildings;
 
 import java.util.ArrayList;
 
-import heroes.HeroPortrait;
+import hero.HeroPortrait;
 import main.HeroHandler;
 
 public class BuildingHandler {

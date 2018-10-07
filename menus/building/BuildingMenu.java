@@ -4,7 +4,6 @@
 package menus.building;
 
 import units.*;
-import heroes.*;
 import main.HeroHandler;
 import map.area.Area;
 import map.area.TerrainType;
@@ -12,6 +11,8 @@ import menus.Menu;
 import menus.unit.UnitCreatingFactory;
 
 import java.awt.Graphics;
+
+import hero.*;
 
 public class BuildingMenu extends Menu {
 	private final int priceAlign = 70;

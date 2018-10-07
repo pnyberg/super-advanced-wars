@@ -1,8 +1,8 @@
 package map.buildings;
 
-import heroes.*;
-
 import java.awt.Graphics;
+
+import hero.*;
 
 public abstract class Building {
 	private static int income;
