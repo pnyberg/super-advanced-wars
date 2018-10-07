@@ -1,24 +1,24 @@
 package tests;
 
 import heroes.*;
+import main.HeroHandler;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import handlers.HeroHandler;
-import handlers.MapDimension;
+import gameObjects.MapDim;
 
 public class CashTester {
-	private MapDimension mapDimension;
+	private MapDim mapDimension;
 	private HeroPortrait portrait;
 	private HeroFactory heroFactory;
 	private Hero hero0, hero1;
 
 	@Before
 	public void init() {
-		mapDimension = new MapDimension(0, 0, 0);
+		mapDimension = new MapDim(0, 0, 0);
 		portrait = new HeroPortrait(mapDimension, new HeroHandler());
 		heroFactory = new HeroFactory();
 		hero0 = heroFactory.createHero(0);

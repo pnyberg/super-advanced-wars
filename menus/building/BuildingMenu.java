@@ -5,13 +5,13 @@ package menus.building;
 
 import units.*;
 import heroes.*;
+import main.HeroHandler;
+import map.area.Area;
+import map.area.TerrainType;
 import menus.Menu;
 import menus.unit.UnitCreatingFactory;
-import handlers.*;
 
 import java.awt.Graphics;
-
-import area.TerrainType;
 
 public class BuildingMenu extends Menu {
 	private final int priceAlign = 70;
@@ -20,26 +20,26 @@ public class BuildingMenu extends Menu {
 	private boolean airport;
 	private BuildingItemFactory buildingItemFactory;
 	private UnitCreatingFactory unitCreatingFactory;
-	private HeroPortrait heroPortrait;
+	private HeroHandler heroHandler;
 	private BuildingMenuPainter buildingMenuPainter;
-	private MapHandler mapHandler;
+	private Area[][] map;
 
-	public BuildingMenu(int tileSize, MapHandler mapHandler) {
+	public BuildingMenu(int tileSize, HeroHandler heroHandler, Area[][] map) {
 		super(tileSize);
-		this.heroPortrait = mapHandler.getHeroPortrait();
+		this.heroHandler = heroHandler;
 		dimensionValues.menuRowWidth = 118;
 		factory = false;
 		port = false;
 		airport = false;
 		buildingItemFactory = new BuildingItemFactory();
 		unitCreatingFactory = new UnitCreatingFactory();
-		buildingMenuPainter = new BuildingMenuPainter(heroPortrait, dimensionValues, priceAlign);
-		this.mapHandler = mapHandler;
+		buildingMenuPainter = new BuildingMenuPainter(heroHandler, dimensionValues, priceAlign);
+		this.map = map;
 	}
 
 	public void openMenu(int x, int y) {
 		super.openMenu(x, y);
-		TerrainType terrainType = mapHandler.getMap()[x][y].getTerrainType();
+		TerrainType terrainType = map[x][y].getTerrainType();
 		if (terrainType == TerrainType.FACTORY) {
 			factory = true;
 		} else if (terrainType == TerrainType.AIRPORT) {
@@ -68,7 +68,7 @@ public class BuildingMenu extends Menu {
 	}
 
 	public void buySelectedTroop() {
-		Hero currentHero = heroPortrait.getHeroHandler().getCurrentHero();
+		Hero currentHero = heroHandler.getCurrentHero();
 		currentHero.manageCash(-getStandardItems()[menuIndex].getPrice());
 		Unit unit = createUnitFromIndex(currentHero);
 		currentHero.getTroopHandler().addTroop(unit);

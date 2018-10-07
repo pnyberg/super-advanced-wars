@@ -4,14 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-import handlers.MapDimension;
-import handlers.MapHandler;
+import gameObjects.MapDim;
 import point.Point;
 
 public class RouteArrowPathPainter {
-	private MapDimension mapDimension;
+	private MapDim mapDimension;
 	
-	public RouteArrowPathPainter(MapDimension mapDimension) {
+	public RouteArrowPathPainter(MapDim mapDimension) {
 		this.mapDimension = mapDimension;
 	}
 

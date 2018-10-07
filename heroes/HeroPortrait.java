@@ -2,16 +2,16 @@ package heroes;
 
 import java.awt.Graphics;
 
+import gameObjects.MapDim;
 import graphics.HeroPortraitPainter;
-import handlers.HeroHandler;
-import handlers.MapDimension;
+import main.HeroHandler;
 
 public class HeroPortrait {
 	private HeroHandler heroHandler;
 	private boolean leftSide;
 	private HeroPortraitPainter heroPortraitPainter;
 
-	public HeroPortrait(MapDimension mapDimension, HeroHandler heroHandler) {
+	public HeroPortrait(MapDim mapDimension, HeroHandler heroHandler) {
 		this.heroHandler = heroHandler;
 		leftSide = true;
 		heroPortraitPainter = new HeroPortraitPainter(mapDimension);

@@ -4,15 +4,16 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import heroes.HeroPortrait;
+import main.HeroHandler;
 import menus.DimensionValues;
 
 public class BuildingMenuPainter {
-	private HeroPortrait heroPortrait;
+	private HeroHandler heroHandler;
 	private DimensionValues dimensionValues;
 	private int priceAlign;
 	
-	public BuildingMenuPainter(HeroPortrait heroPortrait, DimensionValues dimensionValues, int priceAlign) {
-		this.heroPortrait = heroPortrait;
+	public BuildingMenuPainter(HeroHandler heroHandler, DimensionValues dimensionValues, int priceAlign) {
+		this.heroHandler = heroHandler;
 		this.dimensionValues = dimensionValues;
 		this.priceAlign = priceAlign;
 	}
@@ -24,7 +25,7 @@ public class BuildingMenuPainter {
 	}
 
 	private void paintMenuItem(Graphics g, int x, int y, String text, int price) {
-		int heroCash = heroPortrait.getHeroHandler().getCurrentHero().getCash();
+		int heroCash = heroHandler.getCurrentHero().getCash();
 		int menuX = x * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2 + dimensionValues.getAlignX();
 		int extraPriceAlign = (price >= 10000 ? 0 : 8);
 

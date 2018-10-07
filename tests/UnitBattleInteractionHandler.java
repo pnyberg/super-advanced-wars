@@ -3,9 +3,9 @@ package tests;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import area.Area;
-import handlers.DamageHandler;
-import handlers.HeroHandler;
+import combat.DamageHandler;
+import main.HeroHandler;
+import map.area.Area;
 import units.Unit;
 
 public class UnitBattleInteractionHandler {
