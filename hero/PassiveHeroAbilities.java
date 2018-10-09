@@ -1,10 +1,10 @@
 package hero;
 
-public class AttackDefenceObject {
+public class PassiveHeroAbilities {
 	private int attackValue;
 	private int defenceValue;
 	
-	public AttackDefenceObject(int attackValue, int defenceValue) {
+	public PassiveHeroAbilities(int attackValue, int defenceValue) {
 		this.attackValue = attackValue;
 		this.defenceValue = defenceValue;
 	}
