@@ -16,16 +16,16 @@ public class Hero {
 	private Color color;
 	private boolean powerActive;
 	private boolean superPowerActive;
-	private AttackDefenceObject attackDefenceObject;
+	private PassiveHeroAbilities passiveHeroAbilities;
 	private HeroPower heroPower;
 	private TroopHandler troopHandler;
 
-	public Hero(Color color, AttackDefenceObject attackDefenceObject, HeroPower heroPower) {
+	public Hero(Color color, PassiveHeroAbilities passiveHeroAbilities, HeroPower heroPower) {
 		cash = 0;
 		this.color = color;
 		powerActive = false;
 		superPowerActive = false;
-		this.attackDefenceObject = attackDefenceObject;
+		this.passiveHeroAbilities = passiveHeroAbilities;
 		this.heroPower = heroPower;
 		troopHandler = new TroopHandler();
 	}
@@ -69,8 +69,8 @@ public class Hero {
 		return color;
 	}
 	
-	public AttackDefenceObject getAttackDefenceObject() {
-		return attackDefenceObject;
+	public PassiveHeroAbilities getPassiveHeroAbilities() {
+		return passiveHeroAbilities;
 	}
 	
 	public HeroPower getHeroPower() {
