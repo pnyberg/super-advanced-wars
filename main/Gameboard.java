@@ -4,8 +4,6 @@
  * - change POWER/SUPER-text, maybe use a pre-written text?
  * - enter classes for HQ, ev Silo
  * - FOG
- * - hero-abilities and powers
- *   -> fix cool way to add different powers
  * - removed recalculating route which also removes movement-control within accepted area (infantrys may take more than three steps)
  *   - infantry may go over two mountains (very bad)
  * - fix so not crashing on recalculating route

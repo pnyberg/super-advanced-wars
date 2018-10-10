@@ -11,6 +11,7 @@ import gameObjects.ChosenObject;
 import gameObjects.GameProp;
 import gameObjects.MapDim;
 import hero.Hero;
+import hero.heroPower.HeroPowerHandler;
 import map.UnitGetter;
 import map.buildings.BuildingHandler;
 import map.buildings.City;
@@ -46,6 +47,7 @@ public class KeyListenerInputHandler {
 	private SupplyHandler supplyHandler;
 	private TurnHandler turnHandler;
 	private FiringCursorHandler firingCursorHandler;
+	private HeroPowerHandler heroPowerHandler;
 	
 	public KeyListenerInputHandler(GameProp gameProp, UnitGetter unitGetter, BuildingHandler buildingHandler, Cursor cursor, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
 		this.gameProp = gameProp;
@@ -67,6 +69,7 @@ public class KeyListenerInputHandler {
 		this.supplyHandler = supplyHandler;
 		this.turnHandler = turnHandler;
 		firingCursorHandler = new FiringCursorHandler(gameProp, cursor, unitGetter, damageHandler);
+		heroPowerHandler = new HeroPowerHandler(heroHandler);
 	}
 	
 	public void manageKeyPressedInput(KeyEvent e) {
@@ -270,10 +273,10 @@ public class KeyListenerInputHandler {
 			routeHandler.clearArrowPoints();
 		} else if (mapMenu.isVisible()) {
 			if (mapMenu.atPowerRow()) {
-				heroHandler.getCurrentHero().setPowerActive(true);
+				heroPowerHandler.handlePower();
 				mapMenu.closeMenu();
 			} else if (mapMenu.atSuperPowerRow()) {
-				heroHandler.getCurrentHero().setSuperPowerActive(true);
+				heroPowerHandler.handleSuperPower();
 				mapMenu.closeMenu();
 			} else if (mapMenu.atEndRow()) {
 				turnHandler.endTurn();
