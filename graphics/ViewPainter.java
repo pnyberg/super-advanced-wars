@@ -1,13 +1,16 @@
 package graphics;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import combat.AttackRangeHandler;
+import gameObjects.Direction;
 import gameObjects.MapDim;
 import main.HeroHandler;
 import map.area.Area;
 import map.buildings.Building;
 import map.buildings.BuildingHandler;
+import map.structures.BlackCannon;
 import routing.RouteHandler;
 import units.Unit;
 
@@ -15,7 +18,7 @@ public class ViewPainter {
 	private MapViewType mapViewType;
 	private CommanderView commanderView;
 	private HeroHandler heroHandler;
-	private MapDim mapDimension;
+	private MapDim mapDim;
 	private Area[][] map;
 	private RouteHandler routeHandler;
 	private AttackRangeHandler attackRangeHandler;
@@ -25,7 +28,7 @@ public class ViewPainter {
 		mapViewType = MapViewType.MAIN_MAP_MENU_VIEW;
 		this.commanderView = commanderView;
 		this.heroHandler = heroHandler;
-		this.mapDimension = mapDimension;
+		this.mapDim = mapDimension;
 		this.map = map;
 		this.routeHandler = routeHandler;
 		this.attackRangeHandler = attackRangeHandler;
@@ -63,9 +66,12 @@ public class ViewPainter {
 
 		if (buildingGetter.getBuilding(x, y) != null && !rangeAble) {
 			Building building = buildingGetter.getBuilding(x, y);
-			building.paint(g, mapDimension.tileSize);
+			building.paint(g, mapDim.tileSize);
 		} else {
 			map[x][y].paint(g, movementAble, rangeAble);
+		}
+		if (x == 4 && y == 2) {
+			new BlackCannon(4 * mapDim.tileSize, 2 * mapDim.tileSize, Direction.SOUTH, Color.red, mapDim.tileSize).paint(g);
 		}
 	}
 
@@ -76,7 +82,7 @@ public class ViewPainter {
 					Unit unit = heroHandler.getUnitFromHero(heroIndex, k);
 					if (unit != chosenUnit) {
 						if (!unit.isHidden()) {
-							unit.paint(g, mapDimension.tileSize);
+							unit.paint(g, mapDim.tileSize);
 						}
 					}
 				}
