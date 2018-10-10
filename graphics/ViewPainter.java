@@ -36,7 +36,7 @@ public class ViewPainter {
 		this.mapViewType = mapViewType;
 	}
 	
-	public MapViewType geMapViewType() {
+	public MapViewType getMapViewType() {
 		return mapViewType;
 	}
 	

@@ -147,7 +147,9 @@ public class KeyListenerInputHandler {
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_B) {
-			if (containerUnitHandler.unitIsDroppingOff()) {
+			if (viewPainter.getMapViewType() == MapViewType.CO_MAP_MENU_VIEW) {
+				viewPainter.setViewType(MapViewType.MAIN_MAP_MENU_VIEW);
+			} else if (containerUnitHandler.unitIsDroppingOff()) {
 				int x = gameProp.getChosenObject().chosenUnit.getPoint().getX();
 				int y = gameProp.getChosenObject().chosenUnit.getPoint().getY();
 				cursor.setPosition(x, y);
