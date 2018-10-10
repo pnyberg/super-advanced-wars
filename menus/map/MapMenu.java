@@ -30,6 +30,10 @@ public class MapMenu extends Menu {
 		return menuTexts.length + (heroPowerMeter.powerUsable() ? 0 : -1) + (heroPowerMeter.superPowerUsable() ? 0 : -1);
 	}
 	
+	public boolean atCoRow() {
+		return menuIndex == 0;
+	}
+	
 	public boolean atPowerRow() {
 		if (!heroHandler.getCurrentHero().getHeroPower().getHeroPowerMeter().powerUsable()) {
 			return false;
