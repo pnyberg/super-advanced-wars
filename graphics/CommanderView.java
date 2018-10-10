@@ -21,9 +21,9 @@ public class CommanderView {
 	
 	public void paintView(Graphics g) {
 		Color heroColor = heroHandler.getCurrentHero().getColor();
-		Infantry infantry = new Infantry(1, 1, heroColor);
-		Mech mech = new Mech(1, 2, heroColor);
-		Recon recon = new Recon(1, 3, heroColor);
+		Infantry infantry = new Infantry(1 * mapDim.tileSize, 1 * mapDim.tileSize, heroColor, mapDim.tileSize);
+		Mech mech = new Mech(1 * mapDim.tileSize, 2 * mapDim.tileSize, heroColor, mapDim.tileSize);
+		Recon recon = new Recon(1 * mapDim.tileSize, 3 * mapDim.tileSize, heroColor, mapDim.tileSize);
 
 		infantry.paint(g, mapDim.tileSize);
 		paintPowerBar(g, infantry, 100);
@@ -34,12 +34,12 @@ public class CommanderView {
 	}
 	
 	private void paintPowerBar(Graphics g, Unit unit, int powerLevel) {
-		int x = unit.getPoint().getX() + mapDim.tileSize;
-		int y = unit.getPoint().getY() + 5;
-		Color lightRed = Color.RED.brighter();
+		int x = unit.getPoint().getX() + 3 * mapDim.tileSize / 2;
+		int y = unit.getPoint().getY() + mapDim.tileSize / 3;
+		Color lightRed = Color.RED.brighter().brighter().brighter();
 		g.setColor(lightRed);
-		g.fillRect(x, y, 3 * mapDim.tileSize / 2, mapDim.tileSize / 2);
+		g.fillRect(x, y, 5 * mapDim.tileSize / 3, mapDim.tileSize / 3);
 		g.setColor(Color.BLACK);
-		g.drawRect(x, y, 3 * mapDim.tileSize / 2, mapDim.tileSize / 2);
+		g.drawRect(x, y, 5 * mapDim.tileSize / 3, mapDim.tileSize / 3);
 	}
 }
