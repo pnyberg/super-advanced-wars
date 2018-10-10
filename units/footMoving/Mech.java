@@ -2,6 +2,11 @@ package units.footMoving;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import units.MovementType;
 import units.Unit;
@@ -11,6 +16,7 @@ import units.UnitSupply;
 public class Mech extends Unit {
 	private static int price = 3000;
 	private static String typeName = "Mech";
+	//private BufferedImage redImg;
 
 	public Mech(int x, int y, Color color, int tileSize) {
 		super(x, y, color, tileSize);
@@ -19,6 +25,11 @@ public class Mech extends Unit {
 		movementType = MovementType.MECH;
 		unitClass = UnitCategory.FOOTMAN;
 		unitSupply = new UnitSupply(70, 3);
+
+		/* try {
+		    redImg = ImageIO.read(new File("images/red-mech.png"));
+		} catch (IOException e) {
+		}*/
 	}
 
 	public static void setPrice(int price) {
@@ -34,6 +45,10 @@ public class Mech extends Unit {
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
+		/*if (color == Color.red) {
+			g.drawImage(redImg, point.getX(), point.getY(), null);
+			return;
+		}*/
 		int rocketAlignX = tileSize / 20 * 3;
 		int rocketAlignY = tileSize / 20 * 4;
 		int rocketWidth = tileSize / 4 * 3;

@@ -2,6 +2,12 @@ package units.footMoving;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import units.MovementType;
 import units.Unit;
@@ -11,6 +17,7 @@ import units.UnitSupply;
 public class Infantry extends Unit {
 	private static int price = 1000;
 	private static String typeName = "Infantry";
+	//private BufferedImage redImg;
 
 	public Infantry(int x, int y, Color color, int tileSize) {
 		super(x, y, color, tileSize);
@@ -19,6 +26,11 @@ public class Infantry extends Unit {
 		movementType = MovementType.INFANTRY;
 		unitClass = UnitCategory.FOOTMAN;
 		unitSupply = new UnitSupply(99, 0);
+
+		/* try {
+		    redImg = ImageIO.read(new File("images/red-infantry.png"));
+		} catch (IOException e) {
+		}*/
 	}
 
 	public static void setPrice(int price) {
@@ -34,6 +46,10 @@ public class Infantry extends Unit {
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
+		/* if (color == Color.red) {
+			g.drawImage(redImg, point.getX(), point.getY(), null);
+			return;
+		}*/
 		int headSize = tileSize / 2 - 4;
 		int headAlignX = tileSize / 4 + 2;
 		int headAlignY = tileSize / 10;

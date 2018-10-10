@@ -2,6 +2,11 @@ package units.tireMoving;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import units.MovementType;
 import units.Unit;
@@ -11,6 +16,7 @@ import units.UnitSupply;
 public class Recon extends Unit {
 	private static int price = 4000;
 	private static String typeName = "Recon";
+	//private BufferedImage redImg;
 
 	public Recon(int x, int y, Color color, int tileSize) {
 		super(x, y, color, tileSize);
@@ -19,6 +25,11 @@ public class Recon extends Unit {
 		movementType = MovementType.TIRE;
 		unitClass = UnitCategory.VEHICLE;
 		unitSupply = new UnitSupply(80, 0);
+
+		/* try {
+		    redImg = ImageIO.read(new File("images/red-recon.png"));
+		} catch (IOException e) {
+		}*/
 	}
 
 	public static void setPrice(int price) {
@@ -34,6 +45,10 @@ public class Recon extends Unit {
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
+		/*if (color == Color.red) {
+			g.drawImage(redImg, point.getX(), point.getY(), null);
+			return;
+		}*/
 		int headSize = tileSize / 4 + 2;
 		int headAlignX = 2 * tileSize / 5;
 		int headAlignY = tileSize / 10 + 1;
