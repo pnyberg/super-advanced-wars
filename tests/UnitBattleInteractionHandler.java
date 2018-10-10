@@ -3,7 +3,9 @@ package tests;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import combat.AttackValueCalculator;
 import combat.DamageHandler;
+import combat.DefenceValueCalculator;
 import main.HeroHandler;
 import map.area.Area;
 import units.Unit;
@@ -13,7 +15,7 @@ public class UnitBattleInteractionHandler {
 	private UnitCollection unitCollection;
 
 	public UnitBattleInteractionHandler(UnitCollection unitCollection) {
-		damageHandler = new DamageHandler(new HeroHandler(), new Area[1][1]);
+		damageHandler = new DamageHandler(new HeroHandler(), new Area[1][1], new AttackValueCalculator(), new DefenceValueCalculator());
 		this.unitCollection = unitCollection;
 	}
 

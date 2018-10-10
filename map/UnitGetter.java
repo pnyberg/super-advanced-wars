@@ -7,9 +7,11 @@ import units.Unit;
 
 public class UnitGetter {
 	private HeroHandler heroHandler;
+	private int tileSize;
 	
-	public UnitGetter(HeroHandler heroHandler) {
+	public UnitGetter(HeroHandler heroHandler, int tileSize) {
 		this.heroHandler = heroHandler;
+		this.tileSize = tileSize;
 	}
 
 	public Unit getAnyUnit(int x, int y) {

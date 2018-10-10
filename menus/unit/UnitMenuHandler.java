@@ -108,7 +108,7 @@ public class UnitMenuHandler {
 			}
 
 			unitMenu.openMenu(cursorX, cursorY);
-			chosenUnit.moveTo(cursorX, cursorY);
+			chosenUnit.moveTo(cursorX * gameProp.getMapDim().tileSize, cursorY * gameProp.getMapDim().tileSize);
 		}
 	}
 	

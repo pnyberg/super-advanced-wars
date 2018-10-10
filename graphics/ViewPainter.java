@@ -21,9 +21,9 @@ public class ViewPainter {
 	private AttackRangeHandler attackRangeHandler;
 	private BuildingHandler buildingGetter;
 	
-	public ViewPainter(HeroHandler heroHandler, MapDim mapDimension, Area[][] map, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler, BuildingHandler buildingGetter) {
+	public ViewPainter(CommanderView commanderView, HeroHandler heroHandler, MapDim mapDimension, Area[][] map, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler, BuildingHandler buildingGetter) {
 		mapViewType = MapViewType.MAIN_MAP_MENU_VIEW;
-		commanderView = new CommanderView(mapDimension, heroHandler);
+		this.commanderView = commanderView;
 		this.heroHandler = heroHandler;
 		this.mapDimension = mapDimension;
 		this.map = map;

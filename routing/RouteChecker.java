@@ -15,7 +15,7 @@ import units.MovementType;
 import units.Unit;
 
 public class RouteChecker {
-	private MapDim mapDimension;
+	private MapDim mapDim;
 	private HeroHandler heroHandler;
 	private Area[][] map;
 	private MovementMap movementMap;
@@ -24,7 +24,7 @@ public class RouteChecker {
 	private MovementCostCalculator movementCostCalculator;
 	
 	public RouteChecker(MapDim mapDimension, HeroHandler heroHandler, Area[][] map, MovementMap movementMap, boolean[][] moveabilityMatrix, AreaChecker areaChecker, MovementCostCalculator movementCostCalculator) {
-		this.mapDimension = mapDimension;
+		this.mapDim = mapDimension;
 		this.heroHandler = heroHandler;
 		this.map = map;
 		this.movementMap = movementMap;
@@ -34,8 +34,9 @@ public class RouteChecker {
 	}
 
 	public void findPossibleMovementLocations(Unit checkedUnit) {
-		findPossibleMovementLocations(checkedUnit.getPoint().getX(), checkedUnit.getPoint().getY(), 
-										checkedUnit.getMovement(), checkedUnit);
+		int x = checkedUnit.getPoint().getX() / mapDim.tileSize;
+		int y = checkedUnit.getPoint().getY() / mapDim.tileSize;
+		findPossibleMovementLocations(x, y, checkedUnit.getMovement(), checkedUnit);
 	}
 
 	public void findPossibleMovementLocations(int x, int y, int movementSteps, Unit checkedUnit) {
@@ -47,7 +48,7 @@ public class RouteChecker {
 	}
 
 	private void checkPath(int x, int y, int movementSteps, Unit checkedUnit) {
-		if (x < 0 || y < 0 || x >= mapDimension.width || y >= mapDimension.height) {
+		if (x < 0 || y < 0 || x >= mapDim.width || y >= mapDim.height) {
 			return;
 		}
 

@@ -30,9 +30,10 @@ public class DamageHandler {
 	private StarPowerCalculator starPowerCalculator;
 	private HeroHandler heroHandler;
 	private Area[][] map;
+	private int tileSize = 40;
 
-	public DamageHandler(HeroHandler heroHandler, Area[][] map) {
-		damageCalculator = new DamageCalculator();
+	public DamageHandler(HeroHandler heroHandler, Area[][] map, AttackValueCalculator attackValueCalculator, DefenceValueCalculator defenceValueCalculator) {
+		damageCalculator = new DamageCalculator(attackValueCalculator, defenceValueCalculator);
 		starPowerCalculator = new StarPowerCalculator();
 		this.heroHandler = heroHandler;
 		this.map = map;
@@ -41,10 +42,10 @@ public class DamageHandler {
 	public void handleAttack(Unit attacking, Unit defending) {
 		Hero attackingHero = heroHandler.getHeroFromUnit(attacking);
 		Hero defendingHero = heroHandler.getHeroFromUnit(defending); 
-		int attX = attacking.getPoint().getX();
-		int attY = attacking.getPoint().getY();
-		int defX = defending.getPoint().getX();
-		int defY = defending.getPoint().getY();
+		int attX = attacking.getPoint().getX() / tileSize;
+		int attY = attacking.getPoint().getY() / tileSize;
+		int defX = defending.getPoint().getX() / tileSize;
+		int defY = defending.getPoint().getY() / tileSize;
 		
 		TerrainType defendingTerrainType = map[defX][defY].getTerrainType();
 

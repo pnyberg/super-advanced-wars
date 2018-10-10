@@ -12,15 +12,14 @@ public class DamageCalculator {
 	private AttackValueCalculator attackValueCalculator;
 	private DefenceValueCalculator defenceValueCalculator;
 	
-	public DamageCalculator() {
+	public DamageCalculator(AttackValueCalculator attackValueCalculator, DefenceValueCalculator defenceValueCalculator) {
 		damageMatrix = new DamageMatrixFactory().getDamageMatrix();
 		weaponIndexChooser = new WeaponIndexChooser();
-		attackValueCalculator = new AttackValueCalculator();
-		defenceValueCalculator = new DefenceValueCalculator();
+		this.attackValueCalculator = attackValueCalculator;
+		this.defenceValueCalculator = defenceValueCalculator;
 	}
 
 	public int getBaseDamageValue(int attType, int defType, int gunNumber) {
-		System.out.println(attType + " " + defType + " " + gunNumber);
 		return damageMatrix[attType][defType][gunNumber];
 	}
 

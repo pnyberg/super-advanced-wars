@@ -8,13 +8,13 @@ import units.IndirectUnit;
 import units.Unit;
 
 public class AttackHandler {
-	private MapDim mapDimension;
+	private MapDim mapDim;
 	private UnitGetter unitGetter;
 	private AttackRangeHandler attackRangeHandler;
 	private DamageHandler damageHandler;
 	
 	public AttackHandler(MapDim mapDimension, UnitGetter unitGetter, AttackRangeHandler attackRangeHandler, DamageHandler damageHandler) {
-		this.mapDimension = mapDimension;
+		this.mapDim = mapDimension;
 		this.unitGetter = unitGetter;
 		this.attackRangeHandler = attackRangeHandler;
 		this.damageHandler = damageHandler;
@@ -33,24 +33,24 @@ public class AttackHandler {
 			x = p.getX();
 			y = p.getY();
 		} else {
-			Unit north = unitGetter.getNonFriendlyUnit(x, y - 1);
-			Unit east = unitGetter.getNonFriendlyUnit(x + 1, y);
-			Unit south = unitGetter.getNonFriendlyUnit(x, y + 1);
-			Unit west = unitGetter.getNonFriendlyUnit(x - 1, y);
+			Unit north = unitGetter.getNonFriendlyUnit(x, y - mapDim.tileSize);
+			Unit east = unitGetter.getNonFriendlyUnit(x + mapDim.tileSize, y);
+			Unit south = unitGetter.getNonFriendlyUnit(x, y + mapDim.tileSize);
+			Unit west = unitGetter.getNonFriendlyUnit(x - mapDim.tileSize, y);
 			if (y > 0 && north != null && damageHandler.validTarget(chosenUnit, north)) {
-				y--;
-			} else if (x < (mapDimension.width - 1) && east != null && damageHandler.validTarget(chosenUnit, east)) {
-				x++;
+				y -= mapDim.tileSize;
+			} else if (x < (mapDim.width - 1) && east != null && damageHandler.validTarget(chosenUnit, east)) {
+				x += mapDim.tileSize;
 			} else if (south != null && damageHandler.validTarget(chosenUnit, south)) {
-				y++;
+				y += mapDim.tileSize;
 			} else if (west != null && damageHandler.validTarget(chosenUnit, west)) {
-				x--;
+				x -= mapDim.tileSize;
 			} else {
-				return; // cannot drop unit off anywhere
+				return; // 
 			}
 		}
 
-		cursor.setPosition(x, y);
+		cursor.setPosition(x / mapDim.tileSize, y / mapDim.tileSize);
 	}
 
 	public boolean unitWantsToFire(Unit chosenUnit) {

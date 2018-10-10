@@ -275,7 +275,7 @@ public class ContUnitHandler {
 	}
 
 	private boolean validPosition(Unit unit, int testX, int testY) {
-		return !areaChecker.areaOccupiedByAny(unit, testX, testY) 
+		return !areaChecker.areaOccupiedByAny(unit, testX * gameProp.getMapDim().tileSize, testY * gameProp.getMapDim().tileSize) 
 			&& routeChecker.allowedMovementPosition(testX, testY, unit.getMovementType());
 	}
 

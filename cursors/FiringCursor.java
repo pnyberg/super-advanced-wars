@@ -14,14 +14,14 @@ import map.area.TerrainType;
 import units.Unit;
 
 public class FiringCursor {
-	private MapDim mapDimension;
+	private MapDim mapDim;
 	private Area[][] map;
 	private UnitGetter unitGetter;
 	private HeroHandler heroHandler;
 	private DamageHandler damageHandler;
 	
 	public FiringCursor(MapDim mapDimension, Area[][] map, UnitGetter unitGetter, HeroHandler heroHandler, DamageHandler damageHandler) {
-		this.mapDimension = mapDimension;
+		this.mapDim = mapDimension;
 		this.map = map;
 		this.unitGetter = unitGetter;
 		this.heroHandler = heroHandler;
@@ -29,11 +29,11 @@ public class FiringCursor {
 	}
 	
 	public void paint(Graphics g, Cursor cursor, Unit chosenUnit) {
-		int tileSize = mapDimension.tileSize;
+		int tileSize = mapDim.tileSize;
 
-		int x = cursor.getX();
-		int y = cursor.getY();
-
+		int x = cursor.getX() * tileSize;
+		int y = cursor.getY() * tileSize;
+		
 		int xDiff = x - chosenUnit.getPoint().getX();
 		int yDiff = y - chosenUnit.getPoint().getY();
 
@@ -41,21 +41,17 @@ public class FiringCursor {
 
 		Hero chosenHero = heroHandler.getCurrentHero();
 		Hero targetHero = heroHandler.getHeroFromUnit(targetUnit);
-		
-		TerrainType terrainType = map[x][y].getTerrainType();
-//		int areaDefenceValue = mapHandler.getDefenceValue(terrainType);
-
-		int damage = damageHandler.getNonRNGDamageValue(chosenUnit, chosenHero, targetUnit, targetHero, terrainType); 
-				
+		TerrainType terrainType = map[x / tileSize][y / tileSize].getTerrainType();
+		int damage = damageHandler.getNonRNGDamageValue(chosenUnit, chosenHero, targetUnit, targetHero, terrainType);
 		int damageFieldWidth = (damage <= 9 ? 3 * tileSize / 5 : 
 									(damage <= 99 ? 4 * tileSize / 5
 										: tileSize - 3));
 		int damageFieldHeight = 3 * tileSize / 5;
 
-		int paintX = x * tileSize + 2;
-		int paintY = y * tileSize + 2;
-		int dmgFieldX = x * tileSize; // will be changed
-		int dmgFieldY = y * tileSize; // will be changed
+		int paintX = x + 2;
+		int paintY = y + 2;
+		int dmgFieldX = x; // will be changed
+		int dmgFieldY = y; // will be changed
 
 		g.setColor(Color.black);
 		g.drawOval(paintX, paintY, tileSize - 4, tileSize - 4);
