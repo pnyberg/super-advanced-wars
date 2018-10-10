@@ -9,7 +9,7 @@ import cursors.FiringCursor;
 import gameObjects.ChosenObject;
 import gameObjects.GameProp;
 import gameObjects.MapDim;
-import graphics.MapPainter;
+import graphics.ViewPainter;
 import hero.HeroPortrait;
 import map.MapInitiator;
 import map.UnitGetter;
@@ -46,7 +46,7 @@ public class InternalStructureObject {
 	private Area[][] map;
 	private MapInitiator mapInitiator;
 	private MapMenu mapMenu;
-	private MapPainter mapPainter;
+	private ViewPainter mainViewPainter;
 	private boolean[][] moveabilityMatrix;
 	private MovementCostCalculator movementCostCalculator;
 	private MovementMap movementMap;
@@ -91,7 +91,7 @@ public class InternalStructureObject {
 		attackRangeHandler = new AttackRangeHandler(gameProp.getMapDim(), unitGetter, damageHandler, routeChecker, movementMap);
 
 		// required init from fourth init-round
-		mapPainter = new MapPainter(heroHandler, gameProp.getMapDim(), map, routeHandler, attackRangeHandler, buildingHandler);
+		mainViewPainter = new ViewPainter(heroHandler, gameProp.getMapDim(), map, routeHandler, attackRangeHandler, buildingHandler);
 		unitMenuHandler = new UnitMenuHandler(gameProp, containerUnitHandler, supplyHandler, unitGetter, unitPositionChecker, areaChecker, buildingHandler, attackRangeHandler);
 		attackHandler = new AttackHandler(gameProp.getMapDim(), unitGetter, attackRangeHandler, damageHandler);
 
@@ -139,8 +139,8 @@ public class InternalStructureObject {
 		return mapMenu;
 	}
 	
-	public MapPainter getMapPainter() {
-		return mapPainter;
+	public ViewPainter getMainViewPainter() {
+		return mainViewPainter;
 	}
 		
 	public RouteHandler getRouteHandler() {
