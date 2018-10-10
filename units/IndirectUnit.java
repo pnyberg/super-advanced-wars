@@ -9,8 +9,8 @@ public abstract class IndirectUnit extends Unit {
 	protected int minimumRange, maximumRange, firingIndex;
 	protected ArrayList<Point> possibleFiringLocationList;
 
-	public IndirectUnit(int x, int y, Color color) {
-		super(x, y, color);
+	public IndirectUnit(int x, int y, Color color, int tileSize) {
+		super(x, y, color, tileSize);
 
 		attackType = AttackType.INDIRECT_ATTACK;
 		firingIndex = -1;

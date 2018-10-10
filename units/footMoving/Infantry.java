@@ -12,8 +12,8 @@ public class Infantry extends Unit {
 	private static int price = 1000;
 	private static String typeName = "Infantry";
 
-	public Infantry(int x, int y, Color color) {
-		super(x, y, color);
+	public Infantry(int x, int y, Color color, int tileSize) {
+		super(x, y, color, tileSize);
 
 		movement = 3;
 		movementType = MovementType.INFANTRY;
@@ -54,18 +54,18 @@ public class Infantry extends Unit {
 		}
 
 		// head
-		g.fillOval(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headSize, headSize);
+		g.fillOval(point.getX() + headAlignX, point.getY() + headAlignY, headSize, headSize);
 		g.setColor(Color.black);
-		g.drawOval(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headSize, headSize);
+		g.drawOval(point.getX() + headAlignX, point.getY() + headAlignY, headSize, headSize);
 
 		// body
-		g.drawLine(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyEndY);
+		g.drawLine(point.getX() + bodyAlignX, point.getY() + bodyAlignY, point.getX() + bodyAlignX, point.getY() + bodyEndY);
 
 		// arms
-		g.drawLine(point.getX() * tileSize + leftArmAlign, point.getY() * tileSize + armAlignY, point.getX() * tileSize + rightArmEnd, point.getY() * tileSize + armAlignY);
+		g.drawLine(point.getX() + leftArmAlign, point.getY() + armAlignY, point.getX() + rightArmEnd, point.getY() + armAlignY);
 
 		// legs
-		g.drawLine(point.getX() * tileSize + leftLegAlign, point.getY() * tileSize + feetLevel, point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyEndY);
-		g.drawLine(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyEndY, point.getX() * tileSize + rightLegEnd, point.getY() * tileSize + feetLevel);
+		g.drawLine(point.getX() + leftLegAlign, point.getY() + feetLevel, point.getX() + bodyAlignX, point.getY() + bodyEndY);
+		g.drawLine(point.getX() + bodyAlignX, point.getY() + bodyEndY, point.getX() + rightLegEnd, point.getY() + feetLevel);
 	}
 }

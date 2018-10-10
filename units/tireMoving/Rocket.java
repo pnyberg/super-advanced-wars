@@ -13,8 +13,8 @@ public class Rocket extends IndirectUnit {
 	private static int price = 15000;
 	private static String typeName = "Rocket";
 
-	public Rocket(int x, int y, Color color) {
-		super(x, y, color);
+	public Rocket(int x, int y, Color color, int tileSize) {
+		super(x, y, color, tileSize);
 
 		movement = 5;
 		movementType = MovementType.TIRE;
@@ -37,14 +37,14 @@ public class Rocket extends IndirectUnit {
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
-		int cx1 = point.getX() * tileSize + 2 * tileSize / 3 + 1;
-		int cy1 = point.getY() * tileSize + tileSize / 10 - 1;
-		int cx2 = point.getX() * tileSize + 8 * tileSize / 10;
-		int cy2 = point.getY() * tileSize + tileSize / 4 + 4;
-		int cx3 = point.getX() * tileSize + tileSize / 4 - 2;
-		int cy3 = point.getY() * tileSize + tileSize / 2 + 5;
-		int cx4 = point.getX() * tileSize + tileSize / 5 - 4;
-		int cy4 = point.getY() * tileSize + 2 * tileSize / 5 - 2;
+		int cx1 = point.getX() + 2 * tileSize / 3 + 1;
+		int cy1 = point.getY() + tileSize / 10 - 1;
+		int cx2 = point.getX() + 8 * tileSize / 10;
+		int cy2 = point.getY() + tileSize / 4 + 4;
+		int cx3 = point.getX() + tileSize / 4 - 2;
+		int cy3 = point.getY() + tileSize / 2 + 5;
+		int cx4 = point.getX() + tileSize / 5 - 4;
+		int cy4 = point.getY() + 2 * tileSize / 5 - 2;
 
 		int bodyWidth = 2 * tileSize / 5 + 5;
 		int bodyHeight = tileSize / 4 + 3;
@@ -57,10 +57,10 @@ public class Rocket extends IndirectUnit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.fillRect(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodyWidth, bodyHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.drawRect(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodyWidth, bodyHeight);
 
 		// cannon
 		int[] cannonX = {cx1, cx2, cx3, cx4};

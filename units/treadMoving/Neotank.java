@@ -12,8 +12,8 @@ public class Neotank extends Unit {
 	private static int price = 22000;
 	private static String typeName = "Neotank";
 
-	public Neotank(int x, int y, Color color) {
-		super(x, y, color);
+	public Neotank(int x, int y, Color color, int tileSize) {
+		super(x, y, color, tileSize);
 
 		movement = 6;
 		movementType = MovementType.BAND;
@@ -55,10 +55,10 @@ public class Neotank extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillOval(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodySize, bodySize);
+		g.fillOval(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodySize, bodySize);
 
 		g.setColor(Color.black);
-		g.drawOval(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodySize, bodySize);
+		g.drawOval(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodySize, bodySize);
 
 		// cannon
 		if (active) {
@@ -66,10 +66,10 @@ public class Neotank extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(point.getX() * tileSize + cannonAlignX, point.getY() * tileSize + cannonAlignY, cannonWidth, cannonHeight);
+		g.fillRect(point.getX() + cannonAlignX, point.getY() + cannonAlignY, cannonWidth, cannonHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(point.getX() * tileSize + cannonAlignX, point.getY() * tileSize + cannonAlignY, cannonWidth, cannonHeight);
+		g.drawRect(point.getX() + cannonAlignX, point.getY() + cannonAlignY, cannonWidth, cannonHeight);
 
 		// legs
 		if (active) {
@@ -77,11 +77,11 @@ public class Neotank extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillOval(point.getX() * tileSize + legAlignX1, point.getY() * tileSize + legAlignY, legWidth, legHeight);
-		g.fillOval(point.getX() * tileSize + legAlignX2, point.getY() * tileSize + legAlignY, legWidth, legHeight);
+		g.fillOval(point.getX() + legAlignX1, point.getY() + legAlignY, legWidth, legHeight);
+		g.fillOval(point.getX() + legAlignX2, point.getY() + legAlignY, legWidth, legHeight);
 
 		g.setColor(Color.black);
-		g.drawOval(point.getX() * tileSize + legAlignX1, point.getY() * tileSize + legAlignY, legWidth, legHeight);
-		g.drawOval(point.getX() * tileSize + legAlignX2, point.getY() * tileSize + legAlignY, legWidth, legHeight);
+		g.drawOval(point.getX() + legAlignX1, point.getY() + legAlignY, legWidth, legHeight);
+		g.drawOval(point.getX() + legAlignX2, point.getY() + legAlignY, legWidth, legHeight);
 	}
 }

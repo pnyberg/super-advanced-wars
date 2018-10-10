@@ -54,25 +54,25 @@ public class MovementTester {
 	 */
 	@Before
 	public void init() {
-		infantry = new Infantry(-1, -1, Color.white);
-		mech = new Mech(-1, -1, Color.white);
-		recon = new Recon(-1, -1, Color.white);
-		tank = new Tank(-1, -1, Color.white);
-		mdTank = new MDTank(-1, -1, Color.white);
-		neotank = new Neotank(-1, -1, Color.white);
-		apc = new APC(-1, -1, Color.white);
-		artillery = new Artillery(-1, -1, Color.white);
-		rocket = new Rocket(-1, -1, Color.white);
-		a_air = new AAir(-1, -1, Color.white);
-		missiles = new Missiles(-1, -1, Color.white);
-		fighter = new Fighter(-1, -1, Color.white);
-		bomber = new Bomber(-1, -1, Color.white);
-		bCopter = new BCopter(-1, -1, Color.white);
-		tCopter = new TCopter(-1, -1, Color.white);
-		battleship = new Battleship(-1, -1, Color.white);
-		cruiser = new Cruiser(-1, -1, Color.white);
-		lander = new Lander(-1, -1, Color.white);
-//		sub = new Sub(-1, -1, Color.white);
+		infantry = new Infantry(-1, -1, Color.white, -1);
+		mech = new Mech(-1, -1, Color.white, -1);
+		recon = new Recon(-1, -1, Color.white, -1);
+		tank = new Tank(-1, -1, Color.white, -1);
+		mdTank = new MDTank(-1, -1, Color.white, -1);
+		neotank = new Neotank(-1, -1, Color.white, -1);
+		apc = new APC(-1, -1, Color.white, -1);
+		artillery = new Artillery(-1, -1, Color.white, -1);
+		rocket = new Rocket(-1, -1, Color.white, -1);
+		a_air = new AAir(-1, -1, Color.white, -1);
+		missiles = new Missiles(-1, -1, Color.white, -1);
+		fighter = new Fighter(-1, -1, Color.white, -1);
+		bomber = new Bomber(-1, -1, Color.white, -1);
+		bCopter = new BCopter(-1, -1, Color.white, -1);
+		tCopter = new TCopter(-1, -1, Color.white, -1);
+		battleship = new Battleship(-1, -1, Color.white, -1);
+		cruiser = new Cruiser(-1, -1, Color.white, -1);
+		lander = new Lander(-1, -1, Color.white, -1);
+//		sub = new Sub(-1, -1, Color.white, -1);
 		
 		implementTestMap();
 	}

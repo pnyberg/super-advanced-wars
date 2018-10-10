@@ -12,8 +12,8 @@ public class BCopter extends Unit {
 	private static int price = 9000;
 	private static String typeName = "BCopter";
 
-	public BCopter(int x, int y, Color color) {
-		super(x, y, color);
+	public BCopter(int x, int y, Color color, int tileSize) {
+		super(x, y, color, tileSize);
 
 		movement = 6;
 		movementType = MovementType.AIR;
@@ -50,17 +50,17 @@ public class BCopter extends Unit {
 		int feetAlignX = tileSize / 5 + 4;
 		int feetAlignY = 3 * tileSize / 4 + 2;
 
-		int x1 = point.getX() * tileSize + tileSize / 7;
-		int x2 = point.getX() * tileSize + tileSize / 5 - 1;
+		int x1 = point.getX() + tileSize / 7;
+		int x2 = point.getX() + tileSize / 5 - 1;
 		int x3 = x2;
-		int x4 = point.getX() * tileSize + 7 * tileSize / 20;
+		int x4 = point.getX() + 7 * tileSize / 20;
 		int x5 = x4;
 		int x6 = x1;
-		int y1 = point.getY() * tileSize + tileSize / 4 + 2;
+		int y1 = point.getY() + tileSize / 4 + 2;
 		int y2 = y1;
-		int y3 = point.getY() * tileSize + 2 * tileSize / 5 + 1;
+		int y3 = point.getY() + 2 * tileSize / 5 + 1;
 		int y4 = y3;
-		int y5 = point.getY() * tileSize + tileSize / 2;
+		int y5 = point.getY() + tileSize / 2;
 		int y6 = y5;
 
 		int number = 6;
@@ -73,10 +73,10 @@ public class BCopter extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillOval(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.fillOval(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodyWidth, bodyHeight);
 
 		g.setColor(Color.black);
-		g.drawOval(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.drawOval(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodyWidth, bodyHeight);
 
 		// fen
 		if (active) {
@@ -95,10 +95,10 @@ public class BCopter extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(point.getX() * tileSize + feetAlignX, point.getY() * tileSize + feetAlignY, feetWidth, feetHeight);
+		g.fillRect(point.getX() + feetAlignX, point.getY() + feetAlignY, feetWidth, feetHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(point.getX() * tileSize + feetAlignX, point.getY() * tileSize + feetAlignY, feetWidth, feetHeight);
+		g.drawRect(point.getX() + feetAlignX, point.getY() + feetAlignY, feetWidth, feetHeight);
 
 		// legs
 		if (active) {
@@ -106,11 +106,11 @@ public class BCopter extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(point.getX() * tileSize + leftLegAlignX, point.getY() * tileSize + legAlignY, legWidth, legHeight);
-		g.fillRect(point.getX() * tileSize + rightLegAlignX, point.getY() * tileSize + legAlignY, legWidth, legHeight);
+		g.fillRect(point.getX() + leftLegAlignX, point.getY() + legAlignY, legWidth, legHeight);
+		g.fillRect(point.getX() + rightLegAlignX, point.getY() + legAlignY, legWidth, legHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(point.getX() * tileSize + leftLegAlignX, point.getY() * tileSize + legAlignY, legWidth, legHeight);
-		g.drawRect(point.getX() * tileSize + rightLegAlignX, point.getY() * tileSize + legAlignY, legWidth, legHeight);
+		g.drawRect(point.getX() + leftLegAlignX, point.getY() + legAlignY, legWidth, legHeight);
+		g.drawRect(point.getX() + rightLegAlignX, point.getY() + legAlignY, legWidth, legHeight);
 	}
 }

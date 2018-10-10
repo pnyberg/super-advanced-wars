@@ -24,7 +24,7 @@ import units.tireMoving.*;
 import units.treadMoving.*;
 
 public class MapInitiator {
-	private MapDim mapDimension;
+	private MapDim mapDim;
 	protected Area[][] map;
 	private ArrayList<Building> buildings;
 	private HeroPortrait portrait;
@@ -32,7 +32,7 @@ public class MapInitiator {
 	private HeroHandler heroHandler;
 
 	public MapInitiator(MapDim mapDimension, BuildingHandler buildingGetter, HeroHandler heroHandler, Area[][] map, ArrayList<Building> buildings, HeroPortrait portrait) {
-		this.mapDimension = mapDimension;
+		this.mapDim = mapDimension;
 		this.map = map;
 		this.buildings = buildings;
 		this.portrait = portrait;
@@ -51,7 +51,7 @@ public class MapInitiator {
 	
 	private void initTestMap() {
 		for (int y = 0 ; y < 2 ; y++) {
-			for (int x = 0 ; x < mapDimension.width ; x++) {
+			for (int x = 0 ; x < mapDim.width ; x++) {
 				addAreaObject(x, y, TerrainType.SEA);
 			}
 		}
@@ -105,13 +105,13 @@ public class MapInitiator {
 		addAreaObject(7, 7, TerrainType.CITY);
 
 		for (int y = 2 ; y < 8 ; y++) {
-			for (int x = 8 ; x < mapDimension.width ; x++) {
+			for (int x = 8 ; x < mapDim.width ; x++) {
 				addAreaObject(x, y, TerrainType.SEA);
 			}
 		}
 
-		for (int y = 8 ; y < mapDimension.height ; y++) {
-			for (int x = 0 ; x < mapDimension.width ; x++) {
+		for (int y = 8 ; y < mapDim.height ; y++) {
+			for (int x = 0 ; x < mapDim.width ; x++) {
 				addAreaObject(x, y, TerrainType.SEA);
 			}
 		}
@@ -141,7 +141,7 @@ public class MapInitiator {
 	}
 	
 	private void addAreaObject(int x, int y, TerrainType terrainType) {
-		map[x][y] =  new Area(new Point(x * mapDimension.tileSize, y * mapDimension.tileSize), terrainType, mapDimension.tileSize);
+		map[x][y] =  new Area(new Point(x * mapDim.tileSize, y * mapDim.tileSize), terrainType, mapDim.tileSize);
 	}
 
 	private void initBuildings() {
@@ -165,36 +165,37 @@ public class MapInitiator {
 	}
 
 	private void initTestTroops() {
+		int tileSize = mapDim.tileSize;
 		Hero hero1 = portrait.getHeroHandler().getHero(0);
 		Hero hero2 = portrait.getHeroHandler().getHero(1);
 
-		hero1.getTroopHandler().addTroop(new Infantry(3, 6, hero1.getColor()));
-		hero1.getTroopHandler().addTroop(new Mech(3, 3, hero1.getColor()));
-		hero1.getTroopHandler().addTroop(new Tank(4, 4, hero1.getColor()));
-		hero1.getTroopHandler().addTroop(new Recon(5, 5, hero1.getColor()));
-		hero1.getTroopHandler().addTroop(new Artillery(5, 2, hero1.getColor()));
-		hero1.getTroopHandler().addTroop(new Rocket(2, 5, hero1.getColor()));
-		hero1.getTroopHandler().addTroop(new Battleship(1, 3, hero1.getColor()));
-		hero1.getTroopHandler().addTroop(new APC(3, 2, hero1.getColor()));
-		hero1.getTroopHandler().addTroop(new AAir(3, 4, hero1.getColor()));
-		hero1.getTroopHandler().addTroop(new Lander(8, 5, hero1.getColor()));
-		hero1.getTroopHandler().addTroop(new Fighter(10, 2, hero1.getColor()));
-		hero1.getTroopHandler().addTroop(new Bomber(10, 4, hero1.getColor()));
-		hero1.getTroopHandler().addTroop(new BCopter(8, 2, hero1.getColor()));
-		hero1.getTroopHandler().addTroop(new Cruiser(8, 3, hero1.getColor()));
+		hero1.getTroopHandler().addTroop(new Infantry(3 * tileSize, 6 * tileSize, hero1.getColor(), tileSize));
+		hero1.getTroopHandler().addTroop(new Mech(3 * tileSize, 3 * tileSize, hero1.getColor(), tileSize));
+		hero1.getTroopHandler().addTroop(new Tank(4 * tileSize, 4 * tileSize, hero1.getColor(), tileSize));
+		hero1.getTroopHandler().addTroop(new Recon(5 * tileSize, 5 * tileSize, hero1.getColor(), tileSize));
+		hero1.getTroopHandler().addTroop(new Artillery(5 * tileSize, 2 * tileSize, hero1.getColor(), tileSize));
+		hero1.getTroopHandler().addTroop(new Rocket(2 * tileSize, 5 * tileSize, hero1.getColor(), tileSize));
+		hero1.getTroopHandler().addTroop(new Battleship(1 * tileSize, 3 * tileSize, hero1.getColor(), tileSize));
+		hero1.getTroopHandler().addTroop(new APC(3 * tileSize, 2 * tileSize, hero1.getColor(), tileSize));
+		hero1.getTroopHandler().addTroop(new AAir(3 * tileSize, 4 * tileSize, hero1.getColor(), tileSize));
+		hero1.getTroopHandler().addTroop(new Lander(8 * tileSize, 5 * tileSize, hero1.getColor(), tileSize));
+		hero1.getTroopHandler().addTroop(new Fighter(10 * tileSize, 2 * tileSize, hero1.getColor(), tileSize));
+		hero1.getTroopHandler().addTroop(new Bomber(10 * tileSize, 4 * tileSize, hero1.getColor(), tileSize));
+		hero1.getTroopHandler().addTroop(new BCopter(8 * tileSize, 2 * tileSize, hero1.getColor(), tileSize));
+		hero1.getTroopHandler().addTroop(new Cruiser(8 * tileSize, 3 * tileSize, hero1.getColor(), tileSize));
 
-		hero2.getTroopHandler().addTroop(new Infantry(6, 6, hero2.getColor()));
-		hero2.getTroopHandler().addTroop(new Infantry(5, 7, hero2.getColor()));
-		hero2.getTroopHandler().addTroop(new Battleship(6, 8, hero2.getColor()));
-		hero2.getTroopHandler().addTroop(new Lander(7, 9, hero2.getColor()));
-		hero2.getTroopHandler().addTroop(new Fighter(10, 8, hero2.getColor()));
-		hero2.getTroopHandler().addTroop(new Cruiser(10, 9, hero2.getColor()));
-		hero2.getTroopHandler().addTroop(new Cruiser(11, 9, hero2.getColor()));
-		hero2.getTroopHandler().addTroop(new Cruiser(12, 9, hero2.getColor()));
-		hero2.getTroopHandler().addTroop(new Cruiser(10, 10, hero2.getColor()));
-		hero2.getTroopHandler().addTroop(new Cruiser(11, 10, hero2.getColor()));
-		hero2.getTroopHandler().addTroop(new Cruiser(12, 10, hero2.getColor()));
-		hero2.getTroopHandler().addTroop(new Cruiser(10, 11, hero2.getColor()));
+		hero2.getTroopHandler().addTroop(new Infantry(6 * tileSize, 6 * tileSize, hero2.getColor(), tileSize));
+		hero2.getTroopHandler().addTroop(new Infantry(5 * tileSize, 7 * tileSize, hero2.getColor(), tileSize));
+		hero2.getTroopHandler().addTroop(new Battleship(6 * tileSize, 8 * tileSize, hero2.getColor(), tileSize));
+		hero2.getTroopHandler().addTroop(new Lander(7 * tileSize, 9 * tileSize, hero2.getColor(), tileSize));
+		hero2.getTroopHandler().addTroop(new Fighter(10 * tileSize, 8 * tileSize, hero2.getColor(), tileSize));
+		hero2.getTroopHandler().addTroop(new Cruiser(10 * tileSize, 9 * tileSize, hero2.getColor(), tileSize));
+		hero2.getTroopHandler().addTroop(new Cruiser(11 * tileSize, 9 * tileSize, hero2.getColor(), tileSize));
+		hero2.getTroopHandler().addTroop(new Cruiser(12 * tileSize, 9 * tileSize, hero2.getColor(), tileSize));
+		hero2.getTroopHandler().addTroop(new Cruiser(10 * tileSize, 10 * tileSize, hero2.getColor(), tileSize));
+		hero2.getTroopHandler().addTroop(new Cruiser(11 * tileSize, 10 * tileSize, hero2.getColor(), tileSize));
+		hero2.getTroopHandler().addTroop(new Cruiser(12 * tileSize, 10 * tileSize, hero2.getColor(), tileSize));
+		hero2.getTroopHandler().addTroop(new Cruiser(10 * tileSize, 11 * tileSize, hero2.getColor(), tileSize));
 
 		for (int h = 0 ; h < 2 ; h++) {
 			for (int k = 0 ; k < portrait.getHeroHandler().getHero(h).getTroopHandler().getTroopSize() ; k++) {

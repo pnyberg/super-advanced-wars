@@ -22,12 +22,12 @@ public abstract class Unit {
 	protected AttackType attackType;
 	protected MovementType movementType;
 
-	public Unit(int x, int y, Color color) {
+	public Unit(int x, int y, Color color, int tileSize) {
 		point = new Point(x, y);
 		this.color = color;
 		restingColor = color.darker();
 
-		unitHealth = new UnitHealth();
+		unitHealth = new UnitHealth(tileSize);
 		hidden = false;
 		attacking = false;
 		active = false;
@@ -93,7 +93,7 @@ public abstract class Unit {
 
 	public void paint(Graphics g, int tileSize) {
 		paintUnit(g, tileSize);
-		unitHealth.paintHP(g, point.getX(), point.getY(), tileSize);
+		unitHealth.paintHP(g, point.getX(), point.getY());
 	}
 
 	protected abstract void paintUnit(Graphics g, int tileSize);

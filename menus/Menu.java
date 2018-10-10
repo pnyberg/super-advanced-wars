@@ -11,6 +11,7 @@ import graphics.MenuArrow;
 public abstract class Menu {
 	protected int x;
 	protected int y;
+	protected int tileSize;
 	protected int menuIndex;
 	protected boolean visible;
 	protected DimensionValues dimensionValues;	
@@ -19,6 +20,7 @@ public abstract class Menu {
 	public Menu(int tileSize) {
 		x = 0;
 		y = 0;
+		this.tileSize = tileSize;
 		menuIndex = 0;
 		visible = false;
 		dimensionValues = new DimensionValues();

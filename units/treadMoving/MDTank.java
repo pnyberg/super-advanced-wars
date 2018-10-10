@@ -12,8 +12,8 @@ public class MDTank extends Unit {
 	private static int price = 16000;
 	private static String typeName = "MD Tank";
 
-	public MDTank(int x, int y, Color color) {
-		super(x, y, color);
+	public MDTank(int x, int y, Color color, int tileSize) {
+		super(x, y, color, tileSize);
 
 		movement = 5;
 		movementType = MovementType.BAND;
@@ -54,10 +54,10 @@ public class MDTank extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headSize, headSize);
+		g.fillRect(point.getX() + headAlignX, point.getY() + headAlignY, headSize, headSize);
 
 		g.setColor(Color.black);
-		g.drawRect(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headSize, headSize);
+		g.drawRect(point.getX() + headAlignX, point.getY() + headAlignY, headSize, headSize);
 
 		// cannon
 		if (active) {
@@ -65,10 +65,10 @@ public class MDTank extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(point.getX() * tileSize + cannonAlignX, point.getY() * tileSize + cannonAlignY, cannonWidth, cannonHeight);
+		g.fillRect(point.getX() + cannonAlignX, point.getY() + cannonAlignY, cannonWidth, cannonHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(point.getX() * tileSize + cannonAlignX, point.getY() * tileSize + cannonAlignY, cannonWidth, cannonHeight);
+		g.drawRect(point.getX() + cannonAlignX, point.getY() + cannonAlignY, cannonWidth, cannonHeight);
 
 		// body
 		if (active) {
@@ -76,9 +76,9 @@ public class MDTank extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.fillRect(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodyWidth, bodyHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.drawRect(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodyWidth, bodyHeight);
 	}
 }

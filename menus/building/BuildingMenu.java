@@ -33,7 +33,7 @@ public class BuildingMenu extends Menu {
 		port = false;
 		airport = false;
 		buildingItemFactory = new BuildingItemFactory();
-		unitCreatingFactory = new UnitCreatingFactory();
+		unitCreatingFactory = new UnitCreatingFactory(tileSize);
 		buildingMenuPainter = new BuildingMenuPainter(heroHandler, dimensionValues, priceAlign);
 		this.map = map;
 	}
@@ -77,7 +77,7 @@ public class BuildingMenu extends Menu {
 
 	private Unit createUnitFromIndex(Hero hero) {
 		String unitName = getStandardItems()[menuIndex].getName();
-		return unitCreatingFactory.createUnit(unitName, x, y, hero.getColor());
+		return unitCreatingFactory.createUnit(unitName, x * tileSize, y * tileSize, hero.getColor());
 	}
 	
 	private BuildingItem[] getStandardItems() {

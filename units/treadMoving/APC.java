@@ -16,8 +16,8 @@ public class APC extends Unit {
 	private Unit containedUnit;
 	private boolean droppingOff;
 
-	public APC(int x, int y, Color color) {
-		super(x, y, color);
+	public APC(int x, int y, Color color, int tileSize) {
+		super(x, y, color, tileSize);
 
 		movement = 6;
 		movementType = MovementType.BAND;
@@ -91,9 +91,9 @@ public class APC extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.fillRect(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodyWidth, bodyHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.drawRect(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodyWidth, bodyHeight);
 	}
 }

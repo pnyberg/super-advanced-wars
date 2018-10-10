@@ -12,8 +12,8 @@ public class AAir extends Unit {
 	private static int price = 8000;
 	private static String typeName = "A-Air";
 
-	public AAir(int x, int y, Color color) {
-		super(x, y, color);
+	public AAir(int x, int y, Color color, int tileSize) {
+		super(x, y, color, tileSize);
 
 		movement = 6;
 		movementType = MovementType.BAND;
@@ -34,8 +34,8 @@ public class AAir extends Unit {
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
-		int paintX = point.getX() * tileSize;
-		int paintY = point.getY() * tileSize;
+		int paintX = point.getX();
+		int paintY = point.getY();
 
 		int headAlignX = paintX + tileSize / 3 - 1;
 		int headAlignY = paintY + tileSize / 5;

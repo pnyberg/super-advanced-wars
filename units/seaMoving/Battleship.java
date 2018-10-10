@@ -13,8 +13,8 @@ public class Battleship extends IndirectUnit {
 	private static int price = 28000;
 	private static String typeName = "Battleship";
 
-	public Battleship(int x, int y, Color color) {
-		super(x, y, color);
+	public Battleship(int x, int y, Color color, int tileSize) {
+		super(x, y, color, tileSize);
 
 		movement = 5;
 		movementType = MovementType.SHIP;
@@ -37,14 +37,14 @@ public class Battleship extends IndirectUnit {
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
-		int cx1 = point.getX() * tileSize + tileSize / 8;
-		int cy1 = point.getY() * tileSize + 3 * tileSize / 5;
-		int cx2 = point.getX() * tileSize + 7 * tileSize / 8;
-		int cy2 = point.getY() * tileSize + 3 * tileSize / 5;
-		int cx3 = point.getX() * tileSize + 3 * tileSize / 4;
-		int cy3 = point.getY() * tileSize + 5 * tileSize / 6;
-		int cx4 = point.getX() * tileSize + tileSize / 4;
-		int cy4 = point.getY() * tileSize + 5 * tileSize / 6;
+		int cx1 = point.getX() + tileSize / 8;
+		int cy1 = point.getY() + 3 * tileSize / 5;
+		int cx2 = point.getX() + 7 * tileSize / 8;
+		int cy2 = point.getY() + 3 * tileSize / 5;
+		int cx3 = point.getX() + 3 * tileSize / 4;
+		int cy3 = point.getY() + 5 * tileSize / 6;
+		int cx4 = point.getX() + tileSize / 4;
+		int cy4 = point.getY() + 5 * tileSize / 6;
 
 		int headWidth = tileSize / 4;
 		int headHeight = tileSize / 4;
@@ -77,10 +77,10 @@ public class Battleship extends IndirectUnit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headWidth, headHeight);
+		g.fillRect(point.getX() + headAlignX, point.getY() + headAlignY, headWidth, headHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headWidth, headHeight);
+		g.drawRect(point.getX() + headAlignX, point.getY() + headAlignY, headWidth, headHeight);
 
 		// cannon
 		if (active) {
@@ -88,9 +88,9 @@ public class Battleship extends IndirectUnit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(point.getX() * tileSize + cannonAlignX, point.getY() * tileSize + cannonAlignY, cannonWidth, cannonHeight);
+		g.fillRect(point.getX() + cannonAlignX, point.getY() + cannonAlignY, cannonWidth, cannonHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(point.getX() * tileSize + cannonAlignX, point.getY() * tileSize + cannonAlignY, cannonWidth, cannonHeight);
+		g.drawRect(point.getX() + cannonAlignX, point.getY() + cannonAlignY, cannonWidth, cannonHeight);
 	}
 }

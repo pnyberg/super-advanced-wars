@@ -17,8 +17,8 @@ public class Cruiser extends Unit {
 	private boolean droppingOff;
 	private int chosenIndex;
 
-	public Cruiser(int x, int y, Color color) {
-		super(x, y, color);
+	public Cruiser(int x, int y, Color color, int tileSize) {
+		super(x, y, color, tileSize);
 
 		movement = 6;
 		movementType = MovementType.SHIP;
@@ -96,14 +96,14 @@ public class Cruiser extends Unit {
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
-		int cx1 = point.getX() * tileSize + tileSize / 8;
-		int cy1 = point.getY() * tileSize + 3 * tileSize / 5;
-		int cx2 = point.getX() * tileSize + 7 * tileSize / 8;
-		int cy2 = point.getY() * tileSize + 3 * tileSize / 5;
-		int cx3 = point.getX() * tileSize + 3 * tileSize / 4;
-		int cy3 = point.getY() * tileSize + 5 * tileSize / 6;
-		int cx4 = point.getX() * tileSize + tileSize / 4;
-		int cy4 = point.getY() * tileSize + 5 * tileSize / 6;
+		int cx1 = point.getX() + tileSize / 8;
+		int cy1 = point.getY() + 3 * tileSize / 5;
+		int cx2 = point.getX() + 7 * tileSize / 8;
+		int cy2 = point.getY() + 3 * tileSize / 5;
+		int cx3 = point.getX() + 3 * tileSize / 4;
+		int cy3 = point.getY() + 5 * tileSize / 6;
+		int cx4 = point.getX() + tileSize / 4;
+		int cy4 = point.getY() + 5 * tileSize / 6;
 
 		int headWidth = tileSize / 4;
 		int headHeight = tileSize / 4;
@@ -136,10 +136,10 @@ public class Cruiser extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headWidth, headHeight);
-		g.fillRect(point.getX() * tileSize + miniHeadAlignX, point.getY() * tileSize + miniHeadAlignY, miniHeadWidth, miniHeadHeight);
+		g.fillRect(point.getX() + headAlignX, point.getY() + headAlignY, headWidth, headHeight);
+		g.fillRect(point.getX() + miniHeadAlignX, point.getY() + miniHeadAlignY, miniHeadWidth, miniHeadHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headWidth, headHeight);
+		g.drawRect(point.getX() + headAlignX, point.getY() + headAlignY, headWidth, headHeight);
 	}
 }

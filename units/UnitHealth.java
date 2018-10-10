@@ -6,9 +6,11 @@ import java.awt.Graphics;
 
 public class UnitHealth {
 	private int hp;
+	private int tileSize;
 	
-	public UnitHealth() {
+	public UnitHealth(int tileSize) {
 		hp = 100;
+		this.tileSize = tileSize; 
 	}
 
 	public void heal(int health) {
@@ -41,13 +43,13 @@ public class UnitHealth {
 		return (hp + 9) / 10;
 	}
 
-	protected void paintHP(Graphics g, int x, int y, int tileSize) {
+	protected void paintHP(Graphics g, int x, int y) {
 		if (getShowHP() == 10) {
 			return;
 		}
 
-		int paintHPX = x * tileSize + (3 * tileSize) / 4;
-		int paintHPY = y * tileSize + (3 * tileSize) / 4;
+		int paintHPX = x  + (3 * tileSize) / 4;
+		int paintHPY = y  + (3 * tileSize) / 4;
 
 		Font currentFont = g.getFont();
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 10));

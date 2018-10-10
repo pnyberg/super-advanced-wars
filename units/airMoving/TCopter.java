@@ -16,8 +16,8 @@ public class TCopter extends Unit {
 	private Unit containedUnit;
 	private boolean droppingOff;
 
-	public TCopter(int x, int y, Color color) {
-		super(x, y, color);
+	public TCopter(int x, int y, Color color, int tileSize) {
+		super(x, y, color, tileSize);
 
 		movement = 6;
 		movementType = MovementType.AIR;
@@ -100,14 +100,14 @@ public class TCopter extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillOval(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.fillOval(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodyWidth, bodyHeight);
 
 		g.setColor(Color.black);
-		g.drawOval(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.drawOval(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodyWidth, bodyHeight);
 		
-		g.drawLine(point.getX() * tileSize + firstCrossLeftX, point.getY() * tileSize + crossUpperY, point.getX() * tileSize + firstCrossRightX, point.getY() * tileSize + crossLowerY);
-		g.drawLine(point.getX() * tileSize + firstCrossLeftX, point.getY() * tileSize + crossLowerY, point.getX() * tileSize + firstCrossRightX, point.getY() * tileSize + crossUpperY);
-		g.drawLine(point.getX() * tileSize + secondCrossLeftX, point.getY() * tileSize + crossUpperY, point.getX() * tileSize + secondCrossRightX, point.getY() * tileSize + crossLowerY);
-		g.drawLine(point.getX() * tileSize + secondCrossLeftX, point.getY() * tileSize + crossLowerY, point.getX() * tileSize + secondCrossRightX, point.getY() * tileSize + crossUpperY);
+		g.drawLine(point.getX() + firstCrossLeftX, point.getY() + crossUpperY, point.getX() + firstCrossRightX, point.getY() + crossLowerY);
+		g.drawLine(point.getX() + firstCrossLeftX, point.getY() + crossLowerY, point.getX() + firstCrossRightX, point.getY() + crossUpperY);
+		g.drawLine(point.getX() + secondCrossLeftX, point.getY() + crossUpperY, point.getX() + secondCrossRightX, point.getY() + crossLowerY);
+		g.drawLine(point.getX() + secondCrossLeftX, point.getY() + crossLowerY, point.getX() + secondCrossRightX, point.getY() + crossUpperY);
 	}
 }

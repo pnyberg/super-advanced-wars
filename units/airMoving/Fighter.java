@@ -12,8 +12,8 @@ public class Fighter extends Unit {
 	private static int price = 20000;
 	private static String typeName = "Fighter";
 
-	public Fighter(int x, int y, Color color) {
-		super(x, y, color);
+	public Fighter(int x, int y, Color color, int tileSize) {
+		super(x, y, color, tileSize);
 
 		movement = 9;
 		movementType = MovementType.AIR;
@@ -43,12 +43,12 @@ public class Fighter extends Unit {
 		int headAlignX = 3 * tileSize / 5 + 2;
 		int headAlignY = bodyAlignY - 2;
 
-		int x1 = point.getX() * tileSize + tileSize / 3 - 2;
-		int x2 = point.getX() * tileSize + 2 * tileSize / 5 - 2;
-		int x3 = point.getX() * tileSize + 3 * tileSize / 5 - 2;
-		int x4 = point.getX() * tileSize + 2 * tileSize / 3 - 2;
-		int y1 = point.getY() * tileSize + 3 * tileSize / 5;
-		int y2 = point.getY() * tileSize + 9 * tileSize / 10;
+		int x1 = point.getX() + tileSize / 3 - 2;
+		int x2 = point.getX() + 2 * tileSize / 5 - 2;
+		int x3 = point.getX() + 3 * tileSize / 5 - 2;
+		int x4 = point.getX() + 2 * tileSize / 3 - 2;
+		int y1 = point.getY() + 3 * tileSize / 5;
+		int y2 = point.getY() + 9 * tileSize / 10;
 		int y3 = y2;
 		int y4 = y1;
 
@@ -62,10 +62,10 @@ public class Fighter extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.fillRect(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodyWidth, bodyHeight);
 
 		g.setColor(Color.black);
-		g.drawRect(point.getX() * tileSize + bodyAlignX, point.getY() * tileSize + bodyAlignY, bodyWidth, bodyHeight);
+		g.drawRect(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodyWidth, bodyHeight);
 
 		// head
 		if (active) {
@@ -73,10 +73,10 @@ public class Fighter extends Unit {
 		} else {
 			g.setColor(restingColor);
 		}
-		g.fillOval(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headSize, headSize);
+		g.fillOval(point.getX() + headAlignX, point.getY() + headAlignY, headSize, headSize);
 
 		g.setColor(Color.black);
-		g.drawOval(point.getX() * tileSize + headAlignX, point.getY() * tileSize + headAlignY, headSize, headSize);
+		g.drawOval(point.getX() + headAlignX, point.getY() + headAlignY, headSize, headSize);
 
 		// wings
 		if (active) {
