@@ -11,7 +11,9 @@ import map.buildings.BuildingHandler;
 import routing.RouteHandler;
 import units.Unit;
 
-public class MapPainter {
+public class ViewPainter {
+	private MapViewType mapViewType;
+	private CommanderView commanderView;
 	private HeroHandler heroHandler;
 	private MapDim mapDimension;
 	private Area[][] map;
@@ -19,7 +21,9 @@ public class MapPainter {
 	private AttackRangeHandler attackRangeHandler;
 	private BuildingHandler buildingGetter;
 	
-	public MapPainter(HeroHandler heroHandler, MapDim mapDimension, Area[][] map, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler, BuildingHandler buildingGetter) {
+	public ViewPainter(HeroHandler heroHandler, MapDim mapDimension, Area[][] map, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler, BuildingHandler buildingGetter) {
+		mapViewType = MapViewType.MAIN_MAP_MENU_VIEW;
+		commanderView = new CommanderView(heroHandler);
 		this.heroHandler = heroHandler;
 		this.mapDimension = mapDimension;
 		this.map = map;
@@ -28,7 +32,16 @@ public class MapPainter {
 		this.buildingGetter = buildingGetter;
 	}
 	
-	public void paintMap(Graphics g) {
+	public void paint(Graphics g) {
+		if (mapViewType == MapViewType.MAIN_MAP_MENU_VIEW) {
+			paintMap(g);
+		} else if (mapViewType == MapViewType.CO_MAP_MENU_VIEW) {
+			commanderView.paintView(g);
+		}
+
+	}
+	
+	private void paintMap(Graphics g) {
 		for (int x = 0 ; x < map.length ; x++) {
 			for (int y = 0 ; y < map[0].length ; y++) {
 				paintArea(g, x, y);

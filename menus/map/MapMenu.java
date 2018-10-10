@@ -2,6 +2,8 @@ package menus.map;
 
 import java.awt.Graphics;
 
+import graphics.CommanderView;
+import graphics.MapViewType;
 import hero.heroPower.HeroPowerMeter;
 import main.HeroHandler;
 import menus.Menu;
@@ -43,12 +45,15 @@ public class MapMenu extends Menu {
 	}
 
 	public void paint(Graphics g) {
+		paintMenuBackground(g);
+		paintMenuForeground(g);
+		paintArrow(g);
+	}
+	
+	private void paintMenuForeground(Graphics g) {
 		HeroPowerMeter heroPowerMeter = heroHandler.getCurrentHero().getHeroPower().getHeroPowerMeter();
 		int menuX = x * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2 + dimensionValues.getAlignX();
 		int menuY = y * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2 + dimensionValues.getAlignY();
-
-		paintMenuBackground(g);
-
 		int rowHelpIndex = 1;
 		for (int k = 0 ; k < menuTexts.length ; k++) {
 			if (k == 2 && !heroPowerMeter.powerUsable()) {
@@ -60,7 +65,5 @@ public class MapMenu extends Menu {
 			g.drawString(menuTexts[k], menuX, menuY + dimensionValues.getMenuRowHeight() * rowHelpIndex);
 			rowHelpIndex++;
 		}
-
-		paintArrow(g);
 	}
 }

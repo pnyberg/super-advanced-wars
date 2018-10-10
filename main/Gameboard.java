@@ -79,7 +79,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		UnitMenu unitMenu = internalStructureObject.getUnitMenuHandler().getUnitMenu();
 		ContUnitHandler contUnitHandler = internalStructureObject.getContUnitHandler();
 
-		internalStructureObject.getMapPainter().paintMap(g);
+		internalStructureObject.getMainViewPainter().paint(g);
 		if (chosenUnit != null) {
 			if (!unitMenu.isVisible() && !contUnitHandler.unitIsDroppingOff() 
 									&& !attackHandler.unitWantsToFire(chosenUnit)) {
@@ -90,7 +90,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		}
 
 		internalStructureObject.getAttackRangeHandler().paintRange(g);
-		internalStructureObject.getMapPainter().paintUnits(g, chosenUnit);
+		internalStructureObject.getMainViewPainter().paintUnits(g, chosenUnit);
 
 		// when the mapMenu is open the cursor is hidden
 		if (internalStructureObject.getMapMenu().isVisible()) {
