@@ -70,12 +70,14 @@ public class ViewPainter {
 	}
 
 	public void paintUnits(Graphics g, Unit chosenUnit) {
-		for (int t = 0 ; t < 2 ; t++) {
-			for (int k = 0 ; k < heroHandler.getTroopSize(t) ; k++) {
-				Unit unit = heroHandler.getUnitFromHero(t, k);
-				if (unit != chosenUnit) {
-					if (!unit.isHidden()) {
-						unit.paint(g, mapDimension.tileSize);
+		if (mapViewType == MapViewType.MAIN_MAP_MENU_VIEW) {
+			for (int heroIndex = 0 ; heroIndex < heroHandler.getNumberOfHeroes() ; heroIndex++) {
+				for (int k = 0 ; k < heroHandler.getTroopSize(heroIndex) ; k++) {
+					Unit unit = heroHandler.getUnitFromHero(heroIndex, k);
+					if (unit != chosenUnit) {
+						if (!unit.isHidden()) {
+							unit.paint(g, mapDimension.tileSize);
+						}
 					}
 				}
 			}
