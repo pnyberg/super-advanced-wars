@@ -278,6 +278,7 @@ public class KeyListenerInputHandler {
 		} else if (mapMenu.isVisible()) {
 			if (mapMenu.atCoRow()) {
 				viewPainter.setViewType(MapViewType.CO_MAP_MENU_VIEW);
+				mapMenu.closeMenu();
 			} else if (mapMenu.atPowerRow()) {
 				heroPowerHandler.handlePower();
 				mapMenu.closeMenu();
