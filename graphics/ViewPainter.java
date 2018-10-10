@@ -23,13 +23,21 @@ public class ViewPainter {
 	
 	public ViewPainter(HeroHandler heroHandler, MapDim mapDimension, Area[][] map, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler, BuildingHandler buildingGetter) {
 		mapViewType = MapViewType.MAIN_MAP_MENU_VIEW;
-		commanderView = new CommanderView(heroHandler);
+		commanderView = new CommanderView(mapDimension, heroHandler);
 		this.heroHandler = heroHandler;
 		this.mapDimension = mapDimension;
 		this.map = map;
 		this.routeHandler = routeHandler;
 		this.attackRangeHandler = attackRangeHandler;
 		this.buildingGetter = buildingGetter;
+	}
+	
+	public void setViewType(MapViewType mapViewType) {
+		this.mapViewType = mapViewType;
+	}
+	
+	public MapViewType geMapViewType() {
+		return mapViewType;
 	}
 	
 	public void paint(Graphics g) {

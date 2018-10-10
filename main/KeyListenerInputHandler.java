@@ -10,6 +10,8 @@ import cursors.FiringCursorHandler;
 import gameObjects.ChosenObject;
 import gameObjects.GameProp;
 import gameObjects.MapDim;
+import graphics.MapViewType;
+import graphics.ViewPainter;
 import hero.Hero;
 import hero.heroPower.HeroPowerHandler;
 import map.UnitGetter;
@@ -29,6 +31,7 @@ import units.treadMoving.*;
 
 public class KeyListenerInputHandler {
 	private GameProp gameProp;
+	private ViewPainter viewPainter;
 	private UnitGetter unitGetter;
 	private BuildingHandler buildingHandler;
 	private Cursor cursor;
@@ -49,8 +52,9 @@ public class KeyListenerInputHandler {
 	private FiringCursorHandler firingCursorHandler;
 	private HeroPowerHandler heroPowerHandler;
 	
-	public KeyListenerInputHandler(GameProp gameProp, UnitGetter unitGetter, BuildingHandler buildingHandler, Cursor cursor, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
+	public KeyListenerInputHandler(GameProp gameProp, ViewPainter viewPainter, UnitGetter unitGetter, BuildingHandler buildingHandler, Cursor cursor, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
 		this.gameProp = gameProp;
+		this.viewPainter = viewPainter;
 		this.unitGetter = unitGetter;
 		this.buildingHandler = buildingHandler;
 		this.cursor = cursor;
@@ -272,7 +276,9 @@ public class KeyListenerInputHandler {
 			movementMap.clearMovementMap();
 			routeHandler.clearArrowPoints();
 		} else if (mapMenu.isVisible()) {
-			if (mapMenu.atPowerRow()) {
+			if (mapMenu.atCoRow()) {
+				viewPainter.setViewType(MapViewType.CO_MAP_MENU_VIEW);
+			} else if (mapMenu.atPowerRow()) {
 				heroPowerHandler.handlePower();
 				mapMenu.closeMenu();
 			} else if (mapMenu.atSuperPowerRow()) {

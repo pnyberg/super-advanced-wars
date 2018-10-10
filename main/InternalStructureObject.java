@@ -96,7 +96,7 @@ public class InternalStructureObject {
 		attackHandler = new AttackHandler(gameProp.getMapDim(), unitGetter, attackRangeHandler, damageHandler);
 
 		// required init from fifth init-round
-		keyListenerInputHandler = new KeyListenerInputHandler(gameProp, unitGetter, buildingHandler, cursor, unitMenuHandler, mapMenu, buildingMenu, containerUnitHandler, attackHandler, attackRangeHandler, movementMap, routeHandler, routeChecker, damageHandler, heroHandler, supplyHandler, turnHandler);		
+		keyListenerInputHandler = new KeyListenerInputHandler(gameProp, mainViewPainter, unitGetter, buildingHandler, cursor, unitMenuHandler, mapMenu, buildingMenu, containerUnitHandler, attackHandler, attackRangeHandler, movementMap, routeHandler, routeChecker, damageHandler, heroHandler, supplyHandler, turnHandler);		
 	}
 	
 	public AttackHandler getAttackHandler() {
