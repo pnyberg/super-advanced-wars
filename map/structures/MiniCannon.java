@@ -4,14 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import gameObjects.Direction;
+import hero.Hero;
 import map.area.TerrainType;
 
 public class MiniCannon extends FiringStructure {
 	private Direction direction;
-	private final int damage = 3;
+	private final int damage = 30;
 	
-	public MiniCannon(int x, int y, Direction direction, Color color, int tileSize) {
-		super(x, y, color, tileSize);
+	public MiniCannon(int x, int y, Direction direction, Hero owner, int tileSize) {
+		super(x, y, owner, tileSize);
 		this.direction = direction;
 	}
 	
@@ -42,7 +43,7 @@ public class MiniCannon extends FiringStructure {
 		g.fillRect(x, y, tileSize, tileSize);
 		g.setColor(Color.black);
 		g.drawRect(x, y, tileSize, tileSize);
-		g.setColor(color);
+		g.setColor(owner.getColor());
 
 		g.fillOval(x+tileSize/8, y+tileSize/16, 3 * tileSize / 4, 7 * tileSize / 8);
 		g.setColor(Color.black);

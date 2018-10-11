@@ -1,10 +1,10 @@
 package map.structures;
 
-import java.awt.Color;
+import hero.Hero;
 
 public abstract class FiringStructure extends Structure {
-	public FiringStructure(int x, int y, Color color, int tileSize) {
-		super(x, y, color, tileSize);
+	public FiringStructure(int x, int y, Hero owner, int tileSize) {
+		super(x, y, owner, tileSize);
 	}
 
 	public abstract int getDamage();

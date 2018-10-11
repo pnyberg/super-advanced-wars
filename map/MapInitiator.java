@@ -141,12 +141,12 @@ public class MapInitiator {
 
 		Building building = buildingGetter.getBuilding(2, 4); // factory
 
-		building.setOwnership(portrait.getHeroHandler().getCurrentHero());
+		building.setOwnership(heroHandler.getCurrentHero());
 
 		building = buildingGetter.getBuilding(4, 8); // port
-		building.setOwnership(portrait.getHeroHandler().getCurrentHero());
+		building.setOwnership(heroHandler.getCurrentHero());
 		building = buildingGetter.getBuilding(7, 3); // airport
-		building.setOwnership(portrait.getHeroHandler().getCurrentHero());
+		building.setOwnership(heroHandler.getCurrentHero());
 		
 		// structures-part
 		initStructures();
@@ -181,7 +181,7 @@ public class MapInitiator {
 		for (int x = 0 ; x < map.length ; x++) {
 			for (int y = 0 ; y < map[0].length ; y++) {
 				if (map[x][y].getTerrainType() == TerrainType.MINI_CANNON) {
-					structures.add(new MiniCannon(x * tileSize, y * tileSize, Direction.SOUTH, Color.red, tileSize));
+					structures.add(new MiniCannon(x * tileSize, y * tileSize, Direction.SOUTH, heroHandler.getHero(0), tileSize));
 				}
 			}
 		}
@@ -189,8 +189,8 @@ public class MapInitiator {
 
 	private void initTestTroops() {
 		int tileSize = mapDim.tileSize;
-		Hero hero1 = portrait.getHeroHandler().getHero(0);
-		Hero hero2 = portrait.getHeroHandler().getHero(1);
+		Hero hero1 = heroHandler.getHero(0);
+		Hero hero2 = heroHandler.getHero(1);
 
 		hero1.getTroopHandler().addTroop(new Infantry(3 * tileSize, 6 * tileSize, hero1.getColor(), tileSize));
 		hero1.getTroopHandler().addTroop(new Mech(3 * tileSize, 3 * tileSize, hero1.getColor(), tileSize));

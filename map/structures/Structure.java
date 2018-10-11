@@ -3,18 +3,20 @@ package map.structures;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import hero.Hero;
+
 public abstract class Structure {
 	protected int x;
 	protected int y;
 	protected int hp;
-	protected Color color;
+	protected Hero owner;
 	protected int tileSize;
 
-	public Structure(int x, int y, Color color, int tileSize) {
+	public Structure(int x, int y, Hero owner, int tileSize) {
 		this.x = x;
 		this.y = y;
 		hp = 99;
-		this.color = color;
+		this.owner = owner;
 		this.tileSize = tileSize;
 	}
 
@@ -39,8 +41,8 @@ public abstract class Structure {
 		return hp;
 	}
 	
-	public Color getColor() {
-		return color;
+	public Hero getOwner() {
+		return owner;
 	}
 	
 	public abstract void paint(Graphics g);
