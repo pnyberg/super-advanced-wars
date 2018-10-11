@@ -41,9 +41,7 @@ public class HeroPowerHandler {
 			int troopSize = heroHandler.getCurrentHero().getTroopHandler().getTroopSize();
 			for (int unitIndex = 0 ; unitIndex < troopSize ; unitIndex++) {
 				Unit friendlyUnit = heroHandler.getUnitFromCurrentHero(unitIndex);
-				int currentHealth = friendlyUnit.getUnitHealth().getHP();
-				int damage = currentHealth > friendlyDamage ? friendlyDamage : (currentHealth - 1);
-				friendlyUnit.getUnitHealth().takeDamage(damage);
+				friendlyUnit.getUnitHealth().takeNonLethalDamage(friendlyDamage);
 			}
 		}
 		// TODO: add damage-to-teammates
@@ -54,9 +52,7 @@ public class HeroPowerHandler {
 					int troopSize = heroHandler.getTroopSize(heroIndex);
 					for (int unitIndex = 0 ; unitIndex < troopSize ; unitIndex++) {
 						Unit enemyUnit = heroHandler.getUnitFromHero(heroIndex, unitIndex);
-						int currentHealth = enemyUnit.getUnitHealth().getHP();
-						int damage = currentHealth > enemyDamage ? enemyDamage : (currentHealth - 1);
-						enemyUnit.getUnitHealth().takeDamage(damage);
+						enemyUnit.getUnitHealth().takeNonLethalDamage(enemyDamage);
 					}
 				}
 			}

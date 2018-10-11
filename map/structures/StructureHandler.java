@@ -32,11 +32,14 @@ public class StructureHandler {
 		double highestMoneyValue = 0;
 		for (Unit possibleTarget : possibleTargets) {
 			double moneyValue = unitWorthCalculator.getUnitWorth(possibleTarget);
-			if (moneyValue > highestMoneyValue) {
+			if (moneyValue > highestMoneyValue || (moneyValue == highestMoneyValue && Math.random() > 0.5)) {
 				targetUnit = possibleTarget;
+				highestMoneyValue = moneyValue;
 			}
 		}
-		targetUnit.getUnitHealth().takeDamage(miniCannon.getDamage());
+		if (targetUnit != null) {
+			targetUnit.getUnitHealth().takeNonLethalDamage(miniCannon.getDamage());
+		}
 	}
 
 	public FiringStructure getFiringStructure(int x, int y) {

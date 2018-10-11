@@ -23,6 +23,13 @@ public class UnitHealth {
 		hp -= damage;
 	}
 	
+	public void takeNonLethalDamage(int damage) {
+		hp -= damage;
+		if (hp <= 0) {
+			hp = 1;
+		}
+	}
+	
 	public void kill() {
 		hp = 0;
 	}
