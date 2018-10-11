@@ -11,6 +11,8 @@ import hero.HeroPortrait;
 import map.UnitGetter;
 import map.area.Area;
 import map.area.TerrainType;
+import map.structures.FiringStructure;
+import map.structures.Structure;
 import point.Point;
 import routing.MovementMap;
 import routing.RouteChecker;
@@ -183,6 +185,10 @@ public class AttackRangeHandler {
 				}
 			}
 		}
+	}
+	
+	public void importStructureAttackLocations(FiringStructure firingStructure) {
+		firingStructure.fillRangeMap(rangeMap);
 	}
 	
 	public boolean[][] getRangeMap() {
