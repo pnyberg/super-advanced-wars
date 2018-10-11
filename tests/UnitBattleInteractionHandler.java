@@ -9,13 +9,14 @@ import combat.DefenceValueCalculator;
 import main.HeroHandler;
 import map.area.Area;
 import units.Unit;
+import units.UnitWorthCalculator;
 
 public class UnitBattleInteractionHandler {
 	private DamageHandler damageHandler;
 	private UnitCollection unitCollection;
 
 	public UnitBattleInteractionHandler(UnitCollection unitCollection) {
-		damageHandler = new DamageHandler(new HeroHandler(), new Area[1][1], new AttackValueCalculator(), new DefenceValueCalculator());
+		damageHandler = new DamageHandler(new HeroHandler(), new Area[1][1], new AttackValueCalculator(), new DefenceValueCalculator(), new UnitWorthCalculator());
 		this.unitCollection = unitCollection;
 	}
 

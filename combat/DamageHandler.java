@@ -32,9 +32,9 @@ public class DamageHandler {
 	private Area[][] map;
 	private int tileSize = 40;
 
-	public DamageHandler(HeroHandler heroHandler, Area[][] map, AttackValueCalculator attackValueCalculator, DefenceValueCalculator defenceValueCalculator) {
+	public DamageHandler(HeroHandler heroHandler, Area[][] map, AttackValueCalculator attackValueCalculator, DefenceValueCalculator defenceValueCalculator, UnitWorthCalculator unitWorthCalculator) {
 		damageCalculator = new DamageCalculator(attackValueCalculator, defenceValueCalculator);
-		starPowerCalculator = new StarPowerCalculator();
+		starPowerCalculator = new StarPowerCalculator(unitWorthCalculator);
 		this.heroHandler = heroHandler;
 		this.map = map;
 	}
