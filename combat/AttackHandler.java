@@ -39,7 +39,7 @@ public class AttackHandler {
 			Unit west = unitGetter.getNonFriendlyUnit(x - mapDim.tileSize, y);
 			if (y > 0 && north != null && damageHandler.validTarget(chosenUnit, north)) {
 				y -= mapDim.tileSize;
-			} else if (x < (mapDim.width - 1) && east != null && damageHandler.validTarget(chosenUnit, east)) {
+			} else if (x < (mapDim.width - 1) * mapDim.tileSize && east != null && damageHandler.validTarget(chosenUnit, east)) {
 				x += mapDim.tileSize;
 			} else if (south != null && damageHandler.validTarget(chosenUnit, south)) {
 				y += mapDim.tileSize;
