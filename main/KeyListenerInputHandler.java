@@ -15,8 +15,11 @@ import graphics.ViewPainter;
 import hero.Hero;
 import hero.heroPower.HeroPowerHandler;
 import map.UnitGetter;
+import map.area.Area;
+import map.area.TerrainType;
 import map.buildings.BuildingHandler;
 import map.buildings.City;
+import map.structures.StructureHandler;
 import menus.building.BuildingMenu;
 import menus.map.MapMenu;
 import menus.unit.UnitMenuHandler;
@@ -34,8 +37,10 @@ public class KeyListenerInputHandler {
 	private ViewPainter viewPainter;
 	private UnitGetter unitGetter;
 	private BuildingHandler buildingHandler;
+	private StructureHandler structureHandler;
 	private Cursor cursor;
 	private UnitMenuHandler unitMenuHandler;
+	private Area[][] map;
 	private MapMenu mapMenu;
 	private BuildingMenu buildingMenu;
 	private ContUnitHandler containerUnitHandler;
@@ -52,11 +57,13 @@ public class KeyListenerInputHandler {
 	private FiringCursorHandler firingCursorHandler;
 	private HeroPowerHandler heroPowerHandler;
 	
-	public KeyListenerInputHandler(GameProp gameProp, ViewPainter viewPainter, UnitGetter unitGetter, BuildingHandler buildingHandler, Cursor cursor, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
+	public KeyListenerInputHandler(GameProp gameProp, Area[][] map, ViewPainter viewPainter, UnitGetter unitGetter, BuildingHandler buildingHandler, StructureHandler structureHandler, Cursor cursor, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
 		this.gameProp = gameProp;
+		this.map = map;
 		this.viewPainter = viewPainter;
 		this.unitGetter = unitGetter;
 		this.buildingHandler = buildingHandler;
+		this.structureHandler = structureHandler;
 		this.cursor = cursor;
 		this.unitMenuHandler = unitMenuHandler;
 		this.mapMenu = mapMenu;
@@ -143,68 +150,11 @@ public class KeyListenerInputHandler {
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_A) {
-			handleAcceptKeyInput();
+			handlePressedKeyA();
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_B) {
-			if (viewPainter.getMapViewType() == MapViewType.CO_MAP_MENU_VIEW) {
-				viewPainter.setViewType(MapViewType.MAIN_MAP_MENU_VIEW);
-			} else if (containerUnitHandler.unitIsDroppingOff()) {
-				int x = gameProp.getChosenObject().chosenUnit.getPoint().getX();
-				int y = gameProp.getChosenObject().chosenUnit.getPoint().getY();
-				cursor.setPosition(x, y);
-				unitMenuHandler.handleOpenUnitMenu(x, y);
-
-				if (gameProp.getChosenObject().chosenUnit instanceof APC) {
-					((APC)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
-				} else if (gameProp.getChosenObject().chosenUnit instanceof TCopter) {
-					((TCopter)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
-				} else if (gameProp.getChosenObject().chosenUnit instanceof Lander) {
-					((Lander)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
-				} else if (gameProp.getChosenObject().chosenUnit instanceof Cruiser) {
-					((Cruiser)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
-				}
-			} else if (attackHandler.unitWantsToFire(gameProp.getChosenObject().chosenUnit)) {
-				if (gameProp.getChosenObject().chosenUnit instanceof IndirectUnit) {
-					((IndirectUnit)gameProp.getChosenObject().chosenUnit).clearFiringLocations();
-				}
-				int x = gameProp.getChosenObject().chosenUnit.getPoint().getX() / gameProp.getMapDim().tileSize;
-				int y = gameProp.getChosenObject().chosenUnit.getPoint().getY() / gameProp.getMapDim().tileSize;
-				cursor.setPosition(x, y);
-				unitMenuHandler.handleOpenUnitMenu(x, y);
-
-				gameProp.getChosenObject().chosenUnit.regulateAttack(false);
-			} else if (mapMenu.isVisible()) {
-				mapMenu.closeMenu();
-			} else if (buildingMenu.isVisible()) {
-				buildingMenu.closeMenu();
-			} else if (gameProp.getChosenObject().chosenUnit != null) {
-				// the start-position of the unit before movement
-				Point unitStartPoint = routeHandler.getRouteArrowPath().getArrowPoint(0);
-				int unitStartX = unitStartPoint.getX();
-				int unitStartY = unitStartPoint.getY();
-
-				if (unitMenuHandler.getUnitMenu().isVisible()) {
-					unitMenuHandler.getUnitMenu().closeMenu();
-					gameProp.getChosenObject().chosenUnit.moveTo(unitStartX, unitStartY);
-				} else {
-					cursor.setPosition(unitStartX / gameProp.getMapDim().tileSize, unitStartY / gameProp.getMapDim().tileSize);
-					gameProp.getChosenObject().chosenUnit.moveTo(unitStartX, unitStartY);
-					gameProp.getChosenObject().chosenUnit = null;
-					movementMap.clearMovementMap();
-					routeHandler.clearArrowPoints();
-				}
-			} else {
-				gameProp.getChosenObject().rangeUnit = unitGetter.getAnyUnit(cursorX * gameProp.getMapDim().tileSize, cursorY * gameProp.getMapDim().tileSize);
-
-				if (gameProp.getChosenObject().rangeUnit != null) {
-					if (gameProp.getChosenObject().rangeUnit.getAttackType() == AttackType.DIRECT_ATTACK) {
-						attackHandler.getAttackRangeHandler().findPossibleDirectAttackLocations(gameProp.getChosenObject().rangeUnit);
-					} else if (gameProp.getChosenObject().rangeUnit.getAttackType() == AttackType.INDIRECT_ATTACK) {
-						attackHandler.getAttackRangeHandler().createRangeAttackLocations(gameProp.getChosenObject().rangeUnit);
-					}
-				}
-			}
+			handlePressedKeyB(cursor);
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_S) {
@@ -216,45 +166,13 @@ public class KeyListenerInputHandler {
 		}
 	}
 	
-	private void handleAcceptKeyInput() {
+	private void handlePressedKeyA() {
 		int cursorX = cursor.getX();
 		int cursorY = cursor.getY();
 		boolean unitSelected = gameProp.getChosenObject().chosenUnit != null || gameProp.getChosenObject().rangeUnit != null;
 
 		if (containerUnitHandler.unitIsDroppingOff()) {
-			if (containerUnitHandler.unitCanBeDroppedOff()) {
-				if (gameProp.getChosenObject().chosenUnit instanceof APC) {
-					((APC)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
-					Unit exitingUnit = ((APC)gameProp.getChosenObject().chosenUnit).removeUnit();
-					exitingUnit.moveTo(cursor.getX(), cursor.getY());
-					exitingUnit.regulateActive(false);
-				} else if (gameProp.getChosenObject().chosenUnit instanceof TCopter) {
-					((TCopter)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
-					Unit exitingUnit = ((TCopter)gameProp.getChosenObject().chosenUnit).removeUnit();
-					exitingUnit.moveTo(cursor.getX(), cursor.getY());
-					exitingUnit.regulateActive(false);
-				} else if (gameProp.getChosenObject().chosenUnit instanceof Lander) {
-					((Lander)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
-					Unit exitingUnit = ((Lander)gameProp.getChosenObject().chosenUnit).removeChosenUnit();
-					exitingUnit.moveTo(cursor.getX(), cursor.getY());
-					exitingUnit.regulateActive(false);
-				} else if (gameProp.getChosenObject().chosenUnit instanceof Cruiser) {
-					((Cruiser)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
-					Unit exitingUnit = ((Cruiser)gameProp.getChosenObject().chosenUnit).removeChosenUnit();
-					exitingUnit.moveTo(cursor.getX(), cursor.getY());
-					exitingUnit.regulateActive(false);
-				}
-
-				int fuelUse = routeHandler.getFuelFromArrows(gameProp.getChosenObject().chosenUnit);;
-				gameProp.getChosenObject().chosenUnit.getUnitSupply().useFuel(fuelUse);
-
-				gameProp.getChosenObject().chosenUnit.regulateActive(false);
-				gameProp.getChosenObject().chosenUnit = null;
-				movementMap.clearMovementMap();
-				routeHandler.clearArrowPoints();
-			} else {
-				// If all drop-slots are occupied, pressing 'A' won't do anything
-			}
+			handleDroppingOff();
 		} else if (attackHandler.unitWantsToFire(gameProp.getChosenObject().chosenUnit)) {
 			Unit defendingUnit = unitGetter.getNonFriendlyUnit(cursorX * gameProp.getMapDim().tileSize, cursorY * gameProp.getMapDim().tileSize);
 			damageHandler.handleAttack(gameProp.getChosenObject().chosenUnit, defendingUnit);
@@ -376,11 +294,112 @@ public class KeyListenerInputHandler {
 			}
 		}
 	}
+	
+	private void handleDroppingOff() {
+		if (containerUnitHandler.unitCanBeDroppedOff()) {
+			if (gameProp.getChosenObject().chosenUnit instanceof APC) {
+				((APC)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
+				Unit exitingUnit = ((APC)gameProp.getChosenObject().chosenUnit).removeUnit();
+				exitingUnit.moveTo(cursor.getX(), cursor.getY());
+				exitingUnit.regulateActive(false);
+			} else if (gameProp.getChosenObject().chosenUnit instanceof TCopter) {
+				((TCopter)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
+				Unit exitingUnit = ((TCopter)gameProp.getChosenObject().chosenUnit).removeUnit();
+				exitingUnit.moveTo(cursor.getX(), cursor.getY());
+				exitingUnit.regulateActive(false);
+			} else if (gameProp.getChosenObject().chosenUnit instanceof Lander) {
+				((Lander)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
+				Unit exitingUnit = ((Lander)gameProp.getChosenObject().chosenUnit).removeChosenUnit();
+				exitingUnit.moveTo(cursor.getX(), cursor.getY());
+				exitingUnit.regulateActive(false);
+			} else if (gameProp.getChosenObject().chosenUnit instanceof Cruiser) {
+				((Cruiser)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
+				Unit exitingUnit = ((Cruiser)gameProp.getChosenObject().chosenUnit).removeChosenUnit();
+				exitingUnit.moveTo(cursor.getX(), cursor.getY());
+				exitingUnit.regulateActive(false);
+			}
+
+			int fuelUse = routeHandler.getFuelFromArrows(gameProp.getChosenObject().chosenUnit);;
+			gameProp.getChosenObject().chosenUnit.getUnitSupply().useFuel(fuelUse);
+
+			gameProp.getChosenObject().chosenUnit.regulateActive(false);
+			gameProp.getChosenObject().chosenUnit = null;
+			movementMap.clearMovementMap();
+			routeHandler.clearArrowPoints();
+		} else {
+			// If all drop-slots are occupied, pressing 'A' won't do anything
+		}
+	}
+
+	private void handlePressedKeyB(Cursor cursor) {
+		if (viewPainter.getMapViewType() == MapViewType.CO_MAP_MENU_VIEW) {
+			viewPainter.setViewType(MapViewType.MAIN_MAP_MENU_VIEW);
+		} else if (containerUnitHandler.unitIsDroppingOff()) {
+			int x = gameProp.getChosenObject().chosenUnit.getPoint().getX();
+			int y = gameProp.getChosenObject().chosenUnit.getPoint().getY();
+			cursor.setPosition(x, y);
+			unitMenuHandler.handleOpenUnitMenu(x, y);
+	
+			if (gameProp.getChosenObject().chosenUnit instanceof APC) {
+				((APC)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
+			} else if (gameProp.getChosenObject().chosenUnit instanceof TCopter) {
+				((TCopter)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
+			} else if (gameProp.getChosenObject().chosenUnit instanceof Lander) {
+				((Lander)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
+			} else if (gameProp.getChosenObject().chosenUnit instanceof Cruiser) {
+				((Cruiser)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
+			}
+		} else if (attackHandler.unitWantsToFire(gameProp.getChosenObject().chosenUnit)) {
+			if (gameProp.getChosenObject().chosenUnit instanceof IndirectUnit) {
+				((IndirectUnit)gameProp.getChosenObject().chosenUnit).clearFiringLocations();
+			}
+			int x = gameProp.getChosenObject().chosenUnit.getPoint().getX() / gameProp.getMapDim().tileSize;
+			int y = gameProp.getChosenObject().chosenUnit.getPoint().getY() / gameProp.getMapDim().tileSize;
+			cursor.setPosition(x, y);
+			unitMenuHandler.handleOpenUnitMenu(x, y);
+	
+			gameProp.getChosenObject().chosenUnit.regulateAttack(false);
+		} else if (mapMenu.isVisible()) {
+			mapMenu.closeMenu();
+		} else if (buildingMenu.isVisible()) {
+			buildingMenu.closeMenu();
+		} else if (gameProp.getChosenObject().chosenUnit != null) {
+			// the start-position of the unit before movement
+			Point unitStartPoint = routeHandler.getRouteArrowPath().getArrowPoint(0);
+			int unitStartX = unitStartPoint.getX();
+			int unitStartY = unitStartPoint.getY();
+	
+			if (unitMenuHandler.getUnitMenu().isVisible()) {
+				unitMenuHandler.getUnitMenu().closeMenu();
+				gameProp.getChosenObject().chosenUnit.moveTo(unitStartX, unitStartY);
+			} else {
+				cursor.setPosition(unitStartX / gameProp.getMapDim().tileSize, unitStartY / gameProp.getMapDim().tileSize);
+				gameProp.getChosenObject().chosenUnit.moveTo(unitStartX, unitStartY);
+				gameProp.getChosenObject().chosenUnit = null;
+				movementMap.clearMovementMap();
+				routeHandler.clearArrowPoints();
+			}
+		} else if (map[cursor.getX()][cursor.getY()].getTerrainType() == TerrainType.MINI_CANNON) {
+			gameProp.getChosenObject().rangeStructure = structureHandler.getFiringStructure(cursor.getX() * gameProp.getMapDim().tileSize, cursor.getY() * gameProp.getMapDim().tileSize);
+			attackRangeHandler.importStructureAttackLocations(gameProp.getChosenObject().rangeStructure);
+		} else {
+			gameProp.getChosenObject().rangeUnit = unitGetter.getAnyUnit(cursor.getX() * gameProp.getMapDim().tileSize, cursor.getY() * gameProp.getMapDim().tileSize);
+	
+			if (gameProp.getChosenObject().rangeUnit != null) {
+				if (gameProp.getChosenObject().rangeUnit.getAttackType() == AttackType.DIRECT_ATTACK) {
+					attackRangeHandler.findPossibleDirectAttackLocations(gameProp.getChosenObject().rangeUnit);
+				} else if (gameProp.getChosenObject().rangeUnit.getAttackType() == AttackType.INDIRECT_ATTACK) {
+					attackRangeHandler.createRangeAttackLocations(gameProp.getChosenObject().rangeUnit);
+				}
+			}
+		}
+	}
 
 	public void manageKeyReleasedInput(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_B) {
-			if (gameProp.getChosenObject().rangeUnit != null) {
+			if (gameProp.getChosenObject().rangeUnit != null || gameProp.getChosenObject().rangeStructure != null) {
 				gameProp.getChosenObject().rangeUnit = null;
+				gameProp.getChosenObject().rangeStructure = null;
 				attackRangeHandler.clearRangeMap();
 			}
 		}

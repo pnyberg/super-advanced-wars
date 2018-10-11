@@ -8,14 +8,19 @@
  */
 package map;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
+import gameObjects.Direction;
 import gameObjects.MapDim;
 import hero.*;
 import main.HeroHandler;
 import map.area.Area;
 import map.area.TerrainType;
 import map.buildings.*;
+import map.structures.MiniCannon;
+import map.structures.Structure;
+import map.structures.StructureHandler;
 import point.Point;
 import units.airMoving.*;
 import units.footMoving.*;
@@ -27,16 +32,20 @@ public class MapInitiator {
 	private MapDim mapDim;
 	protected Area[][] map;
 	private ArrayList<Building> buildings;
+	private ArrayList<Structure> structures;
 	private HeroPortrait portrait;
 	private BuildingHandler buildingGetter;
+	private StructureHandler structureHandler;
 	private HeroHandler heroHandler;
 
-	public MapInitiator(MapDim mapDimension, BuildingHandler buildingGetter, HeroHandler heroHandler, Area[][] map, ArrayList<Building> buildings, HeroPortrait portrait) {
+	public MapInitiator(MapDim mapDimension, BuildingHandler buildingGetter, StructureHandler structureHandler, HeroHandler heroHandler, Area[][] map, ArrayList<Building> buildings, ArrayList<Structure> structures, HeroPortrait portrait) {
 		this.mapDim = mapDimension;
 		this.map = map;
 		this.buildings = buildings;
+		this.structures = structures;
 		this.portrait = portrait;
 		this.buildingGetter = buildingGetter;
+		this.structureHandler = structureHandler;
 		this.heroHandler = heroHandler;
 	}
 	
@@ -64,7 +73,7 @@ public class MapInitiator {
 
 		addAreaObject(2, 2, TerrainType.CITY);
 		addAreaObject(3, 2, TerrainType.ROAD);
-		addAreaObject(4, 2, TerrainType.PLAIN);
+		addAreaObject(4, 2, TerrainType.MINI_CANNON);
 		addAreaObject(5, 2, TerrainType.PLAIN);
 		addAreaObject(6, 2, TerrainType.MOUNTAIN);
 		addAreaObject(7, 2, TerrainType.MOUNTAIN);
@@ -138,6 +147,9 @@ public class MapInitiator {
 		building.setOwnership(portrait.getHeroHandler().getCurrentHero());
 		building = buildingGetter.getBuilding(7, 3); // airport
 		building.setOwnership(portrait.getHeroHandler().getCurrentHero());
+		
+		// structures-part
+		initStructures();
 	}
 	
 	private void addAreaObject(int x, int y, TerrainType terrainType) {
@@ -159,6 +171,17 @@ public class MapInitiator {
 //					buildings.add(new HQ(x, y));
 //				} else if (map[x][y].getTerrainType() == TerrainType.SILO) {
 //					buildings.add(new Silo(x, y));
+				}
+			}
+		}
+	}
+	
+	private void initStructures() {
+		int tileSize = mapDim.tileSize;
+		for (int x = 0 ; x < map.length ; x++) {
+			for (int y = 0 ; y < map[0].length ; y++) {
+				if (map[x][y].getTerrainType() == TerrainType.MINI_CANNON) {
+					structures.add(new MiniCannon(x * tileSize, y * tileSize, Direction.SOUTH, Color.red, tileSize));
 				}
 			}
 		}

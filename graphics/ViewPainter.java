@@ -10,7 +10,9 @@ import main.HeroHandler;
 import map.area.Area;
 import map.buildings.Building;
 import map.buildings.BuildingHandler;
-import map.structures.BlackCannon;
+import map.structures.MiniCannon;
+import map.structures.Structure;
+import map.structures.StructureHandler;
 import routing.RouteHandler;
 import units.Unit;
 
@@ -22,9 +24,10 @@ public class ViewPainter {
 	private Area[][] map;
 	private RouteHandler routeHandler;
 	private AttackRangeHandler attackRangeHandler;
-	private BuildingHandler buildingGetter;
+	private BuildingHandler buildingHandler;
+	private StructureHandler structureHandler;
 	
-	public ViewPainter(CommanderView commanderView, HeroHandler heroHandler, MapDim mapDimension, Area[][] map, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler, BuildingHandler buildingGetter) {
+	public ViewPainter(CommanderView commanderView, HeroHandler heroHandler, MapDim mapDimension, Area[][] map, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler, BuildingHandler buildingGetter, StructureHandler structureHandler) {
 		mapViewType = MapViewType.MAIN_MAP_MENU_VIEW;
 		this.commanderView = commanderView;
 		this.heroHandler = heroHandler;
@@ -32,7 +35,8 @@ public class ViewPainter {
 		this.map = map;
 		this.routeHandler = routeHandler;
 		this.attackRangeHandler = attackRangeHandler;
-		this.buildingGetter = buildingGetter;
+		this.buildingHandler = buildingGetter;
+		this.structureHandler = structureHandler;
 	}
 	
 	public void setViewType(MapViewType mapViewType) {
@@ -64,14 +68,14 @@ public class ViewPainter {
 		boolean movementAble = routeHandler.getMovementMap().isAcceptedMove(x, y);
 		boolean rangeAble = attackRangeHandler.getRangeMap()[x][y];
 
-		if (buildingGetter.getBuilding(x, y) != null && !rangeAble) {
-			Building building = buildingGetter.getBuilding(x, y);
+		Structure structure = structureHandler.getFiringStructure(x * mapDim.tileSize, y * mapDim.tileSize);
+		Building building = buildingHandler.getBuilding(x, y);
+		if (structure != null && !rangeAble) {
+			structure.paint(g);
+		} else if (building != null && !rangeAble) {
 			building.paint(g, mapDim.tileSize);
 		} else {
 			map[x][y].paint(g, movementAble, rangeAble);
-		}
-		if (x == 4 && y == 2) {
-			new BlackCannon(4 * mapDim.tileSize, 2 * mapDim.tileSize, Direction.SOUTH, Color.red, mapDim.tileSize).paint(g);
 		}
 	}
 
