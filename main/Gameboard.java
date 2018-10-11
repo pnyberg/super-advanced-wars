@@ -2,6 +2,8 @@
  * TODO-list
  * - only one action/unit per turn
  * - change POWER/SUPER-text, maybe use a pre-written text?
+ * - add so that MiniCannons can be attacked/destroyed
+ * - why does the tanks movementmap-hang up?
  * - enter classes for HQ, ev Silo
  * - FOG
  * - removed recalculating route which also removes movement-control within accepted area (infantrys may take more than three steps)
