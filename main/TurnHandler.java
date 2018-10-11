@@ -40,6 +40,7 @@ public class TurnHandler {
 		if (firstHeroOfTheDay) {
 			day++;
 			structureHandler.doStructureActions();
+			firstHeroOfTheDay = false;
 		}
 	}
 
