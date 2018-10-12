@@ -32,6 +32,8 @@ public class Gameboard extends JPanel implements KeyListener {
 	private GameProp gameProp;
 	
 	public Gameboard(GameProp gameProp, HeroHandler heroHandler) {
+		// TODO: while testing map-loader
+		gameProp.getMapDim().setDimension(3, 8);
 		internalStructureObject = new InternalStructureObject(gameProp, heroHandler); 
 		this.gameProp = gameProp;
 		
@@ -40,7 +42,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 	
 	private void init() {
-		int mapIndex = 0;
+		int mapIndex = 1; // testing the map-loader
 		internalStructureObject.getMapInitiator().loadMap(mapIndex);
 		internalStructureObject.getTurnHandler().startTurnActions();
 

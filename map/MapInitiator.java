@@ -51,7 +51,7 @@ public class MapInitiator {
 	
 	public void loadMap(int index) {
 		if (index == 1) {
-			
+			new MapLoader(mapDim, map, heroHandler, buildings, structures).loadMap("map-files/test_map.txt");
 		} else {
 			initTestMap();
 			initTestTroops();
@@ -60,7 +60,7 @@ public class MapInitiator {
 	
 	private void initTestMap() {
 		for (int y = 0 ; y < 2 ; y++) {
-			for (int x = 0 ; x < mapDim.width ; x++) {
+			for (int x = 0 ; x < mapDim.getWidth() ; x++) {
 				addAreaObject(x, y, TerrainType.SEA);
 			}
 		}
@@ -114,13 +114,13 @@ public class MapInitiator {
 		addAreaObject(7, 7, TerrainType.CITY);
 
 		for (int y = 2 ; y < 8 ; y++) {
-			for (int x = 8 ; x < mapDim.width ; x++) {
+			for (int x = 8 ; x < mapDim.getWidth() ; x++) {
 				addAreaObject(x, y, TerrainType.SEA);
 			}
 		}
 
-		for (int y = 8 ; y < mapDim.height ; y++) {
-			for (int x = 0 ; x < mapDim.width ; x++) {
+		for (int y = 8 ; y < mapDim.getHeight() ; y++) {
+			for (int x = 0 ; x < mapDim.getWidth() ; x++) {
 				addAreaObject(x, y, TerrainType.SEA);
 			}
 		}
@@ -152,8 +152,8 @@ public class MapInitiator {
 		initStructures();
 	}
 	
-	private void addAreaObject(int x, int y, TerrainType terrainType) {
-		map[x][y] =  new Area(new Point(x * mapDim.tileSize, y * mapDim.tileSize), terrainType, mapDim.tileSize);
+	private void addAreaObject(int tileX, int tileY, TerrainType terrainType) {
+		map[tileX][tileY] =  new Area(tileX, tileY, terrainType, mapDim.tileSize);
 	}
 
 	private void initBuildings() {

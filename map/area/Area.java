@@ -16,6 +16,10 @@ public class Area {
 		this.tileSize = tileSize;
 	}
 	
+	public Area(int tileX, int tileY, TerrainType terrainType, int tileSize) {
+		this(new Point(tileX * tileSize, tileY * tileSize), terrainType, tileSize);
+	}
+	
 	public TerrainType getTerrainType() {
 		return terrainType;
 	}
