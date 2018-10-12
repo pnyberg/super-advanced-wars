@@ -44,7 +44,7 @@ public class StructureHandler {
 
 	public FiringStructure getFiringStructure(int x, int y) {
 		for (Structure structure : structures) {
-			if (structure instanceof FiringStructure && structure.getX() == x && structure.getY() == y) {
+			if (structure instanceof FiringStructure && structure.getPoint().getX() == x && structure.getPoint().getY() == y) {
 				return (FiringStructure)structure;
 			}
 		}
