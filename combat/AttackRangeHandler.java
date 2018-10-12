@@ -30,17 +30,17 @@ public class AttackRangeHandler {
 	private RouteChecker routeChecker;
 	private MovementMap movementMap;
 
-	public AttackRangeHandler(MapDim mapDimension, UnitGetter unitGetter, DamageHandler damageHandler, RouteChecker routeChecker, MovementMap movementMap) {
-		this.mapDim = mapDimension;
+	public AttackRangeHandler(MapDim mapDim, UnitGetter unitGetter, DamageHandler damageHandler, RouteChecker routeChecker, MovementMap movementMap) {
+		this.mapDim = mapDim;
 		this.unitGetter = unitGetter;
-		rangeMap = new boolean[mapDimension.width][mapDimension.height];
+		rangeMap = new boolean[mapDim.getWidth()][mapDim.getHeight()];
 		this.damageHandler = damageHandler;
 		this.routeChecker = routeChecker;
 		this.movementMap = movementMap;
 	}
 	
 	public void clearRangeMap() {
-		rangeMap = new boolean[mapDim.width][mapDim.height];
+		rangeMap = new boolean[mapDim.getWidth()][mapDim.getHeight()];
 	}
 
 	public boolean unitCanFire(Unit chosenUnit, int cursorX, int cursorY) {
@@ -70,13 +70,13 @@ public class AttackRangeHandler {
 		for (int y = unitY - maxRange ; y <= (unitY + maxRange) ; y++) {
 			if (y < 0) {
 				continue;
-			} else if (y >= mapDim.height) {
+			} else if (y >= mapDim.getHeight()) {
 				break;
 			}
 			for (int x = unitX - maxRange ; x <= (unitX + maxRange) ; x++) {
 				if (x < 0) {
 					continue;
-				} else if (x >= mapDim.width) {
+				} else if (x >= mapDim.getWidth()) {
 					break;
 				}
 
@@ -106,19 +106,19 @@ public class AttackRangeHandler {
 
 	public void findPossibleDirectAttackLocations(Unit chosenUnit) {
 		routeChecker.findPossibleMovementLocations(chosenUnit);
-		for (int n = 0 ; n < mapDim.height ; n++) {
-			for (int i = 0 ; i < mapDim.width ; i++) {
+		for (int n = 0 ; n < mapDim.getHeight() ; n++) {
+			for (int i = 0 ; i < mapDim.getWidth() ; i++) {
 				if (movementMap.isAcceptedMove(i, n)) {
 					if (i > 0) {
 						rangeMap[i - 1][n] = true;
 					}
-					if (i < (mapDim.width - 1)) {
+					if (i < (mapDim.getWidth() - 1)) {
 						rangeMap[i + 1][n] = true;
 					}
 					if (n > 0) {
 						rangeMap[i][n - 1] = true;
 					}
-					if (n < (mapDim.height - 1)) {
+					if (n < (mapDim.getHeight() - 1)) {
 						rangeMap[i][n + 1] = true;
 					}
 				}
@@ -138,13 +138,13 @@ public class AttackRangeHandler {
 		for (int y = unitY - maxRange ; y <= (unitY + maxRange) ; y++) {
 			if (y < 0) {
 				continue;
-			} else if (y >= mapDim.height) {
+			} else if (y >= mapDim.getHeight()) {
 				break;
 			}
 			for (int x = unitX - maxRange ; x <= (unitX + maxRange) ; x++) {
 				if (x < 0) {
 					continue;
-				} else if (x >= mapDim.width) {
+				} else if (x >= mapDim.getWidth()) {
 					break;
 				}
 
@@ -165,13 +165,13 @@ public class AttackRangeHandler {
 		for (int y = unitY - maxRange ; y <= (unitY + maxRange) ; y++) {
 			if (y < 0) {
 				continue;
-			} else if (y >= mapDim.height) {
+			} else if (y >= mapDim.getHeight()) {
 				break;
 			}
 			for (int x = unitX - maxRange ; x <= (unitX + maxRange) ; x++) {
 				if (x < 0) {
 					continue;
-				} else if (x >= mapDim.width) {
+				} else if (x >= mapDim.getWidth()) {
 					break;
 				}
 
@@ -198,8 +198,8 @@ public class AttackRangeHandler {
 	public void paintRange(Graphics g) {
 		int tileSize = mapDim.tileSize;
 
-		for (int n = 0 ; n < mapDim.height ; n++) {
-			for (int i = 0 ; i < mapDim.width ; i++) {
+		for (int n = 0 ; n < mapDim.getHeight() ; n++) {
+			for (int i = 0 ; i < mapDim.getWidth() ; i++) {
 				if (rangeMap[i][n]) {
 					int paintX = i * tileSize;
 					int paintY = n * tileSize;

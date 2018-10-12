@@ -4,15 +4,15 @@ import gameObjects.MapDim;
 
 public class MovementMap {
 	private boolean[][] movementMap;
-	private MapDim mapDimension;
+	private MapDim mapDim;
 	
-	public MovementMap(MapDim mapDimension) {
-		this.mapDimension = mapDimension;
+	public MovementMap(MapDim mapDim) {
+		this.mapDim = mapDim;
 		clearMovementMap();
 	}
 
 	public void clearMovementMap() {
-		movementMap = new boolean[mapDimension.width][mapDimension.height];
+		movementMap = new boolean[mapDim.getWidth()][mapDim.getHeight()];
 	}
 
 	public void setAcceptedMove(int x, int y) {

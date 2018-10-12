@@ -79,7 +79,7 @@ public class InternalStructureObject {
 		cursor = new Cursor(0, 0, gameProp.getMapDim().tileSize);
 		defenceValueCalculator = new DefenceValueCalculator();
 		heroPortrait = new HeroPortrait(gameProp.getMapDim(), heroHandler);
-		map = new Area[gameProp.getMapDim().width][gameProp.getMapDim().height];
+		map = new Area[gameProp.getMapDim().getWidth()][gameProp.getMapDim().getHeight()];
 		mapMenu = new MapMenu(gameProp.getMapDim().tileSize, heroHandler);
 		moveabilityMatrix = new MoveabilityMatrixFactory().getMoveabilityMatrix();
 		movementMap = new MovementMap(gameProp.getMapDim());

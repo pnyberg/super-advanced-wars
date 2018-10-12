@@ -68,7 +68,7 @@ public class ContUnitHandler {
 
 		if (y > 0 && validPosition(containedUnit, x, y - 1)) {
 			y--;
-		} else if (x < (gameProp.getMapDim().width - 1) && validPosition(containedUnit, x + 1, y)) {
+		} else if (x < (gameProp.getMapDim().getWidth() - 1) && validPosition(containedUnit, x + 1, y)) {
 			x++;
 		} else if (validPosition(containedUnit, x, y + 1)) {
 			y++;
@@ -137,9 +137,9 @@ public class ContUnitHandler {
 
 		if (y > 0 && validPosition(unit, x, y - 1)) {
 			return true;
-		} else if (x < (mapDim.width - 1) && validPosition(unit, x + 1, y)) {
+		} else if (x < (mapDim.getWidth() - 1) && validPosition(unit, x + 1, y)) {
 			return true;
-		} else if (y < (mapDim.height - 1) && validPosition(unit, x, y + 1)) {
+		} else if (y < (mapDim.getHeight() - 1) && validPosition(unit, x, y + 1)) {
 			return true;
 		} else if (x > 0 && validPosition(unit, x - 1, y)) {
 			return true;
@@ -182,7 +182,7 @@ public class ContUnitHandler {
 		}
 
 		if (xDiff == 1) {
-			if (unitY < (mapDim.height - 1) && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
+			if (unitY < (mapDim.getHeight() - 1) && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			} else if (unitX > 0 && validPosition(containedUnit, cursorX - 2, cursorY)) {
 				cursor.setPosition(cursorX - 2, cursorY);
@@ -194,21 +194,21 @@ public class ContUnitHandler {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			} else if (unitY > 0 && validPosition(containedUnit, cursorX, cursorY - 2)) {
 				cursor.setPosition(cursorX, cursorY - 2);
-			} else if (unitX < (mapDim.width - 1) && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
+			} else if (unitX < (mapDim.getWidth() - 1) && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			}
 		} else if (xDiff == -1) {
 			if (unitY > 0 && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
-			} else if (unitX < (mapDim.width - 1) && validPosition(containedUnit, cursorX + 2, cursorY)) {
+			} else if (unitX < (mapDim.getWidth() - 1) && validPosition(containedUnit, cursorX + 2, cursorY)) {
 				cursor.setPosition(cursorX + 2, cursorY);
-			} else if (unitY < (mapDim.height - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
+			} else if (unitY < (mapDim.getHeight() - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			}
 		} else { // yDiff == -1
-			if (unitX < (mapDim.width - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
+			if (unitX < (mapDim.getWidth() - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
-			} else if (unitY < (mapDim.height - 1) && validPosition(containedUnit, cursorX, cursorY + 2)) {
+			} else if (unitY < (mapDim.getHeight() - 1) && validPosition(containedUnit, cursorX, cursorY + 2)) {
 				cursor.setPosition(cursorX, cursorY + 2);
 			} else if (unitX > 0 && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
@@ -244,11 +244,11 @@ public class ContUnitHandler {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			} else if (unitX > 0 && validPosition(containedUnit, cursorX - 2, cursorY)) {
 				cursor.setPosition(cursorX - 2, cursorY);
-			} else if (unitY < (mapDim.height - 1) && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
+			} else if (unitY < (mapDim.getHeight() - 1) && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
 			}
 		} else if (yDiff == 1) {
-			if (unitX < (mapDim.width - 1) && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
+			if (unitX < (mapDim.getWidth() - 1) && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
 			} else if (unitY > 0 && validPosition(containedUnit, cursorX, cursorY - 2)) {
 				cursor.setPosition(cursorX, cursorY - 2);
@@ -256,9 +256,9 @@ public class ContUnitHandler {
 				cursor.setPosition(cursorX - 1, cursorY - 1);
 			}
 		} else if (xDiff == -1) {
-			if (unitY < (mapDim.height - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
+			if (unitY < (mapDim.getHeight() - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
-			} else if (unitX < (mapDim.width - 1) && validPosition(containedUnit, cursorX + 2, cursorY)) {
+			} else if (unitX < (mapDim.getWidth() - 1) && validPosition(containedUnit, cursorX + 2, cursorY)) {
 				cursor.setPosition(cursorX + 2, cursorY);
 			} else if (unitY > 0 && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
 				cursor.setPosition(cursorX + 1, cursorY - 1);
@@ -266,9 +266,9 @@ public class ContUnitHandler {
 		} else { // yDiff == -1
 			if (unitX > 0 && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
 				cursor.setPosition(cursorX - 1, cursorY + 1);
-			} else if (unitY < (mapDim.height - 1) && validPosition(containedUnit, cursorX, cursorY + 2)) {
+			} else if (unitY < (mapDim.getHeight() - 1) && validPosition(containedUnit, cursorX, cursorY + 2)) {
 				cursor.setPosition(cursorX, cursorY + 2);
-			} else if (unitX < (mapDim.width - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
+			} else if (unitX < (mapDim.getWidth() - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
 				cursor.setPosition(cursorX + 1, cursorY + 1);
 			}
 		}

@@ -48,7 +48,7 @@ public class RouteChecker {
 	}
 
 	private void checkPath(int x, int y, int movementSteps, Unit checkedUnit) {
-		if (x < 0 || y < 0 || x >= mapDim.width || y >= mapDim.height) {
+		if (x < 0 || y < 0 || x >= mapDim.getWidth() || y >= mapDim.getHeight()) {
 			return;
 		}
 

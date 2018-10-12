@@ -127,7 +127,7 @@ public class KeyListenerInputHandler {
 				} else {
 					firingCursorHandler.moveFiringCursorClockwise();
 				}
-			} else if (cursorY < (gameProp.getMapDim().height - 1) && !menuVisible) {
+			} else if (cursorY < (gameProp.getMapDim().getHeight() - 1) && !menuVisible) {
 				routeHandler.updateArrowPath(new Point(cursorX * gameProp.getMapDim().tileSize, cursorY * gameProp.getMapDim().tileSize + gameProp.getMapDim().tileSize), gameProp.getChosenObject().chosenUnit);
 				cursor.moveDown();
 			} else if (mapMenu.isVisible()) {
@@ -143,7 +143,7 @@ public class KeyListenerInputHandler {
 				cursor.moveLeft();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (cursorX < (gameProp.getMapDim().width - 1) && !menuVisible && !containerUnitHandler.unitIsDroppingOff() && !attackHandler.unitWantsToFire(gameProp.getChosenObject().chosenUnit)) {
+			if (cursorX < (gameProp.getMapDim().getWidth() - 1) && !menuVisible && !containerUnitHandler.unitIsDroppingOff() && !attackHandler.unitWantsToFire(gameProp.getChosenObject().chosenUnit)) {
 				routeHandler.updateArrowPath(new Point(cursorX * gameProp.getMapDim().tileSize + gameProp.getMapDim().tileSize, cursorY * gameProp.getMapDim().tileSize), gameProp.getChosenObject().chosenUnit);
 				cursor.moveRight();
 			}
