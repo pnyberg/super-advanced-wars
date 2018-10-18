@@ -8,7 +8,6 @@
  */
 package map;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 import gameObjects.Direction;
@@ -30,32 +29,28 @@ import units.treadMoving.*;
 
 public class MapInitiator {
 	private MapDim mapDim;
-	protected Area[][] map;
+	protected GameMap gridMap;
 	private ArrayList<Building> buildings;
 	private ArrayList<Structure> structures;
-	private HeroPortrait portrait;
 	private BuildingHandler buildingGetter;
 	private StructureHandler structureHandler;
 	private HeroHandler heroHandler;
 
-	public MapInitiator(MapDim mapDimension, BuildingHandler buildingGetter, StructureHandler structureHandler, HeroHandler heroHandler, Area[][] map, ArrayList<Building> buildings, ArrayList<Structure> structures, HeroPortrait portrait) {
+	public MapInitiator(MapDim mapDimension, BuildingHandler buildingGetter, StructureHandler structureHandler, HeroHandler heroHandler, GameMap gridMap, ArrayList<Building> buildings, ArrayList<Structure> structures) {
 		this.mapDim = mapDimension;
-		this.map = map;
+		this.gridMap = gridMap;
 		this.buildings = buildings;
 		this.structures = structures;
-		this.portrait = portrait;
 		this.buildingGetter = buildingGetter;
 		this.structureHandler = structureHandler;
 		this.heroHandler = heroHandler;
+		
+		initTestGame();
 	}
 	
-	public void loadMap(int index) {
-		if (index == 1) {
-			new MapLoader(mapDim, map, heroHandler, buildings, structures).loadMap("map-files/test_map.txt");
-		} else {
-			initTestMap();
-			initTestTroops();
-		}
+	public void initTestGame() {
+		initTestMap();
+		initTestTroops();
 	}
 	
 	private void initTestMap() {
@@ -153,19 +148,19 @@ public class MapInitiator {
 	}
 	
 	private void addAreaObject(int tileX, int tileY, TerrainType terrainType) {
-		map[tileX][tileY] =  new Area(tileX, tileY, terrainType, mapDim.tileSize);
+		gridMap.getMap()[tileX][tileY] =  new Area(tileX, tileY, terrainType, mapDim.tileSize);
 	}
 
 	private void initBuildings() {
-		for (int x = 0 ; x < map.length ; x++) {
-			for (int y = 0 ; y < map[0].length ; y++) {
-				if (map[x][y].getTerrainType() == TerrainType.CITY) {
+		for (int x = 0 ; x < gridMap.getMap().length ; x++) {
+			for (int y = 0 ; y < gridMap.getMap()[0].length ; y++) {
+				if (gridMap.getMap()[x][y].getTerrainType() == TerrainType.CITY) {
 					buildings.add(new City(x, y));
-				} else if (map[x][y].getTerrainType() == TerrainType.PORT) {
+				} else if (gridMap.getMap()[x][y].getTerrainType() == TerrainType.PORT) {
 					buildings.add(new Port(x, y));
-				} else if (map[x][y].getTerrainType() == TerrainType.AIRPORT) {
+				} else if (gridMap.getMap()[x][y].getTerrainType() == TerrainType.AIRPORT) {
 					buildings.add(new Airport(x, y));
-				} else if (map[x][y].getTerrainType() == TerrainType.FACTORY) {
+				} else if (gridMap.getMap()[x][y].getTerrainType() == TerrainType.FACTORY) {
 					buildings.add(new Factory(x, y));
 //				} else if (map[x][y].getTerrainType() == TerrainType.HQ) {
 //					buildings.add(new HQ(x, y));
@@ -178,9 +173,9 @@ public class MapInitiator {
 	
 	private void initStructures() {
 		int tileSize = mapDim.tileSize;
-		for (int x = 0 ; x < map.length ; x++) {
-			for (int y = 0 ; y < map[0].length ; y++) {
-				if (map[x][y].getTerrainType() == TerrainType.MINI_CANNON) {
+		for (int x = 0 ; x < gridMap.getMap().length ; x++) {
+			for (int y = 0 ; y < gridMap.getMap()[0].length ; y++) {
+				if (gridMap.getMap()[x][y].getTerrainType() == TerrainType.MINI_CANNON) {
 					structures.add(new MiniCannon(x * tileSize, y * tileSize, Direction.SOUTH, heroHandler.getHero(0), tileSize));
 				}
 			}
@@ -221,7 +216,7 @@ public class MapInitiator {
 		hero2.getTroopHandler().addTroop(new Cruiser(10 * tileSize, 11 * tileSize, hero2.getColor(), tileSize));
 
 		for (int h = 0 ; h < 2 ; h++) {
-			for (int k = 0 ; k < portrait.getHeroHandler().getHero(h).getTroopHandler().getTroopSize() ; k++) {
+			for (int k = 0 ; k < heroHandler.getHero(h).getTroopHandler().getTroopSize() ; k++) {
 				heroHandler.getUnitFromHero(h, k).regulateActive(true);
 			}
 		}

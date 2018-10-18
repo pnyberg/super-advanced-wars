@@ -18,11 +18,17 @@ package main;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+
 import javax.swing.JPanel;
 
 import combat.AttackHandler;
 import cursors.Cursor;
 import gameObjects.GameProp;
+import map.GameMap;
+import map.MapLoader;
+import map.buildings.Building;
+import map.structures.Structure;
 import menus.unit.UnitMenu;
 import units.ContUnitHandler;
 import units.Unit;
@@ -33,8 +39,12 @@ public class Gameboard extends JPanel implements KeyListener {
 	
 	public Gameboard(GameProp gameProp, HeroHandler heroHandler) {
 		// TODO: while testing map-loader
-		gameProp.getMapDim().setDimension(3, 8);
-		internalStructureObject = new InternalStructureObject(gameProp, heroHandler); 
+		GameMap gameMap = new GameMap(0, 0);
+		ArrayList<Building> buildings = new ArrayList<>();
+		ArrayList<Structure> structures = new ArrayList<>();
+		MapLoader mapLoader = new MapLoader(gameProp.getMapDim(), gameMap, heroHandler, buildings, structures);
+		mapLoader.loadMap("map-files/test_map.txt");
+		internalStructureObject = new InternalStructureObject(gameProp, heroHandler, gameMap, buildings, structures); 
 		this.gameProp = gameProp;
 		
 		addKeyListener(this);
@@ -42,8 +52,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 	
 	private void init() {
-		int mapIndex = 1; // testing the map-loader
-		internalStructureObject.getMapInitiator().loadMap(mapIndex);
+		//internalStructureObject.getMapInitiator();
 		internalStructureObject.getTurnHandler().startTurnActions();
 
 		updatePortraitSideChoice();

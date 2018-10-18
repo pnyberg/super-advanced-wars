@@ -21,14 +21,14 @@ import point.Point;
 
 public class MapLoader {
 	private MapDim mapDim;
-	private Area[][] map;
+	private GameMap gameMap;
 	private HeroHandler heroHandler;
 	private ArrayList<Building> buildings;
 	private ArrayList<Structure> structures;
 	
-	public MapLoader(MapDim mapDim, Area[][] map, HeroHandler heroHandler, ArrayList<Building> buildings, ArrayList<Structure> structures) {
+	public MapLoader(MapDim mapDim, GameMap gameMap, HeroHandler heroHandler, ArrayList<Building> buildings, ArrayList<Structure> structures) {
 		this.mapDim = mapDim;
-		this.map = map;
+		this.gameMap = gameMap;
 		this.heroHandler = heroHandler;
 		this.buildings = buildings;
 		this.structures = structures;
@@ -39,28 +39,31 @@ public class MapLoader {
 		structures.clear();
 		try {
 			Scanner scanner = new Scanner(new File(fileName));
+			ArrayList<String> mapLines = new ArrayList<>();
 			
-			int mapWidth = -1;
-			int y = 0;
-			for ( ; scanner.hasNext() ; y++) {
-				String nextLine = scanner.nextLine();
-				Scanner tileCodeScanner = new Scanner(nextLine);
-				int x = 0;
-				for ( ; tileCodeScanner.hasNext() ; x++) {
-					String tileCode = tileCodeScanner.next();
-					insertMapTile(tileCode, x, y);
-				}
-				tileCodeScanner.close();
-				if (mapWidth == -1 || mapWidth == x) {
-					mapWidth = x;
-				} else {
-					System.err.println("The width of the map differs from row to row, invalid map-structure!");
-					scanner.close();
-					System.exit(1);
-				}
+			while(scanner.hasNext()) {
+				mapLines.add(scanner.nextLine());
 			}
 			scanner.close();
-			mapDim.setDimension(mapWidth, y);
+			
+			if (mapLines.isEmpty()) {
+				System.err.println("Map-file is empty!");
+				System.exit(1);
+			}
+			
+			int mapWidth = mapLines.get(0).split(" ").length;
+			int mapHeight = mapLines.size();
+			gameMap.resizeMap(mapWidth, mapHeight);
+			mapDim.setDimension(mapWidth, mapHeight);
+			
+			for (int y = 0 ; y < mapHeight ; y++) {
+				String nextLine = mapLines.get(y);
+				String[] tokens = nextLine.split(" ");
+				for (int x = 0 ; x < mapWidth ; x++) {
+					String tileCode = tokens[x];
+					insertMapTile(tileCode, x, y);
+				}
+			}
 		} catch (IOException e) {
 			System.err.println("Couldn't load file '" + fileName + "'.");
 		}
@@ -290,6 +293,6 @@ public class MapLoader {
 			break;
 		}
 		
-		map[x][y] =  new Area(new Point(x * mapDim.tileSize, y * mapDim.tileSize), terrainType, mapDim.tileSize);
+		gameMap.getMap()[x][y] = new Area(new Point(x * mapDim.tileSize, y * mapDim.tileSize), terrainType, mapDim.tileSize);
 	}
 }

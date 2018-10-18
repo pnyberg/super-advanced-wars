@@ -42,8 +42,6 @@ public class InternalStructureObject {
 	private AttackHandler attackHandler;
 	private AttackRangeHandler attackRangeHandler;
 	private AttackValueCalculator attackValueCalculator;
-	private ArrayList<Building> buildings;
-	private ArrayList<Structure> structures;
 	private BuildingHandler buildingHandler;
 	private BuildingMenu buildingMenu;
 	private CashHandler cashHandler;
@@ -55,7 +53,6 @@ public class InternalStructureObject {
 	private FiringCursor firingCursor;
 	private HeroPortrait heroPortrait;
 	private KeyListenerInputHandler keyListenerInputHandler;
-	private GameMap gameMap;
 	private MapInitiator mapInitiator;
 	private MapMenu mapMenu;
 	private ViewPainter mainViewPainter;
@@ -73,18 +70,15 @@ public class InternalStructureObject {
 	private UnitPositionChecker unitPositionChecker;
 	private UnitWorthCalculator unitWorthCalculator;
 	
-	public InternalStructureObject(GameProp gameProp, HeroHandler heroHandler) {
+	public InternalStructureObject(GameProp gameProp, HeroHandler heroHandler, GameMap gameMap, ArrayList<Building> buildings, ArrayList<Structure> structures) {
 		// no previously required init
 		attackValueCalculator = new AttackValueCalculator();
-		buildings = new ArrayList<Building>();
 		cursor = new Cursor(0, 0, gameProp.getMapDim().tileSize);
 		defenceValueCalculator = new DefenceValueCalculator();
 		heroPortrait = new HeroPortrait(gameProp.getMapDim(), heroHandler);
-		gameMap = new GameMap(gameProp.getMapDim().getWidth(), gameProp.getMapDim().getHeight());
 		mapMenu = new MapMenu(gameProp.getMapDim().tileSize, heroHandler);
 		moveabilityMatrix = new MoveabilityMatrixFactory().getMoveabilityMatrix();
 		movementMap = new MovementMap(gameProp.getMapDim());
-		structures = new ArrayList<Structure>();
 		unitGetter = new UnitGetter(heroHandler, gameProp.getMapDim().tileSize);
 		unitWorthCalculator = new UnitWorthCalculator();
 
@@ -109,7 +103,7 @@ public class InternalStructureObject {
 		// required init from third init-round
 		attackRangeHandler = new AttackRangeHandler(gameProp.getMapDim(), unitGetter, damageHandler, routeChecker, movementMap);
 		containerUnitHandler = new ContUnitHandler(gameProp, gameMap, cursor, unitGetter, areaChecker, routeChecker); 
-		mapInitiator = new MapInitiator(gameProp.getMapDim(), buildingHandler, structureHandler, heroHandler, gameMap, buildings, structures, heroPortrait);
+		//mapInitiator = new MapInitiator(gameProp.getMapDim(), buildingHandler, structureHandler, heroHandler, gameMap, buildings, structures);
 		turnHandler = new TurnHandler(gameProp, cashHandler, heroHandler, structureHandler, mapMenu);
 
 		// required init from fourth init-round
