@@ -22,6 +22,7 @@ import units.treadMoving.Tank;
 import hero.*;
 import main.HeroHandler;
 import main.StarPowerCalculator;
+import map.GameMap;
 import map.area.Area;
 import map.area.TerrainType;
 
@@ -29,14 +30,14 @@ public class DamageHandler {
 	private DamageCalculator damageCalculator;
 	private StarPowerCalculator starPowerCalculator;
 	private HeroHandler heroHandler;
-	private Area[][] map;
+	private GameMap gameMap;
 	private int tileSize = 40;
 
-	public DamageHandler(HeroHandler heroHandler, Area[][] map, AttackValueCalculator attackValueCalculator, DefenceValueCalculator defenceValueCalculator, UnitWorthCalculator unitWorthCalculator) {
+	public DamageHandler(HeroHandler heroHandler, GameMap gameMap, AttackValueCalculator attackValueCalculator, DefenceValueCalculator defenceValueCalculator, UnitWorthCalculator unitWorthCalculator) {
 		damageCalculator = new DamageCalculator(attackValueCalculator, defenceValueCalculator);
 		starPowerCalculator = new StarPowerCalculator(unitWorthCalculator);
 		this.heroHandler = heroHandler;
-		this.map = map;
+		this.gameMap = gameMap;
 	}
 
 	public void handleAttack(Unit attacking, Unit defending) {
@@ -47,7 +48,7 @@ public class DamageHandler {
 		int defX = defending.getPoint().getX() / tileSize;
 		int defY = defending.getPoint().getY() / tileSize;
 		
-		TerrainType defendingTerrainType = map[defX][defY].getTerrainType();
+		TerrainType defendingTerrainType = gameMap.getMap()[defX][defY].getTerrainType();
 
 		// deal damage from attacker to defender
 		performDamageCalculation(attacking, attackingHero, defending, defendingHero, defendingTerrainType);
@@ -57,7 +58,7 @@ public class DamageHandler {
 		}
 
 		if (counterAttackAble(attacking, defending)) {
-			TerrainType attackingTerrainType = map[attX][attY].getTerrainType();
+			TerrainType attackingTerrainType = gameMap.getMap()[attX][attY].getTerrainType();
 			// deal damage from defender to attacker (counterattack)
 			performDamageCalculation(defending, defendingHero, attacking, attackingHero, attackingTerrainType);
 		}

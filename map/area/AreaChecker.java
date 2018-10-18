@@ -2,6 +2,7 @@ package map.area;
 
 import hero.Hero;
 import main.HeroHandler;
+import map.GameMap;
 import map.UnitGetter;
 import units.Unit;
 import units.UnitType;
@@ -9,18 +10,18 @@ import units.UnitType;
 public class AreaChecker {
 	private HeroHandler heroHandler;
 	private UnitGetter unitGetter;
-	private Area[][] map;
+	private GameMap gridMap;
 	private boolean[][] moveabilityMatrix;
 
-	public AreaChecker(HeroHandler heroHandler, UnitGetter unitGetter, Area[][] map, boolean[][] moveabilityMatrix) {
+	public AreaChecker(HeroHandler heroHandler, UnitGetter unitGetter, GameMap gridMap, boolean[][] moveabilityMatrix) {
 		this.heroHandler = heroHandler;
 		this.unitGetter = unitGetter;
-		this.map = map;
+		this.gridMap = gridMap;
 		this.moveabilityMatrix = moveabilityMatrix;
 	}
 
 	public boolean isLand(int x, int y) {
-		TerrainType terrainType = map[x][y].getTerrainType();
+		TerrainType terrainType = gridMap.getMap()[x][y].getTerrainType();
 		return moveabilityMatrix[UnitType.INFANTRY.unitIndex()][terrainType.terrainTypeIndex()];
 	}
 

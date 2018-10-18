@@ -14,6 +14,7 @@ import graphics.MapViewType;
 import graphics.ViewPainter;
 import hero.Hero;
 import hero.heroPower.HeroPowerHandler;
+import map.GameMap;
 import map.UnitGetter;
 import map.area.Area;
 import map.area.TerrainType;
@@ -40,7 +41,7 @@ public class KeyListenerInputHandler {
 	private StructureHandler structureHandler;
 	private Cursor cursor;
 	private UnitMenuHandler unitMenuHandler;
-	private Area[][] map;
+	private GameMap gameMap;
 	private MapMenu mapMenu;
 	private BuildingMenu buildingMenu;
 	private ContUnitHandler containerUnitHandler;
@@ -57,9 +58,9 @@ public class KeyListenerInputHandler {
 	private FiringCursorHandler firingCursorHandler;
 	private HeroPowerHandler heroPowerHandler;
 	
-	public KeyListenerInputHandler(GameProp gameProp, Area[][] map, ViewPainter viewPainter, UnitGetter unitGetter, BuildingHandler buildingHandler, StructureHandler structureHandler, Cursor cursor, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
+	public KeyListenerInputHandler(GameProp gameProp, GameMap gameMap, ViewPainter viewPainter, UnitGetter unitGetter, BuildingHandler buildingHandler, StructureHandler structureHandler, Cursor cursor, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
 		this.gameProp = gameProp;
-		this.map = map;
+		this.gameMap = gameMap;
 		this.viewPainter = viewPainter;
 		this.unitGetter = unitGetter;
 		this.buildingHandler = buildingHandler;
@@ -379,7 +380,7 @@ public class KeyListenerInputHandler {
 				movementMap.clearMovementMap();
 				routeHandler.clearArrowPoints();
 			}
-		} else if (map[cursor.getX()][cursor.getY()].getTerrainType() == TerrainType.MINI_CANNON) {
+		} else if (gameMap.getMap()[cursor.getX()][cursor.getY()].getTerrainType() == TerrainType.MINI_CANNON) {
 			gameProp.getChosenObject().rangeStructure = structureHandler.getFiringStructure(cursor.getX() * gameProp.getMapDim().tileSize, cursor.getY() * gameProp.getMapDim().tileSize);
 			attackRangeHandler.importStructureAttackLocations(gameProp.getChosenObject().rangeStructure);
 		} else {

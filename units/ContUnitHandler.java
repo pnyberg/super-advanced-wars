@@ -4,6 +4,7 @@ import cursors.Cursor;
 import gameObjects.ChosenObject;
 import gameObjects.GameProp;
 import gameObjects.MapDim;
+import map.GameMap;
 import map.UnitGetter;
 import map.area.Area;
 import map.area.AreaChecker;
@@ -27,15 +28,15 @@ import units.treadMoving.Tank;
 
 public class ContUnitHandler {
 	private GameProp gameProp;
-	private Area[][] map;
+	private GameMap gameMap;
 	private Cursor cursor;
 	private UnitGetter unitGetter;
 	private AreaChecker areaChecker;
 	private RouteChecker routeChecker;
 	
-	public ContUnitHandler(GameProp gameProp, Area[][] map, Cursor cursor, UnitGetter unitGetter, AreaChecker areaChecker, RouteChecker routeChecker) {
+	public ContUnitHandler(GameProp gameProp, GameMap gameMap, Cursor cursor, UnitGetter unitGetter, AreaChecker areaChecker, RouteChecker routeChecker) {
 		this.gameProp = gameProp;
-		this.map = map;
+		this.gameMap = gameMap;
 		this.cursor = cursor;
 		this.unitGetter = unitGetter;
 		this.areaChecker = areaChecker;
@@ -149,7 +150,7 @@ public class ContUnitHandler {
 	}
 
 	public boolean landerAtDroppingOffPosition(int x, int y) {
-		TerrainType areaValue = map[x][y].getTerrainType();
+		TerrainType areaValue = gameMap.getMap()[x][y].getTerrainType();
 
 		if (areaValue == TerrainType.SHORE || areaValue == TerrainType.PORT) {
 			return true;

@@ -7,6 +7,7 @@ import combat.AttackRangeHandler;
 import gameObjects.Direction;
 import gameObjects.MapDim;
 import main.HeroHandler;
+import map.GameMap;
 import map.area.Area;
 import map.buildings.Building;
 import map.buildings.BuildingHandler;
@@ -21,18 +22,18 @@ public class ViewPainter {
 	private CommanderView commanderView;
 	private HeroHandler heroHandler;
 	private MapDim mapDim;
-	private Area[][] map;
+	private GameMap gameMap;
 	private RouteHandler routeHandler;
 	private AttackRangeHandler attackRangeHandler;
 	private BuildingHandler buildingHandler;
 	private StructureHandler structureHandler;
 	
-	public ViewPainter(CommanderView commanderView, HeroHandler heroHandler, MapDim mapDimension, Area[][] map, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler, BuildingHandler buildingGetter, StructureHandler structureHandler) {
+	public ViewPainter(CommanderView commanderView, HeroHandler heroHandler, MapDim mapDimension, GameMap gameMap, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler, BuildingHandler buildingGetter, StructureHandler structureHandler) {
 		mapViewType = MapViewType.MAIN_MAP_MENU_VIEW;
 		this.commanderView = commanderView;
 		this.heroHandler = heroHandler;
 		this.mapDim = mapDimension;
-		this.map = map;
+		this.gameMap = gameMap;
 		this.routeHandler = routeHandler;
 		this.attackRangeHandler = attackRangeHandler;
 		this.buildingHandler = buildingGetter;
@@ -57,8 +58,8 @@ public class ViewPainter {
 	}
 	
 	private void paintMap(Graphics g) {
-		for (int x = 0 ; x < map.length ; x++) {
-			for (int y = 0 ; y < map[0].length ; y++) {
+		for (int x = 0 ; x < gameMap.getMap().length ; x++) {
+			for (int y = 0 ; y < gameMap.getMap()[0].length ; y++) {
 				paintArea(g, x, y);
 			}
 		}
@@ -75,7 +76,7 @@ public class ViewPainter {
 		} else if (building != null && !rangeAble) {
 			building.paint(g, mapDim.tileSize);
 		} else {
-			map[x][y].paint(g, movementAble, rangeAble);
+			gameMap.getMap()[x][y].paint(g, movementAble, rangeAble);
 		}
 	}
 

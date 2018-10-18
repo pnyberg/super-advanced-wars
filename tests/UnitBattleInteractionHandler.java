@@ -7,6 +7,7 @@ import combat.AttackValueCalculator;
 import combat.DamageHandler;
 import combat.DefenceValueCalculator;
 import main.HeroHandler;
+import map.GameMap;
 import map.area.Area;
 import units.Unit;
 import units.UnitWorthCalculator;
@@ -16,7 +17,7 @@ public class UnitBattleInteractionHandler {
 	private UnitCollection unitCollection;
 
 	public UnitBattleInteractionHandler(UnitCollection unitCollection) {
-		damageHandler = new DamageHandler(new HeroHandler(), new Area[1][1], new AttackValueCalculator(), new DefenceValueCalculator(), new UnitWorthCalculator());
+		damageHandler = new DamageHandler(new HeroHandler(), new GameMap(1, 1), new AttackValueCalculator(), new DefenceValueCalculator(), new UnitWorthCalculator());
 		this.unitCollection = unitCollection;
 	}
 

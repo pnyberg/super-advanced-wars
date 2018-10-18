@@ -5,6 +5,7 @@ package menus.building;
 
 import units.*;
 import main.HeroHandler;
+import map.GameMap;
 import map.area.Area;
 import map.area.TerrainType;
 import menus.Menu;
@@ -23,9 +24,9 @@ public class BuildingMenu extends Menu {
 	private UnitCreatingFactory unitCreatingFactory;
 	private HeroHandler heroHandler;
 	private BuildingMenuPainter buildingMenuPainter;
-	private Area[][] map;
+	private GameMap gridMap;
 
-	public BuildingMenu(int tileSize, HeroHandler heroHandler, Area[][] map) {
+	public BuildingMenu(int tileSize, HeroHandler heroHandler, GameMap gridMap) {
 		super(tileSize);
 		this.heroHandler = heroHandler;
 		dimensionValues.menuRowWidth = 118;
@@ -35,12 +36,12 @@ public class BuildingMenu extends Menu {
 		buildingItemFactory = new BuildingItemFactory();
 		unitCreatingFactory = new UnitCreatingFactory(tileSize);
 		buildingMenuPainter = new BuildingMenuPainter(heroHandler, dimensionValues, priceAlign);
-		this.map = map;
+		this.gridMap = gridMap;
 	}
 
 	public void openMenu(int x, int y) {
 		super.openMenu(x, y);
-		TerrainType terrainType = map[x][y].getTerrainType();
+		TerrainType terrainType = gridMap.getMap()[x][y].getTerrainType();
 		if (terrainType == TerrainType.FACTORY) {
 			factory = true;
 		} else if (terrainType == TerrainType.AIRPORT) {

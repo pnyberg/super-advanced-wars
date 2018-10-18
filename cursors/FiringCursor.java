@@ -8,6 +8,7 @@ import gameObjects.MapDim;
 import hero.Hero;
 import hero.HeroPortrait;
 import main.HeroHandler;
+import map.GameMap;
 import map.UnitGetter;
 import map.area.Area;
 import map.area.TerrainType;
@@ -15,14 +16,14 @@ import units.Unit;
 
 public class FiringCursor {
 	private MapDim mapDim;
-	private Area[][] map;
+	private GameMap gameMap;
 	private UnitGetter unitGetter;
 	private HeroHandler heroHandler;
 	private DamageHandler damageHandler;
 	
-	public FiringCursor(MapDim mapDimension, Area[][] map, UnitGetter unitGetter, HeroHandler heroHandler, DamageHandler damageHandler) {
+	public FiringCursor(MapDim mapDimension, GameMap gameMap, UnitGetter unitGetter, HeroHandler heroHandler, DamageHandler damageHandler) {
 		this.mapDim = mapDimension;
-		this.map = map;
+		this.gameMap = gameMap;
 		this.unitGetter = unitGetter;
 		this.heroHandler = heroHandler;
 		this.damageHandler = damageHandler;
@@ -41,7 +42,7 @@ public class FiringCursor {
 
 		Hero chosenHero = heroHandler.getCurrentHero();
 		Hero targetHero = heroHandler.getHeroFromUnit(targetUnit);
-		TerrainType terrainType = map[x / tileSize][y / tileSize].getTerrainType();
+		TerrainType terrainType = gameMap.getMap()[x / tileSize][y / tileSize].getTerrainType();
 		int damage = damageHandler.getNonRNGDamageValue(chosenUnit, chosenHero, targetUnit, targetHero, terrainType);
 		int damageFieldWidth = (damage <= 9 ? 3 * tileSize / 5 : 
 									(damage <= 99 ? 4 * tileSize / 5

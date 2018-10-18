@@ -8,6 +8,7 @@ package routing;
 import gameObjects.MapDim;
 import hero.Hero;
 import main.HeroHandler;
+import map.GameMap;
 import map.area.Area;
 import map.area.AreaChecker;
 import map.area.TerrainType;
@@ -17,16 +18,16 @@ import units.Unit;
 public class RouteChecker {
 	private MapDim mapDim;
 	private HeroHandler heroHandler;
-	private Area[][] map;
+	private GameMap gameMap;
 	private MovementMap movementMap;
 	private boolean[][] moveabilityMatrix;
 	private AreaChecker areaChecker;
 	private MovementCostCalculator movementCostCalculator;
 	
-	public RouteChecker(MapDim mapDimension, HeroHandler heroHandler, Area[][] map, MovementMap movementMap, boolean[][] moveabilityMatrix, AreaChecker areaChecker, MovementCostCalculator movementCostCalculator) {
+	public RouteChecker(MapDim mapDimension, HeroHandler heroHandler, GameMap gameMap, MovementMap movementMap, boolean[][] moveabilityMatrix, AreaChecker areaChecker, MovementCostCalculator movementCostCalculator) {
 		this.mapDim = mapDimension;
 		this.heroHandler = heroHandler;
-		this.map = map;
+		this.gameMap = gameMap;
 		this.movementMap = movementMap;
 		this.moveabilityMatrix = moveabilityMatrix;
 		this.areaChecker = areaChecker;
@@ -63,7 +64,7 @@ public class RouteChecker {
 	}
 
 	public boolean allowedMovementPosition(int x, int y, MovementType movementType, Hero hero) {
-		TerrainType terrainType = map[x][y].getTerrainType();
+		TerrainType terrainType = gameMap.getMap()[x][y].getTerrainType();
 
 		if (areaChecker.areaOccupiedByNonFriendly(x, y, hero)) {
 			return false;
