@@ -22,10 +22,48 @@ public class MiniCannon extends FiringStructure {
 			int rangeY = point.getY()/tileSize + 1;
 			for (int k = 1 ; k <= 5 ; k += 2) {
 				for (int i = 0 ; i < k ; i++) {
-					rangeMap[rangeX+i][rangeY] = true;
+					if (0 <= (rangeX+i) && (rangeX+i) < rangeMap.length && rangeY < rangeMap[0].length) {
+						rangeMap[rangeX+i][rangeY] = true;
+					}
 				}
 				rangeX--;
 				rangeY++;
+			}
+		} else if (direction == Direction.EAST) {
+			int rangeX = point.getX()/tileSize + 1;
+			int rangeY = point.getY()/tileSize;
+			for (int k = 1 ; k <= 5 ; k += 2) {
+				for (int i = 0 ; i < k ; i++) {
+					if (rangeX < rangeMap.length && 0 <= (rangeY+i) && (rangeY+i) < rangeMap[0].length) {
+						rangeMap[rangeX][rangeY+i] = true;
+					}
+				}
+				rangeX++;
+				rangeY--;
+			}
+		} else if (direction == Direction.NORTH) {
+			int rangeX = point.getX()/tileSize;
+			int rangeY = point.getY()/tileSize - 1;
+			for (int k = 1 ; k <= 5 ; k += 2) {
+				for (int i = 0 ; i < k ; i++) {
+					if (0 <= (rangeX+i) && (rangeX+i) < rangeMap.length && 0 <= rangeY) {
+						rangeMap[rangeX+i][rangeY] = true;
+					}
+				}
+				rangeX--;
+				rangeY--;
+			}
+		} else if (direction == Direction.WEST) {
+			int rangeX = point.getX()/tileSize - 1;
+			int rangeY = point.getY()/tileSize;
+			for (int k = 1 ; k <= 5 ; k += 2) {
+				for (int i = 0 ; i < k ; i++) {
+					if (0 <= rangeX && 0 <= (rangeY+i) && (rangeY+i) < rangeMap[0].length) {
+						rangeMap[rangeX][rangeY+i] = true;
+					}
+				}
+				rangeX--;
+				rangeY--;
 			}
 		}
 	}
