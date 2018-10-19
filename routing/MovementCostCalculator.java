@@ -9,7 +9,7 @@ public class MovementCostCalculator {
 	private int[][] movementCostMatrix;
 	private GameMap gameMap;
 
-	public MovementCostCalculator(GameMap map) {
+	public MovementCostCalculator(GameMap gameMap) {
 		movementCostMatrix = new MovementCostMatrixFactory().getMovementCostMatrix();
 		this.gameMap = gameMap;
 	}
