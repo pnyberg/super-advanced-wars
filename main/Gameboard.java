@@ -52,7 +52,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 	
 	private void init() {
-		//internalStructureObject.getMapInitiator();
+		Building.init(1000);
 		internalStructureObject.getTurnHandler().startTurnActions();
 
 		updatePortraitSideChoice();
