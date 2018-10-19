@@ -67,8 +67,8 @@ public class UnitWorthCalculator {
 		return worth;
 	}
 	
-	public double getUnitWorth(Unit unit) {
-		double worth = getFullHealthUnitWorth(unit);
+	public int getUnitWorth(Unit unit) {
+		int worth = getFullHealthUnitWorth(unit);
 		worth *= unit.getUnitHealth().getShowHP();
 		worth /= 10;
 		return worth;

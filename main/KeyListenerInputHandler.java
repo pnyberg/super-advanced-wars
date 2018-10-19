@@ -58,8 +58,9 @@ public class KeyListenerInputHandler {
 	private TurnHandler turnHandler;
 	private FiringCursorHandler firingCursorHandler;
 	private HeroPowerHandler heroPowerHandler;
+	private UnitWorthCalculator unitWorthCalculator;
 	
-	public KeyListenerInputHandler(GameProp gameProp, GameMap gameMap, ViewPainter viewPainter, UnitGetter unitGetter, BuildingHandler buildingHandler, StructureHandler structureHandler, Cursor cursor, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
+	public KeyListenerInputHandler(GameProp gameProp, GameMap gameMap, ViewPainter viewPainter, UnitGetter unitGetter, BuildingHandler buildingHandler, StructureHandler structureHandler, Cursor cursor, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler, UnitWorthCalculator unitWorthCalculator) {
 		this.gameProp = gameProp;
 		this.gameMap = gameMap;
 		this.viewPainter = viewPainter;
@@ -83,6 +84,7 @@ public class KeyListenerInputHandler {
 		this.turnHandler = turnHandler;
 		firingCursorHandler = new FiringCursorHandler(gameProp, cursor, unitGetter, damageHandler);
 		heroPowerHandler = new HeroPowerHandler(heroHandler);
+		this.unitWorthCalculator = unitWorthCalculator;
 	}
 	
 	public void manageKeyPressedInput(KeyEvent e) {
@@ -225,6 +227,11 @@ public class KeyListenerInputHandler {
 				int y = gameProp.getChosenObject().chosenUnit.getPoint().getY();
 				Unit unit = unitGetter.getFriendlyUnitExceptSelf(gameProp.getChosenObject().chosenUnit, x, y);
 				
+				int joinHp = unit.getUnitHealth().getShowHP() + gameProp.getChosenObject().chosenUnit.getUnitHealth().getShowHP();
+				if (joinHp > 10) {
+					int joinFunds = (joinHp - 10) * unitWorthCalculator.getFullHealthUnitWorth(unit) / 10;
+					heroHandler.getCurrentHero().manageCash(joinFunds);
+				}
 				unit.getUnitHealth().heal(gameProp.getChosenObject().chosenUnit.getUnitHealth().getHP());
 				gameProp.getChosenObject().chosenUnit.getUnitHealth().kill();
 				removeUnitIfDead(gameProp.getChosenObject().chosenUnit);
