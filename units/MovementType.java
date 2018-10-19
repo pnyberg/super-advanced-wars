@@ -20,4 +20,20 @@ public enum MovementType {
 	public int movementTypeIndex() {
 		return movementTypeIndex;
 	}
+	
+	public boolean isLandMovementType() {
+		return movementTypeIndex == 0
+			|| movementTypeIndex == 1
+			|| movementTypeIndex == 2
+			|| movementTypeIndex == 3;
+	}
+
+	public boolean isAirMovementType() {
+		return movementTypeIndex == 6;
+	}
+
+	public boolean isSeaMovementType() {
+		return movementTypeIndex == 4
+			|| movementTypeIndex == 5;
+	}
 }
