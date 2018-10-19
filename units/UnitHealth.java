@@ -33,8 +33,12 @@ public class UnitHealth {
 	public void kill() {
 		hp = 0;
 	}
+	
+	public boolean atFullHealth() {
+		return hp == 100;
+	}
 
-	public boolean isHurt() {
+	public boolean isVisiblyHurt() {
 		return hp <= 90;
 	}
 

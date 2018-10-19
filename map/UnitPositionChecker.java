@@ -16,7 +16,7 @@ public class UnitPositionChecker {
 			return false;
 		}
 
-		return testUnit.getUnitHealth().isHurt() && testUnit.getClass().equals(unit.getClass());
+		return testUnit.getUnitHealth().isVisiblyHurt() && testUnit.getClass().equals(unit.getClass());
 	}
 
 	/*public Unit getAnyUnit(int x, int y) {

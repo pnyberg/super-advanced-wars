@@ -21,8 +21,8 @@ import units.treadMoving.Tank;
 
 public class UnitWorthCalculator {
 
-	public double getFullHealthUnitWorth(Unit unit) {
-		double worth = 0;
+	public int getFullHealthUnitWorth(Unit unit) {
+		int worth = 0;
 		if (unit instanceof Infantry) {
 			worth = Infantry.getPrice();
 		} else if (unit instanceof Mech) {
