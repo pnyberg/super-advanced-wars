@@ -8,15 +8,17 @@ import menus.map.MapMenu;
 public class TurnHandler {
 	private CashHandler cashHandler;
 	private FuelHandler fuelHandler;
+	private RepairHandler repairHandler;
 	private HeroHandler heroHandler;
 	private StructureHandler structureHandler;
 	private MapMenu mapMenu;
 	private int day;
 	private boolean firstHeroOfTheDay;
 
-	public TurnHandler(GameProp gameProp, CashHandler cashHandler, HeroHandler heroHandler, StructureHandler structureHandler, MapMenu mapMenu) {
+	public TurnHandler(GameProp gameProp, CashHandler cashHandler, RepairHandler repairHandler, HeroHandler heroHandler, StructureHandler structureHandler, MapMenu mapMenu) {
 		this.cashHandler = cashHandler;
 		fuelHandler = new FuelHandler(gameProp, heroHandler);
+		this.repairHandler = repairHandler;
 		this.heroHandler = heroHandler;
 		this.structureHandler = structureHandler;
 		this.mapMenu = mapMenu;
@@ -32,6 +34,7 @@ public class TurnHandler {
 	public void startTurnActions() {
 		cashHandler.updateCash();
 		fuelHandler.fuelMaintenance();
+		repairHandler.repairUnits();
 		if (heroHandler.getCurrentHero().isPowerActive()) {
 			heroHandler.getCurrentHero().setPowerActive(false);
 		} else if (heroHandler.getCurrentHero().isSuperPowerActive()) {

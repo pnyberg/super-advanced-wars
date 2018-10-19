@@ -59,6 +59,7 @@ public class InternalStructureObject {
 	private boolean[][] moveabilityMatrix;
 	private MovementCostCalculator movementCostCalculator;
 	private MovementMap movementMap;
+	private RepairHandler repairHandler;
 	private RouteChecker routeChecker;
 	private RouteHandler routeHandler;
 	private StructureAttackHandler structureAttackHandler;
@@ -96,6 +97,7 @@ public class InternalStructureObject {
 
 		// required init from second init-round
 		firingCursor = new FiringCursor(gameProp.getMapDim(), gameMap, unitGetter, heroHandler, damageHandler);
+		repairHandler = new RepairHandler(gameProp.getMapDim(), heroHandler, buildingHandler, unitWorthCalculator);
 		routeChecker = new RouteChecker(gameProp.getMapDim(), heroHandler, gameMap, movementMap, moveabilityMatrix, areaChecker, movementCostCalculator);
 		routeHandler = new RouteHandler(gameProp.getMapDim(), movementMap, movementCostCalculator);
 		structureHandler = new StructureHandler(structures, structureAttackHandler, unitWorthCalculator);
@@ -104,7 +106,7 @@ public class InternalStructureObject {
 		attackRangeHandler = new AttackRangeHandler(gameProp.getMapDim(), unitGetter, damageHandler, routeChecker, movementMap);
 		containerUnitHandler = new ContUnitHandler(gameProp, gameMap, cursor, unitGetter, areaChecker, routeChecker); 
 		//mapInitiator = new MapInitiator(gameProp.getMapDim(), buildingHandler, structureHandler, heroHandler, gameMap, buildings, structures);
-		turnHandler = new TurnHandler(gameProp, cashHandler, heroHandler, structureHandler, mapMenu);
+		turnHandler = new TurnHandler(gameProp, cashHandler, repairHandler, heroHandler, structureHandler, mapMenu);
 
 		// required init from fourth init-round
 		attackHandler = new AttackHandler(gameProp.getMapDim(), unitGetter, attackRangeHandler, damageHandler);
@@ -112,7 +114,7 @@ public class InternalStructureObject {
 		unitMenuHandler = new UnitMenuHandler(gameProp, containerUnitHandler, supplyHandler, unitGetter, unitPositionChecker, areaChecker, buildingHandler, attackRangeHandler);
 
 		// required init from fifth init-round
-		keyListenerInputHandler = new KeyListenerInputHandler(gameProp, gameMap, mainViewPainter, unitGetter, buildingHandler, structureHandler, cursor, unitMenuHandler, mapMenu, buildingMenu, containerUnitHandler, attackHandler, attackRangeHandler, movementMap, routeHandler, routeChecker, damageHandler, heroHandler, supplyHandler, turnHandler);		
+		keyListenerInputHandler = new KeyListenerInputHandler(gameProp, gameMap, mainViewPainter, unitGetter, buildingHandler, structureHandler, cursor, unitMenuHandler, mapMenu, buildingMenu, containerUnitHandler, attackHandler, attackRangeHandler, movementMap, routeHandler, routeChecker, damageHandler, heroHandler, supplyHandler, turnHandler);
 	}
 	
 	public AttackHandler getAttackHandler() {
@@ -147,18 +149,10 @@ public class InternalStructureObject {
 		return keyListenerInputHandler;
 	}
 	
-	public MapInitiator getMapInitiator() {
-		return mapInitiator;
-	}
-	
 	public MapMenu getMapMenu() {
 		return mapMenu;
 	}
 	
-	public ViewPainter getMainViewPainter() {
-		return mainViewPainter;
-	}
-		
 	public RouteHandler getRouteHandler() {
 		return routeHandler;
 	}
@@ -170,4 +164,8 @@ public class InternalStructureObject {
 	public UnitMenuHandler getUnitMenuHandler() {
 		return unitMenuHandler;
 	}
+
+	public ViewPainter getMainViewPainter() {
+		return mainViewPainter;
+	}		
 }
