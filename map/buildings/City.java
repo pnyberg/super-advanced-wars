@@ -12,16 +12,19 @@ public class City extends Building {
 		int paintX = x * tileSize;
 		int paintY = y * tileSize;
 
-		if (owner == null) {
-			g.setColor(Color.white);
-		} else {
-			g.setColor(owner.getColor());
+		Color cityColor = Color.white;
+		if (owner != null) {
+			cityColor = owner.getColor();
 		}
+		g.setColor(cityColor);
 		g.fillRect(paintX, paintY, tileSize, tileSize);
 		g.setColor(Color.black);
 		g.drawRect(paintX, paintY, tileSize, tileSize);
 
-		g.drawLine(paintX, paintY, paintX + tileSize, paintY + tileSize);
-		g.drawLine(paintX, paintY + tileSize, paintX + tileSize, paintY);
+		g.drawRect(paintX + tileSize / 8, paintY + tileSize / 8, 2 * tileSize / 5, 2 * tileSize / 3);
+		g.setColor(cityColor);
+		g.fillRect(paintX + tileSize / 3, paintY + tileSize / 4, 2 * tileSize / 5, 2 * tileSize / 3);
+		g.setColor(Color.black);
+		g.drawRect(paintX + tileSize / 3, paintY + tileSize / 4, 2 * tileSize / 5, 2 * tileSize / 3);
 	}
 }
