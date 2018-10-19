@@ -45,16 +45,14 @@ public class UnitMenuHandler {
 
 	public void handleOpenUnitMenu(int cursorX, int cursorY) {
 		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
-		boolean hurtAtSamePosition = unitPositionChecker.hurtSameTypeUnitAtPosition(chosenUnit, cursorX, cursorY);
+		boolean hurtAtSamePosition = unitPositionChecker.hurtSameTypeUnitAtPosition(chosenUnit, cursorX * gameProp.getMapDim().tileSize, cursorY * gameProp.getMapDim().tileSize);
 		if (!areaChecker.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY) 
 		|| containerUnitHandler.unitEntryingContainerUnit(chosenUnit, cursorX, cursorY)
 		|| hurtAtSamePosition) {
 			// @TODO fix join
 			if (hurtAtSamePosition) {
 				unitMenu.getUnitMenuRowEntryBooleanHandler().allowJoin();
-			}
-
-			if (!hurtAtSamePosition && attackRangeHandler.unitCanFire(chosenUnit, cursorX, cursorY)) {
+			} else if (attackRangeHandler.unitCanFire(chosenUnit, cursorX, cursorY)) {
 				unitMenu.getUnitMenuRowEntryBooleanHandler().allowFire();
 			}
 
