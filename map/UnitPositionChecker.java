@@ -18,8 +18,4 @@ public class UnitPositionChecker {
 
 		return testUnit.getUnitHealth().isVisiblyHurt() && testUnit.getClass().equals(unit.getClass());
 	}
-
-	/*public Unit getAnyUnit(int x, int y) {
-		return unitGetter.getAnyUnit(x, y);
-	}*/
 }

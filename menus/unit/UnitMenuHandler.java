@@ -49,7 +49,6 @@ public class UnitMenuHandler {
 		if (!areaChecker.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY) 
 		|| containerUnitHandler.unitEntryingContainerUnit(chosenUnit, cursorX, cursorY)
 		|| hurtAtSamePosition) {
-			// @TODO fix join
 			if (hurtAtSamePosition) {
 				unitMenu.getUnitMenuRowEntryBooleanHandler().allowJoin();
 			} else if (attackRangeHandler.unitCanFire(chosenUnit, cursorX, cursorY)) {
