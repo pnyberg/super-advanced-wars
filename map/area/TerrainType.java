@@ -12,9 +12,10 @@ public enum TerrainType {
 	FACTORY(8),
 	REEF(9),
 	SHORE(10),
-	MINI_CANNON(11);
+	UMI(11),
+	MINI_CANNON(12);
 
-	public static final int numberOfAreaTypes = 12;
+	public static final int numberOfAreaTypes = 13;
 
 	private final int terrainTypeIndex;
 

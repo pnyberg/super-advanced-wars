@@ -34,6 +34,9 @@ public class Area {
 		if (terrainType == TerrainType.REEF && !rangeAble) {
 			g.fillRect(position.getX() + tileSize / 4, position.getY() + tileSize / 4, tileSize / 4, tileSize / 4);
 			g.fillRect(position.getX() + 5 * tileSize / 8, position.getY() + 5 * tileSize / 8, tileSize / 4, tileSize / 4);
+		} else if (terrainType == TerrainType.UMI && !rangeAble) {
+			g.fillRect(position.getX() + tileSize / 4, position.getY() + tileSize / 4, tileSize / 4, tileSize / 4);
+			g.fillRect(position.getX() + 5 * tileSize / 8, position.getY() + 5 * tileSize / 8, tileSize / 4, tileSize / 4);
 		}
 	}
 	
@@ -79,6 +82,12 @@ public class Area {
 				g.setColor(new Color(30,144,145)); // lighter blue
 			} else {
 				g.setColor(new Color(30,144,105)); // lighter blue
+			}
+		} else if (terrainType == TerrainType.PLAIN) {
+			if (areaMovementAble) {
+				g.setColor(new Color(255,250,205)); // lighter yellow
+			} else {
+				g.setColor(new Color(204,204,0)); // darker yellow
 			}
 		}
 	}
