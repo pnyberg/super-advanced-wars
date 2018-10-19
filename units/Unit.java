@@ -14,6 +14,7 @@ public abstract class Unit {
 	protected boolean hidden;
 	protected boolean attacking;
 	protected boolean active;
+	protected boolean capting;
 	protected UnitSupply unitSupply;
 	protected Color color, restingColor;
 
@@ -31,11 +32,15 @@ public abstract class Unit {
 		hidden = false;
 		attacking = false;
 		active = false;
+		capting = false;
 
 		attackType = AttackType.DIRECT_ATTACK;
 	}
 
 	public void moveTo(int x, int y) {
+		if (point.getX() != x || point.getY() != y) {
+			capting = false;
+		}
 		point = new Point(x, y);
 	}
 
@@ -49,6 +54,10 @@ public abstract class Unit {
 
 	public void regulateAttack(boolean attacking) {
 		this.attacking = attacking;
+	}
+
+	public void regulateCapting(boolean capting) {
+		this.capting = capting;
 	}
 
 	public Point getPoint() {
@@ -91,9 +100,27 @@ public abstract class Unit {
 		return attacking;
 	}
 
+	public boolean isCapting() {
+		return capting;
+	}
+
 	public void paint(Graphics g, int tileSize) {
 		paintUnit(g, tileSize);
 		unitHealth.paintHP(g, point.getX(), point.getY());
+		if (capting) {
+			paintCaptFlag(g, tileSize);
+		}
+	}
+	
+	private void paintCaptFlag(Graphics g, int tileSize) {
+		g.setColor(Color.white);
+		g.fillRect(point.getX() + tileSize / 10, point.getY() + 3 * tileSize / 5, tileSize / 3, tileSize / 3);
+		g.setColor(Color.black);
+		g.drawRect(point.getX() + tileSize / 10, point.getY() + 3 * tileSize / 5, tileSize / 3, tileSize / 3);
+
+		g.fillRect(point.getX() + tileSize / 4, point.getY() + 17 * tileSize / 25, tileSize / 8, tileSize / 12);
+		g.drawLine(point.getX() + tileSize / 4, point.getY() + 11 * tileSize / 15, point.getX() + tileSize / 4, point.getY() + 12 * tileSize / 15);
+		g.fillRect(point.getX() + tileSize / 5, point.getY() + 12 * tileSize / 15, tileSize / 6, tileSize / 12);
 	}
 
 	protected abstract void paintUnit(Graphics g, int tileSize);

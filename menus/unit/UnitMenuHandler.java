@@ -8,6 +8,7 @@ import main.SupplyHandler;
 import map.UnitGetter;
 import map.UnitPositionChecker;
 import map.area.AreaChecker;
+import map.buildings.Building;
 import map.buildings.BuildingHandler;
 import units.ContUnitHandler;
 import units.Unit;
@@ -108,7 +109,16 @@ public class UnitMenuHandler {
 			}
 
 			unitMenu.openMenu(cursorX, cursorY);
-			chosenUnit.moveTo(cursorX * gameProp.getMapDim().tileSize, cursorY * gameProp.getMapDim().tileSize);
+			
+			int posX = cursorX * gameProp.getMapDim().tileSize;
+			int posY = cursorY * gameProp.getMapDim().tileSize;
+			if (chosenUnit.getPoint().getX() != posX || chosenUnit.getPoint().getY() != posY) {
+				if (chosenUnit.isCapting()) {
+					Building building = buildingHandler.getBuilding(chosenUnit.getPoint().getX() / gameProp.getMapDim().tileSize, chosenUnit.getPoint().getY() / gameProp.getMapDim().tileSize);
+					building.resetCapting();
+				}
+				chosenUnit.moveTo(posX, posY);
+			}
 		}
 	}
 	

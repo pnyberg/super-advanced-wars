@@ -15,8 +15,7 @@ public class CaptHandler {
 		this.heroHandler = heroHandler;
 	}
 	
-	public void captBuilding(Unit chosenUnit, Cursor cursor) {
-		Building building = buildingHandler.getBuilding(cursor.getX(), cursor.getY());
+	public void captBuilding(Unit chosenUnit, Building building) {
 		building.capt(chosenUnit.getUnitHealth().getShowHP());
 		if (building.isCapted()) {
 			Hero hero = heroHandler.getHeroFromUnit(chosenUnit);

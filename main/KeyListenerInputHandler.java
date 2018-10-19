@@ -18,6 +18,7 @@ import map.GameMap;
 import map.UnitGetter;
 import map.area.Area;
 import map.area.TerrainType;
+import map.buildings.Building;
 import map.buildings.BuildingHandler;
 import map.buildings.City;
 import map.structures.StructureHandler;
@@ -243,7 +244,13 @@ public class KeyListenerInputHandler {
 			} else if (unitMenuHandler.getUnitMenu().atFireRow()) {
 				attackHandler.handleFiring(gameProp.getChosenObject().chosenUnit, cursor);
 			} else if (unitMenuHandler.getUnitMenu().atCaptRow()) {
-				captHandler.captBuilding(gameProp.getChosenObject().chosenUnit, cursor);
+				Building building = buildingHandler.getBuilding(cursor.getX(), cursor.getY());
+				captHandler.captBuilding(gameProp.getChosenObject().chosenUnit, building);
+				if (building.captingIsActive()) {
+					gameProp.getChosenObject().chosenUnit.regulateCapting(true);
+				} else if (gameProp.getChosenObject().chosenUnit.isCapting()) {
+					gameProp.getChosenObject().chosenUnit.regulateCapting(false);
+				}
 			} else if (unitMenuHandler.getUnitMenu().atSupplyRow()) {
 				int x = gameProp.getChosenObject().chosenUnit.getPoint().getX();
 				int y = gameProp.getChosenObject().chosenUnit.getPoint().getY();
