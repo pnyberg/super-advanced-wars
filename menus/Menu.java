@@ -54,6 +54,8 @@ public abstract class Menu {
 	public void moveArrowDown() {
 		if (menuIndex < (getNumberOfRows() - 1)) {
 			menuIndex++;
+		} else {
+			menuIndex = 0;
 		}
 	}
 
