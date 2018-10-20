@@ -45,7 +45,11 @@ public class Gameboard extends JPanel implements KeyListener {
 		ArrayList<Structure> structures = new ArrayList<>();
 		MapLoader mapLoader = new MapLoader(gameProp.getMapDim(), gameMap, heroHandler, buildings, structures);
 		mapLoader.loadMap("map-files/test_map.txt");
-		internalStructureObject = new InternalStructureObject(gameProp, heroHandler, gameMap, buildings, structures); 
+		InfoBox infoBox = new InfoBox(0, gameMap.getHeight() * gameProp.getMapDim().tileSize, 
+										gameProp.getMapDim().getWidth() * gameProp.getMapDim().tileSize, 
+										3 * gameProp.getMapDim().tileSize,
+										gameProp.getMapDim().tileSize);
+		internalStructureObject = new InternalStructureObject(gameProp, infoBox, heroHandler, gameMap, buildings, structures); 
 		this.gameProp = gameProp;
 		
 		addKeyListener(this);
@@ -63,6 +67,16 @@ public class Gameboard extends JPanel implements KeyListener {
 	private void updatePortraitSideChoice() {
 		Cursor cursor = internalStructureObject.getCursor();
 		internalStructureObject.getHeroPortrait().updateSideChoice(cursor.getX(), cursor.getY());
+	}
+	
+	public int getBoardWidth() {
+System.out.println(internalStructureObject.getGameMap());
+		return internalStructureObject.getGameMap().getWidth() * gameProp.getMapDim().tileSize;
+	}
+
+	public int getBoardHeight() {
+		return internalStructureObject.getGameMap().getHeight() * gameProp.getMapDim().tileSize
+				+ internalStructureObject.getInfoBox().getHeight();
 	}
 
 	/**
@@ -119,5 +133,6 @@ public class Gameboard extends JPanel implements KeyListener {
 			internalStructureObject.getCursor().paint(g);
 		}
 		internalStructureObject.getHeroPortrait().paint(g);
+		internalStructureObject.getInfoBox().paint(g);
 	}
 }

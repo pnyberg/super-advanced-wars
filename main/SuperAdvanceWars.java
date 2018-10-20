@@ -10,8 +10,8 @@ public class SuperAdvanceWars extends JFrame {
 	private Gameboard board;
 	private final int width = 20; 
 	private final int height = 15;
-	private final int widthExtension = 20;
-	private final int heightExtension = 45;
+	private final int widthExtension = 25;
+	private final int heightExtension = 50;
 	private final int tileSize = 40;
 	private final int fuelMaintenancePerTurn = 5;
 
@@ -27,7 +27,7 @@ public class SuperAdvanceWars extends JFrame {
 
 		add(board);
 
-		setSize(width * tileSize + widthExtension, height * tileSize + heightExtension);
+		setSize(board.getBoardWidth() + widthExtension, board.getBoardHeight() + heightExtension);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 

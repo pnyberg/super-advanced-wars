@@ -51,7 +51,9 @@ public class InternalStructureObject {
 	private DamageHandler damageHandler;
 	private DefenceValueCalculator defenceValueCalculator;
 	private FiringCursor firingCursor;
+	private GameMap gameMap;
 	private HeroPortrait heroPortrait;
+	private InfoBox infoBox;
 	private KeyListenerInputHandler keyListenerInputHandler;
 	private MapInitiator mapInitiator;
 	private MapMenu mapMenu;
@@ -71,12 +73,14 @@ public class InternalStructureObject {
 	private UnitPositionChecker unitPositionChecker;
 	private UnitWorthCalculator unitWorthCalculator;
 	
-	public InternalStructureObject(GameProp gameProp, HeroHandler heroHandler, GameMap gameMap, ArrayList<Building> buildings, ArrayList<Structure> structures) {
+	public InternalStructureObject(GameProp gameProp, InfoBox infoBox, HeroHandler heroHandler, GameMap gameMap, ArrayList<Building> buildings, ArrayList<Structure> structures) {
 		// no previously required init
 		attackValueCalculator = new AttackValueCalculator();
 		cursor = new Cursor(0, 0, gameProp.getMapDim().tileSize);
 		defenceValueCalculator = new DefenceValueCalculator();
+		this.gameMap = gameMap;
 		heroPortrait = new HeroPortrait(gameProp.getMapDim(), heroHandler);
+		this.infoBox = infoBox;
 		mapMenu = new MapMenu(gameProp.getMapDim().tileSize, heroHandler);
 		moveabilityMatrix = new MoveabilityMatrixFactory().getMoveabilityMatrix();
 		movementMap = new MovementMap(gameProp.getMapDim());
@@ -140,8 +144,16 @@ public class InternalStructureObject {
 		return firingCursor;
 	}
 	
+	public GameMap getGameMap() {
+		return gameMap;
+	}
+	
 	public HeroPortrait getHeroPortrait() {
 		return heroPortrait;
+	}
+	
+	public InfoBox getInfoBox() {
+		return infoBox;
 	}
 	
 	public KeyListenerInputHandler getKeyListenerInputHandler() {
