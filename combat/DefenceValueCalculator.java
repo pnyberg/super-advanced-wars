@@ -53,7 +53,7 @@ public class DefenceValueCalculator {
 		}
 		if (terrainType == TerrainType.ROAD ||
 			terrainType == TerrainType.SEA ||
-			terrainType == TerrainType.SHORE) {
+			terrainType == TerrainType.SHOAL) {
 			return 0;
 		} else if (terrainType == TerrainType.PLAIN ||
 					terrainType == TerrainType.REEF) {

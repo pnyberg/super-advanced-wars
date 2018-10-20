@@ -152,7 +152,7 @@ public class ContUnitHandler {
 	public boolean landerAtDroppingOffPosition(int x, int y) {
 		TerrainType areaValue = gameMap.getMap()[x][y].getTerrainType();
 
-		if (areaValue == TerrainType.SHORE || areaValue == TerrainType.PORT) {
+		if (areaValue == TerrainType.SHOAL || areaValue == TerrainType.PORT) {
 			return true;
 		} 
 

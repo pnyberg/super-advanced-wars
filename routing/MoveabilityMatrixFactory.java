@@ -64,12 +64,12 @@ public class MoveabilityMatrixFactory {
 		moveabilityMatrix[MovementType.TRANSPORT.movementTypeIndex()][TerrainType.SEA.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.AIR.movementTypeIndex()][TerrainType.SEA.terrainTypeIndex()] = true;
 
-		moveabilityMatrix[MovementType.INFANTRY.movementTypeIndex()][TerrainType.SHORE.terrainTypeIndex()] = true;
-		moveabilityMatrix[MovementType.MECH.movementTypeIndex()][TerrainType.SHORE.terrainTypeIndex()] = true;
-		moveabilityMatrix[MovementType.BAND.movementTypeIndex()][TerrainType.SHORE.terrainTypeIndex()] = true;
-		moveabilityMatrix[MovementType.TIRE.movementTypeIndex()][TerrainType.SHORE.terrainTypeIndex()] = true;
-		moveabilityMatrix[MovementType.TRANSPORT.movementTypeIndex()][TerrainType.SHORE.terrainTypeIndex()] = true;
-		moveabilityMatrix[MovementType.AIR.movementTypeIndex()][TerrainType.SHORE.terrainTypeIndex()] = true;
+		moveabilityMatrix[MovementType.INFANTRY.movementTypeIndex()][TerrainType.SHOAL.terrainTypeIndex()] = true;
+		moveabilityMatrix[MovementType.MECH.movementTypeIndex()][TerrainType.SHOAL.terrainTypeIndex()] = true;
+		moveabilityMatrix[MovementType.BAND.movementTypeIndex()][TerrainType.SHOAL.terrainTypeIndex()] = true;
+		moveabilityMatrix[MovementType.TIRE.movementTypeIndex()][TerrainType.SHOAL.terrainTypeIndex()] = true;
+		moveabilityMatrix[MovementType.TRANSPORT.movementTypeIndex()][TerrainType.SHOAL.terrainTypeIndex()] = true;
+		moveabilityMatrix[MovementType.AIR.movementTypeIndex()][TerrainType.SHOAL.terrainTypeIndex()] = true;
 
 		moveabilityMatrix[MovementType.SHIP.movementTypeIndex()][TerrainType.REEF.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.TRANSPORT.movementTypeIndex()][TerrainType.REEF.terrainTypeIndex()] = true;
