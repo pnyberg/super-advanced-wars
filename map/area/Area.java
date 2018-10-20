@@ -20,6 +20,10 @@ public class Area {
 		this(new Point(tileX * tileSize, tileY * tileSize), terrainType, tileSize);
 	}
 	
+	public void setTerrainType(TerrainType terrainType) {
+		this.terrainType = terrainType;
+	}
+	
 	public TerrainType getTerrainType() {
 		return terrainType;
 	}
@@ -83,7 +87,7 @@ public class Area {
 			} else {
 				g.setColor(new Color(30,144,105)); // lighter blue
 			}
-		} else if (terrainType == TerrainType.PLAIN) {
+		} else if (terrainType == TerrainType.UMI) {
 			if (areaMovementAble) {
 				g.setColor(new Color(255,250,205)); // lighter yellow
 			} else {
