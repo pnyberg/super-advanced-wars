@@ -1,7 +1,9 @@
 package map.buildings;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
+import graphics.images.BuildingImage;
 import hero.*;
 
 public abstract class Building {
@@ -10,16 +12,19 @@ public abstract class Building {
 	protected Hero owner;
 	protected int x;
 	protected int y;
+	protected int tileSize;
 	protected int captingValue;
+	protected BuildingImage buildingImage;
 
 	// static since all buildings should generate the same amount of cash
 	public static void init(int income) {
 		Building.income = income;
 	}
 
-	public Building(int x, int y) {
+	public Building(int x, int y, int tileSize) {
 		this.x = x;
 		this.y = y;
+		this.tileSize = tileSize;
 	}
 
 	public void setOwnership(Hero hero) {
@@ -62,6 +67,18 @@ public abstract class Building {
 	public Hero getOwner() {
 		return owner;
 	}
-
-	public abstract void paint(Graphics g, int tileSize);
+	
+	public BuildingImage getBuildingImage() {
+		return buildingImage;
+	}
+	
+	public void paint(Graphics g) {
+		Color buildingColor = null;
+		if (owner == null) {
+			buildingColor = Color.white;
+		} else {
+			buildingColor = owner.getColor();
+		}
+		buildingImage.paint(g, x * tileSize, y * tileSize, buildingColor);
+	}
 }

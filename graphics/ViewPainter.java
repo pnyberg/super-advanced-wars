@@ -74,7 +74,7 @@ public class ViewPainter {
 		if (structure != null && !rangeAble) {
 			structure.paint(g);
 		} else if (building != null && !rangeAble) {
-			building.paint(g, mapDim.tileSize);
+			building.paint(g);
 		} else {
 			gameMap.getMap()[x][y].paint(g, movementAble, rangeAble);
 		}

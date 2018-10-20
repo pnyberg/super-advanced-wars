@@ -90,7 +90,7 @@ public class MapLoader {
 			terrainType = TerrainType.SEA;
 			break;
 		case "SHOR":
-			terrainType = TerrainType.SHORE;
+			terrainType = TerrainType.SHOAL;
 			break;
 		case "REEF":
 			terrainType = TerrainType.REEF;
@@ -103,113 +103,113 @@ public class MapLoader {
 			break;
 		case cityAbbrev + "00":
 			terrainType = TerrainType.CITY;
-			buildings.add(new City(x, y));
+			buildings.add(new City(x, y, mapDim.tileSize));
 			break;
 		case cityAbbrev + "01":
 			terrainType = TerrainType.CITY;
-			City city01 = new City(x, y); 
+			City city01 = new City(x, y, mapDim.tileSize); 
 			buildings.add(city01);
 			city01.setOwnership(heroHandler.getHero(0));
 			break;
 		case cityAbbrev + "02":
 			terrainType = TerrainType.CITY;
-			City city02 = new City(x, y); 
+			City city02 = new City(x, y, mapDim.tileSize); 
 			buildings.add(city02);
 			city02.setOwnership(heroHandler.getHero(1));
 			break;
 		case cityAbbrev + "03":
 			terrainType = TerrainType.CITY;
-			City city03 = new City(x, y); 
+			City city03 = new City(x, y, mapDim.tileSize); 
 			buildings.add(city03);
 			city03.setOwnership(heroHandler.getHero(2));
 			break;
 		case cityAbbrev + "04":
 			terrainType = TerrainType.CITY;
-			City city04 = new City(x, y); 
+			City city04 = new City(x, y, mapDim.tileSize); 
 			buildings.add(city04);
 			city04.setOwnership(heroHandler.getHero(3));
 			break;
 		case factoryAbbrev + "00":
 			terrainType = TerrainType.FACTORY;
-			buildings.add(new Factory(x, y));
+			buildings.add(new Factory(x, y, mapDim.tileSize));
 			break;
 		case factoryAbbrev + "01":
 			terrainType = TerrainType.FACTORY;
-			Factory factory01 = new Factory(x, y); 
+			Factory factory01 = new Factory(x, y, mapDim.tileSize); 
 			buildings.add(factory01);
 			factory01.setOwnership(heroHandler.getHero(0));
 			break;
 		case factoryAbbrev + "02":
 			terrainType = TerrainType.FACTORY;
-			Factory factory02 = new Factory(x, y); 
+			Factory factory02 = new Factory(x, y, mapDim.tileSize); 
 			buildings.add(factory02);
 			factory02.setOwnership(heroHandler.getHero(1));
 			break;
 		case factoryAbbrev + "03":
 			terrainType = TerrainType.FACTORY;
-			Factory factory03 = new Factory(x, y); 
+			Factory factory03 = new Factory(x, y, mapDim.tileSize); 
 			buildings.add(factory03);
 			factory03.setOwnership(heroHandler.getHero(2));
 			break;
 		case factoryAbbrev + "04":
 			terrainType = TerrainType.FACTORY;
-			Factory factory04 = new Factory(x, y); 
+			Factory factory04 = new Factory(x, y, mapDim.tileSize); 
 			buildings.add(factory04);
 			factory04.setOwnership(heroHandler.getHero(3));
 			break;
 		case airportAbbrev + "00":
 			terrainType = TerrainType.AIRPORT;
-			buildings.add(new Airport(x, y));
+			buildings.add(new Airport(x, y, mapDim.tileSize));
 			break;
 		case airportAbbrev + "01":
 			terrainType = TerrainType.AIRPORT;
-			Airport airport01 = new Airport(x, y); 
+			Airport airport01 = new Airport(x, y, mapDim.tileSize); 
 			buildings.add(airport01);
 			airport01.setOwnership(heroHandler.getHero(0));
 			break;
 		case airportAbbrev + "02":
 			terrainType = TerrainType.AIRPORT;
-			Airport airport02 = new Airport(x, y); 
+			Airport airport02 = new Airport(x, y, mapDim.tileSize); 
 			buildings.add(airport02);
 			airport02.setOwnership(heroHandler.getHero(1));
 			break;
 		case airportAbbrev + "03":
 			terrainType = TerrainType.AIRPORT;
-			Airport airport03 = new Airport(x, y); 
+			Airport airport03 = new Airport(x, y, mapDim.tileSize); 
 			buildings.add(airport03);
 			airport03.setOwnership(heroHandler.getHero(2));
 			break;
 		case airportAbbrev + "04":
 			terrainType = TerrainType.AIRPORT;
-			Airport airport04 = new Airport(x, y); 
+			Airport airport04 = new Airport(x, y, mapDim.tileSize); 
 			buildings.add(airport04);
 			airport04.setOwnership(heroHandler.getHero(3));
 			break;
 		case portAbbrev + "00":
 			terrainType = TerrainType.PORT;
-			buildings.add(new Port(x, y));
+			buildings.add(new Port(x, y, mapDim.tileSize));
 			break;
 		case portAbbrev + "01":
 			terrainType = TerrainType.PORT;
-			Port port01 = new Port(x, y); 
+			Port port01 = new Port(x, y, mapDim.tileSize); 
 			buildings.add(port01);
 			port01.setOwnership(heroHandler.getHero(0));
 			break;
 		case portAbbrev + "02":
 			terrainType = TerrainType.PORT;
-			Port port02 = new Port(x, y); 
+			Port port02 = new Port(x, y, mapDim.tileSize); 
 			buildings.add(port02);
 			port02.setOwnership(heroHandler.getHero(1));
 			break;
 		case portAbbrev + "03":
 			terrainType = TerrainType.PORT;
-			Port port03 = new Port(x, y); 
+			Port port03 = new Port(x, y, mapDim.tileSize); 
 			buildings.add(port03);
 			port03.setOwnership(heroHandler.getHero(2));
 			break;
 		case portAbbrev + "04":
 			terrainType = TerrainType.PORT;
-			Port port04 = new Port(x, y); 
+			Port port04 = new Port(x, y, mapDim.tileSize); 
 			buildings.add(port04);
 			port04.setOwnership(heroHandler.getHero(3));
 			break;

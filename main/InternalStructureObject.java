@@ -73,10 +73,17 @@ public class InternalStructureObject {
 	private UnitPositionChecker unitPositionChecker;
 	private UnitWorthCalculator unitWorthCalculator;
 	
-	public InternalStructureObject(GameProp gameProp, InfoBox infoBox, HeroHandler heroHandler, GameMap gameMap, ArrayList<Building> buildings, ArrayList<Structure> structures) {
+	public InternalStructureObject(GameProp gameProp, InfoBox infoBox, HeroHandler heroHandler, 
+									GameMap gameMap, Cursor cursor, ArrayList<Building> buildings, 
+									ArrayList<Structure> structures, UnitGetter unitGetter, 
+									StructureAttackHandler structureAttackHandler,
+									UnitWorthCalculator unitWorthCalculator, 
+									BuildingHandler buildingHandler,
+									StructureHandler structureHandler) {
 		// no previously required init
 		attackValueCalculator = new AttackValueCalculator();
-		cursor = new Cursor(0, 0, gameProp.getMapDim().tileSize);
+		this.buildingHandler = buildingHandler;
+		this.cursor = cursor;
 		defenceValueCalculator = new DefenceValueCalculator();
 		this.gameMap = gameMap;
 		heroPortrait = new HeroPortrait(gameProp.getMapDim(), heroHandler);
@@ -84,18 +91,18 @@ public class InternalStructureObject {
 		mapMenu = new MapMenu(gameProp.getMapDim().tileSize, heroHandler);
 		moveabilityMatrix = new MoveabilityMatrixFactory().getMoveabilityMatrix();
 		movementMap = new MovementMap(gameProp.getMapDim());
-		unitGetter = new UnitGetter(heroHandler, gameProp.getMapDim().tileSize);
-		unitWorthCalculator = new UnitWorthCalculator();
+		this.structureAttackHandler = structureAttackHandler;
+		this.structureHandler = structureHandler;
+		this.unitGetter = unitGetter;
+		this.unitWorthCalculator = unitWorthCalculator;
 
 		// required init from first init-round
 		areaChecker = new AreaChecker(heroHandler, unitGetter, gameMap, moveabilityMatrix);
-		buildingHandler = new BuildingHandler(heroHandler, buildings);
 		buildingMenu = new BuildingMenu(gameProp.getMapDim().tileSize, heroHandler, gameMap);
 		cashHandler = new CashHandler(heroPortrait, buildings);
 		commanderView = new CommanderView(gameProp.getMapDim(), heroHandler, attackValueCalculator, defenceValueCalculator);
 		damageHandler = new DamageHandler(heroHandler, gameMap, attackValueCalculator, defenceValueCalculator, unitWorthCalculator);
 		movementCostCalculator = new MovementCostCalculator(gameMap);
-		structureAttackHandler = new StructureAttackHandler(gameProp.getMapDim(), unitGetter);
 		supplyHandler = new SupplyHandler(unitGetter);
 		unitPositionChecker = new UnitPositionChecker(unitGetter);
 
@@ -103,7 +110,6 @@ public class InternalStructureObject {
 		repairHandler = new RepairHandler(gameProp.getMapDim(), heroHandler, buildingHandler, unitWorthCalculator);
 		routeChecker = new RouteChecker(gameProp.getMapDim(), heroHandler, gameMap, movementMap, moveabilityMatrix, areaChecker, movementCostCalculator);
 		routeHandler = new RouteHandler(gameProp.getMapDim(), movementMap, movementCostCalculator);
-		structureHandler = new StructureHandler(structures, structureAttackHandler, unitWorthCalculator);
 
 		// required init from third init-round
 		attackRangeHandler = new AttackRangeHandler(gameProp.getMapDim(), unitGetter, damageHandler, structureHandler, routeChecker, movementMap);

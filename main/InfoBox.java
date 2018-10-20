@@ -3,19 +3,26 @@ package main;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import cursors.Cursor;
+import map.GameMap;
+import map.buildings.BuildingHandler;
+import map.structures.StructureHandler;
+import point.Point;
+
 public class InfoBox {
-	private int x;
-	private int y;
+	private Point point;
 	private int width;
 	private int height;
 	private int tileSize;
+	private TerrainInfoBox terrainInfoBox;
 	
-	public InfoBox(int x, int y, int width, int height, int tileSize) {
-		this.x = x;
-		this.y = y;
+	public InfoBox(Point point, int width, int height, int tileSize, GameMap gameMap, Cursor cursor, BuildingHandler buildingHandler, StructureHandler structureHandler) {
+		this.point = point;
 		this.width = width;
 		this.height = height;
 		this.tileSize = tileSize;
+		Point terrainInfoBoxPoint = new Point(point.getX() + tileSize / 4, point.getY() + tileSize / 8);
+		terrainInfoBox = new TerrainInfoBox(terrainInfoBoxPoint, tileSize * 2, height - tileSize / 4, tileSize, gameMap, cursor, buildingHandler, structureHandler);
 	}
 	
 	public int getWidth() {
@@ -28,8 +35,10 @@ public class InfoBox {
 	
 	public void paint(Graphics g) {
 		g.setColor(Color.darkGray);
-		g.fillRect(x, y, width, height);
+		g.fillRect(point.getX(), point.getY(), width, height);
 		g.setColor(Color.black);
-		g.drawRect(x, y, width, height);
+		g.drawRect(point.getX(), point.getY(), width, height);
+		
+		terrainInfoBox.paint(g);
 	}
 }

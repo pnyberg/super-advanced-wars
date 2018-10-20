@@ -2,6 +2,7 @@ package map.structures;
 
 import java.awt.Graphics;
 
+import graphics.images.StructureImage;
 import hero.Hero;
 import point.Point;
 
@@ -10,6 +11,7 @@ public abstract class Structure {
 	protected int hp;
 	protected Hero owner;
 	protected int tileSize;
+	protected StructureImage structureImage;
 
 	public Structure(Point point, Hero owner, int tileSize) {
 		this.point = point;
@@ -41,6 +43,10 @@ public abstract class Structure {
 	
 	public Hero getOwner() {
 		return owner;
+	}
+	
+	public StructureImage getStructureImage() {
+		return structureImage;
 	}
 	
 	public abstract void paint(Graphics g);

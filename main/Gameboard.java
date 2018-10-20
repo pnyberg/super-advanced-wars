@@ -25,15 +25,21 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import combat.AttackHandler;
+import combat.StructureAttackHandler;
 import cursors.Cursor;
 import gameObjects.GameProp;
 import map.GameMap;
 import map.MapLoader;
+import map.UnitGetter;
 import map.buildings.Building;
+import map.buildings.BuildingHandler;
 import map.structures.Structure;
+import map.structures.StructureHandler;
 import menus.unit.UnitMenu;
+import point.Point;
 import units.ContUnitHandler;
 import units.Unit;
+import units.UnitWorthCalculator;
 
 public class Gameboard extends JPanel implements KeyListener {
 	private InternalStructureObject internalStructureObject;
@@ -45,11 +51,21 @@ public class Gameboard extends JPanel implements KeyListener {
 		ArrayList<Structure> structures = new ArrayList<>();
 		MapLoader mapLoader = new MapLoader(gameProp.getMapDim(), gameMap, heroHandler, buildings, structures);
 		mapLoader.loadMap("map-files/test_map.txt");
-		InfoBox infoBox = new InfoBox(0, gameMap.getHeight() * gameProp.getMapDim().tileSize, 
+		Point point = new Point(0, gameMap.getHeight() * gameProp.getMapDim().tileSize);
+		Cursor cursor = new Cursor(0, 0, gameProp.getMapDim().tileSize);
+		UnitGetter unitGetter = new UnitGetter(heroHandler, gameProp.getMapDim().tileSize);
+		BuildingHandler buildingHandler = new BuildingHandler(heroHandler, buildings);
+		StructureAttackHandler structureAttackHandler = new StructureAttackHandler(gameProp.getMapDim(), unitGetter);
+		UnitWorthCalculator unitWorthCalculator = new UnitWorthCalculator();
+		StructureHandler structureHandler = new StructureHandler(structures, structureAttackHandler, unitWorthCalculator);
+		InfoBox infoBox = new InfoBox(point, 
 										gameProp.getMapDim().getWidth() * gameProp.getMapDim().tileSize, 
 										3 * gameProp.getMapDim().tileSize,
-										gameProp.getMapDim().tileSize);
-		internalStructureObject = new InternalStructureObject(gameProp, infoBox, heroHandler, gameMap, buildings, structures); 
+										gameProp.getMapDim().tileSize, gameMap, cursor, buildingHandler, structureHandler);
+		internalStructureObject = new InternalStructureObject(gameProp, infoBox, heroHandler, gameMap, 
+												cursor, buildings, structures, unitGetter, 
+												structureAttackHandler, unitWorthCalculator, 
+												buildingHandler, structureHandler); 
 		this.gameProp = gameProp;
 		
 		addKeyListener(this);
@@ -70,7 +86,6 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 	
 	public int getBoardWidth() {
-System.out.println(internalStructureObject.getGameMap());
 		return internalStructureObject.getGameMap().getWidth() * gameProp.getMapDim().tileSize;
 	}
 

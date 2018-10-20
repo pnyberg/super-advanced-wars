@@ -123,8 +123,8 @@ public class MapInitiator {
 		addAreaObject(9, 0, TerrainType.REEF);
 		addAreaObject(1, 1, TerrainType.REEF);
 
-		addAreaObject(8, 4, TerrainType.SHORE);
-		addAreaObject(8, 5, TerrainType.SHORE);
+		addAreaObject(8, 4, TerrainType.SHOAL);
+		addAreaObject(8, 5, TerrainType.SHOAL);
 
 		addAreaObject(4, 8, TerrainType.PORT);
 
@@ -148,20 +148,20 @@ public class MapInitiator {
 	}
 	
 	private void addAreaObject(int tileX, int tileY, TerrainType terrainType) {
-		gridMap.getMap()[tileX][tileY] =  new Area(tileX, tileY, terrainType, mapDim.tileSize);
+		gridMap.getMap()[tileX][tileY] =  new Area(new Point(tileX * mapDim.tileSize, tileY * mapDim.tileSize), terrainType, mapDim.tileSize);
 	}
 
 	private void initBuildings() {
 		for (int x = 0 ; x < gridMap.getMap().length ; x++) {
 			for (int y = 0 ; y < gridMap.getMap()[0].length ; y++) {
 				if (gridMap.getMap()[x][y].getTerrainType() == TerrainType.CITY) {
-					buildings.add(new City(x, y));
+					buildings.add(new City(x, y, mapDim.tileSize));
 				} else if (gridMap.getMap()[x][y].getTerrainType() == TerrainType.PORT) {
-					buildings.add(new Port(x, y));
+					buildings.add(new Port(x, y, mapDim.tileSize));
 				} else if (gridMap.getMap()[x][y].getTerrainType() == TerrainType.AIRPORT) {
-					buildings.add(new Airport(x, y));
+					buildings.add(new Airport(x, y, mapDim.tileSize));
 				} else if (gridMap.getMap()[x][y].getTerrainType() == TerrainType.FACTORY) {
-					buildings.add(new Factory(x, y));
+					buildings.add(new Factory(x, y, mapDim.tileSize));
 //				} else if (map[x][y].getTerrainType() == TerrainType.HQ) {
 //					buildings.add(new HQ(x, y));
 //				} else if (map[x][y].getTerrainType() == TerrainType.SILO) {
