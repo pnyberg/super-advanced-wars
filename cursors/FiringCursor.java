@@ -5,12 +5,9 @@ import java.awt.Graphics;
 
 import combat.DamageHandler;
 import gameObjects.MapDim;
-import hero.Hero;
-import hero.HeroPortrait;
 import main.HeroHandler;
 import map.GameMap;
 import map.UnitGetter;
-import map.area.Area;
 import map.area.TerrainType;
 import map.structures.Structure;
 import map.structures.StructureHandler;
@@ -24,8 +21,8 @@ public class FiringCursor {
 	private DamageHandler damageHandler;
 	private StructureHandler structureHandler;
 	
-	public FiringCursor(MapDim mapDimension, GameMap gameMap, UnitGetter unitGetter, HeroHandler heroHandler, DamageHandler damageHandler, StructureHandler structureHandler) {
-		this.mapDim = mapDimension;
+	public FiringCursor(MapDim mapDim, GameMap gameMap, UnitGetter unitGetter, HeroHandler heroHandler, DamageHandler damageHandler, StructureHandler structureHandler) {
+		this.mapDim = mapDim;
 		this.gameMap = gameMap;
 		this.unitGetter = unitGetter;
 		this.heroHandler = heroHandler;

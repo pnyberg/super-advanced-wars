@@ -215,9 +215,11 @@ public class AttackRangeHandler {
 					if (targetUnit != null && damageHandler.validTarget(indirectUnit, targetUnit)) {
 						Point p = new Point(x * mapDim.tileSize, y * mapDim.tileSize);
 						indirectUnit.addFiringLocation(p);
+						rangeMap[x][y] = true;
 					} else if (targetStructure != null && structureHandler.unitCanAttackStructure(indirectUnit, targetStructure)) {
 						Point p = new Point(x * mapDim.tileSize, y * mapDim.tileSize);
 						indirectUnit.addFiringLocation(p);
+						rangeMap[x][y] = true;
 					}
 				}
 			}

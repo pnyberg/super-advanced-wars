@@ -214,6 +214,7 @@ public class KeyListenerInputHandler {
 			gameProp.getChosenObject().chosenUnit = null;
 			movementMap.clearMovementMap();
 			routeHandler.clearArrowPoints();
+			attackRangeHandler.clearRangeMap();
 		} else if (mapMenu.isVisible()) {
 			if (mapMenu.atCoRow()) {
 				viewPainter.setViewType(MapViewType.CO_MAP_MENU_VIEW);
@@ -264,7 +265,7 @@ public class KeyListenerInputHandler {
 
 				// @TODO cargo-unit enters other unit
 			} else if (unitMenuHandler.getUnitMenu().atFireRow()) {
-				attackHandler.handleFiringCursor(gameProp.getChosenObject().chosenUnit, cursor);
+				attackHandler.setUpFiringTargets(gameProp.getChosenObject().chosenUnit, cursor);
 			} else if (unitMenuHandler.getUnitMenu().atCaptRow()) {
 				Building building = buildingHandler.getBuilding(cursor.getX(), cursor.getY());
 				captHandler.captBuilding(gameProp.getChosenObject().chosenUnit, building);
@@ -383,6 +384,7 @@ public class KeyListenerInputHandler {
 			if (gameProp.getChosenObject().chosenUnit instanceof IndirectUnit) {
 				((IndirectUnit)gameProp.getChosenObject().chosenUnit).clearFiringLocations();
 			}
+			attackRangeHandler.clearRangeMap();
 			int x = gameProp.getChosenObject().chosenUnit.getPoint().getX() / gameProp.getMapDim().tileSize;
 			int y = gameProp.getChosenObject().chosenUnit.getPoint().getY() / gameProp.getMapDim().tileSize;
 			cursor.setPosition(x, y);

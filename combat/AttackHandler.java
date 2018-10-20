@@ -25,7 +25,7 @@ public class AttackHandler {
 		this.structureHandler = structureHandler;
 	}
 
-	public void handleFiringCursor(Unit chosenUnit, Cursor cursor) {
+	public void setUpFiringTargets(Unit chosenUnit, Cursor cursor) {
 		chosenUnit.regulateAttack(true);
 
 		int x = chosenUnit.getPoint().getX();
@@ -38,13 +38,31 @@ public class AttackHandler {
 			x = p.getX();
 			y = p.getY();
 		} else {
-			if (validTarget(Direction.NORTH, x, y, chosenUnit)) {
+			boolean validTargetNorth = validTarget(Direction.NORTH, x, y, chosenUnit);
+			boolean validTargetEast = validTarget(Direction.EAST, x, y, chosenUnit);
+			boolean validTargetSouth = validTarget(Direction.SOUTH, x, y, chosenUnit);
+			boolean validTargetWest = validTarget(Direction.WEST, x, y, chosenUnit);
+			
+			if (validTargetNorth) {
+				attackRangeHandler.getRangeMap()[x / mapDim.tileSize][y / mapDim.tileSize-1] = true;
+			}
+			if (validTargetEast) {
+				attackRangeHandler.getRangeMap()[x / mapDim.tileSize + 1][y / mapDim.tileSize] = true;
+			}
+			if (validTargetSouth) {
+				attackRangeHandler.getRangeMap()[x / mapDim.tileSize][y / mapDim.tileSize+1] = true;
+			}
+			if (validTargetWest) {
+				attackRangeHandler.getRangeMap()[x / mapDim.tileSize - 1][y / mapDim.tileSize] = true;
+			}
+			
+			if (validTargetNorth) {
 				y -= mapDim.tileSize;
-			} else if (validTarget(Direction.EAST, x, y, chosenUnit)) {
+			} else if (validTargetEast) {
 				x += mapDim.tileSize;
-			} else if (validTarget(Direction.SOUTH, x, y, chosenUnit)) {
+			} else if (validTargetSouth) {
 				y += mapDim.tileSize;
-			} else if (validTarget(Direction.WEST, x, y, chosenUnit)) {
+			} else if (validTargetWest) {
 				x -= mapDim.tileSize;
 			} else {
 				return; // 
