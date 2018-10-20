@@ -5,6 +5,7 @@ import map.area.TerrainType;
 import units.MovementType;
 import units.Unit;
 import units.UnitType;
+import units.treadMoving.Neotank;
 
 public class DamageCalculator {
 	private int[][][] damageMatrix;
@@ -58,6 +59,17 @@ public class DamageCalculator {
 		int defendingAffect = (200 - (heroDefenceValue + areaDefenceValue * defender.getUnitHealth().getHP() / 10)) / 10;
 		int damageValue = attackingAffect * defendingAffect / 10;
 		
+		return damageValue;
+	}
+	
+	public int calculateStructureDamage(Unit attacker, Hero attHero) {
+		int attackingUnitIndex = UnitType.getTypeFromUnit(attacker);
+		int weaponIndex = weaponIndexChooser.getWeaponIndexAgainstStructure(attacker); // 0 or 1
+		int baseDamage = damageMatrix[attackingUnitIndex][UnitType.NEOTANK.unitIndex()][weaponIndex];
+		int heroAttackValue = attackValueCalculator.calculateAttackValue(attHero, attackingUnitIndex);
+		int attackingAffect = attacker.getUnitHealth().getHP() / 10 * ((baseDamage * heroAttackValue) / 100) / 10;
+
+		int damageValue = attackingAffect;
 		return damageValue;
 	}
 }

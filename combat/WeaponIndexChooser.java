@@ -3,6 +3,8 @@
  */
 package combat;
 
+import java.awt.Color;
+
 import units.Unit;
 import units.airMoving.*;
 import units.footMoving.*;
@@ -76,5 +78,9 @@ public class WeaponIndexChooser {
 		}
 
 		return -1;
+	}
+	
+	public int getWeaponIndexAgainstStructure(Unit attacker) {
+		return getWeaponIndex(attacker, new Neotank(-1, -1, Color.white, -1));
 	}
 }

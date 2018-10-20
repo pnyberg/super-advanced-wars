@@ -81,9 +81,15 @@ public class DamageHandler {
 				|| defending instanceof TCopter);
 	}
 	
-	public void handleAttackingStructure(Unit attacking, Structure targetStructure) {
-		// TODO: replace with real damage
-		targetStructure.takeDamage(100);
+	/*
+	 * "Pipe Seams have 99 hit points and the same defensive value as a 100/100 neotank on 
+	 *   0 star terrain. Damage dealt to them is not impacted by luck, though normal CO 
+	 *   attack bonuses and towers will impact damage output."
+	 */
+	public void handleAttackingStructure(Unit attackingUnit, Structure targetStructure) {
+		Hero attackingHero = heroHandler.getCurrentHero();
+		int damage = damageCalculator.calculateStructureDamage(attackingUnit, attackingHero);
+		targetStructure.takeDamage(damage);
 	}
 	
 	public int getNonRNGDamageValue(Unit attacker, Hero attHero, Unit defender, Hero defHero, TerrainType defTerrainType) {
@@ -100,5 +106,9 @@ public class DamageHandler {
 
 	public int getBaseDamageValue(int attType, int defType, int gunNumber) {
 		return damageCalculator.getBaseDamageValue(attType, defType, gunNumber);
+	}
+	
+	public int getStructureDamage(Unit attackingUnit, Hero attackingHero) {
+		return damageCalculator.calculateStructureDamage(attackingUnit, attackingHero);
 	}
 }

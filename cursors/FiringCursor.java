@@ -49,7 +49,7 @@ public class FiringCursor {
 			TerrainType terrainType = gameMap.getMap()[x / tileSize][y / tileSize].getTerrainType();
 			damage = damageHandler.getNonRNGDamageValue(chosenUnit, heroHandler.getCurrentHero(), targetUnit, heroHandler.getHeroFromUnit(targetUnit), terrainType);
 		} else if (targetStructure != null) {
-			// TODO
+			damage = damageHandler.getStructureDamage(chosenUnit, heroHandler.getCurrentHero());
 		}
 
 		int damageFieldWidth = (damage <= 9 ? 3 * tileSize / 5 : 
