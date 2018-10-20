@@ -3,6 +3,8 @@
  * - only one action/unit per turn
  * - change POWER/SUPER-text, maybe use a pre-written text?
  * - add so that MiniCannons can be attacked/destroyed
+ *   - indirects fixed, need to fix directs
+ * - fix so that the firing-damage-window doesn't go off screen when attacking top row or leftmost column
  * - why does the tanks movementmap-hang up?
  * - enter classes for HQ, ev Silo
  * - FOG

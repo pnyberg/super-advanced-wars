@@ -13,14 +13,14 @@ public class AttackHandler {
 	private AttackRangeHandler attackRangeHandler;
 	private DamageHandler damageHandler;
 	
-	public AttackHandler(MapDim mapDimension, UnitGetter unitGetter, AttackRangeHandler attackRangeHandler, DamageHandler damageHandler) {
-		this.mapDim = mapDimension;
+	public AttackHandler(MapDim mapDim, UnitGetter unitGetter, AttackRangeHandler attackRangeHandler, DamageHandler damageHandler) {
+		this.mapDim = mapDim;
 		this.unitGetter = unitGetter;
 		this.attackRangeHandler = attackRangeHandler;
 		this.damageHandler = damageHandler;
 	}
 
-	public void handleFiring(Unit chosenUnit, Cursor cursor) {
+	public void handleFiringCursor(Unit chosenUnit, Cursor cursor) {
 		chosenUnit.regulateAttack(true);
 
 		int x = chosenUnit.getPoint().getX();
