@@ -1,3 +1,8 @@
+/**
+ * TODO:
+ *  - can an APC enter a Lander?
+ *  - can a T-Copter enter a Cruiser?
+ */
 package main;
 
 import java.awt.event.KeyEvent;

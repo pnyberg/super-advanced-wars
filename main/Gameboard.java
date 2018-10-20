@@ -40,7 +40,6 @@ public class Gameboard extends JPanel implements KeyListener {
 	private GameProp gameProp;
 	
 	public Gameboard(GameProp gameProp, HeroHandler heroHandler) {
-		// TODO: while testing map-loader
 		GameMap gameMap = new GameMap(0, 0);
 		ArrayList<Building> buildings = new ArrayList<>();
 		ArrayList<Structure> structures = new ArrayList<>();

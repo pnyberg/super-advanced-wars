@@ -77,8 +77,6 @@ public class AttackHandler {
 			directionCondition = x > 0;
 		}
 		
-System.out.println(targetUnit + " : " + targetStructure + " + " + direction);
-		
 		if (!directionCondition) {
 			return false;
 		}
