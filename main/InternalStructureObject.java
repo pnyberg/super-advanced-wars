@@ -108,7 +108,7 @@ public class InternalStructureObject {
 		turnHandler = new TurnHandler(gameProp, cashHandler, repairHandler, heroHandler, structureHandler, mapMenu);
 
 		// required init from fourth init-round
-		attackHandler = new AttackHandler(gameProp.getMapDim(), unitGetter, attackRangeHandler, damageHandler);
+		attackHandler = new AttackHandler(gameProp.getMapDim(), unitGetter, attackRangeHandler, damageHandler, structureHandler);
 		mainViewPainter = new ViewPainter(commanderView, heroHandler, gameProp.getMapDim(), gameMap, routeHandler, attackRangeHandler, buildingHandler, structureHandler);
 		unitMenuHandler = new UnitMenuHandler(gameProp, containerUnitHandler, supplyHandler, unitGetter, unitPositionChecker, areaChecker, buildingHandler, attackRangeHandler);
 

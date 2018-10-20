@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 import cursors.Cursor;
 import cursors.FiringCursor;
+import gameObjects.Direction;
 import gameObjects.MapDim;
 import hero.Hero;
 import hero.HeroPortrait;
@@ -100,15 +101,39 @@ public class AttackRangeHandler {
 	}
 
 	private boolean directUnitCanFire(Unit chosenUnit, int cursorX, int cursorY) {
-		Unit northernFront = unitGetter.getNonFriendlyUnit(cursorX * mapDim.tileSize, (cursorY - 1) * mapDim.tileSize);
-		Unit easternFront = unitGetter.getNonFriendlyUnit((cursorX + 1) * mapDim.tileSize, cursorY * mapDim.tileSize);
-		Unit southernFront = unitGetter.getNonFriendlyUnit(cursorX * mapDim.tileSize, (cursorY + 1) * mapDim.tileSize);
-		Unit westernFront = unitGetter.getNonFriendlyUnit((cursorX - 1) * mapDim.tileSize, cursorY * mapDim.tileSize);
+		return canAttackInDirection(chosenUnit, cursorX, cursorY, Direction.NORTH) 
+			|| canAttackInDirection(chosenUnit, cursorX, cursorY, Direction.EAST)
+			|| canAttackInDirection(chosenUnit, cursorX, cursorY, Direction.SOUTH)
+			|| canAttackInDirection(chosenUnit, cursorX, cursorY, Direction.WEST);
+	}
+	
+	private boolean canAttackInDirection(Unit chosenUnit, int cursorX, int cursorY, Direction direction) {
+		Unit targetUnit = null;
+		Structure targetStructure = null;
+		
+		if (direction == Direction.NORTH) {
+			targetUnit = unitGetter.getNonFriendlyUnit(cursorX * mapDim.tileSize, (cursorY - 1) * mapDim.tileSize);
+			targetStructure = structureHandler.getStructure(cursorX * mapDim.tileSize, (cursorY - 1) * mapDim.tileSize);
+		} else if (direction == Direction.EAST) {
+			targetUnit = unitGetter.getNonFriendlyUnit((cursorX + 1) * mapDim.tileSize, cursorY * mapDim.tileSize);
+			targetStructure = structureHandler.getStructure((cursorX + 1) * mapDim.tileSize, cursorY * mapDim.tileSize);
+		} else if (direction == Direction.SOUTH) {
+			targetUnit = unitGetter.getNonFriendlyUnit(cursorX * mapDim.tileSize, (cursorY + 1) * mapDim.tileSize);
+			targetStructure = structureHandler.getStructure(cursorX * mapDim.tileSize, (cursorY + 1) * mapDim.tileSize);
+		} else if (direction == Direction.WEST) {
+			targetUnit = unitGetter.getNonFriendlyUnit((cursorX - 1) * mapDim.tileSize, cursorY * mapDim.tileSize);
+			targetStructure = structureHandler.getStructure((cursorX - 1) * mapDim.tileSize, cursorY * mapDim.tileSize);
+		}
+		
+		if ((targetUnit != null && damageHandler.validTarget(chosenUnit, targetUnit))) {
+			return true;
+		}
 
-		return (northernFront != null && damageHandler.validTarget(chosenUnit, northernFront)) 
-			|| (easternFront != null && damageHandler.validTarget(chosenUnit, easternFront))
-			|| (southernFront != null && damageHandler.validTarget(chosenUnit, southernFront))
-			|| (westernFront != null && damageHandler.validTarget(chosenUnit, westernFront));
+		if (targetStructure != null && structureHandler.unitCanAttackStructure(chosenUnit, targetStructure)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public void findPossibleDirectAttackLocations(Unit chosenUnit) {
