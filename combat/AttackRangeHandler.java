@@ -13,6 +13,7 @@ import map.area.Area;
 import map.area.TerrainType;
 import map.structures.FiringStructure;
 import map.structures.Structure;
+import map.structures.StructureHandler;
 import point.Point;
 import routing.MovementMap;
 import routing.RouteChecker;
@@ -27,14 +28,16 @@ public class AttackRangeHandler {
 	private UnitGetter unitGetter;
 	private boolean[][] rangeMap;
 	private DamageHandler damageHandler;
+	private StructureHandler structureHandler; 
 	private RouteChecker routeChecker;
 	private MovementMap movementMap;
 
-	public AttackRangeHandler(MapDim mapDim, UnitGetter unitGetter, DamageHandler damageHandler, RouteChecker routeChecker, MovementMap movementMap) {
+	public AttackRangeHandler(MapDim mapDim, UnitGetter unitGetter, DamageHandler damageHandler, StructureHandler structureHandler, RouteChecker routeChecker, MovementMap movementMap) {
 		this.mapDim = mapDim;
 		this.unitGetter = unitGetter;
 		rangeMap = new boolean[mapDim.getWidth()][mapDim.getHeight()];
 		this.damageHandler = damageHandler;
+		this.structureHandler = structureHandler;
 		this.routeChecker = routeChecker;
 		this.movementMap = movementMap;
 	}
@@ -84,6 +87,10 @@ public class AttackRangeHandler {
 				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
 					Unit targetUnit = unitGetter.getNonFriendlyUnit(x * mapDim.tileSize, y * mapDim.tileSize);
 					if (targetUnit != null && damageHandler.validTarget(attackingUnit, targetUnit)) {
+						return true;
+					}
+					Structure targetStructure = structureHandler.getStructure(x * mapDim.tileSize, y * mapDim.tileSize);
+					if (targetStructure != null && structureHandler.unitCanAttackStructure(attackingUnit, targetStructure)) {
 						return true;
 					}
 				}
@@ -177,11 +184,16 @@ public class AttackRangeHandler {
 
 				int distanceFromUnit = Math.abs(unitX - x) + Math.abs(unitY - y);
 				
-				Unit target = unitGetter.getNonFriendlyUnit(x * mapDim.tileSize, y * mapDim.tileSize);
-				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange && 
-						 target != null && damageHandler.validTarget(indirectUnit, target)) {
-					Point p = new Point(x * mapDim.tileSize, y * mapDim.tileSize);
-					indirectUnit.addFiringLocation(p);
+				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
+					Unit targetUnit = unitGetter.getNonFriendlyUnit(x * mapDim.tileSize, y * mapDim.tileSize);
+					Structure targetStructure = structureHandler.getStructure(x * mapDim.tileSize, y * mapDim.tileSize);
+					if (targetUnit != null && damageHandler.validTarget(indirectUnit, targetUnit)) {
+						Point p = new Point(x * mapDim.tileSize, y * mapDim.tileSize);
+						indirectUnit.addFiringLocation(p);
+					} else if (targetStructure != null && structureHandler.unitCanAttackStructure(indirectUnit, targetStructure)) {
+						Point p = new Point(x * mapDim.tileSize, y * mapDim.tileSize);
+						indirectUnit.addFiringLocation(p);
+					}
 				}
 			}
 		}

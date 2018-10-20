@@ -12,6 +12,8 @@ import map.GameMap;
 import map.UnitGetter;
 import map.area.Area;
 import map.area.TerrainType;
+import map.structures.Structure;
+import map.structures.StructureHandler;
 import units.Unit;
 
 public class FiringCursor {
@@ -20,13 +22,15 @@ public class FiringCursor {
 	private UnitGetter unitGetter;
 	private HeroHandler heroHandler;
 	private DamageHandler damageHandler;
+	private StructureHandler structureHandler;
 	
-	public FiringCursor(MapDim mapDimension, GameMap gameMap, UnitGetter unitGetter, HeroHandler heroHandler, DamageHandler damageHandler) {
+	public FiringCursor(MapDim mapDimension, GameMap gameMap, UnitGetter unitGetter, HeroHandler heroHandler, DamageHandler damageHandler, StructureHandler structureHandler) {
 		this.mapDim = mapDimension;
 		this.gameMap = gameMap;
 		this.unitGetter = unitGetter;
 		this.heroHandler = heroHandler;
 		this.damageHandler = damageHandler;
+		this.structureHandler = structureHandler;
 	}
 	
 	public void paint(Graphics g, Cursor cursor, Unit chosenUnit) {
@@ -39,11 +43,15 @@ public class FiringCursor {
 		int yDiff = y - chosenUnit.getPoint().getY();
 
 		Unit targetUnit = unitGetter.getNonFriendlyUnit(x, y);
+		Structure targetStructure = structureHandler.getStructure(x, y);
+		int damage = 0;
+		if (targetUnit != null) {
+			TerrainType terrainType = gameMap.getMap()[x / tileSize][y / tileSize].getTerrainType();
+			damage = damageHandler.getNonRNGDamageValue(chosenUnit, heroHandler.getCurrentHero(), targetUnit, heroHandler.getHeroFromUnit(targetUnit), terrainType);
+		} else if (targetStructure != null) {
+			// TODO
+		}
 
-		Hero chosenHero = heroHandler.getCurrentHero();
-		Hero targetHero = heroHandler.getHeroFromUnit(targetUnit);
-		TerrainType terrainType = gameMap.getMap()[x / tileSize][y / tileSize].getTerrainType();
-		int damage = damageHandler.getNonRNGDamageValue(chosenUnit, chosenHero, targetUnit, targetHero, terrainType);
 		int damageFieldWidth = (damage <= 9 ? 3 * tileSize / 5 : 
 									(damage <= 99 ? 4 * tileSize / 5
 										: tileSize - 3));

@@ -25,6 +25,7 @@ import main.StarPowerCalculator;
 import map.GameMap;
 import map.area.Area;
 import map.area.TerrainType;
+import map.structures.Structure;
 
 public class DamageHandler {
 	private DamageCalculator damageCalculator;
@@ -40,7 +41,7 @@ public class DamageHandler {
 		this.gameMap = gameMap;
 	}
 
-	public void handleAttack(Unit attacking, Unit defending) {
+	public void handleAttackingUnit(Unit attacking, Unit defending) {
 		Hero attackingHero = heroHandler.getHeroFromUnit(attacking);
 		Hero defendingHero = heroHandler.getHeroFromUnit(defending); 
 		int attX = attacking.getPoint().getX() / tileSize;
@@ -78,6 +79,11 @@ public class DamageHandler {
 				|| defending instanceof APC
 				|| defending instanceof Lander
 				|| defending instanceof TCopter);
+	}
+	
+	public void handleAttackingStructure(Unit attacking, Structure targetStructure) {
+		// TODO: replace with real damage
+		targetStructure.takeDamage(100);
 	}
 	
 	public int getNonRNGDamageValue(Unit attacker, Hero attHero, Unit defender, Hero defHero, TerrainType defTerrainType) {

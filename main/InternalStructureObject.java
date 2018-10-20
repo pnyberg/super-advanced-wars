@@ -96,16 +96,15 @@ public class InternalStructureObject {
 		unitPositionChecker = new UnitPositionChecker(unitGetter);
 
 		// required init from second init-round
-		firingCursor = new FiringCursor(gameProp.getMapDim(), gameMap, unitGetter, heroHandler, damageHandler);
 		repairHandler = new RepairHandler(gameProp.getMapDim(), heroHandler, buildingHandler, unitWorthCalculator);
 		routeChecker = new RouteChecker(gameProp.getMapDim(), heroHandler, gameMap, movementMap, moveabilityMatrix, areaChecker, movementCostCalculator);
 		routeHandler = new RouteHandler(gameProp.getMapDim(), movementMap, movementCostCalculator);
 		structureHandler = new StructureHandler(structures, structureAttackHandler, unitWorthCalculator);
 
 		// required init from third init-round
-		attackRangeHandler = new AttackRangeHandler(gameProp.getMapDim(), unitGetter, damageHandler, routeChecker, movementMap);
+		attackRangeHandler = new AttackRangeHandler(gameProp.getMapDim(), unitGetter, damageHandler, structureHandler, routeChecker, movementMap);
 		containerUnitHandler = new ContUnitHandler(gameProp, gameMap, cursor, unitGetter, areaChecker, routeChecker); 
-		//mapInitiator = new MapInitiator(gameProp.getMapDim(), buildingHandler, structureHandler, heroHandler, gameMap, buildings, structures);
+		firingCursor = new FiringCursor(gameProp.getMapDim(), gameMap, unitGetter, heroHandler, damageHandler, structureHandler);
 		turnHandler = new TurnHandler(gameProp, cashHandler, repairHandler, heroHandler, structureHandler, mapMenu);
 
 		// required init from fourth init-round

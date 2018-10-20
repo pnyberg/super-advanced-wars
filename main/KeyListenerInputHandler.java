@@ -21,6 +21,7 @@ import map.area.TerrainType;
 import map.buildings.Building;
 import map.buildings.BuildingHandler;
 import map.buildings.City;
+import map.structures.Structure;
 import map.structures.StructureHandler;
 import menus.building.BuildingMenu;
 import menus.map.MapMenu;
@@ -178,15 +179,24 @@ public class KeyListenerInputHandler {
 		if (containerUnitHandler.unitIsDroppingOff()) {
 			handleDroppingOff();
 		} else if (attackHandler.unitWantsToFire(gameProp.getChosenObject().chosenUnit)) {
-			Unit defendingUnit = unitGetter.getNonFriendlyUnit(cursorX * gameProp.getMapDim().tileSize, cursorY * gameProp.getMapDim().tileSize);
-			damageHandler.handleAttack(gameProp.getChosenObject().chosenUnit, defendingUnit);
+			Unit defendingUnit = unitGetter.getNonFriendlyUnit(cursor.getX() * gameProp.getMapDim().tileSize, cursor.getY() * gameProp.getMapDim().tileSize);
+			Structure targetStructure = structureHandler.getStructure(cursor.getX() * gameProp.getMapDim().tileSize, cursor.getY() * gameProp.getMapDim().tileSize);
+			if (defendingUnit != null) {
+				damageHandler.handleAttackingUnit(gameProp.getChosenObject().chosenUnit, defendingUnit);
+				removeUnitIfDead(defendingUnit);
+			} else if (targetStructure != null){
+				damageHandler.handleAttackingStructure(gameProp.getChosenObject().chosenUnit, targetStructure);
+				removeStructureIfDestroyed(targetStructure);
+			} else {
+				System.err.println("No legal target to attack was used!");
+			}
+
 			gameProp.getChosenObject().chosenUnit.regulateAttack(false);
 
 			int x = gameProp.getChosenObject().chosenUnit.getPoint().getX();
 			int y = gameProp.getChosenObject().chosenUnit.getPoint().getY();
 			cursor.setPosition(x / gameProp.getMapDim().tileSize, y / gameProp.getMapDim().tileSize);
 
-			removeUnitIfDead(defendingUnit);
 			removeUnitIfDead(gameProp.getChosenObject().chosenUnit);
 
 			int fuelUse = routeHandler.getFuelFromArrows(gameProp.getChosenObject().chosenUnit);;
@@ -249,7 +259,7 @@ public class KeyListenerInputHandler {
 
 				// @TODO cargo-unit enters other unit
 			} else if (unitMenuHandler.getUnitMenu().atFireRow()) {
-				attackHandler.handleFiring(gameProp.getChosenObject().chosenUnit, cursor);
+				attackHandler.handleFiringCursor(gameProp.getChosenObject().chosenUnit, cursor);
 			} else if (unitMenuHandler.getUnitMenu().atCaptRow()) {
 				Building building = buildingHandler.getBuilding(cursor.getX(), cursor.getY());
 				captHandler.captBuilding(gameProp.getChosenObject().chosenUnit, building);
@@ -428,12 +438,19 @@ public class KeyListenerInputHandler {
 	}
 
 	private void removeUnitIfDead(Unit unit) {
-		if (!unit.getUnitHealth().isDead()) {
-			return;
+		if (unit.getUnitHealth().isDead()) {
+			Hero unitsHero = heroHandler.getHeroFromUnit(unit);
+			unitsHero.getTroopHandler().removeTroop(unit);
 		}
-
-		Hero unitsHero = heroHandler.getHeroFromUnit(unit);
-		unitsHero.getTroopHandler().removeTroop(unit);
+	}
+	
+	private void removeStructureIfDestroyed(Structure targetStructure) {
+		if (targetStructure.isDestroyed()) {
+			int x = targetStructure.getPoint().getX() / gameProp.getMapDim().tileSize;
+			int y = targetStructure.getPoint().getY() / gameProp.getMapDim().tileSize;
+			gameMap.getMap()[x][y].setTerrainType(TerrainType.UMI);
+			structureHandler.removeStructure(targetStructure);
+		}
 	}
 
 	private boolean unitSelectable(int x, int y) {
