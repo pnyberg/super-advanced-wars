@@ -11,19 +11,19 @@ public class MissilesImage extends UnitImage {
 	}
 
 	public void paint(Graphics g, int x, int y, Color unitColor) {
-		int cx1 = x + 2 * tileSize / 3 + 1;
-		int cy1 = y + tileSize / 10 - 1;
+		int cx1 = x + 2 * tileSize / 3 + 4;
+		int cy1 = y + tileSize / 10 + 8;
 		int cx2 = x + 8 * tileSize / 10;
-		int cy2 = y + tileSize / 4 + 4;
+		int cy2 = y + tileSize / 4 + 8;
 		int cx3 = x + tileSize / 4 - 2;
-		int cy3 = y + tileSize / 2 + 5;
-		int cx4 = x + tileSize / 5 - 4;
-		int cy4 = y + 2 * tileSize / 5 - 2;
+		int cy3 = y + tileSize / 2 + 9;
+		int cx4 = x + tileSize / 5 - 2;
+		int cy4 = y + 2 * tileSize / 5 + 7;
 
 		int bodyWidth = 2 * tileSize / 5 + 5;
-		int bodyHeight = tileSize / 4 + 3;
+		int bodyHeight = tileSize / 4 - 1;
 		int bodyAlignX = tileSize / 3 - 3;
-		int bodyAlignY = 7 * tileSize / 20 + 3;
+		int bodyAlignY = 7 * tileSize / 20 + 7;
 
 		// body
 		g.setColor(unitColor);
