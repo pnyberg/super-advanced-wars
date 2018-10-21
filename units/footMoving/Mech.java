@@ -12,6 +12,7 @@ import units.MovementType;
 import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
+import units.UnitType;
 
 public class Mech extends Unit {
 	private static int price = 3000;
@@ -19,7 +20,7 @@ public class Mech extends Unit {
 	//private BufferedImage redImg;
 
 	public Mech(int x, int y, Color color, int tileSize) {
-		super(x, y, color, tileSize);
+		super(UnitType.MECH, x, y, color, tileSize);
 
 		movement = 2;
 		movementType = MovementType.MECH;

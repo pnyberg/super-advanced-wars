@@ -12,6 +12,7 @@ import units.MovementType;
 import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
+import units.UnitType;
 
 public class Recon extends Unit {
 	private static int price = 4000;
@@ -19,7 +20,7 @@ public class Recon extends Unit {
 	//private BufferedImage redImg;
 
 	public Recon(int x, int y, Color color, int tileSize) {
-		super(x, y, color, tileSize);
+		super(UnitType.RECON, x, y, color, tileSize);
 
 		movement = 8;
 		movementType = MovementType.TIRE;

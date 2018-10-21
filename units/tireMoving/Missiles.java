@@ -8,13 +8,14 @@ import units.MovementType;
 import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
+import units.UnitType;
 
 public class Missiles extends IndirectUnit {
 	private static int price = 12000;
 	private static String typeName = "Missiles";
 
 	public Missiles(int x, int y, Color color, int tileSize) {
-		super(x, y, color, tileSize);
+		super(UnitType.MISSILES, x, y, color, tileSize);
 
 		movement = 4;
 		movementType = MovementType.TIRE;

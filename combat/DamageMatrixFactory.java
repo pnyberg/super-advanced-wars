@@ -19,8 +19,8 @@ public class DamageMatrixFactory {
 		for (int i = 0 ; i < UnitType.numberOfUnitTypes ; i++) {
 			damageMatrix[UnitType.INFANTRY.unitIndex()][i][0] = -1;
 			damageMatrix[UnitType.RECON.unitIndex()][i][0] = -1;
-			damageMatrix[UnitType.APC_v.unitIndex()][i][0] = -1;
-			damageMatrix[UnitType.APC_v.unitIndex()][i][1] = -1;
+			damageMatrix[UnitType.APC.unitIndex()][i][0] = -1;
+			damageMatrix[UnitType.APC.unitIndex()][i][1] = -1;
 			damageMatrix[UnitType.ARTILLERY.unitIndex()][i][1] = -1;
 			damageMatrix[UnitType.ROCKET.unitIndex()][i][1] = -1;
 			damageMatrix[UnitType.A_AIR.unitIndex()][i][1] = -1;
@@ -45,7 +45,7 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitType.INFANTRY.unitIndex()][UnitType.TANK.unitIndex()][1] = 5;
 		damageMatrix[UnitType.INFANTRY.unitIndex()][UnitType.MDTANK.unitIndex()][1] = 1;
 		damageMatrix[UnitType.INFANTRY.unitIndex()][UnitType.NEOTANK.unitIndex()][1] = 1;
-		damageMatrix[UnitType.INFANTRY.unitIndex()][UnitType.APC_v.unitIndex()][1] = 14;
+		damageMatrix[UnitType.INFANTRY.unitIndex()][UnitType.APC.unitIndex()][1] = 14;
 		damageMatrix[UnitType.INFANTRY.unitIndex()][UnitType.ARTILLERY.unitIndex()][1] = 15;
 		damageMatrix[UnitType.INFANTRY.unitIndex()][UnitType.ROCKET.unitIndex()][1] = 25;
 		damageMatrix[UnitType.INFANTRY.unitIndex()][UnitType.A_AIR.unitIndex()][1] = 5;
@@ -72,8 +72,8 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitType.MECH.unitIndex()][UnitType.MDTANK.unitIndex()][1] = 1;
 		damageMatrix[UnitType.MECH.unitIndex()][UnitType.NEOTANK.unitIndex()][0] = 15;
 		damageMatrix[UnitType.MECH.unitIndex()][UnitType.NEOTANK.unitIndex()][1] = 1;
-		damageMatrix[UnitType.MECH.unitIndex()][UnitType.APC_v.unitIndex()][0] = 75;
-		damageMatrix[UnitType.MECH.unitIndex()][UnitType.APC_v.unitIndex()][1] = 20;
+		damageMatrix[UnitType.MECH.unitIndex()][UnitType.APC.unitIndex()][0] = 75;
+		damageMatrix[UnitType.MECH.unitIndex()][UnitType.APC.unitIndex()][1] = 20;
 		damageMatrix[UnitType.MECH.unitIndex()][UnitType.ARTILLERY.unitIndex()][0] = 70;
 		damageMatrix[UnitType.MECH.unitIndex()][UnitType.ARTILLERY.unitIndex()][1] = 32;
 		damageMatrix[UnitType.MECH.unitIndex()][UnitType.ROCKET.unitIndex()][0] = 85;
@@ -106,7 +106,7 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitType.RECON.unitIndex()][UnitType.TANK.unitIndex()][1] = 6;
 		damageMatrix[UnitType.RECON.unitIndex()][UnitType.MDTANK.unitIndex()][1] = 1;
 		damageMatrix[UnitType.RECON.unitIndex()][UnitType.NEOTANK.unitIndex()][1] = 1;
-		damageMatrix[UnitType.RECON.unitIndex()][UnitType.APC_v.unitIndex()][1] = 45;
+		damageMatrix[UnitType.RECON.unitIndex()][UnitType.APC.unitIndex()][1] = 45;
 		damageMatrix[UnitType.RECON.unitIndex()][UnitType.ARTILLERY.unitIndex()][1] = 45;
 		damageMatrix[UnitType.RECON.unitIndex()][UnitType.ROCKET.unitIndex()][1] = 55;
 		damageMatrix[UnitType.RECON.unitIndex()][UnitType.A_AIR.unitIndex()][1] = 4;
@@ -133,8 +133,8 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitType.TANK.unitIndex()][UnitType.MDTANK.unitIndex()][1] = 1;
 		damageMatrix[UnitType.TANK.unitIndex()][UnitType.NEOTANK.unitIndex()][0] = 15;
 		damageMatrix[UnitType.TANK.unitIndex()][UnitType.NEOTANK.unitIndex()][1] = 1;
-		damageMatrix[UnitType.TANK.unitIndex()][UnitType.APC_v.unitIndex()][0] = 75;
-		damageMatrix[UnitType.TANK.unitIndex()][UnitType.APC_v.unitIndex()][1] = 45;
+		damageMatrix[UnitType.TANK.unitIndex()][UnitType.APC.unitIndex()][0] = 75;
+		damageMatrix[UnitType.TANK.unitIndex()][UnitType.APC.unitIndex()][1] = 45;
 		damageMatrix[UnitType.TANK.unitIndex()][UnitType.ARTILLERY.unitIndex()][0] = 70;
 		damageMatrix[UnitType.TANK.unitIndex()][UnitType.ARTILLERY.unitIndex()][1] = 45;
 		damageMatrix[UnitType.TANK.unitIndex()][UnitType.ROCKET.unitIndex()][0] = 85;
@@ -173,8 +173,8 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitType.MDTANK.unitIndex()][UnitType.MDTANK.unitIndex()][1] = 1;
 		damageMatrix[UnitType.MDTANK.unitIndex()][UnitType.NEOTANK.unitIndex()][0] = 45;
 		damageMatrix[UnitType.MDTANK.unitIndex()][UnitType.NEOTANK.unitIndex()][1] = 1;
-		damageMatrix[UnitType.MDTANK.unitIndex()][UnitType.APC_v.unitIndex()][0] = 105;
-		damageMatrix[UnitType.MDTANK.unitIndex()][UnitType.APC_v.unitIndex()][1] = 45;
+		damageMatrix[UnitType.MDTANK.unitIndex()][UnitType.APC.unitIndex()][0] = 105;
+		damageMatrix[UnitType.MDTANK.unitIndex()][UnitType.APC.unitIndex()][1] = 45;
 		damageMatrix[UnitType.MDTANK.unitIndex()][UnitType.ARTILLERY.unitIndex()][0] = 105;
 		damageMatrix[UnitType.MDTANK.unitIndex()][UnitType.ARTILLERY.unitIndex()][1] = 45;
 		damageMatrix[UnitType.MDTANK.unitIndex()][UnitType.ROCKET.unitIndex()][0] = 105;
@@ -213,8 +213,8 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitType.NEOTANK.unitIndex()][UnitType.MDTANK.unitIndex()][1] = 1;
 		damageMatrix[UnitType.NEOTANK.unitIndex()][UnitType.NEOTANK.unitIndex()][0] = 55;
 		damageMatrix[UnitType.NEOTANK.unitIndex()][UnitType.NEOTANK.unitIndex()][1] = 1;
-		damageMatrix[UnitType.NEOTANK.unitIndex()][UnitType.APC_v.unitIndex()][0] = 125;
-		damageMatrix[UnitType.NEOTANK.unitIndex()][UnitType.APC_v.unitIndex()][1] = 65;
+		damageMatrix[UnitType.NEOTANK.unitIndex()][UnitType.APC.unitIndex()][0] = 125;
+		damageMatrix[UnitType.NEOTANK.unitIndex()][UnitType.APC.unitIndex()][1] = 65;
 		damageMatrix[UnitType.NEOTANK.unitIndex()][UnitType.ARTILLERY.unitIndex()][0] = 115;
 		damageMatrix[UnitType.NEOTANK.unitIndex()][UnitType.ARTILLERY.unitIndex()][1] = 65;
 		damageMatrix[UnitType.NEOTANK.unitIndex()][UnitType.ROCKET.unitIndex()][0] = 125;
@@ -247,7 +247,7 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitType.ARTILLERY.unitIndex()][UnitType.TANK.unitIndex()][0] = 70;
 		damageMatrix[UnitType.ARTILLERY.unitIndex()][UnitType.MDTANK.unitIndex()][0] = 45;
 		damageMatrix[UnitType.ARTILLERY.unitIndex()][UnitType.NEOTANK.unitIndex()][0] = 40;
-		damageMatrix[UnitType.ARTILLERY.unitIndex()][UnitType.APC_v.unitIndex()][0] = 70;
+		damageMatrix[UnitType.ARTILLERY.unitIndex()][UnitType.APC.unitIndex()][0] = 70;
 		damageMatrix[UnitType.ARTILLERY.unitIndex()][UnitType.ARTILLERY.unitIndex()][0] = 75;
 		damageMatrix[UnitType.ARTILLERY.unitIndex()][UnitType.ROCKET.unitIndex()][0] = 80;
 		damageMatrix[UnitType.ARTILLERY.unitIndex()][UnitType.A_AIR.unitIndex()][0] = 75;
@@ -268,7 +268,7 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitType.ROCKET.unitIndex()][UnitType.TANK.unitIndex()][0] = 80;
 		damageMatrix[UnitType.ROCKET.unitIndex()][UnitType.MDTANK.unitIndex()][0] = 55;
 		damageMatrix[UnitType.ROCKET.unitIndex()][UnitType.NEOTANK.unitIndex()][0] = 50;
-		damageMatrix[UnitType.ROCKET.unitIndex()][UnitType.APC_v.unitIndex()][0] = 80;
+		damageMatrix[UnitType.ROCKET.unitIndex()][UnitType.APC.unitIndex()][0] = 80;
 		damageMatrix[UnitType.ROCKET.unitIndex()][UnitType.ARTILLERY.unitIndex()][0] = 80;
 		damageMatrix[UnitType.ROCKET.unitIndex()][UnitType.ROCKET.unitIndex()][0] = 85;
 		damageMatrix[UnitType.ROCKET.unitIndex()][UnitType.A_AIR.unitIndex()][0] = 85;
@@ -289,7 +289,7 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitType.A_AIR.unitIndex()][UnitType.TANK.unitIndex()][0] = 25;
 		damageMatrix[UnitType.A_AIR.unitIndex()][UnitType.MDTANK.unitIndex()][0] = 10;
 		damageMatrix[UnitType.A_AIR.unitIndex()][UnitType.NEOTANK.unitIndex()][0] = 5;
-		damageMatrix[UnitType.A_AIR.unitIndex()][UnitType.APC_v.unitIndex()][0] = 50;
+		damageMatrix[UnitType.A_AIR.unitIndex()][UnitType.APC.unitIndex()][0] = 50;
 		damageMatrix[UnitType.A_AIR.unitIndex()][UnitType.ARTILLERY.unitIndex()][0] = 50;
 		damageMatrix[UnitType.A_AIR.unitIndex()][UnitType.ROCKET.unitIndex()][0] = 55;
 		damageMatrix[UnitType.A_AIR.unitIndex()][UnitType.A_AIR.unitIndex()][0] = 45;
@@ -310,7 +310,7 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitType.MISSILES.unitIndex()][UnitType.TANK.unitIndex()][0] = -1;
 		damageMatrix[UnitType.MISSILES.unitIndex()][UnitType.MDTANK.unitIndex()][0] = -1;
 		damageMatrix[UnitType.MISSILES.unitIndex()][UnitType.NEOTANK.unitIndex()][0] = -1;
-		damageMatrix[UnitType.MISSILES.unitIndex()][UnitType.APC_v.unitIndex()][0] = -1;
+		damageMatrix[UnitType.MISSILES.unitIndex()][UnitType.APC.unitIndex()][0] = -1;
 		damageMatrix[UnitType.MISSILES.unitIndex()][UnitType.ARTILLERY.unitIndex()][0] = -1;
 		damageMatrix[UnitType.MISSILES.unitIndex()][UnitType.ROCKET.unitIndex()][0] = -1;
 		damageMatrix[UnitType.MISSILES.unitIndex()][UnitType.A_AIR.unitIndex()][0] = -1;
@@ -333,7 +333,7 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitType.FIGHTER.unitIndex()][UnitType.TANK.unitIndex()][0] = -1;
 		damageMatrix[UnitType.FIGHTER.unitIndex()][UnitType.MDTANK.unitIndex()][0] = -1;
 		damageMatrix[UnitType.FIGHTER.unitIndex()][UnitType.NEOTANK.unitIndex()][0] = -1;
-		damageMatrix[UnitType.FIGHTER.unitIndex()][UnitType.APC_v.unitIndex()][0] = -1;
+		damageMatrix[UnitType.FIGHTER.unitIndex()][UnitType.APC.unitIndex()][0] = -1;
 		damageMatrix[UnitType.FIGHTER.unitIndex()][UnitType.ARTILLERY.unitIndex()][0] = -1;
 		damageMatrix[UnitType.FIGHTER.unitIndex()][UnitType.ROCKET.unitIndex()][0] = -1;
 		damageMatrix[UnitType.FIGHTER.unitIndex()][UnitType.A_AIR.unitIndex()][0] = -1;
@@ -354,7 +354,7 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitType.BOMBER.unitIndex()][UnitType.TANK.unitIndex()][0] = 105;
 		damageMatrix[UnitType.BOMBER.unitIndex()][UnitType.MDTANK.unitIndex()][0] = 95;
 		damageMatrix[UnitType.BOMBER.unitIndex()][UnitType.NEOTANK.unitIndex()][0] = 90;
-		damageMatrix[UnitType.BOMBER.unitIndex()][UnitType.APC_v.unitIndex()][0] = 105;
+		damageMatrix[UnitType.BOMBER.unitIndex()][UnitType.APC.unitIndex()][0] = 105;
 		damageMatrix[UnitType.BOMBER.unitIndex()][UnitType.ARTILLERY.unitIndex()][0] = 105;
 		damageMatrix[UnitType.BOMBER.unitIndex()][UnitType.ROCKET.unitIndex()][0] = 105;
 		damageMatrix[UnitType.BOMBER.unitIndex()][UnitType.A_AIR.unitIndex()][0] = 95;
@@ -381,8 +381,8 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitType.BCOPTER.unitIndex()][UnitType.MDTANK.unitIndex()][1] = 1;
 		damageMatrix[UnitType.BCOPTER.unitIndex()][UnitType.NEOTANK.unitIndex()][0] = 20;
 		damageMatrix[UnitType.BCOPTER.unitIndex()][UnitType.NEOTANK.unitIndex()][1] = 1;
-		damageMatrix[UnitType.BCOPTER.unitIndex()][UnitType.APC_v.unitIndex()][0] = 60;
-		damageMatrix[UnitType.BCOPTER.unitIndex()][UnitType.APC_v.unitIndex()][1] = 20;
+		damageMatrix[UnitType.BCOPTER.unitIndex()][UnitType.APC.unitIndex()][0] = 60;
+		damageMatrix[UnitType.BCOPTER.unitIndex()][UnitType.APC.unitIndex()][1] = 20;
 		damageMatrix[UnitType.BCOPTER.unitIndex()][UnitType.ARTILLERY.unitIndex()][0] = 65;
 		damageMatrix[UnitType.BCOPTER.unitIndex()][UnitType.ARTILLERY.unitIndex()][1] = 25;
 		damageMatrix[UnitType.BCOPTER.unitIndex()][UnitType.ROCKET.unitIndex()][0] = 65;
@@ -417,7 +417,7 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitType.BATTLESHIP.unitIndex()][UnitType.TANK.unitIndex()][0] = 80;
 		damageMatrix[UnitType.BATTLESHIP.unitIndex()][UnitType.MDTANK.unitIndex()][0] = 55;
 		damageMatrix[UnitType.BATTLESHIP.unitIndex()][UnitType.NEOTANK.unitIndex()][0] = 50;
-		damageMatrix[UnitType.BATTLESHIP.unitIndex()][UnitType.APC_v.unitIndex()][0] = 80;
+		damageMatrix[UnitType.BATTLESHIP.unitIndex()][UnitType.APC.unitIndex()][0] = 80;
 		damageMatrix[UnitType.BATTLESHIP.unitIndex()][UnitType.ARTILLERY.unitIndex()][0] = 80;
 		damageMatrix[UnitType.BATTLESHIP.unitIndex()][UnitType.ROCKET.unitIndex()][0] = 85;
 		damageMatrix[UnitType.BATTLESHIP.unitIndex()][UnitType.A_AIR.unitIndex()][0] = 85;
@@ -444,8 +444,8 @@ public class DamageMatrixFactory {
 		damageMatrix[UnitType.CRUISER.unitIndex()][UnitType.MDTANK.unitIndex()][1] = -1;
 		damageMatrix[UnitType.CRUISER.unitIndex()][UnitType.NEOTANK.unitIndex()][0] = -1;
 		damageMatrix[UnitType.CRUISER.unitIndex()][UnitType.NEOTANK.unitIndex()][1] = -1;
-		damageMatrix[UnitType.CRUISER.unitIndex()][UnitType.APC_v.unitIndex()][0] = -1;
-		damageMatrix[UnitType.CRUISER.unitIndex()][UnitType.APC_v.unitIndex()][1] = -1;
+		damageMatrix[UnitType.CRUISER.unitIndex()][UnitType.APC.unitIndex()][0] = -1;
+		damageMatrix[UnitType.CRUISER.unitIndex()][UnitType.APC.unitIndex()][1] = -1;
 		damageMatrix[UnitType.CRUISER.unitIndex()][UnitType.ARTILLERY.unitIndex()][0] = -1;
 		damageMatrix[UnitType.CRUISER.unitIndex()][UnitType.ARTILLERY.unitIndex()][1] = -1;
 		damageMatrix[UnitType.CRUISER.unitIndex()][UnitType.ROCKET.unitIndex()][0] = -1;

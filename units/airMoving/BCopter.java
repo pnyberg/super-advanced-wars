@@ -7,13 +7,14 @@ import units.MovementType;
 import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
+import units.UnitType;
 
 public class BCopter extends Unit {
 	private static int price = 9000;
 	private static String typeName = "BCopter";
 
 	public BCopter(int x, int y, Color color, int tileSize) {
-		super(x, y, color, tileSize);
+		super(UnitType.BCOPTER, x, y, color, tileSize);
 
 		movement = 6;
 		movementType = MovementType.AIR;

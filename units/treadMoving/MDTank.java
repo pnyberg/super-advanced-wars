@@ -7,13 +7,14 @@ import units.MovementType;
 import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
+import units.UnitType;
 
 public class MDTank extends Unit {
 	private static int price = 16000;
 	private static String typeName = "MD Tank";
 
 	public MDTank(int x, int y, Color color, int tileSize) {
-		super(x, y, color, tileSize);
+		super(UnitType.MDTANK, x, y, color, tileSize);
 
 		movement = 5;
 		movementType = MovementType.BAND;

@@ -7,13 +7,14 @@ import units.MovementType;
 import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
+import units.UnitType;
 
 public class Fighter extends Unit {
 	private static int price = 20000;
 	private static String typeName = "Fighter";
 
 	public Fighter(int x, int y, Color color, int tileSize) {
-		super(x, y, color, tileSize);
+		super(UnitType.FIGHTER, x, y, color, tileSize);
 
 		movement = 9;
 		movementType = MovementType.AIR;

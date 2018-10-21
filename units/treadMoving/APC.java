@@ -8,6 +8,7 @@ import units.MovementType;
 import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
+import units.UnitType;
 
 public class APC extends Unit {
 	private static int price = 6000;
@@ -17,7 +18,7 @@ public class APC extends Unit {
 	private boolean droppingOff;
 
 	public APC(int x, int y, Color color, int tileSize) {
-		super(x, y, color, tileSize);
+		super(UnitType.APC, x, y, color, tileSize);
 
 		movement = 6;
 		movementType = MovementType.BAND;

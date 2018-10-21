@@ -19,11 +19,12 @@ public abstract class Unit {
 	protected Color color, restingColor;
 
 	protected int movement;
+	protected UnitType unitType;
 	protected UnitCategory unitClass;
 	protected AttackType attackType;
 	protected MovementType movementType;
 
-	public Unit(int x, int y, Color color, int tileSize) {
+	public Unit(UnitType unitType, int x, int y, Color color, int tileSize) {
 		point = new Point(x, y);
 		this.color = color;
 		restingColor = color.darker();
@@ -34,6 +35,7 @@ public abstract class Unit {
 		active = false;
 		capting = false;
 
+		this.unitType = unitType;
 		attackType = AttackType.DIRECT_ATTACK;
 	}
 
@@ -82,6 +84,10 @@ public abstract class Unit {
 
 	public AttackType getAttackType() {
 		return attackType;
+	}
+	
+	public UnitType getUnitType() {
+		return unitType;
 	}
 
 	public UnitCategory getUnitClass() {

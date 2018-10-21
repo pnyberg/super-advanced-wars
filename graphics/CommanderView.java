@@ -78,7 +78,7 @@ public class CommanderView {
 		paintUnitWithPowerBar(g, UnitType.INFANTRY.unitIndex());
 		paintUnitWithPowerBar(g, UnitType.MECH.unitIndex());
 		paintUnitWithPowerBar(g, UnitType.RECON.unitIndex());
-		paintUnitWithPowerBar(g, UnitType.APC_v.unitIndex());
+		paintUnitWithPowerBar(g, UnitType.APC.unitIndex());
 
 		paintUnitWithPowerBar(g, UnitType.TANK.unitIndex());
 		paintUnitWithPowerBar(g, UnitType.MDTANK.unitIndex());

@@ -8,13 +8,14 @@ import units.MovementType;
 import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
+import units.UnitType;
 
 public class Battleship extends IndirectUnit {
 	private static int price = 28000;
 	private static String typeName = "Battleship";
 
 	public Battleship(int x, int y, Color color, int tileSize) {
-		super(x, y, color, tileSize);
+		super(UnitType.BATTLESHIP, x, y, color, tileSize);
 
 		movement = 5;
 		movementType = MovementType.SHIP;

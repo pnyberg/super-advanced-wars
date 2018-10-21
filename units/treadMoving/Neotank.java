@@ -7,13 +7,14 @@ import units.MovementType;
 import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
+import units.UnitType;
 
 public class Neotank extends Unit {
 	private static int price = 22000;
 	private static String typeName = "Neotank";
 
 	public Neotank(int x, int y, Color color, int tileSize) {
-		super(x, y, color, tileSize);
+		super(UnitType.NEOTANK, x, y, color, tileSize);
 
 		movement = 6;
 		movementType = MovementType.BAND;

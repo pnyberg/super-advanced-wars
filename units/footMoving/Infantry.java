@@ -13,6 +13,7 @@ import units.MovementType;
 import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
+import units.UnitType;
 
 public class Infantry extends Unit {
 	private static int price = 1000;
@@ -20,7 +21,7 @@ public class Infantry extends Unit {
 	//private BufferedImage redImg;
 
 	public Infantry(int x, int y, Color color, int tileSize) {
-		super(x, y, color, tileSize);
+		super(UnitType.INFANTRY, x, y, color, tileSize);
 
 		movement = 3;
 		movementType = MovementType.INFANTRY;

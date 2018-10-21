@@ -8,6 +8,7 @@ import units.MovementType;
 import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
+import units.UnitType;
 
 public class Cruiser extends Unit {
 	private static int price = 18000;
@@ -18,7 +19,7 @@ public class Cruiser extends Unit {
 	private int chosenIndex;
 
 	public Cruiser(int x, int y, Color color, int tileSize) {
-		super(x, y, color, tileSize);
+		super(UnitType.CRUISER, x, y, color, tileSize);
 
 		movement = 6;
 		movementType = MovementType.SHIP;

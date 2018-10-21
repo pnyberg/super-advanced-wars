@@ -7,13 +7,14 @@ import units.MovementType;
 import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
+import units.UnitType;
 
 public class AAir extends Unit {
 	private static int price = 8000;
 	private static String typeName = "A-Air";
 
 	public AAir(int x, int y, Color color, int tileSize) {
-		super(x, y, color, tileSize);
+		super(UnitType.A_AIR, x, y, color, tileSize);
 
 		movement = 6;
 		movementType = MovementType.BAND;

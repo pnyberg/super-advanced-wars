@@ -8,6 +8,7 @@ import units.MovementType;
 import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
+import units.UnitType;
 
 public class TCopter extends Unit {
 	private static int price = 5000;
@@ -17,7 +18,7 @@ public class TCopter extends Unit {
 	private boolean droppingOff;
 
 	public TCopter(int x, int y, Color color, int tileSize) {
-		super(x, y, color, tileSize);
+		super(UnitType.TCOPTER, x, y, color, tileSize);
 
 		movement = 6;
 		movementType = MovementType.AIR;

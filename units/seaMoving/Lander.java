@@ -9,6 +9,7 @@ import units.MovementType;
 import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
+import units.UnitType;
 
 public class Lander extends Unit {
 	private static int price = 12000;
@@ -19,7 +20,7 @@ public class Lander extends Unit {
 	private int chosenIndex;
 
 	public Lander(int x, int y, Color color, int tileSize) {
-		super(x, y, color, tileSize);
+		super(UnitType.LANDER, x, y, color, tileSize);
 
 		movement = 6;
 		movementType = MovementType.TRANSPORT;
