@@ -297,6 +297,6 @@ public class MapLoader {
 			break;
 		}
 		
-		gameMap.getMap()[x][y] = new Area(new Point(x * mapDim.tileSize, y * mapDim.tileSize), terrainType, mapDim.tileSize);
+		gameMap.getMap()[x][y] = new Area(terrainType, new Point(x * mapDim.tileSize, y * mapDim.tileSize), mapDim.tileSize);
 	}
 }

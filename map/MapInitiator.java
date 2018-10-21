@@ -148,7 +148,7 @@ public class MapInitiator {
 	}
 	
 	private void addAreaObject(int tileX, int tileY, TerrainType terrainType) {
-		gridMap.getMap()[tileX][tileY] =  new Area(new Point(tileX * mapDim.tileSize, tileY * mapDim.tileSize), terrainType, mapDim.tileSize);
+		gridMap.getMap()[tileX][tileY] =  new Area(terrainType, new Point(tileX * mapDim.tileSize, tileY * mapDim.tileSize), mapDim.tileSize);
 	}
 
 	private void initBuildings() {

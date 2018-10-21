@@ -6,13 +6,13 @@ import graphics.images.AreaImage;
 import point.Point;
 
 public class Area {
-	private Point point;
 	private TerrainType terrainType;
+	private Point point;
 	private AreaImage areaImage;
 	
-	public Area(Point point, TerrainType terrainType, int tileSize) {
-		this.point = point;
+	public Area(TerrainType terrainType, Point point, int tileSize) {
 		this.terrainType = terrainType;
+		this.point = point;
 		areaImage = new AreaImage(terrainType, tileSize);
 	}
 	
