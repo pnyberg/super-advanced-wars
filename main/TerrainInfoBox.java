@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 import cursors.Cursor;
+import graphics.PowerStar;
 import hero.Hero;
 import map.GameMap;
 import map.area.Area;
@@ -50,6 +51,10 @@ public class TerrainInfoBox {
 		g.setFont(currentFont);
 		
 		paintArea(g, area);
+		
+		paintDefenceValue(g, area);
+		
+		paintCaptValue(g, area);
 	}
 	
 	private void paintArea(Graphics g, Area area) {
@@ -62,7 +67,7 @@ public class TerrainInfoBox {
 			} else {
 				buildingColor = owner.getColor();
 			}
-			building.getBuildingImage().paint(g, point.getX() + (width-tileSize)/2, point.getY() + 27, buildingColor);
+			building.getBuildingImage().paint(g, point.getX() + (width-tileSize)/2, point.getY() + 22, buildingColor);
 		} else if (area.getTerrainType().isStructure()) {
 			Structure structure = structureHandler.getStructure(area.getPoint().getX(), area.getPoint().getY());
 			Color cannonColor = null;
@@ -72,9 +77,36 @@ public class TerrainInfoBox {
 			} else {
 				cannonColor = owner.getColor();
 			}
-			structure.getStructureImage().paint(g, point.getX() + (width-tileSize)/2, point.getY() + 27, cannonColor);
+			structure.getStructureImage().paint(g, point.getX() + (width-tileSize)/2, point.getY() + 22, cannonColor);
 		} else {
-			area.getAreaImage().paint(g, point.getX() + (width-tileSize)/2, point.getY() + 27, false, false);
+			area.getAreaImage().paint(g, point.getX() + (width-tileSize)/2, point.getY() + 22, false, false);
+		}
+	}
+	
+	private void paintDefenceValue(Graphics g, Area area) {
+		PowerStar.paintNormal(g, point.getX() + (width-tileSize)/2 - 5, point.getY() + tileSize + 26, 0);
+		g.setColor(Color.black);
+		Font currentFont = g.getFont();
+		g.setFont(new Font("ComicSans", Font.BOLD, 20));
+		g.drawString("" + area.getTerrainType().defenceValue() + "", point.getX() + width/2 - 5 + 10, point.getY() + 8 * tileSize / 4 + 3);
+		g.setFont(currentFont);
+	}
+	
+	private void paintCaptValue(Graphics g, Area area) {
+		if (area.getTerrainType().isBuilding()) {
+			g.setColor(Color.white);
+			g.fillRect(point.getX() + (width-tileSize)/2 - 5 + 1, point.getY() + tileSize + 26 + 20, tileSize / 3, tileSize / 2);
+			g.setColor(Color.black);
+			g.drawRect(point.getX() + (width-tileSize)/2 - 5 + 1, point.getY() + tileSize + 26 + 20, tileSize / 3, tileSize / 2);
+
+			g.setColor(Color.black);
+			Font currentFont = g.getFont();
+			g.setFont(new Font("ComicSans", Font.BOLD, 20));
+			Building building = buildingHandler.getBuilding(area.getPoint().getX() / tileSize, area.getPoint().getY() / tileSize);
+			int captValue = building.getCaptingValue();
+			int xAdjust = captValue < 10 ? 10 : 0;
+			g.drawString("" + captValue + "", point.getX() + width/2 - 5 + xAdjust, point.getY() + tileSize + 26 + 20 + 18);
+			g.setFont(currentFont);
 		}
 	}
 }

@@ -25,6 +25,7 @@ public abstract class Building {
 		this.x = x;
 		this.y = y;
 		this.tileSize = tileSize;
+		this.captingValue = maxCaptingValue;
 	}
 
 	public void setOwnership(Hero hero) {
@@ -33,15 +34,23 @@ public abstract class Building {
 	}
 
 	public void capt(int captingValue) {
-		this.captingValue += captingValue;
+		this.captingValue -= captingValue;
 
-		if (this.captingValue > maxCaptingValue) {
-			this.captingValue = maxCaptingValue;
+		if (this.captingValue < 0) {
+			this.captingValue = 0;
 		}
 	}
 	
 	public void resetCapting() {
-		captingValue = 0;
+		captingValue = maxCaptingValue;
+	}
+
+	public boolean captingIsActive() {
+		return 0 < captingValue && captingValue < maxCaptingValue;
+	}
+
+	public boolean isCapted() {
+		return captingValue == 0;
 	}
 
 	public static int getIncome() {
@@ -56,14 +65,10 @@ public abstract class Building {
 		return y;
 	}
 	
-	public boolean captingIsActive() {
-		return 0 < captingValue && captingValue < maxCaptingValue;
+	public int getCaptingValue() {
+		return captingValue;
 	}
-
-	public boolean isCapted() {
-		return captingValue == maxCaptingValue;
-	}
-
+	
 	public Hero getOwner() {
 		return owner;
 	}
