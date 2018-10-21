@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import graphics.images.units.LanderImage;
 import units.AttackType;
 import units.MovementType;
 import units.Unit;
@@ -30,6 +31,8 @@ public class Lander extends Unit {
 		containedUnits = new ArrayList<Unit>();
 		droppingOff = false;
 		chosenIndex = -1;
+		
+		unitImage = new LanderImage(tileSize);
 	}
 
 	public void addUnit(Unit unit) {
@@ -96,31 +99,5 @@ public class Lander extends Unit {
 
 	public boolean isDroppingOff() {
 		return droppingOff;
-	}
-
-	protected void paintUnit(Graphics g, int tileSize) {
-		int cx1 = point.getX() + tileSize / 8;
-		int cy1 = point.getY() + 3 * tileSize / 5;
-		int cx2 = point.getX() + 7 * tileSize / 8;
-		int cy2 = point.getY() + 3 * tileSize / 5;
-		int cx3 = point.getX() + 3 * tileSize / 4;
-		int cy3 = point.getY() + 5 * tileSize / 6;
-		int cx4 = point.getX() + tileSize / 4;
-		int cy4 = point.getY() + 5 * tileSize / 6;
-
-		// body
-		int[] cannonX = {cx1, cx2, cx3, cx4};
-		int[] cannonY = {cy1, cy2, cy3, cy4};
-		int npoints = 4;
-
-		if (active) {
-			g.setColor(color);
-		} else {
-			g.setColor(restingColor);
-		}
-		g.fillPolygon(cannonX, cannonY, npoints);
-
-		g.setColor(Color.black);
-		g.drawPolygon(cannonX, cannonY, npoints);
 	}
 }

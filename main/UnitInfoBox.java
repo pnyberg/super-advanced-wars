@@ -5,9 +5,11 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 import cursors.Cursor;
+import hero.Hero;
 import map.GameMap;
 import map.UnitGetter;
 import map.area.TerrainType;
+import map.buildings.Building;
 import point.Point;
 import units.Unit;
 import units.UnitType;
@@ -46,6 +48,12 @@ public class UnitInfoBox {
 			g.drawString(unitType.unitTypeShowName(), point.getX() + xAdjust, point.getY() + 20);
 			g.setFont(currentFont);
 			
+			paintUnit(g, unit);
 		}
+	}
+	
+	public void paintUnit(Graphics g, Unit unit) {
+		Color unitColor = unit.getColor();
+		unit.getUnitImage().paint(g, point.getX() + (width-tileSize)/2, point.getY() + 22, unitColor);
 	}
 }

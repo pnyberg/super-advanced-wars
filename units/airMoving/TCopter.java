@@ -3,6 +3,8 @@ package units.airMoving;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import graphics.images.units.BCopterImage;
+import graphics.images.units.TCopterImage;
 import units.AttackType;
 import units.MovementType;
 import units.Unit;
@@ -28,6 +30,8 @@ public class TCopter extends Unit {
 
 		containedUnit = null;
 		droppingOff = false;
+		
+		unitImage = new TCopterImage(tileSize);
 	}
 
 	public void addUnit(Unit unit) {
@@ -79,36 +83,5 @@ public class TCopter extends Unit {
 
 	public boolean isDroppingOff() {
 		return droppingOff;
-	}
-
-	protected void paintUnit(Graphics g, int tileSize) {
-		int bodyWidth = 2 * tileSize / 3;
-		int bodyHeight = tileSize / 3;
-		int bodyAlignX = tileSize / 6;
-		int bodyAlignY = tileSize / 3;
-		
-		int firstCrossLeftX = bodyAlignX + 3;
-		int firstCrossRightX = bodyAlignX + tileSize / 5 + 2;
-		int secondCrossLeftX = bodyAlignX + 3 + tileSize / 3;
-		int secondCrossRightX = bodyAlignX + 8 * tileSize / 15 + 2;
-
-		int crossUpperY = 2 * tileSize / 9 + 4;
-		int crossLowerY = 4 * tileSize / 9 + 1;
-
-		// body
-		if (active) {
-			g.setColor(color);
-		} else {
-			g.setColor(restingColor);
-		}
-		g.fillOval(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodyWidth, bodyHeight);
-
-		g.setColor(Color.black);
-		g.drawOval(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodyWidth, bodyHeight);
-		
-		g.drawLine(point.getX() + firstCrossLeftX, point.getY() + crossUpperY, point.getX() + firstCrossRightX, point.getY() + crossLowerY);
-		g.drawLine(point.getX() + firstCrossLeftX, point.getY() + crossLowerY, point.getX() + firstCrossRightX, point.getY() + crossUpperY);
-		g.drawLine(point.getX() + secondCrossLeftX, point.getY() + crossUpperY, point.getX() + secondCrossRightX, point.getY() + crossLowerY);
-		g.drawLine(point.getX() + secondCrossLeftX, point.getY() + crossLowerY, point.getX() + secondCrossRightX, point.getY() + crossUpperY);
 	}
 }

@@ -3,6 +3,7 @@ package units.treadMoving;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import graphics.images.units.AAirImage;
 import units.MovementType;
 import units.Unit;
 import units.UnitCategory;
@@ -20,6 +21,8 @@ public class AAir extends Unit {
 		movementType = MovementType.BAND;
 		unitClass = UnitCategory.VEHICLE;
 		unitSupply = new UnitSupply(60, 9);
+		
+		unitImage = new AAirImage(tileSize);
 	}
 
 	public static void setPrice(int price) {
@@ -32,51 +35,5 @@ public class AAir extends Unit {
 
 	public static String getTypeName() {
 		return typeName;
-	}
-
-	protected void paintUnit(Graphics g, int tileSize) {
-		int paintX = point.getX();
-		int paintY = point.getY();
-
-		int headAlignX = paintX + tileSize / 3 - 1;
-		int headAlignY = paintY + tileSize / 5;
-		int headWidth = 3 * tileSize / 20 + 2;
-		int headHeight = 4 * tileSize / 20 + 2;
-
-		int bodyAlignX = headAlignX;
-		int bodyAlignY = headAlignY + headHeight;
-		int bodyWidth = 2 * tileSize / 5 + 1;
-		int bodyHeight = tileSize / 4 + 3;
-
-		// cannon-points
-		int cx1 = paintX + 3 * tileSize / 4;
-		int cy1 = paintY + tileSize / 8;
-		int cx2 = paintX + 7 * tileSize / 8 - 3;
-		int cy2 = paintY + tileSize / 4 - 3;
-		int cx3 = paintX + 3 * tileSize / 4 - 9;
-		int cy3 = bodyAlignY;
-		int cx4 = headAlignX + headWidth;
-		int cy4 = bodyAlignY;
-		int cx5 = headAlignX + headWidth;
-		int cy5 = bodyAlignY - 4;
-
-		// cannon
-		int[] cannonX = {cx1, cx2, cx3, cx4, cx5};
-		int[] cannonY = {cy1, cy2, cy3, cy4, cy5};
-		int npoints = 5;
-
-		if (active) {
-			g.setColor(color);
-		} else {
-			g.setColor(restingColor);
-		}
-		g.fillRect(headAlignX, headAlignY, headWidth, headHeight); // head
-		g.fillRect(bodyAlignX, bodyAlignY, bodyWidth, bodyHeight); // body
-		g.fillPolygon(cannonX, cannonY, npoints); // cannon
-
-		g.setColor(Color.black);
-		g.drawRect(headAlignX, headAlignY, headWidth, headHeight); // head
-		g.drawRect(bodyAlignX, bodyAlignY, bodyWidth, bodyHeight); // body
-		g.drawPolygon(cannonX, cannonY, npoints); // cannon
 	}
 }

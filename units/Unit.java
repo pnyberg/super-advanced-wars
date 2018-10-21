@@ -3,6 +3,7 @@ package units;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import graphics.images.units.UnitImage;
 import point.Point;
 
 public abstract class Unit {
@@ -23,6 +24,8 @@ public abstract class Unit {
 	protected UnitCategory unitClass;
 	protected AttackType attackType;
 	protected MovementType movementType;
+	
+	protected UnitImage unitImage;
 
 	public Unit(UnitType unitType, int x, int y, Color color, int tileSize) {
 		point = new Point(x, y);
@@ -66,12 +69,32 @@ public abstract class Unit {
 		return point;
 	}
 
+	public UnitHealth getUnitHealth() {
+		return unitHealth;
+	}
+	
+	public boolean isActive() {
+		return active;
+	}
+
+	public boolean isHidden() {
+		return hidden;
+	}
+
+	public boolean isAttacking() {
+		return attacking;
+	}
+
+	public boolean isCapting() {
+		return capting;
+	}
+
 	public UnitSupply getUnitSupply() {
 		return unitSupply;
 	}
 	
-	public UnitHealth getUnitHealth() {
-		return unitHealth;
+	public Color getColor() {
+		return color;
 	}
 	
 	public int getMovement() {
@@ -93,21 +116,9 @@ public abstract class Unit {
 	public UnitCategory getUnitClass() {
 		return unitClass;
 	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public boolean isHidden() {
-		return hidden;
-	}
-
-	public boolean isAttacking() {
-		return attacking;
-	}
-
-	public boolean isCapting() {
-		return capting;
+	
+	public UnitImage getUnitImage() {
+		return unitImage;
 	}
 
 	public void paint(Graphics g, int tileSize) {
@@ -129,5 +140,13 @@ public abstract class Unit {
 		g.fillRect(point.getX() + tileSize / 5, point.getY() + 12 * tileSize / 15, tileSize / 6, tileSize / 12);
 	}
 
-	protected abstract void paintUnit(Graphics g, int tileSize);
+	protected void paintUnit(Graphics g, int tileSize) {
+		Color unitColor = null;
+		if (active) {
+			unitColor = color;
+		} else {
+			unitColor = restingColor;
+		}
+		unitImage.paint(g, point.getX(), point.getY(), unitColor);
+	}
 }

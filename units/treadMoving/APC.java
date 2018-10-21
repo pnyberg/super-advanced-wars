@@ -27,6 +27,8 @@ public class APC extends Unit {
 		unitSupply = new UnitSupply(70, 0);
 		containedUnit = null;
 		droppingOff = false;
+		
+		unitImage = new APCImage(tileSize);
 	}
 
 	public void addUnit(Unit unit) {
@@ -78,23 +80,5 @@ public class APC extends Unit {
 
 	public boolean isDroppingOff() {
 		return droppingOff;
-	}
-
-	protected void paintUnit(Graphics g, int tileSize) {
-		int bodyWidth = 3 * tileSize / 5 + 1;
-		int bodyHeight = 2 * tileSize / 4 - 3;
-		int bodyAlignX = tileSize / 4 - 1;
-		int bodyAlignY = tileSize / 5 + 4;
-
-		// body
-		if (active) {
-			g.setColor(color);
-		} else {
-			g.setColor(restingColor);
-		}
-		g.fillRect(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodyWidth, bodyHeight);
-
-		g.setColor(Color.black);
-		g.drawRect(point.getX() + bodyAlignX, point.getY() + bodyAlignY, bodyWidth, bodyHeight);
 	}
 }
