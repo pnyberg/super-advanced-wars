@@ -10,6 +10,7 @@ import hero.Hero;
 public class MiniCannon extends FiringStructure {
 	private Direction direction;
 	private final int damage = 30;
+	private final int maxWidthRange = 7;
 	
 	public MiniCannon(int x, int y, Direction direction, Hero owner, int tileSize) {
 		super(x, y, owner, tileSize);
@@ -21,7 +22,7 @@ public class MiniCannon extends FiringStructure {
 		if (direction == Direction.SOUTH) {
 			int rangeX = point.getX()/tileSize;
 			int rangeY = point.getY()/tileSize + 1;
-			for (int k = 1 ; k <= 5 ; k += 2) {
+			for (int k = 1 ; k <= maxWidthRange ; k += 2) {
 				for (int i = 0 ; i < k ; i++) {
 					if (0 <= (rangeX+i) && (rangeX+i) < rangeMap.length && rangeY < rangeMap[0].length) {
 						rangeMap[rangeX+i][rangeY] = true;
@@ -33,7 +34,7 @@ public class MiniCannon extends FiringStructure {
 		} else if (direction == Direction.EAST) {
 			int rangeX = point.getX()/tileSize + 1;
 			int rangeY = point.getY()/tileSize;
-			for (int k = 1 ; k <= 5 ; k += 2) {
+			for (int k = 1 ; k <= maxWidthRange ; k += 2) {
 				for (int i = 0 ; i < k ; i++) {
 					if (rangeX < rangeMap.length && 0 <= (rangeY+i) && (rangeY+i) < rangeMap[0].length) {
 						rangeMap[rangeX][rangeY+i] = true;
@@ -45,7 +46,7 @@ public class MiniCannon extends FiringStructure {
 		} else if (direction == Direction.NORTH) {
 			int rangeX = point.getX()/tileSize;
 			int rangeY = point.getY()/tileSize - 1;
-			for (int k = 1 ; k <= 5 ; k += 2) {
+			for (int k = 1 ; k <= maxWidthRange ; k += 2) {
 				for (int i = 0 ; i < k ; i++) {
 					if (0 <= (rangeX+i) && (rangeX+i) < rangeMap.length && 0 <= rangeY) {
 						rangeMap[rangeX+i][rangeY] = true;
@@ -57,7 +58,7 @@ public class MiniCannon extends FiringStructure {
 		} else if (direction == Direction.WEST) {
 			int rangeX = point.getX()/tileSize - 1;
 			int rangeY = point.getY()/tileSize;
-			for (int k = 1 ; k <= 5 ; k += 2) {
+			for (int k = 1 ; k <= maxWidthRange ; k += 2) {
 				for (int i = 0 ; i < k ; i++) {
 					if (0 <= rangeX && 0 <= (rangeY+i) && (rangeY+i) < rangeMap[0].length) {
 						rangeMap[rangeX][rangeY+i] = true;
