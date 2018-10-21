@@ -3,7 +3,7 @@ package map.buildings;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import graphics.images.BuildingImage;
+import graphics.images.buildings.BuildingImage;
 import hero.*;
 
 public abstract class Building {

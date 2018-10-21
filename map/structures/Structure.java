@@ -2,7 +2,7 @@ package map.structures;
 
 import java.awt.Graphics;
 
-import graphics.images.StructureImage;
+import graphics.images.structures.StructureImage;
 import hero.Hero;
 import point.Point;
 

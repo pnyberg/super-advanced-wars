@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import gameObjects.Direction;
-import graphics.images.DirectionalStructureImage;
+import graphics.images.structures.DirectionalStructureImage;
 import hero.Hero;
 
 public class MiniCannon extends FiringStructure {

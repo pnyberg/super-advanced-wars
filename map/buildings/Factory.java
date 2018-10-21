@@ -5,7 +5,7 @@
  */
 package map.buildings;
 
-import graphics.images.FactoryImage;
+import graphics.images.buildings.FactoryImage;
 
 public class Factory extends Building {
 	public Factory(int x, int y, int tileSize) {

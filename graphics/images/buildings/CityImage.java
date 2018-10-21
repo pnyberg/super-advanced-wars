@@ -1,4 +1,4 @@
-package graphics.images;
+package graphics.images.buildings;
 
 import java.awt.Color;
 import java.awt.Graphics;

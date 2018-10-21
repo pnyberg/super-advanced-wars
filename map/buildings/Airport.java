@@ -8,7 +8,7 @@ package map.buildings;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import graphics.images.AirportImage;
+import graphics.images.buildings.AirportImage;
 
 public class Airport extends Building {
 	public Airport(int x, int y, int tileSize) {

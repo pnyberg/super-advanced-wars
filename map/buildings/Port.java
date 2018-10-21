@@ -6,7 +6,7 @@
 
 package map.buildings;
 
-import graphics.images.PortImage;
+import graphics.images.buildings.PortImage;
 
 public class Port extends Building {
 	public Port(int x, int y, int tileSize) {
