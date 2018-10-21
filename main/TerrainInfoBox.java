@@ -51,9 +51,7 @@ public class TerrainInfoBox {
 		g.setFont(currentFont);
 		
 		paintArea(g, area);
-		
 		paintDefenceValue(g, area);
-		
 		paintCaptValue(g, area);
 	}
 	

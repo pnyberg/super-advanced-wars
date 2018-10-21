@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 import cursors.Cursor;
 import map.GameMap;
+import map.UnitGetter;
 import map.buildings.BuildingHandler;
 import map.structures.StructureHandler;
 import point.Point;
@@ -13,16 +14,17 @@ public class InfoBox {
 	private Point point;
 	private int width;
 	private int height;
-	private int tileSize;
 	private TerrainInfoBox terrainInfoBox;
+	private UnitInfoBox unitInfoBox; 
 	
-	public InfoBox(Point point, int width, int height, int tileSize, GameMap gameMap, Cursor cursor, BuildingHandler buildingHandler, StructureHandler structureHandler) {
+	public InfoBox(Point point, int width, int height, int tileSize, GameMap gameMap, Cursor cursor, UnitGetter unitGetter, BuildingHandler buildingHandler, StructureHandler structureHandler) {
 		this.point = point;
 		this.width = width;
 		this.height = height;
-		this.tileSize = tileSize;
 		Point terrainInfoBoxPoint = new Point(point.getX() + tileSize / 4, point.getY() + tileSize / 8);
 		terrainInfoBox = new TerrainInfoBox(terrainInfoBoxPoint, tileSize * 2, height - tileSize / 4, tileSize, gameMap, cursor, buildingHandler, structureHandler);
+		Point unitInfoBoxPoint = new Point(point.getX() + tileSize * 2 + tileSize / 4 + 5, point.getY() + tileSize / 8);
+		unitInfoBox = new UnitInfoBox(unitInfoBoxPoint, tileSize * 2, height - tileSize / 4, tileSize, gameMap, cursor, unitGetter);
 	}
 	
 	public int getWidth() {
@@ -40,5 +42,6 @@ public class InfoBox {
 		g.drawRect(point.getX(), point.getY(), width, height);
 		
 		terrainInfoBox.paint(g);
+		unitInfoBox.paint(g);
 	}
 }

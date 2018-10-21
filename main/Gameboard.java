@@ -61,7 +61,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		InfoBox infoBox = new InfoBox(point, 
 										gameProp.getMapDim().getWidth() * gameProp.getMapDim().tileSize, 
 										3 * gameProp.getMapDim().tileSize,
-										gameProp.getMapDim().tileSize, gameMap, cursor, buildingHandler, structureHandler);
+										gameProp.getMapDim().tileSize, gameMap, cursor, unitGetter, buildingHandler, structureHandler);
 		internalStructureObject = new InternalStructureObject(gameProp, infoBox, heroHandler, gameMap, 
 												cursor, buildings, structures, unitGetter, 
 												structureAttackHandler, unitWorthCalculator, 
