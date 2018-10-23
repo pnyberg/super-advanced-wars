@@ -148,7 +148,8 @@ public class RouteArrowPath {
 	
 	public int calculateFuelUsed(MovementType movementType) {
 		int fuelUsed = 0;
-		for (Point arrowPoint : arrowPoints) {
+		for (int i = 1 ; i < arrowPoints.size() ; i++) {
+			Point arrowPoint = arrowPoints.get(i);
 			fuelUsed += movementCostCalculator.movementCost(arrowPoint.getX()/mapDim.tileSize, arrowPoint.getY()/mapDim.tileSize, movementType);
 		}
 		return fuelUsed;

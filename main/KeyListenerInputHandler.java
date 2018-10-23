@@ -204,7 +204,7 @@ public class KeyListenerInputHandler {
 
 			removeUnitIfDead(gameProp.getChosenObject().chosenUnit);
 
-			int fuelUse = routeHandler.getFuelFromArrows(gameProp.getChosenObject().chosenUnit);;
+			int fuelUse = routeHandler.getFuelFromArrows(gameProp.getChosenObject().chosenUnit);
 			gameProp.getChosenObject().chosenUnit.getUnitSupply().useFuel(fuelUse);
 
 			gameProp.getChosenObject().chosenUnit.regulateActive(false);
