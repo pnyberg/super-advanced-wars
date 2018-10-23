@@ -69,6 +69,12 @@ public enum UnitType {
 	public int unitIndex() {
 		return unitIndex;
 	}
+	
+	public boolean isTransportUnit() {
+		return unitIndex == APC.unitIndex
+			|| unitIndex == TCOPTER.unitIndex
+			|| unitIndex == LANDER.unitIndex;
+	}
 
 	public static int getTypeFromUnit(Unit unit) {
 		if (unit instanceof Infantry) {
