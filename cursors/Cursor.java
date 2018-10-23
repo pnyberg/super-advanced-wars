@@ -1,12 +1,13 @@
-package cursors;
-import java.awt.Color;
-import java.awt.Graphics;
-
 /***
  * Class to handle the cursor used for the map
  * 
  * @author pernyberg
  */
+package cursors;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
 public class Cursor {
 	private int x;
 	private int y;
@@ -27,24 +28,24 @@ public class Cursor {
 	}
 
 	public void moveUp() {
-		y--;
+		y -= tileSize;
 	}
 
 	public void moveDown() {
-		y++;
+		y += tileSize;
 	}
 
 	public void moveLeft() {
-		x--;
+		x -= tileSize;
 	}
 
 	public void moveRight() {
-		x++;
+		x += tileSize;
 	}
 
-	public void setPosition(int newX, int newY) {
-		x = newX;
-		y = newY;
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 
 	public int getX() {
@@ -57,59 +58,56 @@ public class Cursor {
 
 	public void paint(Graphics g) {
 		// Get position for the cursor
-		int posX = x * tileSize;
-		int posY = y * tileSize;
-
 		g.setColor(fillColor);
 
 		// upper left corner (filling)
-		g.fillRect(posX, posY, smallPiece, bigPiece);
-		g.fillRect(posX, posY, bigPiece, smallPiece);
+		g.fillRect(x, y, smallPiece, bigPiece);
+		g.fillRect(x, y, bigPiece, smallPiece);
 
 		// upper right corner (filling)
-		g.fillRect(posX + tileSize - smallPiece, posY, smallPiece, bigPiece);
-		g.fillRect(posX + tileSize - bigPiece, posY, bigPiece, smallPiece);
+		g.fillRect(x + tileSize - smallPiece, y, smallPiece, bigPiece);
+		g.fillRect(x + tileSize - bigPiece, y, bigPiece, smallPiece);
 
 		// lower left corner (filling)
-		g.fillRect(posX, posY + tileSize - bigPiece, smallPiece, bigPiece);
-		g.fillRect(posX, posY + tileSize - smallPiece, bigPiece, smallPiece);
+		g.fillRect(x, y + tileSize - bigPiece, smallPiece, bigPiece);
+		g.fillRect(x, y + tileSize - smallPiece, bigPiece, smallPiece);
 
 		// lower right corner (filling)
-		g.fillRect(posX + tileSize - smallPiece, posY + tileSize - bigPiece, smallPiece, bigPiece);
-		g.fillRect(posX + tileSize - bigPiece, posY + tileSize - smallPiece, bigPiece, smallPiece);
+		g.fillRect(x + tileSize - smallPiece, y + tileSize - bigPiece, smallPiece, bigPiece);
+		g.fillRect(x + tileSize - bigPiece, y + tileSize - smallPiece, bigPiece, smallPiece);
 
 		g.setColor(edgeColor);
 
 		// upper left corner (border)
-		g.drawLine(posX, posY, posX + bigPiece, posY);
-		g.drawLine(posX + bigPiece, posY, posX + bigPiece, posY + smallPiece);
-		g.drawLine(posX + bigPiece, posY + smallPiece, posX + smallPiece, posY + smallPiece);
-		g.drawLine(posX + smallPiece, posY + smallPiece, posX + smallPiece, posY + bigPiece);
-		g.drawLine(posX + smallPiece, posY + bigPiece, posX, posY + bigPiece);
-		g.drawLine(posX, posY + bigPiece, posX, posY);
+		g.drawLine(x, y, x + bigPiece, y);
+		g.drawLine(x + bigPiece, y, x + bigPiece, y + smallPiece);
+		g.drawLine(x + bigPiece, y + smallPiece, x + smallPiece, y + smallPiece);
+		g.drawLine(x + smallPiece, y + smallPiece, x + smallPiece, y + bigPiece);
+		g.drawLine(x + smallPiece, y + bigPiece, x, y + bigPiece);
+		g.drawLine(x, y + bigPiece, x, y);
 
 		// upper right corner (border)
-		g.drawLine(posX + tileSize - bigPiece, posY, posX + tileSize, posY);
-		g.drawLine(posX + tileSize, posY, posX + tileSize, posY + bigPiece);
-		g.drawLine(posX + tileSize, posY + bigPiece, posX + tileSize - smallPiece, posY + bigPiece);
-		g.drawLine(posX + tileSize - smallPiece, posY + bigPiece, posX + tileSize - smallPiece, posY + smallPiece);
-		g.drawLine(posX + tileSize - smallPiece, posY + smallPiece, posX + tileSize - bigPiece, posY + smallPiece);
-		g.drawLine(posX + tileSize - bigPiece, posY + smallPiece, posX + tileSize - bigPiece, posY);
+		g.drawLine(x + tileSize - bigPiece, y, x + tileSize, y);
+		g.drawLine(x + tileSize, y, x + tileSize, y + bigPiece);
+		g.drawLine(x + tileSize, y + bigPiece, x + tileSize - smallPiece, y + bigPiece);
+		g.drawLine(x + tileSize - smallPiece, y + bigPiece, x + tileSize - smallPiece, y + smallPiece);
+		g.drawLine(x + tileSize - smallPiece, y + smallPiece, x + tileSize - bigPiece, y + smallPiece);
+		g.drawLine(x + tileSize - bigPiece, y + smallPiece, x + tileSize - bigPiece, y);
 
 		// lower left corner (border)
-		g.drawLine(posX, posY + tileSize - bigPiece, posX + smallPiece, posY + tileSize - bigPiece);
-		g.drawLine(posX + smallPiece, posY + tileSize - bigPiece, posX + smallPiece, posY + tileSize - smallPiece);
-		g.drawLine(posX + smallPiece, posY + tileSize - smallPiece, posX + bigPiece, posY + tileSize - smallPiece);
-		g.drawLine(posX + bigPiece, posY + tileSize - smallPiece, posX + bigPiece, posY + tileSize);
-		g.drawLine(posX + bigPiece, posY + tileSize, posX, posY + tileSize);
-		g.drawLine(posX, posY + tileSize, posX, posY + tileSize - bigPiece);
+		g.drawLine(x, y + tileSize - bigPiece, x + smallPiece, y + tileSize - bigPiece);
+		g.drawLine(x + smallPiece, y + tileSize - bigPiece, x + smallPiece, y + tileSize - smallPiece);
+		g.drawLine(x + smallPiece, y + tileSize - smallPiece, x + bigPiece, y + tileSize - smallPiece);
+		g.drawLine(x + bigPiece, y + tileSize - smallPiece, x + bigPiece, y + tileSize);
+		g.drawLine(x + bigPiece, y + tileSize, x, y + tileSize);
+		g.drawLine(x, y + tileSize, x, y + tileSize - bigPiece);
 
 		// lower right corner (border)
-		g.drawLine(posX + tileSize - smallPiece, posY + tileSize - bigPiece, posX + tileSize, posY + tileSize - bigPiece);
-		g.drawLine(posX + tileSize, posY + tileSize - bigPiece, posX + tileSize, posY + tileSize);
-		g.drawLine(posX + tileSize, posY + tileSize, posX + tileSize - bigPiece, posY + tileSize);
-		g.drawLine(posX + tileSize - bigPiece, posY + tileSize, posX + tileSize - bigPiece, posY + tileSize - smallPiece);
-		g.drawLine(posX + tileSize - bigPiece, posY + tileSize - smallPiece, posX + tileSize - smallPiece, posY + tileSize - smallPiece);
-		g.drawLine(posX + tileSize - smallPiece, posY + tileSize - smallPiece, posX + tileSize - smallPiece, posY + tileSize - bigPiece);
+		g.drawLine(x + tileSize - smallPiece, y + tileSize - bigPiece, x + tileSize, y + tileSize - bigPiece);
+		g.drawLine(x + tileSize, y + tileSize - bigPiece, x + tileSize, y + tileSize);
+		g.drawLine(x + tileSize, y + tileSize, x + tileSize - bigPiece, y + tileSize);
+		g.drawLine(x + tileSize - bigPiece, y + tileSize, x + tileSize - bigPiece, y + tileSize - smallPiece);
+		g.drawLine(x + tileSize - bigPiece, y + tileSize - smallPiece, x + tileSize - smallPiece, y + tileSize - smallPiece);
+		g.drawLine(x + tileSize - smallPiece, y + tileSize - smallPiece, x + tileSize - smallPiece, y + tileSize - bigPiece);
 	}
 }
