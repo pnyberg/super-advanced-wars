@@ -19,7 +19,7 @@ public class MovementCostMatrixFactory {
 		}
 
 		movementCostMatrix[MovementType.TIRE.movementTypeIndex()][TerrainType.PLAIN.terrainTypeIndex()] = 2;
-		movementCostMatrix[MovementType.BAND.movementTypeIndex()][TerrainType.WOOD.terrainTypeIndex()] = 2;
+		movementCostMatrix[MovementType.TREAD.movementTypeIndex()][TerrainType.WOOD.terrainTypeIndex()] = 2;
 		movementCostMatrix[MovementType.TIRE.movementTypeIndex()][TerrainType.WOOD.terrainTypeIndex()] = 3;
 		movementCostMatrix[MovementType.INFANTRY.movementTypeIndex()][TerrainType.MOUNTAIN.terrainTypeIndex()] = 2;
 		movementCostMatrix[MovementType.SHIP.movementTypeIndex()][TerrainType.REEF.terrainTypeIndex()] = 2;

@@ -38,7 +38,7 @@ public class TerrainInfoBox {
 	}
 	
 	public void paint(Graphics g) {
-		Area area = gameMap.getMap()[cursor.getX()][cursor.getY()];
+		Area area = gameMap.getMap()[cursor.getX() / tileSize][cursor.getY() / tileSize];
 		g.setColor(Color.lightGray);
 		g.fillRect(point.getX(), point.getY(), width, height);
 		
@@ -57,7 +57,7 @@ public class TerrainInfoBox {
 	
 	private void paintArea(Graphics g, Area area) {
 		if (area.getTerrainType().isBuilding()) {
-			Building building = buildingHandler.getBuilding(area.getPoint().getX() / tileSize, area.getPoint().getY() / tileSize);
+			Building building = buildingHandler.getBuilding(area.getPoint().getX(), area.getPoint().getY());
 			Color buildingColor = null;
 			Hero owner = building.getOwner();
 			if (owner == null) {
@@ -100,7 +100,7 @@ public class TerrainInfoBox {
 			g.setColor(Color.black);
 			Font currentFont = g.getFont();
 			g.setFont(new Font("ComicSans", Font.BOLD, 20));
-			Building building = buildingHandler.getBuilding(area.getPoint().getX() / tileSize, area.getPoint().getY() / tileSize);
+			Building building = buildingHandler.getBuilding(area.getPoint().getX(), area.getPoint().getY());
 			int captValue = building.getCaptingValue();
 			int xAdjust = captValue < 10 ? 10 : 0;
 			g.drawString("" + captValue + "", point.getX() + width/2 - 5 + xAdjust, point.getY() + tileSize + 26 + 20 + 18);

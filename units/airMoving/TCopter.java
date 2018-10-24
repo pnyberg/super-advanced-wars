@@ -1,9 +1,11 @@
+/**
+ * TODO:
+ *  - implement ContainingUnit-interface
+ */
 package units.airMoving;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
-import graphics.images.units.BCopterImage;
 import graphics.images.units.TCopterImage;
 import units.AttackType;
 import units.MovementType;

@@ -69,5 +69,4 @@ public class HeroHandler {
 	public int getCurrentHeroTroopSize() {
 		return getCurrentHero().getTroopHandler().getTroopSize();
 	}
-
 }

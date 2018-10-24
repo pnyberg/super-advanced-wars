@@ -2,7 +2,6 @@ package main;
 
 import gameObjects.GameProp;
 import hero.Hero;
-import hero.HeroPortrait;
 import units.MovementType;
 import units.Unit;
 

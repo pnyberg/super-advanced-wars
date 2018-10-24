@@ -20,7 +20,7 @@ public class BCopterImage extends UnitImage {
 		int legHeight = tileSize / 5;
 		int leftLegAlignX = 9 * tileSize / 20;
 		int rightLegAlignX = 13 * tileSize / 20;
-		int legAlignY = 7 * tileSize /	 10 - 2;
+		int legAlignY = 7 * tileSize / 10 - 2;
 
 		int feetWidth = tileSize / 2 + 4;
 		int feetHeight = tileSize / 8;

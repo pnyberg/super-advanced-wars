@@ -1,7 +1,6 @@
 package units.seaMoving;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.util.ArrayList;
 
 import graphics.images.units.CruiserImage;

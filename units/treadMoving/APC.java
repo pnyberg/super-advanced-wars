@@ -1,8 +1,12 @@
+/**
+ * TODO:
+ *  - implement ContainingUnit-interface
+ */
 package units.treadMoving;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
+import graphics.images.units.APCImage;
 import units.AttackType;
 import units.MovementType;
 import units.Unit;
@@ -21,7 +25,7 @@ public class APC extends Unit {
 		super(UnitType.APC, x, y, color, tileSize);
 
 		movement = 6;
-		movementType = MovementType.BAND;
+		movementType = MovementType.TREAD;
 		attackType = AttackType.NONE;
 		unitClass = UnitCategory.VEHICLE;
 		unitSupply = new UnitSupply(70, 0);

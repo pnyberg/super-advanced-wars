@@ -2,7 +2,6 @@ package map.buildings;
 
 import java.util.ArrayList;
 
-import hero.HeroPortrait;
 import main.HeroHandler;
 
 public class BuildingHandler {
@@ -16,10 +15,7 @@ public class BuildingHandler {
 	
 	public boolean isNonFriendlyBuilding(int x, int y) {
 		Building building = getBuilding(x, y);
-		if (building == null) {
-			return false;
-		}
-		return building.getOwner() != heroHandler.getCurrentHero();
+		return building != null && building.getOwner() != heroHandler.getCurrentHero();
 	}
 
 	public Building getBuilding(int x, int y) {
@@ -28,17 +24,14 @@ public class BuildingHandler {
 				return building;
 			}
 		}
-
 		return null;
 	}
 
 	public Building getFriendlyBuilding(int x, int y) {
 		Building building = getBuilding(x, y);
-
 		if (building != null && building.getOwner() == heroHandler.getCurrentHero()) {
 			return building;
 		}
-
 		return null;
 	}
 }

@@ -20,8 +20,8 @@ public abstract class Structure {
 		this.tileSize = tileSize;
 	}
 
-	public Structure(int tileX, int tileY, Hero owner, int tileSize) {
-		this(new Point(tileX * tileSize, tileY * tileSize), owner, tileSize);
+	public Structure(int x, int y, Hero owner, int tileSize) {
+		this(new Point(x, y), owner, tileSize);
 	}
 
 	public void takeDamage(int damage) {

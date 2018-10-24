@@ -16,32 +16,31 @@ public class WeaponIndexChooser {
 	public WeaponIndexChooser() {}
 
 	public int getWeaponIndex(Unit attacker, Unit defender) {
-		boolean tankOrMechOrCopterVsFootOrCopter = 
-										   defender instanceof Infantry 
+		boolean defenderFootmanOrCopter = defender instanceof Infantry 
 										|| defender instanceof Mech 
 										|| defender instanceof BCopter
 										|| defender instanceof TCopter;
 		if (attacker instanceof Infantry) {
 			return 1;
 		} else if (attacker instanceof Mech) {
-			if (tankOrMechOrCopterVsFootOrCopter) {
+			if (defenderFootmanOrCopter) {
 				return 1;
 			}
 			return 0;
 		} else if (attacker instanceof Recon) {
 			return 1;
 		} else if (attacker instanceof Tank) {
-			if (tankOrMechOrCopterVsFootOrCopter) {
+			if (defenderFootmanOrCopter) {
 				return 1;
 			}
 			return 0;
 		} else if (attacker instanceof MDTank) {
-			if (tankOrMechOrCopterVsFootOrCopter) {
+			if (defenderFootmanOrCopter) {
 				return 1;
 			}
 			return 0;
 		} else if (attacker instanceof Neotank) {
-			if (tankOrMechOrCopterVsFootOrCopter) {
+			if (defenderFootmanOrCopter) {
 				return 1;
 			}
 			return 0;
@@ -60,7 +59,7 @@ public class WeaponIndexChooser {
 		} else if (attacker instanceof Bomber) {
 			return 0;
 		} else if (attacker instanceof BCopter) {
-			if (tankOrMechOrCopterVsFootOrCopter) {
+			if (defenderFootmanOrCopter) {
 				return 1;
 			}
 			return 0;

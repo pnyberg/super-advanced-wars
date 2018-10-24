@@ -1,12 +1,10 @@
 package units.seaMoving;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
 import graphics.images.units.BattleshipImage;
 import units.IndirectUnit;
 import units.MovementType;
-import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
 import units.UnitType;

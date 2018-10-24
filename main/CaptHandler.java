@@ -1,17 +1,13 @@
 package main;
 
-import cursors.Cursor;
 import hero.Hero;
 import map.buildings.Building;
-import map.buildings.BuildingHandler;
 import units.Unit;
 
 public class CaptHandler {
-	private BuildingHandler buildingHandler;
 	private HeroHandler heroHandler;
 	
-	public CaptHandler(BuildingHandler buildingHandler, HeroHandler heroHandler) {
-		this.buildingHandler = buildingHandler;
+	public CaptHandler(HeroHandler heroHandler) {
 		this.heroHandler = heroHandler;
 	}
 	

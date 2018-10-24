@@ -1,5 +1,6 @@
 /**
- * TODO: take DimensionValues as parameter instead
+ * TODO:
+ *  - take DimensionValues as parameter instead?
  */
 package menus;
 
@@ -83,16 +84,16 @@ public abstract class Menu {
 
 	protected void paintMenuBackground(Graphics g) {
 		int menuHeight = getNumberOfRows() * dimensionValues.getMenuRowHeight() + 10;
-		int menuX = x * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2;
-		int menuY = y * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2;
+		int xAlign = dimensionValues.getTileSize() / 2;
+		int yAlign = dimensionValues.getTileSize() / 2;
 
 		g.setColor(Color.white);
-		g.fillRect(menuX, menuY, dimensionValues.getMenuRowWidth(), menuHeight);
+		g.fillRect(x + xAlign, y + yAlign, dimensionValues.getMenuRowWidth(), menuHeight);
 		g.setColor(Color.black);
-		g.fillRect(menuX, menuY, dimensionValues.getMenuRowWidth(), 2); 
-		g.fillRect(menuX, menuY, 2, menuHeight); 
-		g.fillRect(menuX + dimensionValues.getMenuRowWidth() - 2, menuY, 2, menuHeight); 
-		g.fillRect(menuX, menuY + menuHeight - 2, dimensionValues.getMenuRowWidth(), 2);
+		g.fillRect(x + xAlign, y + yAlign, dimensionValues.getMenuRowWidth(), 2); 
+		g.fillRect(x + xAlign, y + yAlign, 2, menuHeight); 
+		g.fillRect(x + xAlign + dimensionValues.getMenuRowWidth() - 2, y + yAlign, 2, menuHeight); 
+		g.fillRect(x + xAlign, y + yAlign + menuHeight - 2, dimensionValues.getMenuRowWidth(), 2);
 	}
 
 	protected void paintArrow(Graphics g) {

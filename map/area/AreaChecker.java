@@ -20,28 +20,24 @@ public class AreaChecker {
 		this.moveabilityMatrix = moveabilityMatrix;
 	}
 
-	public boolean isLand(int x, int y) {
-		TerrainType terrainType = gridMap.getMap()[x][y].getTerrainType();
+	public boolean isLand(int tileX, int tileY) {
+		TerrainType terrainType = gridMap.getMap()[tileX][tileY].getTerrainType();
 		return moveabilityMatrix[UnitType.INFANTRY.unitIndex()][terrainType.terrainTypeIndex()];
 	}
 
 	public boolean areaOccupiedByAny(Unit chosenUnit, int x, int y) {
 		Unit testAnyUnit = unitGetter.getAnyUnit(x, y);
-
 		if (chosenUnit == testAnyUnit) {
 			return false;
 		}
-
 		return testAnyUnit != null;
 	}
 
 	public boolean areaOccupiedByFriendly(Unit chosenUnit, int x, int y) {
 		Unit testFriendlyUnit = unitGetter.getFriendlyUnit(x, y);
-
 		if (chosenUnit == testFriendlyUnit) {
 			return false;
 		}
-
 		return testFriendlyUnit != null;
 	}
 

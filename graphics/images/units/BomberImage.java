@@ -20,7 +20,7 @@ public class BomberImage extends UnitImage {
 		int x2 = x + 2 * tileSize / 5 - 3;
 		int x3 = x + 3 * tileSize / 5 + 4;
 		int x4 = x + 3 * tileSize / 4 + 1;
-		int y1 = y + 5 * tileSize / 10;
+		int y1 = y + tileSize / 2;
 		int y2 = y + 9 * tileSize / 10;
 		int y3 = y2;
 		int y4 = y1;

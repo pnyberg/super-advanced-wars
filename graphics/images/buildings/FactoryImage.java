@@ -17,11 +17,11 @@ public class FactoryImage extends BuildingImage {
 		g.drawRect(x, y, tileSize, tileSize);
 
 		int firstX = x + tileSize / 10;
-		int secondX = x + 4 * tileSize / 10;
-		int thirdX = x + 6 * tileSize / 10;
+		int secondX = x + 2 * tileSize / 5;
+		int thirdX = x + 3 * tileSize / 5;
 		int fourthX = x + 9 * tileSize / 10;
 
-		int overY = y + 4 * tileSize / 10;
+		int overY = y + 2 * tileSize / 5;
 		int underY = y + 7 * tileSize / 10;
 
 		g.drawLine(firstX, overY + 2, secondX, overY - 2);

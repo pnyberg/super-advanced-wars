@@ -1,3 +1,8 @@
+/**
+ * TODO:
+ *  - implement hero power-heal to teammates 
+ *  - implement hero power-damage to teammates 
+ */
 package hero.heroPower;
 
 import hero.heroAbilities.CommanderEffect;

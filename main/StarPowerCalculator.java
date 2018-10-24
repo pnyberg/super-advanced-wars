@@ -1,16 +1,8 @@
-/**
- * TODO: add Sub
- */
 package main;
 
 import hero.Hero;
 import units.Unit;
 import units.UnitWorthCalculator;
-import units.airMoving.*;
-import units.footMoving.*;
-import units.seaMoving.*;
-import units.tireMoving.*;
-import units.treadMoving.*;
 
 public class StarPowerCalculator {
 	private UnitWorthCalculator unitWorthCalculator;

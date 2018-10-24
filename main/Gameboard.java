@@ -51,15 +51,15 @@ public class Gameboard extends JPanel implements KeyListener {
 		ArrayList<Structure> structures = new ArrayList<>();
 		MapLoader mapLoader = new MapLoader(gameProp.getMapDim(), gameMap, heroHandler, buildings, structures);
 		mapLoader.loadMap("map-files/test_map.txt");
-		Point point = new Point(0, gameMap.getHeight() * gameProp.getMapDim().tileSize);
+		Point point = new Point(0, gameMap.getTileHeight() * gameProp.getMapDim().tileSize);
 		Cursor cursor = new Cursor(0, 0, gameProp.getMapDim().tileSize);
-		UnitGetter unitGetter = new UnitGetter(heroHandler, gameProp.getMapDim().tileSize);
+		UnitGetter unitGetter = new UnitGetter(heroHandler);
 		BuildingHandler buildingHandler = new BuildingHandler(heroHandler, buildings);
 		StructureAttackHandler structureAttackHandler = new StructureAttackHandler(gameProp.getMapDim(), unitGetter);
 		UnitWorthCalculator unitWorthCalculator = new UnitWorthCalculator();
 		StructureHandler structureHandler = new StructureHandler(structures, structureAttackHandler, unitWorthCalculator);
 		InfoBox infoBox = new InfoBox(point, 
-										gameProp.getMapDim().getWidth() * gameProp.getMapDim().tileSize, 
+										gameProp.getMapDim().getTileWidth() * gameProp.getMapDim().tileSize, 
 										3 * gameProp.getMapDim().tileSize,
 										gameProp.getMapDim().tileSize, gameMap, cursor, unitGetter, buildingHandler, structureHandler);
 		internalStructureObject = new InternalStructureObject(gameProp, infoBox, heroHandler, gameMap, 
@@ -82,15 +82,15 @@ public class Gameboard extends JPanel implements KeyListener {
 	
 	private void updatePortraitSideChoice() {
 		Cursor cursor = internalStructureObject.getCursor();
-		internalStructureObject.getHeroPortrait().updateSideChoice(cursor.getX(), cursor.getY());
+		internalStructureObject.getHeroPortrait().updateSideChoice(cursor);
 	}
 	
 	public int getBoardWidth() {
-		return internalStructureObject.getGameMap().getWidth() * gameProp.getMapDim().tileSize;
+		return internalStructureObject.getGameMap().getTileWidth() * gameProp.getMapDim().tileSize;
 	}
 
 	public int getBoardHeight() {
-		return internalStructureObject.getGameMap().getHeight() * gameProp.getMapDim().tileSize
+		return internalStructureObject.getGameMap().getTileHeight() * gameProp.getMapDim().tileSize
 				+ internalStructureObject.getInfoBox().getHeight();
 	}
 

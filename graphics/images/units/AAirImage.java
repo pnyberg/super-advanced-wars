@@ -14,7 +14,7 @@ public class AAirImage extends UnitImage {
 		int headAlignX = x + tileSize / 3 - 1;
 		int headAlignY = y + tileSize / 5;
 		int headWidth = 3 * tileSize / 20 + 2;
-		int headHeight = 4 * tileSize / 20 + 2;
+		int headHeight = tileSize / 5 + 2;
 
 		int bodyAlignX = headAlignX;
 		int bodyAlignY = headAlignY + headHeight;

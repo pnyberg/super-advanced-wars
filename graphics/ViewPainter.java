@@ -1,17 +1,13 @@
 package graphics;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 import combat.AttackRangeHandler;
-import gameObjects.Direction;
 import gameObjects.MapDim;
 import main.HeroHandler;
 import map.GameMap;
-import map.area.Area;
 import map.buildings.Building;
 import map.buildings.BuildingHandler;
-import map.structures.MiniCannon;
 import map.structures.Structure;
 import map.structures.StructureHandler;
 import routing.RouteHandler;
@@ -54,29 +50,28 @@ public class ViewPainter {
 		} else if (mapViewType == MapViewType.CO_MAP_MENU_VIEW) {
 			commanderView.paintView(g);
 		}
-
 	}
 	
 	private void paintMap(Graphics g) {
-		for (int x = 0 ; x < gameMap.getMap().length ; x++) {
-			for (int y = 0 ; y < gameMap.getMap()[0].length ; y++) {
-				paintArea(g, x, y);
+		for (int tileX = 0 ; tileX < gameMap.getMap().length ; tileX++) {
+			for (int tileY = 0 ; tileY < gameMap.getMap()[0].length ; tileY++) {
+				paintArea(g, tileX, tileY);
 			}
 		}
 	}
 
-	private void paintArea(Graphics g, int x, int y) {
-		boolean movementAble = routeHandler.getMovementMap().isAcceptedMove(x, y);
-		boolean rangeAble = attackRangeHandler.getRangeMap()[x][y];
+	private void paintArea(Graphics g, int tileX, int tileY) {
+		boolean movementAble = routeHandler.getMovementMap().isAcceptedMove(tileX, tileY);
+		boolean rangeAble = attackRangeHandler.getRangeMap()[tileX][tileY];
 
-		Structure structure = structureHandler.getFiringStructure(x * mapDim.tileSize, y * mapDim.tileSize);
-		Building building = buildingHandler.getBuilding(x, y);
+		Structure structure = structureHandler.getFiringStructure(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
+		Building building = buildingHandler.getBuilding(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
 		if (structure != null && !rangeAble) {
 			structure.paint(g);
 		} else if (building != null && !rangeAble) {
 			building.paint(g);
 		} else {
-			gameMap.getMap()[x][y].paint(g, movementAble, rangeAble);
+			gameMap.getMap()[tileX][tileY].paint(g, movementAble, rangeAble);
 		}
 	}
 

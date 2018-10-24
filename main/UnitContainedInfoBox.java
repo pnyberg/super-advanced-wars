@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import cursors.Cursor;
-import map.GameMap;
 import map.UnitGetter;
 import point.Point;
 import units.Unit;
@@ -16,17 +15,13 @@ public class UnitContainedInfoBox {
 	private Point point;
 	private int width;
 	private int height;
-	private int tileSize;
-	private GameMap gameMap;
 	private Cursor cursor;
 	private UnitGetter unitGetter;
 	
-	public UnitContainedInfoBox(Point point, int width, int height, int tileSize, GameMap gameMap, Cursor cursor, UnitGetter unitGetter) {
+	public UnitContainedInfoBox(Point point, int width, int height, Cursor cursor, UnitGetter unitGetter) {
 		this.point = point;
 		this.width = width;
 		this.height = height;
-		this.tileSize = tileSize;
-		this.gameMap = gameMap;
 		this.cursor = cursor;
 		this.unitGetter = unitGetter;
 	}
@@ -46,8 +41,7 @@ public class UnitContainedInfoBox {
 	}
 	
 	public void paint(Graphics g) {
-		Unit unit = unitGetter.getAnyUnit(cursor.getX() * tileSize, cursor.getY() * tileSize);
-		
+		Unit unit = unitGetter.getAnyUnit(cursor.getX(), cursor.getY());
 		if (unit != null && unitIsTransportingOtherUnit(unit)) {
 			g.setColor(Color.lightGray);
 			g.fillRect(point.getX(), point.getY(), width, height);

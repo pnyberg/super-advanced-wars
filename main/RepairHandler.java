@@ -1,6 +1,5 @@
 package main;
 
-import gameObjects.MapDim;
 import map.buildings.Airport;
 import map.buildings.Building;
 import map.buildings.BuildingHandler;
@@ -11,13 +10,11 @@ import units.Unit;
 import units.UnitWorthCalculator;
 
 public class RepairHandler {
-	private MapDim mapDim;
 	private HeroHandler heroHandler;
 	private BuildingHandler buildingHandler;
 	private UnitWorthCalculator unitWorthCalculator;
 	
-	public RepairHandler(MapDim mapDim, HeroHandler heroHandler, BuildingHandler buildingHandler, UnitWorthCalculator unitWorthCalculator) {
-		this.mapDim = mapDim;
+	public RepairHandler(HeroHandler heroHandler, BuildingHandler buildingHandler, UnitWorthCalculator unitWorthCalculator) {
 		this.heroHandler = heroHandler;
 		this.buildingHandler = buildingHandler;
 		this.unitWorthCalculator = unitWorthCalculator;
@@ -26,11 +23,8 @@ public class RepairHandler {
 	public void repairUnits() {
 		for (int i = 0 ; i < heroHandler.getCurrentHeroTroopSize() ; i++) {
 			Unit unit = heroHandler.getCurrentHero().getTroopHandler().getTroop(i);
-			int x = unit.getPoint().getX();
-			int y = unit.getPoint().getY();
-			Building building = buildingHandler.getBuilding(x / mapDim.tileSize, y / mapDim.tileSize);
-			if (building != null && building.getOwner() == heroHandler.getCurrentHero() 
-					&& unitIsRepairable(unit, building)) {
+			Building building = buildingHandler.getBuilding(unit.getPoint().getX(), unit.getPoint().getY());
+			if (building != null && building.getOwner() == heroHandler.getCurrentHero() && unitIsRepairable(unit, building)) {
 				repairUnit(unit);
 				unit.getUnitSupply().replentish();
 			}

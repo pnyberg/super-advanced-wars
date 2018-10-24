@@ -37,7 +37,7 @@ public enum TerrainType {
 	}
 	
 	public boolean isStructure() {
-		return this == TerrainType.MINI_CANNON; 
+		return this == MINI_CANNON; 
 	}
 	
 	public String showName() {

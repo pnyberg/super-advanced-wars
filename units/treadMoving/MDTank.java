@@ -1,7 +1,6 @@
 package units.treadMoving;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
 import graphics.images.units.MDTankImage;
 import units.MovementType;
@@ -18,7 +17,7 @@ public class MDTank extends Unit {
 		super(UnitType.MDTANK, x, y, color, tileSize);
 
 		movement = 5;
-		movementType = MovementType.BAND;
+		movementType = MovementType.TREAD;
 		unitClass = UnitCategory.VEHICLE;
 		unitSupply = new UnitSupply(50, 8);
 		

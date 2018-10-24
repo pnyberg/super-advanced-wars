@@ -1,7 +1,6 @@
 package units.treadMoving;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
 import graphics.images.units.AAirImage;
 import units.MovementType;
@@ -18,7 +17,7 @@ public class AAir extends Unit {
 		super(UnitType.A_AIR, x, y, color, tileSize);
 
 		movement = 6;
-		movementType = MovementType.BAND;
+		movementType = MovementType.TREAD;
 		unitClass = UnitCategory.VEHICLE;
 		unitSupply = new UnitSupply(60, 9);
 		

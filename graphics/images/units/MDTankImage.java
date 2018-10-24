@@ -12,7 +12,7 @@ public class MDTankImage extends UnitImage {
 
 	public void paint(Graphics g, int x, int y, Color unitColor) {
 		int headSize = tileSize / 3 + 2;
-		int headAlignX = 5 * tileSize / 10 - 2;
+		int headAlignX = tileSize / 2 - 2;
 		int headAlignY = tileSize / 12 + 1;
 
 		int cannonWidth = headSize / 4;

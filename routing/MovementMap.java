@@ -12,14 +12,14 @@ public class MovementMap {
 	}
 
 	public void clearMovementMap() {
-		movementMap = new boolean[mapDim.getWidth()][mapDim.getHeight()];
+		movementMap = new boolean[mapDim.getTileWidth()][mapDim.getTileHeight()];
 	}
 
-	public void setAcceptedMove(int x, int y) {
-		movementMap[x][y] = true;
+	public void setAcceptedMove(int tileX, int tileY) {
+		movementMap[tileX][tileY] = true;
 	}
 	
-	public boolean isAcceptedMove(int x, int y) {
-		return movementMap[x][y];
+	public boolean isAcceptedMove(int tileX, int tileY) {
+		return movementMap[tileX][tileY];
 	}
 }

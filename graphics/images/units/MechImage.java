@@ -21,10 +21,10 @@ public class MechImage extends UnitImage {
 			g.drawImage(redImg, point.getX(), point.getY(), null);
 			return;
 		}*/
-		int rocketAlignX = tileSize / 20 * 3;
-		int rocketAlignY = tileSize / 20 * 4;
-		int rocketWidth = tileSize / 4 * 3;
-		int rocketHeight = tileSize / 10 * 3;
+		int rocketAlignX = 3 * tileSize / 20;
+		int rocketAlignY = 4 * tileSize / 20;
+		int rocketWidth = 3 * tileSize / 4;
+		int rocketHeight = 3 * tileSize / 10;
 		int headSize = tileSize / 2 - 4;
 		int headAlignX = tileSize / 4 + 2;
 		int headAlignY = tileSize / 10;

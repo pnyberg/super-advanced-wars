@@ -11,8 +11,8 @@ public class NeotankImage extends UnitImage {
 	}
 
 	public void paint(Graphics g, int x, int y, Color unitColor) {
-		int bodySize = 6 * tileSize / 10;
-		int bodyAlignX = 5 * tileSize / 20 - 3;
+		int bodySize = 3 * tileSize / 5;
+		int bodyAlignX = tileSize / 4 - 3;
 		int bodyAlignY = tileSize / 10;
 
 		int cannonWidth = bodySize / 8;
@@ -22,7 +22,7 @@ public class NeotankImage extends UnitImage {
 
 		int legWidth = tileSize / 10 + 2;
 		int legHeight = tileSize / 4 + 2;
-		int legAlignX1 = 5 * tileSize / 20;
+		int legAlignX1 = tileSize / 4;
 		int legAlignX2 = 11 * tileSize / 20;
 		int legAlignY = tileSize / 2 + 1;
 

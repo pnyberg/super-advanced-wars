@@ -13,11 +13,11 @@ public class GameMap {
 		map = new Area[width][height];
 	}
 	
-	public int getWidth() {
+	public int getTileWidth() {
 		return map.length;
 	}
 	
-	public int getHeight() {
+	public int getTileHeight() {
 		if (map.length == 0) {
 			return 0;
 		}

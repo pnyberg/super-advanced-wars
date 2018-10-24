@@ -9,63 +9,65 @@ import hero.Hero;
 
 public class MiniCannon extends FiringStructure {
 	private Direction direction;
-	private final int damage = 30;
-	private final int maxWidthRange = 7;
+	private int damage;
+	private int maxWidthRange;
 	
 	public MiniCannon(int x, int y, Direction direction, Hero owner, int tileSize) {
 		super(x, y, owner, tileSize);
 		this.direction = direction;
+		damage = 30;
+		maxWidthRange = 7;
 		structureImage = new DirectionalStructureImage(direction, tileSize);
 	}
 	
 	public void fillRangeMap(boolean[][] rangeMap) {
 		if (direction == Direction.SOUTH) {
-			int rangeX = point.getX()/tileSize;
-			int rangeY = point.getY()/tileSize + 1;
+			int rangeTileX = point.getX()/tileSize;
+			int rangeTileY = point.getY()/tileSize + 1;
 			for (int k = 1 ; k <= maxWidthRange ; k += 2) {
 				for (int i = 0 ; i < k ; i++) {
-					if (0 <= (rangeX+i) && (rangeX+i) < rangeMap.length && rangeY < rangeMap[0].length) {
-						rangeMap[rangeX+i][rangeY] = true;
+					if (0 <= (rangeTileX+i) && (rangeTileX+i) < rangeMap.length && rangeTileY < rangeMap[0].length) {
+						rangeMap[rangeTileX+i][rangeTileY] = true;
 					}
 				}
-				rangeX--;
-				rangeY++;
+				rangeTileX--;
+				rangeTileY++;
 			}
 		} else if (direction == Direction.EAST) {
-			int rangeX = point.getX()/tileSize + 1;
-			int rangeY = point.getY()/tileSize;
+			int rangeTileX = point.getX()/tileSize + 1;
+			int rangeTileY = point.getY()/tileSize;
 			for (int k = 1 ; k <= maxWidthRange ; k += 2) {
 				for (int i = 0 ; i < k ; i++) {
-					if (rangeX < rangeMap.length && 0 <= (rangeY+i) && (rangeY+i) < rangeMap[0].length) {
-						rangeMap[rangeX][rangeY+i] = true;
+					if (rangeTileX < rangeMap.length && 0 <= (rangeTileY+i) && (rangeTileY+i) < rangeMap[0].length) {
+						rangeMap[rangeTileX][rangeTileY+i] = true;
 					}
 				}
-				rangeX++;
-				rangeY--;
+				rangeTileX++;
+				rangeTileY--;
 			}
 		} else if (direction == Direction.NORTH) {
-			int rangeX = point.getX()/tileSize;
-			int rangeY = point.getY()/tileSize - 1;
+			int rangeTileX = point.getX()/tileSize;
+			int rangeTileY = point.getY()/tileSize - 1;
 			for (int k = 1 ; k <= maxWidthRange ; k += 2) {
 				for (int i = 0 ; i < k ; i++) {
-					if (0 <= (rangeX+i) && (rangeX+i) < rangeMap.length && 0 <= rangeY) {
-						rangeMap[rangeX+i][rangeY] = true;
+					if (0 <= (rangeTileX+i) && (rangeTileX+i) < rangeMap.length && 0 <= rangeTileY) {
+						rangeMap[rangeTileX+i][rangeTileY] = true;
 					}
 				}
-				rangeX--;
-				rangeY--;
+				rangeTileX--;
+				rangeTileY--;
 			}
 		} else if (direction == Direction.WEST) {
-			int rangeX = point.getX()/tileSize - 1;
-			int rangeY = point.getY()/tileSize;
+			int rangeTileX = point.getX()/tileSize - 1;
+			int rangeTileY = point.getY()/tileSize;
 			for (int k = 1 ; k <= maxWidthRange ; k += 2) {
 				for (int i = 0 ; i < k ; i++) {
-					if (0 <= rangeX && 0 <= (rangeY+i) && (rangeY+i) < rangeMap[0].length) {
-						rangeMap[rangeX][rangeY+i] = true;
+					if (0 <= rangeTileX && 0 <= (rangeTileY+i) && (rangeTileY+i) < rangeMap[0].length) {
+						rangeMap[rangeTileX][rangeTileY+i] = true;
 					}
 				}
-				rangeX--;
-				rangeY--;
+				rangeTileX--;
+				rangeTileY--;
 			}
 		}
 	}

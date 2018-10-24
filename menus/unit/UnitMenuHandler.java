@@ -1,15 +1,14 @@
 package menus.unit;
 
 import combat.AttackRangeHandler;
-import gameObjects.ChosenObject;
+import cursors.Cursor;
 import gameObjects.GameProp;
-import gameObjects.MapDim;
 import main.SupplyHandler;
 import map.UnitGetter;
-import map.UnitPositionChecker;
 import map.area.AreaChecker;
 import map.buildings.Building;
 import map.buildings.BuildingHandler;
+import point.Point;
 import units.ContUnitHandler;
 import units.Unit;
 import units.airMoving.TCopter;
@@ -25,47 +24,46 @@ public class UnitMenuHandler {
 	private ContUnitHandler containerUnitHandler;
 	private SupplyHandler supplyHandler;
 	private UnitGetter unitGetter;
-	private UnitPositionChecker unitPositionChecker;
 	private AreaChecker areaChecker;
 	private BuildingHandler buildingHandler;
 	private AttackRangeHandler attackRangeHandler;
 
-	public UnitMenuHandler(GameProp gameProp, ContUnitHandler containerUnitHandler, SupplyHandler supplyHandler, UnitGetter unitGetter, UnitPositionChecker unitPositionChecker, AreaChecker areaChecker, BuildingHandler buildingHandler, AttackRangeHandler attackRangeHandler) {
+	public UnitMenuHandler(GameProp gameProp, ContUnitHandler containerUnitHandler, SupplyHandler supplyHandler, UnitGetter unitGetter, AreaChecker areaChecker, BuildingHandler buildingHandler, AttackRangeHandler attackRangeHandler) {
 		unitMenu = new UnitMenu(gameProp.getMapDim().tileSize);
 		this.gameProp = gameProp;
 		this.containerUnitHandler = containerUnitHandler;
 		this.supplyHandler = supplyHandler;
 		this.unitGetter = unitGetter;
-		this.unitPositionChecker = unitPositionChecker;
 		this.areaChecker = areaChecker;
 		this.buildingHandler = buildingHandler;
 		this.attackRangeHandler = attackRangeHandler;
 		this.containerUnitHandler = containerUnitHandler; 
 	}
 
-	public void handleOpenUnitMenu(int cursorX, int cursorY) {
+	public void handleOpenUnitMenu(Cursor cursor) {
 		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
-		boolean hurtAtSamePosition = unitPositionChecker.hurtSameTypeUnitAtPosition(chosenUnit, cursorX * gameProp.getMapDim().tileSize, cursorY * gameProp.getMapDim().tileSize);
-		if (!areaChecker.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY) 
-		|| containerUnitHandler.unitEntryingContainerUnit(chosenUnit, cursorX, cursorY)
-		|| hurtAtSamePosition) {
+		boolean hurtAtSamePosition = unitGetter.hurtSameTypeUnitAtPosition(chosenUnit, cursor.getX(), cursor.getY());
+		
+		if (!areaChecker.areaOccupiedByFriendly(chosenUnit, cursor.getX(), cursor.getY()) || hurtAtSamePosition
+				|| containerUnitHandler.unitEntryingContainerUnit(chosenUnit, cursor.getX(), cursor.getY())) {
 			if (hurtAtSamePosition) {
-				unitMenu.getUnitMenuRowEntryBooleanHandler().allowJoin();
-			} else if (attackRangeHandler.unitCanFire(chosenUnit, cursorX, cursorY)) {
-				unitMenu.getUnitMenuRowEntryBooleanHandler().allowFire();
+				unitMenu.getUnitMenuRowEntryBooleanHandler().join = true;
+			} else if (attackRangeHandler.unitCanFire(chosenUnit, cursor)) {
+				unitMenu.getUnitMenuRowEntryBooleanHandler().fire = true;
 			}
 
 			if (chosenUnit instanceof Infantry || chosenUnit instanceof Mech) {
-				if (containerUnitHandler.footsoldierEnterableUnitAtPosition(cursorX, cursorY)) {
-					unitMenu.getUnitMenuRowEntryBooleanHandler().allowEnter();
+				if (containerUnitHandler.footsoldierEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
+					unitMenu.getUnitMenuRowEntryBooleanHandler().enter = true;
 				}
-				if (buildingHandler.isNonFriendlyBuilding(cursorX, cursorY) && unitGetter.getFriendlyUnitExceptSelf(chosenUnit, cursorX, cursorY) == null) {
-					unitMenu.getUnitMenuRowEntryBooleanHandler().allowCapt();
+				if (buildingHandler.isNonFriendlyBuilding(cursor.getX(), cursor.getY()) 
+						&& unitGetter.getFriendlyUnitExceptSelf(chosenUnit, cursor.getX(), cursor.getY()) == null) {
+					unitMenu.getUnitMenuRowEntryBooleanHandler().capt = true;
 				}
 			} else if (chosenUnit instanceof APC) {
 				// should only be allowed this when close to a friendly unit
-				if (supplyHandler.mayAPCSUpply(cursorX, cursorY)) {
-					unitMenu.getUnitMenuRowEntryBooleanHandler().allowSupply();
+				if (supplyHandler.mayAPCSUpply(cursor.getX(), cursor.getY())) {
+					unitMenu.getUnitMenuRowEntryBooleanHandler().supply = true;
 				}
 
 				if (((APC)chosenUnit).isFull()) {
@@ -73,12 +71,14 @@ public class UnitMenuHandler {
 					unitMenu.containedCargo(holdUnit);
 				}
 			} else if (chosenUnit instanceof TCopter) {
-				if (((TCopter)chosenUnit).isFull() && areaChecker.isLand(cursorX, cursorY)) {
+				int cursorTileX = cursor.getX() / gameProp.getMapDim().tileSize;
+				int cursorTileY = cursor.getY() / gameProp.getMapDim().tileSize;
+				if (((TCopter)chosenUnit).isFull() && areaChecker.isLand(cursorTileX, cursorTileY)) {
 					Unit holdUnit = ((TCopter)chosenUnit).getUnit();
 					unitMenu.containedCargo(holdUnit);
 				}
 			} else if (chosenUnit instanceof Lander) {
-				if (containerUnitHandler.landerAtDroppingOffPosition(cursorX, cursorY)) {
+				if (containerUnitHandler.landerAtDroppingOffPosition(cursor.getX(), cursor.getY())) {
 					for (int i = 0 ; i < ((Lander)chosenUnit).getNumberOfContainedUnits() ; i++) {
 						Unit holdUnit = ((Lander)chosenUnit).getUnit(i);
 						unitMenu.containedCargo(holdUnit);
@@ -91,30 +91,29 @@ public class UnitMenuHandler {
 				}
 			}
 
-			if (containerUnitHandler.landbasedEnterableUnitAtPosition(cursorX, cursorY)) {
+			if (containerUnitHandler.landbasedEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
 				if (!(chosenUnit instanceof Lander)) {
-					unitMenu.getUnitMenuRowEntryBooleanHandler().allowEnter();
+					unitMenu.getUnitMenuRowEntryBooleanHandler().enter = true;
 				}
-			} else if (containerUnitHandler.copterEnterableUnitAtPosition(cursorX, cursorY)) {
+			} else if (containerUnitHandler.copterEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
 				if (!(chosenUnit instanceof Cruiser)) {
-					unitMenu.getUnitMenuRowEntryBooleanHandler().allowEnter();
+					unitMenu.getUnitMenuRowEntryBooleanHandler().enter = true;
 				}
 			}
 
-			if (!areaChecker.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY)) {
-				unitMenu.getUnitMenuRowEntryBooleanHandler().allowWait();
+			if (!areaChecker.areaOccupiedByFriendly(chosenUnit, cursor.getX(), cursor.getY())) {
+				unitMenu.getUnitMenuRowEntryBooleanHandler().wait = true;
 			}
 
-			unitMenu.openMenu(cursorX, cursorY);
+			unitMenu.openMenu(cursor.getX(), cursor.getY());
 			
-			int posX = cursorX * gameProp.getMapDim().tileSize;
-			int posY = cursorY * gameProp.getMapDim().tileSize;
-			if (chosenUnit.getPoint().getX() != posX || chosenUnit.getPoint().getY() != posY) {
+			if (chosenUnit.getPoint().getX() != cursor.getX() || chosenUnit.getPoint().getY() != cursor.getY()) {
 				if (chosenUnit.isCapting()) {
-					Building building = buildingHandler.getBuilding(chosenUnit.getPoint().getX() / gameProp.getMapDim().tileSize, chosenUnit.getPoint().getY() / gameProp.getMapDim().tileSize);
+					Point point = chosenUnit.getPoint();
+					Building building = buildingHandler.getBuilding(point.getX(), point.getY());
 					building.resetCapting();
 				}
-				chosenUnit.moveTo(posX, posY);
+				chosenUnit.moveTo(cursor.getX(), cursor.getY());
 			}
 		}
 	}

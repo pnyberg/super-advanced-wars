@@ -59,12 +59,12 @@ public class RouteArrowPath {
 	
 	/**
 	 * Check if the new position is already in the arrow points-list
-	 * @param p the new position that might already be present
+	 * @param point the new position that might already be present
 	 * @return index for point with that position (-1 if not present)
 	 */
-	public int getRepeatedPositionIndex(Point p) {
+	public int getRepeatedPositionIndex(Point point) {
 		for (int i = 0 ; i < arrowPoints.size() ; i++) {
-			if (arrowPoints.get(i).getX() == p.getX() && arrowPoints.get(i).getY() == p.getY()) {
+			if (arrowPoints.get(i).getX() == point.getX() && arrowPoints.get(i).getY() == point.getY()) {
 				return i;
 			}
 		}
@@ -86,9 +86,9 @@ public class RouteArrowPath {
 		int currentMovementValue = 0;
 
 		for (int i = 1 ; i < arrowPoints.size() ; i++) {
-			int x = arrowPoints.get(i).getX() / mapDim.tileSize;
-			int y = arrowPoints.get(i).getY() / mapDim.tileSize;
-			currentMovementValue += movementCostCalculator.movementCost(x, y, chosenUnit.getMovementType());
+			int tileX = arrowPoints.get(i).getX() / mapDim.tileSize;
+			int tileY = arrowPoints.get(i).getY() / mapDim.tileSize;
+			currentMovementValue += movementCostCalculator.movementCost(tileX, tileY, chosenUnit.getMovementType());
 		}
 
 		return currentMovementValue > maximumMovement;
@@ -108,13 +108,13 @@ public class RouteArrowPath {
 	//        result: will get stuck
 	public void recountPath(Point newPosition, Unit chosenUnit) {
 		MovementType movementType = chosenUnit.getMovementType();
-		int diffX = (newPosition.getX() - chosenUnit.getPoint().getX()) / mapDim.tileSize;
-		int diffY = (newPosition.getY() - chosenUnit.getPoint().getY()) / mapDim.tileSize;
+		int diffTileX = (newPosition.getX() - chosenUnit.getPoint().getX()) / mapDim.tileSize;
+		int diffTileY = (newPosition.getY() - chosenUnit.getPoint().getY()) / mapDim.tileSize;
 
 		clear();
 		addArrowPoint(chosenUnit.getPoint());
 
-		while(Math.abs(diffX) > 0 || Math.abs(diffY) > 0) {
+		while(Math.abs(diffTileX) > 0 || Math.abs(diffTileY) > 0) {
 			int last = getNumberOfArrowPoints() - 1;
 			int prevX = arrowPoints.get(last).getX() / mapDim.tileSize;
 			int prevY = arrowPoints.get(last).getY() / mapDim.tileSize;
@@ -124,24 +124,24 @@ public class RouteArrowPath {
 			}
 
 			int xAxle;
-			if (Math.abs(diffX) > 0 && Math.abs(diffY) > 0) {
+			if (Math.abs(diffTileX) > 0 && Math.abs(diffTileY) > 0) {
 				xAxle = (int)(Math.random() * 10) % 2;
-			} else if (Math.abs(diffX) > 0) {
+			} else if (Math.abs(diffTileX) > 0) {
 				xAxle = 1;
 			} else {
 				xAxle = 0;
 			}
 
 			if (xAxle == 1) {
-				int diff = diffX / Math.abs(diffX);
+				int diff = diffTileX / Math.abs(diffTileX);
 				addArrowPoint(new Point((prevX + diff) * mapDim.tileSize, prevY * mapDim.tileSize));
 				int movementCost = movementCostCalculator.movementCost(prevX + diff, prevY, movementType);
-				diffX -= diff * movementCost;
+				diffTileX -= diff * movementCost;
 			} else { // yAxle
-				int diff = diffY / Math.abs(diffY);
+				int diff = diffTileY / Math.abs(diffTileY);
 				addArrowPoint(new Point(prevX * mapDim.tileSize, (prevY + diff) * mapDim.tileSize));
 				int movementCost = movementCostCalculator.movementCost(prevX, prevY + diff, movementType);
-				diffY -= diff * movementCost;
+				diffTileY -= diff * movementCost;
 			}
 		}
 	}

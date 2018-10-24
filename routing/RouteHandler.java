@@ -1,17 +1,15 @@
 /**
  * Handles the route-calculation
+ * 
+ * TODO:
+ *  - check which of the addNewArrowPoint-methods should stay (or if they do different things)
  */
 package routing;
 
 import point.*;
 import units.*;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.util.ArrayList;
-
 import gameObjects.MapDim;
-import hero.*;
 
 public class RouteHandler {
 	private RouteArrowPath routeArrowPath;
@@ -22,12 +20,12 @@ public class RouteHandler {
 		this.movementMap = movementMap;
 	}
 
-	// TODO: which one should stay
+	// TODO: which one should stay - what is the difference?
 	public void addNewArrowPoint(Point point) {
 		routeArrowPath.addArrowPoint(point);
 	}
 
-	// TODO: which one should stay
+	// TODO: which one should stay - what is the difference?
 	public void updateArrowPath(Point point, Unit chosenUnit) {
 		routeArrowPath.updateArrowPath(point, chosenUnit, movementMap);
 	}

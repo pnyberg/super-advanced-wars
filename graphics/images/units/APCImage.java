@@ -1,9 +1,7 @@
-package units.treadMoving;
+package graphics.images.units;
 
 import java.awt.Color;
 import java.awt.Graphics;
-
-import graphics.images.units.UnitImage;
 
 public class APCImage extends UnitImage {
 	private int tileSize;

@@ -3,7 +3,6 @@ package menus.building;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import hero.HeroPortrait;
 import main.HeroHandler;
 import menus.DimensionValues;
 
@@ -18,23 +17,23 @@ public class BuildingMenuPainter {
 		this.priceAlign = priceAlign;
 	}
 
-	public void paint(Graphics g, int x, int menuY, BuildingItem[] items) {
+	public void paint(Graphics g, int x, int y, BuildingItem[] items) {
 		for (int k = 0 ; k < items.length ; k++) {
-			paintMenuItem(g, x, menuY + dimensionValues.getMenuRowHeight() * (k + 1), items[k].getName(), items[k].getPrice());
+			paintMenuItem(g, x, y + dimensionValues.getMenuRowHeight() * (k + 1), items[k].getName(), items[k].getPrice());
 		}
 	}
 
 	private void paintMenuItem(Graphics g, int x, int y, String text, int price) {
 		int heroCash = heroHandler.getCurrentHero().getCash();
-		int menuX = x * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2 + dimensionValues.getAlignX();
-		int extraPriceAlign = (price >= 10000 ? 0 : 8);
+		int xAdjust = dimensionValues.getTileSize() / 2 + dimensionValues.getAlignX();
+		int extraPriceAlign = (price < 10000 ? 8 : 0);
 
 		if (heroCash < price) {
 			g.setColor(Color.gray);
 		} else {
 			g.setColor(Color.black);
 		}
-		g.drawString(text, menuX, y);
-		g.drawString("" + price + "", menuX + priceAlign + extraPriceAlign, y);
+		g.drawString(text, x + xAdjust, y);
+		g.drawString("" + price + "", x + xAdjust + priceAlign + extraPriceAlign, y);
 	}
 }

@@ -13,7 +13,7 @@ public class MissilesImage extends UnitImage {
 	public void paint(Graphics g, int x, int y, Color unitColor) {
 		int cx1 = x + 2 * tileSize / 3 + 4;
 		int cy1 = y + tileSize / 10 + 8;
-		int cx2 = x + 8 * tileSize / 10;
+		int cx2 = x + 4 * tileSize / 5;
 		int cy2 = y + tileSize / 4 + 8;
 		int cx3 = x + tileSize / 4 - 2;
 		int cy3 = y + tileSize / 2 + 9;

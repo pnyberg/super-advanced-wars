@@ -1,12 +1,10 @@
 package units.tireMoving;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
 import graphics.images.units.RocketImage;
 import units.IndirectUnit;
 import units.MovementType;
-import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
 import units.UnitType;

@@ -1,29 +1,13 @@
 package combat;
 
 import units.*;
-import units.airMoving.BCopter;
-import units.airMoving.Bomber;
-import units.airMoving.Fighter;
 import units.airMoving.TCopter;
-import units.footMoving.Infantry;
-import units.footMoving.Mech;
-import units.seaMoving.Battleship;
-import units.seaMoving.Cruiser;
 import units.seaMoving.Lander;
-import units.tireMoving.Missiles;
-import units.tireMoving.Recon;
-import units.tireMoving.Rocket;
-import units.treadMoving.AAir;
 import units.treadMoving.APC;
-import units.treadMoving.Artillery;
-import units.treadMoving.MDTank;
-import units.treadMoving.Neotank;
-import units.treadMoving.Tank;
 import hero.*;
 import main.HeroHandler;
 import main.StarPowerCalculator;
 import map.GameMap;
-import map.area.Area;
 import map.area.TerrainType;
 import map.structures.Structure;
 
@@ -32,34 +16,31 @@ public class DamageHandler {
 	private StarPowerCalculator starPowerCalculator;
 	private HeroHandler heroHandler;
 	private GameMap gameMap;
-	private int tileSize = 40;
+	private int tileSize;
 
-	public DamageHandler(HeroHandler heroHandler, GameMap gameMap, AttackValueCalculator attackValueCalculator, DefenceValueCalculator defenceValueCalculator, UnitWorthCalculator unitWorthCalculator) {
+	public DamageHandler(HeroHandler heroHandler, GameMap gameMap, AttackValueCalculator attackValueCalculator, DefenceValueCalculator defenceValueCalculator, UnitWorthCalculator unitWorthCalculator, int tileSize) {
 		damageCalculator = new DamageCalculator(attackValueCalculator, defenceValueCalculator);
 		starPowerCalculator = new StarPowerCalculator(unitWorthCalculator);
 		this.heroHandler = heroHandler;
 		this.gameMap = gameMap;
+		this.tileSize = tileSize;
 	}
 
 	public void handleAttackingUnit(Unit attacking, Unit defending) {
 		Hero attackingHero = heroHandler.getHeroFromUnit(attacking);
 		Hero defendingHero = heroHandler.getHeroFromUnit(defending); 
-		int attX = attacking.getPoint().getX() / tileSize;
-		int attY = attacking.getPoint().getY() / tileSize;
-		int defX = defending.getPoint().getX() / tileSize;
-		int defY = defending.getPoint().getY() / tileSize;
+		int attackTileX = attacking.getPoint().getX() / tileSize;
+		int attackTileY = attacking.getPoint().getY() / tileSize;
+		int defendTileX = defending.getPoint().getX() / tileSize;
+		int defendTileY = defending.getPoint().getY() / tileSize;
 		
-		TerrainType defendingTerrainType = gameMap.getMap()[defX][defY].getTerrainType();
+		TerrainType defendingTerrainType = gameMap.getMap()[defendTileX][defendTileY].getTerrainType();
 
 		// deal damage from attacker to defender
 		performDamageCalculation(attacking, attackingHero, defending, defendingHero, defendingTerrainType);
 
-		if (defending.getUnitHealth().getHP() <= 0) {
-			return;
-		}
-
-		if (counterAttackAble(attacking, defending)) {
-			TerrainType attackingTerrainType = gameMap.getMap()[attX][attY].getTerrainType();
+		if (defending.getUnitHealth().getHP() > 0 && counterAttackable(attacking, defending)) {
+			TerrainType attackingTerrainType = gameMap.getMap()[attackTileX][attackTileY].getTerrainType();
 			// deal damage from defender to attacker (counterattack)
 			performDamageCalculation(defending, defendingHero, attacking, attackingHero, attackingTerrainType);
 		}
@@ -73,7 +54,7 @@ public class DamageHandler {
 		starPowerCalculator.calculateStarPowerSelf(defHero, defender, damageValue);
 	}
 	
-	private boolean counterAttackAble(Unit attacking, Unit defending) {
+	private boolean counterAttackable(Unit attacking, Unit defending) {
 		return !(attacking instanceof IndirectUnit
 				|| defending instanceof IndirectUnit
 				|| defending instanceof APC

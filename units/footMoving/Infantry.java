@@ -1,13 +1,6 @@
 package units.footMoving;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import graphics.images.units.InfantryImage;
 import units.MovementType;

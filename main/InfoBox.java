@@ -25,9 +25,9 @@ public class InfoBox {
 		Point terrainInfoBoxPoint = new Point(point.getX() + tileSize / 4, point.getY() + tileSize / 8);
 		terrainInfoBox = new TerrainInfoBox(terrainInfoBoxPoint, tileSize * 2, height - tileSize / 4, tileSize, gameMap, cursor, buildingHandler, structureHandler);
 		Point unitInfoBoxPoint = new Point(point.getX() + tileSize * 2 + tileSize / 4 + 5, point.getY() + tileSize / 8);
-		unitInfoBox = new UnitInfoBox(unitInfoBoxPoint, tileSize * 2, height - tileSize / 4, tileSize, gameMap, cursor, unitGetter);
+		unitInfoBox = new UnitInfoBox(unitInfoBoxPoint, tileSize * 2, height - tileSize / 4, tileSize, cursor, unitGetter);
 		Point unitContainedInfoBoxPoint = new Point(point.getX() + tileSize * 4 + tileSize / 4 + 10, point.getY() + tileSize / 8);
-		unitContainedInfoBox = new UnitContainedInfoBox(unitContainedInfoBoxPoint, tileSize * 2, height - tileSize / 4, tileSize, gameMap, cursor, unitGetter);
+		unitContainedInfoBox = new UnitContainedInfoBox(unitContainedInfoBoxPoint, tileSize * 2, height - tileSize / 4, cursor, unitGetter);
 	}
 	
 	public int getWidth() {

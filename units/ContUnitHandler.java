@@ -1,12 +1,10 @@
 package units;
 
 import cursors.Cursor;
-import gameObjects.ChosenObject;
 import gameObjects.GameProp;
 import gameObjects.MapDim;
 import map.GameMap;
 import map.UnitGetter;
-import map.area.Area;
 import map.area.AreaChecker;
 import map.area.TerrainType;
 import routing.RouteChecker;
@@ -64,23 +62,23 @@ public class ContUnitHandler {
 			return;
 		}
 
-		int x = chosenUnit.getPoint().getX();
-		int y = chosenUnit.getPoint().getY();
+		int tileX = chosenUnit.getPoint().getX() / gameProp.getMapDim().tileSize;
+		int tileY = chosenUnit.getPoint().getY() / gameProp.getMapDim().tileSize;
 
-		if (y > 0 && validPosition(containedUnit, x, y - 1)) {
-			y--;
-		} else if (x < (gameProp.getMapDim().getWidth() - 1) && validPosition(containedUnit, x + 1, y)) {
-			x++;
-		} else if (validPosition(containedUnit, x, y + 1)) {
-			y++;
-		} else if (validPosition(containedUnit, x - 1, y)) {
-			x--;
+		if (tileY > 0 && validPosition(containedUnit, tileX, tileY - 1)) {
+			tileY--;
+		} else if (tileX < (gameProp.getMapDim().getTileWidth() - 1) && validPosition(containedUnit, tileX + 1, tileY)) {
+			tileX++;
+		} else if (tileY < (gameProp.getMapDim().getTileHeight() - 1) && validPosition(containedUnit, tileX, tileY + 1)) {
+			tileY++;
+		} else if (tileX > 0 && validPosition(containedUnit, tileX - 1, tileY)) {
+			tileX--;
 		} else {
 			return; // cannot drop unit off anywhere
 		}
 
 		if (unitCanBeDroppedOff()) {
-			cursor.setPosition(x, y);
+			cursor.setPosition(tileX * gameProp.getMapDim().tileSize, tileY * gameProp.getMapDim().tileSize);
 		} else {
 			cursor.setPosition(chosenUnit.getPoint().getX(), chosenUnit.getPoint().getY());
 		}
@@ -133,16 +131,16 @@ public class ContUnitHandler {
 			return false;
 		}
 		MapDim mapDim = gameProp.getMapDim();
-		int x = gameProp.getChosenObject().chosenUnit.getPoint().getX();
-		int y = gameProp.getChosenObject().chosenUnit.getPoint().getY();
+		int tileX = gameProp.getChosenObject().chosenUnit.getPoint().getX() / gameProp.getMapDim().tileSize;
+		int tileY = gameProp.getChosenObject().chosenUnit.getPoint().getY() / gameProp.getMapDim().tileSize;
 
-		if (y > 0 && validPosition(unit, x, y - 1)) {
+		if (tileY > 0 && validPosition(unit, tileX, tileY - 1)) {
 			return true;
-		} else if (x < (mapDim.getWidth() - 1) && validPosition(unit, x + 1, y)) {
+		} else if (tileX < (mapDim.getTileWidth() - 1) && validPosition(unit, tileX + 1, tileY)) {
 			return true;
-		} else if (y < (mapDim.getHeight() - 1) && validPosition(unit, x, y + 1)) {
+		} else if (tileY < (mapDim.getTileHeight() - 1) && validPosition(unit, tileX, tileY + 1)) {
 			return true;
-		} else if (x > 0 && validPosition(unit, x - 1, y)) {
+		} else if (tileX > 0 && validPosition(unit, tileX - 1, tileY)) {
 			return true;
 		}
 
@@ -150,7 +148,9 @@ public class ContUnitHandler {
 	}
 
 	public boolean landerAtDroppingOffPosition(int x, int y) {
-		TerrainType areaValue = gameMap.getMap()[x][y].getTerrainType();
+		int tileX = x / gameProp.getMapDim().tileSize;
+		int tileY = y / gameProp.getMapDim().tileSize;
+		TerrainType areaValue = gameMap.getMap()[tileX][tileY].getTerrainType();
 
 		if (areaValue == TerrainType.SHOAL || areaValue == TerrainType.PORT) {
 			return true;
@@ -162,12 +162,12 @@ public class ContUnitHandler {
 	public void moveDroppingOffCursorClockwise() {
 		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
 		MapDim mapDim = gameProp.getMapDim();
-		int unitX = chosenUnit.getPoint().getX();
-		int unitY = chosenUnit.getPoint().getY();
-		int cursorX = cursor.getX();
-		int cursorY = cursor.getY();
-		int xDiff = cursorX - unitX;
-		int yDiff = cursorY - unitY;
+		int cursorTileX = cursor.getX() / gameProp.getMapDim().tileSize;
+		int cursorTileY = cursor.getY() / gameProp.getMapDim().tileSize;
+		int unitTileX = chosenUnit.getPoint().getX() / gameProp.getMapDim().tileSize;
+		int unitTileY = chosenUnit.getPoint().getY() / gameProp.getMapDim().tileSize;
+		int xTileDiff = cursorTileX - unitTileX;
+		int yTileDiff = cursorTileY - unitTileY;
 		Unit containedUnit = null;
 
 		if (chosenUnit instanceof APC) {
@@ -182,37 +182,37 @@ public class ContUnitHandler {
 			return; // shouldn't be able to get here
 		}
 
-		if (xDiff == 1) {
-			if (unitY < (mapDim.getHeight() - 1) && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
-				cursor.setPosition(cursorX - 1, cursorY + 1);
-			} else if (unitX > 0 && validPosition(containedUnit, cursorX - 2, cursorY)) {
-				cursor.setPosition(cursorX - 2, cursorY);
-			} else if (unitY > 0 && validPosition(containedUnit, cursorX - 1, cursorY - 1)) {
-				cursor.setPosition(cursorX - 1, cursorY - 1);
+		if (xTileDiff == 1) {
+			if (unitTileY < (mapDim.getTileHeight() - 1) && validPosition(containedUnit, cursorTileX - 1, cursorTileY + 1)) {
+				setCursorPosition(cursorTileX - 1, cursorTileY + 1);
+			} else if (unitTileX > 0 && validPosition(containedUnit, cursorTileX - 2, cursorTileY)) {
+				setCursorPosition(cursorTileX - 2, cursorTileY);
+			} else if (unitTileY > 0 && validPosition(containedUnit, cursorTileX - 1, cursorTileY - 1)) {
+				setCursorPosition(cursorTileX - 1, cursorTileY - 1);
 			}
-		} else if (yDiff == 1) {
-			if (unitX > 0 && validPosition(containedUnit, cursorX - 1, cursorY - 1)) {
-				cursor.setPosition(cursorX - 1, cursorY - 1);
-			} else if (unitY > 0 && validPosition(containedUnit, cursorX, cursorY - 2)) {
-				cursor.setPosition(cursorX, cursorY - 2);
-			} else if (unitX < (mapDim.getWidth() - 1) && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
-				cursor.setPosition(cursorX + 1, cursorY - 1);
+		} else if (yTileDiff == 1) {
+			if (unitTileX > 0 && validPosition(containedUnit, cursorTileX - 1, cursorTileY - 1)) {
+				setCursorPosition(cursorTileX - 1, cursorTileY - 1);
+			} else if (unitTileY > 0 && validPosition(containedUnit, cursorTileX, cursorTileY - 2)) {
+				setCursorPosition(cursorTileX, cursorTileY - 2);
+			} else if (unitTileX < (mapDim.getTileWidth() - 1) && validPosition(containedUnit, cursorTileX + 1, cursorTileY - 1)) {
+				setCursorPosition(cursorTileX + 1, cursorTileY - 1);
 			}
-		} else if (xDiff == -1) {
-			if (unitY > 0 && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
-				cursor.setPosition(cursorX + 1, cursorY - 1);
-			} else if (unitX < (mapDim.getWidth() - 1) && validPosition(containedUnit, cursorX + 2, cursorY)) {
-				cursor.setPosition(cursorX + 2, cursorY);
-			} else if (unitY < (mapDim.getHeight() - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
-				cursor.setPosition(cursorX + 1, cursorY + 1);
+		} else if (xTileDiff == -1) {
+			if (unitTileY > 0 && validPosition(containedUnit, cursorTileX + 1, cursorTileY - 1)) {
+				setCursorPosition(cursorTileX + 1, cursorTileY - 1);
+			} else if (unitTileX < (mapDim.getTileWidth() - 1) && validPosition(containedUnit, cursorTileX + 2, cursorTileY)) {
+				setCursorPosition(cursorTileX + 2, cursorTileY);
+			} else if (unitTileY < (mapDim.getTileHeight() - 1) && validPosition(containedUnit, cursorTileX + 1, cursorTileY + 1)) {
+				setCursorPosition(cursorTileX + 1, cursorTileY + 1);
 			}
 		} else { // yDiff == -1
-			if (unitX < (mapDim.getWidth() - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
-				cursor.setPosition(cursorX + 1, cursorY + 1);
-			} else if (unitY < (mapDim.getHeight() - 1) && validPosition(containedUnit, cursorX, cursorY + 2)) {
-				cursor.setPosition(cursorX, cursorY + 2);
-			} else if (unitX > 0 && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
-				cursor.setPosition(cursorX - 1, cursorY + 1);
+			if (unitTileX < (mapDim.getTileWidth() - 1) && validPosition(containedUnit, cursorTileX + 1, cursorTileY + 1)) {
+				setCursorPosition(cursorTileX + 1, cursorTileY + 1);
+			} else if (unitTileY < (mapDim.getTileHeight() - 1) && validPosition(containedUnit, cursorTileX, cursorTileY + 2)) {
+				setCursorPosition(cursorTileX, cursorTileY + 2);
+			} else if (unitTileX > 0 && validPosition(containedUnit, cursorTileX - 1, cursorTileY + 1)) {
+				setCursorPosition(cursorTileX - 1, cursorTileY + 1);
 			}
 		}
 	}
@@ -220,12 +220,12 @@ public class ContUnitHandler {
 	public void moveDroppingOffCursorCounterclockwise() {
 		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
 		MapDim mapDim = gameProp.getMapDim();
-		int unitX = chosenUnit.getPoint().getX();
-		int unitY = chosenUnit.getPoint().getY();
-		int cursorX = cursor.getX();
-		int cursorY = cursor.getY();
-		int xDiff = cursorX - unitX;
-		int yDiff = cursorY - unitY;
+		int unitTileX = chosenUnit.getPoint().getX() / gameProp.getMapDim().tileSize;
+		int unitTileY = chosenUnit.getPoint().getY() / gameProp.getMapDim().tileSize;
+		int cursorTileX = cursor.getX() / gameProp.getMapDim().tileSize;
+		int cursorTileY = cursor.getY() / gameProp.getMapDim().tileSize;
+		int xDiff = cursorTileX - unitTileX;
+		int yDiff = cursorTileY - unitTileY;
 		Unit containedUnit = null;
 
 		if (chosenUnit instanceof APC) {
@@ -241,43 +241,47 @@ public class ContUnitHandler {
 		}
 		
 		if (xDiff == 1) {
-			if (unitY > 0 && validPosition(containedUnit, cursorX - 1, cursorY - 1)) {
-				cursor.setPosition(cursorX - 1, cursorY - 1);
-			} else if (unitX > 0 && validPosition(containedUnit, cursorX - 2, cursorY)) {
-				cursor.setPosition(cursorX - 2, cursorY);
-			} else if (unitY < (mapDim.getHeight() - 1) && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
-				cursor.setPosition(cursorX - 1, cursorY + 1);
+			if (unitTileY > 0 && validPosition(containedUnit, cursorTileX - 1, cursorTileY - 1)) {
+				setCursorPosition(cursorTileX - 1, cursorTileY - 1);
+			} else if (unitTileX > 0 && validPosition(containedUnit, cursorTileX - 2, cursorTileY)) {
+				setCursorPosition(cursorTileX - 2, cursorTileY);
+			} else if (unitTileY < (mapDim.getTileHeight() - 1) && validPosition(containedUnit, cursorTileX - 1, cursorTileY + 1)) {
+				setCursorPosition(cursorTileX - 1, cursorTileY + 1);
 			}
 		} else if (yDiff == 1) {
-			if (unitX < (mapDim.getWidth() - 1) && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
-				cursor.setPosition(cursorX + 1, cursorY - 1);
-			} else if (unitY > 0 && validPosition(containedUnit, cursorX, cursorY - 2)) {
-				cursor.setPosition(cursorX, cursorY - 2);
-			} else if (unitX > 0 && validPosition(containedUnit, cursorX - 1, cursorY - 1)) {
-				cursor.setPosition(cursorX - 1, cursorY - 1);
+			if (unitTileX < (mapDim.getTileWidth() - 1) && validPosition(containedUnit, cursorTileX + 1, cursorTileY - 1)) {
+				setCursorPosition(cursorTileX + 1, cursorTileY - 1);
+			} else if (unitTileY > 0 && validPosition(containedUnit, cursorTileX, cursorTileY - 2)) {
+				setCursorPosition(cursorTileX, cursorTileY - 2);
+			} else if (unitTileX > 0 && validPosition(containedUnit, cursorTileX - 1, cursorTileY - 1)) {
+				setCursorPosition(cursorTileX - 1, cursorTileY - 1);
 			}
 		} else if (xDiff == -1) {
-			if (unitY < (mapDim.getHeight() - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
-				cursor.setPosition(cursorX + 1, cursorY + 1);
-			} else if (unitX < (mapDim.getWidth() - 1) && validPosition(containedUnit, cursorX + 2, cursorY)) {
-				cursor.setPosition(cursorX + 2, cursorY);
-			} else if (unitY > 0 && validPosition(containedUnit, cursorX + 1, cursorY - 1)) {
-				cursor.setPosition(cursorX + 1, cursorY - 1);
+			if (unitTileY < (mapDim.getTileHeight() - 1) && validPosition(containedUnit, cursorTileX + 1, cursorTileY + 1)) {
+				setCursorPosition(cursorTileX + 1, cursorTileY + 1);
+			} else if (unitTileX < (mapDim.getTileWidth() - 1) && validPosition(containedUnit, cursorTileX + 2, cursorTileY)) {
+				setCursorPosition(cursorTileX + 2, cursorTileY);
+			} else if (unitTileY > 0 && validPosition(containedUnit, cursorTileX + 1, cursorTileY - 1)) {
+				setCursorPosition(cursorTileX + 1, cursorTileY - 1);
 			}
 		} else { // yDiff == -1
-			if (unitX > 0 && validPosition(containedUnit, cursorX - 1, cursorY + 1)) {
-				cursor.setPosition(cursorX - 1, cursorY + 1);
-			} else if (unitY < (mapDim.getHeight() - 1) && validPosition(containedUnit, cursorX, cursorY + 2)) {
-				cursor.setPosition(cursorX, cursorY + 2);
-			} else if (unitX < (mapDim.getWidth() - 1) && validPosition(containedUnit, cursorX + 1, cursorY + 1)) {
-				cursor.setPosition(cursorX + 1, cursorY + 1);
+			if (unitTileX > 0 && validPosition(containedUnit, cursorTileX - 1, cursorTileY + 1)) {
+				setCursorPosition(cursorTileX - 1, cursorTileY + 1);
+			} else if (unitTileY < (mapDim.getTileHeight() - 1) && validPosition(containedUnit, cursorTileX, cursorTileY + 2)) {
+				setCursorPosition(cursorTileX, cursorTileY + 2);
+			} else if (unitTileX < (mapDim.getTileWidth() - 1) && validPosition(containedUnit, cursorTileX + 1, cursorTileY + 1)) {
+				setCursorPosition(cursorTileX + 1, cursorTileY + 1);
 			}
 		}
 	}
+	
+	private void setCursorPosition(int tileX, int tileY) {
+		cursor.setPosition(tileX * gameProp.getMapDim().tileSize, tileY * gameProp.getMapDim().tileSize);
+	}
 
-	private boolean validPosition(Unit unit, int testX, int testY) {
-		return !areaChecker.areaOccupiedByAny(unit, testX * gameProp.getMapDim().tileSize, testY * gameProp.getMapDim().tileSize) 
-			&& routeChecker.allowedMovementPosition(testX, testY, unit.getMovementType());
+	private boolean validPosition(Unit unit, int tileX, int tileY) {
+		return !areaChecker.areaOccupiedByAny(unit, tileX * gameProp.getMapDim().tileSize, tileY * gameProp.getMapDim().tileSize) 
+			&& routeChecker.allowedMovementPosition(tileX, tileY, unit.getMovementType());
 	}
 
 	public boolean unitEntryingContainerUnit(Unit unit, int x, int y) {

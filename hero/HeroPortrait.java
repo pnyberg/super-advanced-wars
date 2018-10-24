@@ -2,6 +2,7 @@ package hero;
 
 import java.awt.Graphics;
 
+import cursors.Cursor;
 import gameObjects.MapDim;
 import graphics.HeroPortraitPainter;
 import main.HeroHandler;
@@ -10,22 +11,25 @@ public class HeroPortrait {
 	private HeroHandler heroHandler;
 	private boolean leftSide;
 	private HeroPortraitPainter heroPortraitPainter;
+	private MapDim mapDim;
 
-	public HeroPortrait(MapDim mapDimension, HeroHandler heroHandler) {
+	public HeroPortrait(MapDim mapDim, HeroHandler heroHandler) {
 		this.heroHandler = heroHandler;
 		leftSide = true;
-		heroPortraitPainter = new HeroPortraitPainter(mapDimension);
+		heroPortraitPainter = new HeroPortraitPainter(mapDim);
+		this.mapDim = mapDim;
 	}
 
-	public void updateSideChoice(int cursorX, int cursorY) {
-		if (cursorY >= 2) {
-			return;
-		}
+	public void updateSideChoice(Cursor cursor) {
+		int cursorTileX = cursor.getX() / mapDim.tileSize;
+		int cursorTileY = cursor.getY() / mapDim.tileSize;
 
-		if (leftSide && cursorX < 4) {
-			leftSide = false;
-		} else if (!leftSide && cursorX >= 16) {
-			leftSide = true;
+		if (cursorTileY < 2) {
+			if (leftSide && cursorTileX < 4) {
+				leftSide = false;
+			} else if (!leftSide && cursorTileX >= 16) {
+				leftSide = true;
+			}
 		}
 	}
 	

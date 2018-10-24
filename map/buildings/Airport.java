@@ -1,12 +1,9 @@
 /**
  * @TODO
  *  - possibly add feature to remove units to be built
- *  - define which units can be built in factory?
+ *  - define which units can be built in airport?
  */
 package map.buildings;
-
-import java.awt.Color;
-import java.awt.Graphics;
 
 import graphics.images.buildings.AirportImage;
 

@@ -1,5 +1,5 @@
 package hero.heroAbilities;
 
-public class StandardAbility {
+public abstract class StandardAbility {
 
 }

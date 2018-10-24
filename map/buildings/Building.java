@@ -84,6 +84,6 @@ public abstract class Building {
 		} else {
 			buildingColor = owner.getColor();
 		}
-		buildingImage.paint(g, x * tileSize, y * tileSize, buildingColor);
+		buildingImage.paint(g, x, y, buildingColor);
 	}
 }

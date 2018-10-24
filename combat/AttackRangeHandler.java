@@ -4,14 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import cursors.Cursor;
-import cursors.FiringCursor;
 import gameObjects.Direction;
 import gameObjects.MapDim;
-import hero.Hero;
-import hero.HeroPortrait;
 import map.UnitGetter;
-import map.area.Area;
-import map.area.TerrainType;
 import map.structures.FiringStructure;
 import map.structures.Structure;
 import map.structures.StructureHandler;
@@ -36,7 +31,7 @@ public class AttackRangeHandler {
 	public AttackRangeHandler(MapDim mapDim, UnitGetter unitGetter, DamageHandler damageHandler, StructureHandler structureHandler, RouteChecker routeChecker, MovementMap movementMap) {
 		this.mapDim = mapDim;
 		this.unitGetter = unitGetter;
-		rangeMap = new boolean[mapDim.getWidth()][mapDim.getHeight()];
+		rangeMap = new boolean[mapDim.getTileWidth()][mapDim.getTileHeight()];
 		this.damageHandler = damageHandler;
 		this.structureHandler = structureHandler;
 		this.routeChecker = routeChecker;
@@ -44,53 +39,53 @@ public class AttackRangeHandler {
 	}
 	
 	public void clearRangeMap() {
-		rangeMap = new boolean[mapDim.getWidth()][mapDim.getHeight()];
+		rangeMap = new boolean[mapDim.getTileWidth()][mapDim.getTileHeight()];
 	}
 
-	public boolean unitCanFire(Unit chosenUnit, int cursorX, int cursorY) {
+	public boolean unitCanFire(Unit chosenUnit, Cursor cursor) {
 		if (chosenUnit instanceof IndirectUnit) {
-			return indirectUnitCanFire(chosenUnit, cursorX, cursorY);
+			return indirectUnitCanFire(chosenUnit, cursor);
 		} else if (chosenUnit instanceof APC
 					|| chosenUnit instanceof Lander
 					|| chosenUnit instanceof TCopter) {
 			return false;
 		}
 
-		return directUnitCanFire(chosenUnit, cursorX, cursorY);
+		return directUnitCanFire(chosenUnit, cursor);
 	}
 
-	private boolean indirectUnitCanFire(Unit chosenUnit, int cursorX, int cursorY) {
+	private boolean indirectUnitCanFire(Unit chosenUnit, Cursor cursor) {
 		IndirectUnit attackingUnit = (IndirectUnit)chosenUnit;
 
-		int unitX = attackingUnit.getPoint().getX() / mapDim.tileSize;
-		int unitY = attackingUnit.getPoint().getY() / mapDim.tileSize;
-		int minRange = attackingUnit.getMinRange();
-		int maxRange = attackingUnit.getMaxRange();
-
-		if (unitX != cursorX || unitY != cursorY) {
+		if (attackingUnit.getPoint().getX() != cursor.getX() || attackingUnit.getPoint().getY() != cursor.getY()) {
 			return false;
 		}
 
-		for (int y = unitY - maxRange ; y <= (unitY + maxRange) ; y++) {
-			if (y < 0) {
+		int unitTileX = attackingUnit.getPoint().getX() / mapDim.tileSize;
+		int unitTileY = attackingUnit.getPoint().getY() / mapDim.tileSize;
+		int minRange = attackingUnit.getMinRange();
+		int maxRange = attackingUnit.getMaxRange();
+
+		for (int tileY = unitTileY - maxRange ; tileY <= (unitTileY + maxRange) ; tileY++) {
+			if (tileY < 0) {
 				continue;
-			} else if (y >= mapDim.getHeight()) {
+			} else if (tileY >= mapDim.getTileHeight()) {
 				break;
 			}
-			for (int x = unitX - maxRange ; x <= (unitX + maxRange) ; x++) {
-				if (x < 0) {
+			for (int tileX = unitTileX - maxRange ; tileX <= (unitTileX + maxRange) ; tileX++) {
+				if (tileX < 0) {
 					continue;
-				} else if (x >= mapDim.getWidth()) {
+				} else if (tileX >= mapDim.getTileWidth()) {
 					break;
 				}
 
-				int distanceFromUnit = Math.abs(unitX - x) + Math.abs(unitY - y);
+				int distanceFromUnit = Math.abs(unitTileX - tileX) + Math.abs(unitTileY - tileY);
 				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
-					Unit targetUnit = unitGetter.getNonFriendlyUnit(x * mapDim.tileSize, y * mapDim.tileSize);
+					Unit targetUnit = unitGetter.getNonFriendlyUnit(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
 					if (targetUnit != null && damageHandler.validTarget(attackingUnit, targetUnit)) {
 						return true;
 					}
-					Structure targetStructure = structureHandler.getStructure(x * mapDim.tileSize, y * mapDim.tileSize);
+					Structure targetStructure = structureHandler.getStructure(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
 					if (targetStructure != null && structureHandler.unitCanAttackStructure(attackingUnit, targetStructure)) {
 						return true;
 					}
@@ -100,29 +95,29 @@ public class AttackRangeHandler {
 		return false;
 	}
 
-	private boolean directUnitCanFire(Unit chosenUnit, int cursorX, int cursorY) {
-		return canAttackInDirection(chosenUnit, cursorX, cursorY, Direction.NORTH) 
-			|| canAttackInDirection(chosenUnit, cursorX, cursorY, Direction.EAST)
-			|| canAttackInDirection(chosenUnit, cursorX, cursorY, Direction.SOUTH)
-			|| canAttackInDirection(chosenUnit, cursorX, cursorY, Direction.WEST);
+	private boolean directUnitCanFire(Unit chosenUnit, Cursor cursor) {
+		return canAttackInDirection(chosenUnit, cursor, Direction.NORTH) 
+			|| canAttackInDirection(chosenUnit, cursor, Direction.EAST)
+			|| canAttackInDirection(chosenUnit, cursor, Direction.SOUTH)
+			|| canAttackInDirection(chosenUnit, cursor, Direction.WEST);
 	}
 	
-	private boolean canAttackInDirection(Unit chosenUnit, int cursorX, int cursorY, Direction direction) {
+	private boolean canAttackInDirection(Unit chosenUnit, Cursor cursor, Direction direction) {
 		Unit targetUnit = null;
 		Structure targetStructure = null;
 		
 		if (direction == Direction.NORTH) {
-			targetUnit = unitGetter.getNonFriendlyUnit(cursorX * mapDim.tileSize, (cursorY - 1) * mapDim.tileSize);
-			targetStructure = structureHandler.getStructure(cursorX * mapDim.tileSize, (cursorY - 1) * mapDim.tileSize);
+			targetUnit = unitGetter.getNonFriendlyUnit(cursor.getX(), cursor.getY() - mapDim.tileSize);
+			targetStructure = structureHandler.getStructure(cursor.getX(), cursor.getY() - mapDim.tileSize);
 		} else if (direction == Direction.EAST) {
-			targetUnit = unitGetter.getNonFriendlyUnit((cursorX + 1) * mapDim.tileSize, cursorY * mapDim.tileSize);
-			targetStructure = structureHandler.getStructure((cursorX + 1) * mapDim.tileSize, cursorY * mapDim.tileSize);
+			targetUnit = unitGetter.getNonFriendlyUnit(cursor.getX() + mapDim.tileSize, cursor.getY());
+			targetStructure = structureHandler.getStructure(cursor.getX() + mapDim.tileSize, cursor.getY());
 		} else if (direction == Direction.SOUTH) {
-			targetUnit = unitGetter.getNonFriendlyUnit(cursorX * mapDim.tileSize, (cursorY + 1) * mapDim.tileSize);
-			targetStructure = structureHandler.getStructure(cursorX * mapDim.tileSize, (cursorY + 1) * mapDim.tileSize);
+			targetUnit = unitGetter.getNonFriendlyUnit(cursor.getX(), cursor.getY() + mapDim.tileSize);
+			targetStructure = structureHandler.getStructure(cursor.getX(), cursor.getY() + mapDim.tileSize);
 		} else if (direction == Direction.WEST) {
-			targetUnit = unitGetter.getNonFriendlyUnit((cursorX - 1) * mapDim.tileSize, cursorY * mapDim.tileSize);
-			targetStructure = structureHandler.getStructure((cursorX - 1) * mapDim.tileSize, cursorY * mapDim.tileSize);
+			targetUnit = unitGetter.getNonFriendlyUnit(cursor.getX() - mapDim.tileSize, cursor.getY());
+			targetStructure = structureHandler.getStructure(cursor.getX() - mapDim.tileSize, cursor.getY());
 		}
 		
 		if ((targetUnit != null && damageHandler.validTarget(chosenUnit, targetUnit))) {
@@ -138,19 +133,19 @@ public class AttackRangeHandler {
 
 	public void findPossibleDirectAttackLocations(Unit chosenUnit) {
 		routeChecker.findPossibleMovementLocations(chosenUnit);
-		for (int n = 0 ; n < mapDim.getHeight() ; n++) {
-			for (int i = 0 ; i < mapDim.getWidth() ; i++) {
+		for (int n = 0 ; n < mapDim.getTileHeight() ; n++) {
+			for (int i = 0 ; i < mapDim.getTileWidth() ; i++) {
 				if (movementMap.isAcceptedMove(i, n)) {
 					if (i > 0) {
 						rangeMap[i - 1][n] = true;
 					}
-					if (i < (mapDim.getWidth() - 1)) {
+					if (i < (mapDim.getTileWidth() - 1)) {
 						rangeMap[i + 1][n] = true;
 					}
 					if (n > 0) {
 						rangeMap[i][n - 1] = true;
 					}
-					if (n < (mapDim.getHeight() - 1)) {
+					if (n < (mapDim.getTileHeight() - 1)) {
 						rangeMap[i][n + 1] = true;
 					}
 				}
@@ -162,64 +157,63 @@ public class AttackRangeHandler {
 	public void createRangeAttackLocations(Unit chosenUnit) {
 		IndirectUnit unit = (IndirectUnit)chosenUnit;
 
-		int unitX = unit.getPoint().getX() / mapDim.tileSize;
-		int unitY = unit.getPoint().getY() / mapDim.tileSize;
+		int unitTileX = unit.getPoint().getX() / mapDim.tileSize;
+		int unitTileY = unit.getPoint().getY() / mapDim.tileSize;
 		int minRange = unit.getMinRange();
 		int maxRange = unit.getMaxRange();
 
-		for (int y = unitY - maxRange ; y <= (unitY + maxRange) ; y++) {
-			if (y < 0) {
+		for (int tileY = unitTileY - maxRange ; tileY <= (unitTileY + maxRange) ; tileY++) {
+			if (tileY < 0) {
 				continue;
-			} else if (y >= mapDim.getHeight()) {
+			} else if (tileY >= mapDim.getTileHeight()) {
 				break;
 			}
-			for (int x = unitX - maxRange ; x <= (unitX + maxRange) ; x++) {
-				if (x < 0) {
+			for (int tileX = unitTileX - maxRange ; tileX <= (unitTileX + maxRange) ; tileX++) {
+				if (tileX < 0) {
 					continue;
-				} else if (x >= mapDim.getWidth()) {
+				} else if (tileX >= mapDim.getTileWidth()) {
 					break;
 				}
 
-				int distanceFromUnit = Math.abs(unitX - x) + Math.abs(unitY - y);
+				int distanceFromUnit = Math.abs(unitTileX - tileX) + Math.abs(unitTileY - tileY);
 				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
-					rangeMap[x][y] = true;
+					rangeMap[tileX][tileY] = true;
 				}
 			}
 		}
 	}
 
 	public void calculatePossibleAttackLocations(IndirectUnit indirectUnit) {
-		int unitX = indirectUnit.getPoint().getX() / mapDim.tileSize;
-		int unitY = indirectUnit.getPoint().getY() / mapDim.tileSize;
+		int unitTileX = indirectUnit.getPoint().getX() / mapDim.tileSize;
+		int unitTileY = indirectUnit.getPoint().getY() / mapDim.tileSize;
 		int minRange = indirectUnit.getMinRange();
 		int maxRange = indirectUnit.getMaxRange();
 
-		for (int y = unitY - maxRange ; y <= (unitY + maxRange) ; y++) {
-			if (y < 0) {
+		for (int tileY = unitTileY - maxRange ; tileY <= (unitTileY + maxRange) ; tileY++) {
+			if (tileY < 0) {
 				continue;
-			} else if (y >= mapDim.getHeight()) {
+			} else if (tileY >= mapDim.getTileHeight()) {
 				break;
 			}
-			for (int x = unitX - maxRange ; x <= (unitX + maxRange) ; x++) {
-				if (x < 0) {
+			for (int tileX = unitTileX - maxRange ; tileX <= (unitTileX + maxRange) ; tileX++) {
+				if (tileX < 0) {
 					continue;
-				} else if (x >= mapDim.getWidth()) {
+				} else if (tileX >= mapDim.getTileWidth()) {
 					break;
 				}
 
-				int distanceFromUnit = Math.abs(unitX - x) + Math.abs(unitY - y);
-				
+				int distanceFromUnit = Math.abs(unitTileX - tileX) + Math.abs(unitTileY - tileY);
 				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
-					Unit targetUnit = unitGetter.getNonFriendlyUnit(x * mapDim.tileSize, y * mapDim.tileSize);
-					Structure targetStructure = structureHandler.getStructure(x * mapDim.tileSize, y * mapDim.tileSize);
+					Unit targetUnit = unitGetter.getNonFriendlyUnit(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
+					Structure targetStructure = structureHandler.getStructure(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
 					if (targetUnit != null && damageHandler.validTarget(indirectUnit, targetUnit)) {
-						Point p = new Point(x * mapDim.tileSize, y * mapDim.tileSize);
+						Point p = new Point(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
 						indirectUnit.addFiringLocation(p);
-						rangeMap[x][y] = true;
+						rangeMap[tileX][tileY] = true;
 					} else if (targetStructure != null && structureHandler.unitCanAttackStructure(indirectUnit, targetStructure)) {
-						Point p = new Point(x * mapDim.tileSize, y * mapDim.tileSize);
+						Point p = new Point(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
 						indirectUnit.addFiringLocation(p);
-						rangeMap[x][y] = true;
+						rangeMap[tileX][tileY] = true;
 					}
 				}
 			}
@@ -235,18 +229,16 @@ public class AttackRangeHandler {
 	}
 	
 	public void paintRange(Graphics g) {
-		int tileSize = mapDim.tileSize;
-
-		for (int n = 0 ; n < mapDim.getHeight() ; n++) {
-			for (int i = 0 ; i < mapDim.getWidth() ; i++) {
+		for (int n = 0 ; n < mapDim.getTileHeight() ; n++) {
+			for (int i = 0 ; i < mapDim.getTileWidth() ; i++) {
 				if (rangeMap[i][n]) {
-					int paintX = i * tileSize;
-					int paintY = n * tileSize;
+					int paintX = i * mapDim.tileSize;
+					int paintY = n * mapDim.tileSize;
 
 					g.setColor(Color.red);
-					g.fillRect(paintX, paintY, tileSize, tileSize);
+					g.fillRect(paintX, paintY, mapDim.tileSize, mapDim.tileSize);
 					g.setColor(Color.black);
-					g.drawRect(paintX, paintY, tileSize, tileSize);
+					g.drawRect(paintX, paintY, mapDim.tileSize, mapDim.tileSize);
 				}
 			}
 		}

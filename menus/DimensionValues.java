@@ -1,5 +1,6 @@
 /**
- * TODO: make into a Builder-class
+ * TODO:
+ *  - make into a Builder-class?
  */
 package menus;
 

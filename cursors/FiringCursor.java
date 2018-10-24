@@ -33,17 +33,14 @@ public class FiringCursor {
 	public void paint(Graphics g, Cursor cursor, Unit chosenUnit) {
 		int tileSize = mapDim.tileSize;
 
-		int x = cursor.getX() * tileSize;
-		int y = cursor.getY() * tileSize;
-		
-		int xDiff = x - chosenUnit.getPoint().getX();
-		int yDiff = y - chosenUnit.getPoint().getY();
+		int xDiff = cursor.getX() - chosenUnit.getPoint().getX();
+		int yDiff = cursor.getY() - chosenUnit.getPoint().getY();
 
-		Unit targetUnit = unitGetter.getNonFriendlyUnit(x, y);
-		Structure targetStructure = structureHandler.getStructure(x, y);
+		Unit targetUnit = unitGetter.getNonFriendlyUnit(cursor.getX(), cursor.getY());
+		Structure targetStructure = structureHandler.getStructure(cursor.getX(), cursor.getY());
 		int damage = 0;
 		if (targetUnit != null) {
-			TerrainType terrainType = gameMap.getMap()[x / tileSize][y / tileSize].getTerrainType();
+			TerrainType terrainType = gameMap.getMap()[cursor.getX() / tileSize][cursor.getY() / tileSize].getTerrainType();
 			damage = damageHandler.getNonRNGDamageValue(chosenUnit, heroHandler.getCurrentHero(), targetUnit, heroHandler.getHeroFromUnit(targetUnit), terrainType);
 		} else if (targetStructure != null) {
 			damage = damageHandler.getStructureDamage(chosenUnit, heroHandler.getCurrentHero());
@@ -54,10 +51,10 @@ public class FiringCursor {
 										: tileSize - 3));
 		int damageFieldHeight = 3 * tileSize / 5;
 
-		int paintX = x + 2;
-		int paintY = y + 2;
-		int dmgFieldX = x; // will be changed
-		int dmgFieldY = y; // will be changed
+		int paintX = cursor.getX() + 2;
+		int paintY = cursor.getY() + 2;
+		int dmgFieldX = cursor.getX(); // will be changed
+		int dmgFieldY = cursor.getY(); // will be changed
 
 		g.setColor(Color.black);
 		g.drawOval(paintX, paintY, tileSize - 4, tileSize - 4);
@@ -66,13 +63,13 @@ public class FiringCursor {
 		g.setColor(Color.white);
 		g.drawOval(paintX + 1, paintY + 1, tileSize - 6, tileSize - 6);
 
-		if (yDiff == -1) {
+		if (yDiff == -tileSize) {
 			dmgFieldX += tileSize;
 			dmgFieldY += -damageFieldHeight;
-		} else if (xDiff == 1) {
+		} else if (xDiff == tileSize) {
 			dmgFieldX += tileSize;
 			dmgFieldY += tileSize;
-		} else if (yDiff == 1) {
+		} else if (yDiff == tileSize) {
 			dmgFieldX += -damageFieldWidth;
 			dmgFieldY += tileSize;
 		} else { // xDiff == -1

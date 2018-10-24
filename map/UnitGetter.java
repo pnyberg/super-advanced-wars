@@ -1,17 +1,14 @@
 package map;
 
 import hero.Hero;
-import hero.HeroPortrait;
 import main.HeroHandler;
 import units.Unit;
 
 public class UnitGetter {
 	private HeroHandler heroHandler;
-	private int tileSize;
 	
-	public UnitGetter(HeroHandler heroHandler, int tileSize) {
+	public UnitGetter(HeroHandler heroHandler) {
 		this.heroHandler = heroHandler;
-		this.tileSize = tileSize;
 	}
 
 	public Unit getAnyUnit(int x, int y) {
@@ -63,5 +60,10 @@ public class UnitGetter {
 			}
 		}
 		return null;
+	}
+
+	public boolean hurtSameTypeUnitAtPosition(Unit unit, int x, int y) {
+		Unit testUnit = getFriendlyUnitExceptSelf(unit, x, y);
+		return testUnit != null && testUnit.getUnitHealth().isVisiblyHurt() && testUnit.getClass().equals(unit.getClass());
 	}
 }

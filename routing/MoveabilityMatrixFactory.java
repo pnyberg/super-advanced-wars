@@ -14,19 +14,19 @@ public class MoveabilityMatrixFactory {
 	private void initMoveabilityMatrix() {
 		moveabilityMatrix[MovementType.INFANTRY.movementTypeIndex()][TerrainType.ROAD.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.MECH.movementTypeIndex()][TerrainType.ROAD.terrainTypeIndex()] = true;
-		moveabilityMatrix[MovementType.BAND.movementTypeIndex()][TerrainType.ROAD.terrainTypeIndex()] = true;
+		moveabilityMatrix[MovementType.TREAD.movementTypeIndex()][TerrainType.ROAD.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.TIRE.movementTypeIndex()][TerrainType.ROAD.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.AIR.movementTypeIndex()][TerrainType.ROAD.terrainTypeIndex()] = true;
 
 		moveabilityMatrix[MovementType.INFANTRY.movementTypeIndex()][TerrainType.PLAIN.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.MECH.movementTypeIndex()][TerrainType.PLAIN.terrainTypeIndex()] = true;
-		moveabilityMatrix[MovementType.BAND.movementTypeIndex()][TerrainType.PLAIN.terrainTypeIndex()] = true;
+		moveabilityMatrix[MovementType.TREAD.movementTypeIndex()][TerrainType.PLAIN.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.TIRE.movementTypeIndex()][TerrainType.PLAIN.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.AIR.movementTypeIndex()][TerrainType.PLAIN.terrainTypeIndex()] = true;
 
 		moveabilityMatrix[MovementType.INFANTRY.movementTypeIndex()][TerrainType.WOOD.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.MECH.movementTypeIndex()][TerrainType.WOOD.terrainTypeIndex()] = true;
-		moveabilityMatrix[MovementType.BAND.movementTypeIndex()][TerrainType.WOOD.terrainTypeIndex()] = true;
+		moveabilityMatrix[MovementType.TREAD.movementTypeIndex()][TerrainType.WOOD.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.TIRE.movementTypeIndex()][TerrainType.WOOD.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.AIR.movementTypeIndex()][TerrainType.WOOD.terrainTypeIndex()] = true;
 
@@ -36,25 +36,25 @@ public class MoveabilityMatrixFactory {
 
 		moveabilityMatrix[MovementType.INFANTRY.movementTypeIndex()][TerrainType.CITY.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.MECH.movementTypeIndex()][TerrainType.CITY.terrainTypeIndex()] = true;
-		moveabilityMatrix[MovementType.BAND.movementTypeIndex()][TerrainType.CITY.terrainTypeIndex()] = true;
+		moveabilityMatrix[MovementType.TREAD.movementTypeIndex()][TerrainType.CITY.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.TIRE.movementTypeIndex()][TerrainType.CITY.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.AIR.movementTypeIndex()][TerrainType.CITY.terrainTypeIndex()] = true;
 		
 		moveabilityMatrix[MovementType.INFANTRY.movementTypeIndex()][TerrainType.FACTORY.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.MECH.movementTypeIndex()][TerrainType.FACTORY.terrainTypeIndex()] = true;
-		moveabilityMatrix[MovementType.BAND.movementTypeIndex()][TerrainType.FACTORY.terrainTypeIndex()] = true;
+		moveabilityMatrix[MovementType.TREAD.movementTypeIndex()][TerrainType.FACTORY.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.TIRE.movementTypeIndex()][TerrainType.FACTORY.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.AIR.movementTypeIndex()][TerrainType.FACTORY.terrainTypeIndex()] = true;
 
 		moveabilityMatrix[MovementType.INFANTRY.movementTypeIndex()][TerrainType.AIRPORT.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.MECH.movementTypeIndex()][TerrainType.AIRPORT.terrainTypeIndex()] = true;
-		moveabilityMatrix[MovementType.BAND.movementTypeIndex()][TerrainType.AIRPORT.terrainTypeIndex()] = true;
+		moveabilityMatrix[MovementType.TREAD.movementTypeIndex()][TerrainType.AIRPORT.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.TIRE.movementTypeIndex()][TerrainType.AIRPORT.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.AIR.movementTypeIndex()][TerrainType.AIRPORT.terrainTypeIndex()] = true;
 		
 		moveabilityMatrix[MovementType.INFANTRY.movementTypeIndex()][TerrainType.PORT.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.MECH.movementTypeIndex()][TerrainType.PORT.terrainTypeIndex()] = true;
-		moveabilityMatrix[MovementType.BAND.movementTypeIndex()][TerrainType.PORT.terrainTypeIndex()] = true;
+		moveabilityMatrix[MovementType.TREAD.movementTypeIndex()][TerrainType.PORT.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.TIRE.movementTypeIndex()][TerrainType.PORT.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.SHIP.movementTypeIndex()][TerrainType.PORT.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.TRANSPORT.movementTypeIndex()][TerrainType.PORT.terrainTypeIndex()] = true;
@@ -66,7 +66,7 @@ public class MoveabilityMatrixFactory {
 
 		moveabilityMatrix[MovementType.INFANTRY.movementTypeIndex()][TerrainType.SHOAL.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.MECH.movementTypeIndex()][TerrainType.SHOAL.terrainTypeIndex()] = true;
-		moveabilityMatrix[MovementType.BAND.movementTypeIndex()][TerrainType.SHOAL.terrainTypeIndex()] = true;
+		moveabilityMatrix[MovementType.TREAD.movementTypeIndex()][TerrainType.SHOAL.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.TIRE.movementTypeIndex()][TerrainType.SHOAL.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.TRANSPORT.movementTypeIndex()][TerrainType.SHOAL.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.AIR.movementTypeIndex()][TerrainType.SHOAL.terrainTypeIndex()] = true;
@@ -77,7 +77,7 @@ public class MoveabilityMatrixFactory {
 
 		moveabilityMatrix[MovementType.INFANTRY.movementTypeIndex()][TerrainType.UMI.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.MECH.movementTypeIndex()][TerrainType.UMI.terrainTypeIndex()] = true;
-		moveabilityMatrix[MovementType.BAND.movementTypeIndex()][TerrainType.UMI.terrainTypeIndex()] = true;
+		moveabilityMatrix[MovementType.TREAD.movementTypeIndex()][TerrainType.UMI.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.TIRE.movementTypeIndex()][TerrainType.UMI.terrainTypeIndex()] = true;
 		moveabilityMatrix[MovementType.AIR.movementTypeIndex()][TerrainType.UMI.terrainTypeIndex()] = true;
 	}

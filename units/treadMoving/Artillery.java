@@ -1,12 +1,10 @@
 package units.treadMoving;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
 import graphics.images.units.ArtilleryImage;
 import units.IndirectUnit;
 import units.MovementType;
-import units.Unit;
 import units.UnitCategory;
 import units.UnitSupply;
 import units.UnitType;
@@ -19,7 +17,7 @@ public class Artillery extends IndirectUnit {
 		super(UnitType.ARTILLERY, x, y, color, tileSize);
 
 		movement = 5;
-		movementType = MovementType.BAND;
+		movementType = MovementType.TREAD;
 		unitClass = UnitCategory.VEHICLE;
 		minimumRange = 2;
 		maximumRange = 3;

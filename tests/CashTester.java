@@ -30,7 +30,7 @@ public class CashTester {
 
 	@Test
 	public void testIncome() {
-
+		// test to see if cities generate expected amount of income
 	}
 
 	@Test
@@ -52,11 +52,19 @@ public class CashTester {
 		assertEquals(hero0.getCash(), 0);
 
 		hero0.manageCash(-1);
-		assertEquals(hero0.getCash(), 0);
+		assertEquals(hero0.getCash(), -1);
 
-		hero0.manageCash(12345);
+		hero0.manageCash(12345 + 1);
 		assertEquals(hero0.getCash(), 12345);
 
 		hero0.manageCash(-12345);
+		assertEquals(hero0.getCash(), 0);
+	}
+	
+	@Test
+	public void testSpending() {
+		assertEquals(hero0.getCash(), 0);
+		
+		hero0.manageCash(1000);
 	}
 }

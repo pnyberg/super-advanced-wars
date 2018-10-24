@@ -22,20 +22,19 @@ public class StructureAttackHandler {
 		List<Unit> targetUnits = new ArrayList<>();
 		Hero owningHero = firingStructure.getOwner(); 
 		
-		boolean[][] firingRangeMap = new boolean[mapDim.getWidth()][mapDim.getHeight()];
+		boolean[][] firingRangeMap = new boolean[mapDim.getTileWidth()][mapDim.getTileHeight()];
 		firingStructure.fillRangeMap(firingRangeMap);
 		
-		for (int y = 0 ; y < mapDim.getHeight() ; y++) {
-			for (int x = 0 ; x < mapDim.getWidth() ; x++) {
-				if (firingRangeMap[x][y]) {
-					Unit potentialTarget = unitGetter.getNonFriendlyUnit(x * mapDim.tileSize, y * mapDim.tileSize, owningHero);
+		for (int tileY = 0 ; tileY < mapDim.getTileHeight() ; tileY++) {
+			for (int tileX = 0 ; tileX < mapDim.getTileWidth() ; tileX++) {
+				if (firingRangeMap[tileX][tileY]) {
+					Unit potentialTarget = unitGetter.getNonFriendlyUnit(tileX * mapDim.tileSize, tileY * mapDim.tileSize, owningHero);
 					if (potentialTarget != null) {
 						targetUnits.add(potentialTarget);
 					}
 				}
 			}
 		}
-		
 		return targetUnits;
 	}
 }

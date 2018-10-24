@@ -1,12 +1,12 @@
 /**
- * TODO: Add so that item's can't be clicked if they cost to much
+ * TODO: 
+ *  - Add so that item's can't be clicked if they cost to much
  */
 package menus.building;
 
 import units.*;
 import main.HeroHandler;
 import map.GameMap;
-import map.area.Area;
 import map.area.TerrainType;
 import menus.Menu;
 import menus.unit.UnitCreatingFactory;
@@ -16,10 +16,8 @@ import java.awt.Graphics;
 import hero.*;
 
 public class BuildingMenu extends Menu {
-	private final int priceAlign = 70;
-	private boolean factory;
-	private boolean port;
-	private boolean airport;
+	private int priceAlign;
+	private TerrainType currentBuildingMenuType;
 	private BuildingItemFactory buildingItemFactory;
 	private UnitCreatingFactory unitCreatingFactory;
 	private HeroHandler heroHandler;
@@ -30,9 +28,8 @@ public class BuildingMenu extends Menu {
 		super(tileSize);
 		this.heroHandler = heroHandler;
 		dimensionValues.menuRowWidth = 118;
-		factory = false;
-		port = false;
-		airport = false;
+		priceAlign = 70;
+		currentBuildingMenuType = null;
 		buildingItemFactory = new BuildingItemFactory();
 		unitCreatingFactory = new UnitCreatingFactory(tileSize);
 		buildingMenuPainter = new BuildingMenuPainter(heroHandler, dimensionValues, priceAlign);
@@ -41,30 +38,26 @@ public class BuildingMenu extends Menu {
 
 	public void openMenu(int x, int y) {
 		super.openMenu(x, y);
-		TerrainType terrainType = gridMap.getMap()[x][y].getTerrainType();
-		if (terrainType == TerrainType.FACTORY) {
-			factory = true;
-		} else if (terrainType == TerrainType.AIRPORT) {
-			airport = true;
-		} else if (terrainType == TerrainType.PORT) {
-			port = true;
+		int tileX = x / tileSize;
+		int tileY = y / tileSize;
+		TerrainType terrainType = gridMap.getMap()[tileX][tileY].getTerrainType();
+		if (terrainType == TerrainType.FACTORY || terrainType == TerrainType.AIRPORT || terrainType == TerrainType.PORT) {
+			currentBuildingMenuType = terrainType;
 		}
 	}
 
 	public void closeMenu() {
 		super.closeMenu();
-		factory = false;
-		airport = false;
-		port = false;
+		currentBuildingMenuType = null;
 	}
 
 	public int getNumberOfRows() {
-		if (factory) {
+		if (currentBuildingMenuType == TerrainType.FACTORY) {
 			return buildingItemFactory.getStandardFactoryItems().length;
-		} else if (port) {
-			return buildingItemFactory.getStandardPortItems().length;
-		} else if (airport) {
+		} else if (currentBuildingMenuType == TerrainType.AIRPORT) {
 			return buildingItemFactory.getStandardAirportItems().length;
+		} else if (currentBuildingMenuType == TerrainType.PORT) {
+			return buildingItemFactory.getStandardPortItems().length;
 		}
 		return 0;
 	}
@@ -78,33 +71,33 @@ public class BuildingMenu extends Menu {
 
 	private Unit createUnitFromIndex(Hero hero) {
 		String unitName = getStandardItems()[menuIndex].getName();
-		return unitCreatingFactory.createUnit(unitName, x * tileSize, y * tileSize, hero.getColor());
+		return unitCreatingFactory.createUnit(unitName, x, y, hero.getColor());
 	}
 	
 	private BuildingItem[] getStandardItems() {
-		if (factory) {
+		if (currentBuildingMenuType == TerrainType.FACTORY) {
 			return buildingItemFactory.getStandardFactoryItems();
-		} else if (port) {
-			return buildingItemFactory.getStandardPortItems();
-		} else if (airport) {
+		} else if (currentBuildingMenuType == TerrainType.AIRPORT) {
 			return buildingItemFactory.getStandardAirportItems();
+		} else if (currentBuildingMenuType == TerrainType.PORT) {
+			return buildingItemFactory.getStandardPortItems();
 		}
 		return null;
 	}
 
 	public void paint(Graphics g) {
-		int menuY = y * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2 + dimensionValues.getAlignY();
+		int yAdjust = dimensionValues.getTileSize() / 2 + dimensionValues.getAlignY();
 		BuildingItem[] items = new BuildingItem[0];
-		if (factory) {
+		if (currentBuildingMenuType == TerrainType.FACTORY) {
 			items = buildingItemFactory.getStandardFactoryItems();
-		} else if (airport) {
+		} else if (currentBuildingMenuType == TerrainType.AIRPORT) {
 			items = buildingItemFactory.getStandardAirportItems();
-		} else if (port) {
+		} else if (currentBuildingMenuType == TerrainType.PORT) {
 			items = buildingItemFactory.getStandardPortItems();
 		}
 
 		paintMenuBackground(g);
-		buildingMenuPainter.paint(g, x, menuY, items);
+		buildingMenuPainter.paint(g, x, y + yAdjust, items);
 		paintArrow(g);
 	}
 }

@@ -88,7 +88,6 @@ public class StructureHandler {
 				return (FiringStructure)structure;
 			}
 		}
-
 		return null;
 	}
 }

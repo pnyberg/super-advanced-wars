@@ -23,7 +23,7 @@ public class PowerStar {
 		int x1 = x + width / 2;
 		int y1 = y;
 		// right upper creek
-		int x2 = x + 12 * width / 20;
+		int x2 = x + 3 * width / 5;
 		int y2 = y + 7 * height / 15;
 		// right upper point
 		int x3 = x + width;
@@ -32,22 +32,22 @@ public class PowerStar {
 		int x4 = x + 13 * width / 20;
 		int y4 = y + 13 * height / 20;
 		// right lower point
-		int x5 = x + 14 * width / 20;
+		int x5 = x + 7 * width / 10;
 		int y5 = y + height;
 		// lower creek
 		int x6 = x + width / 2 - 1;
-		int y6 = y + 16 * height / 20;
+		int y6 = y + 4 * height / 5;
 		// left lower point
 		int x7 = x + 4 * width / 15 - 1;
 		int y7 = y + height;
 		// left lower creek
-		int x8 = x + 5 * width / 15;
+		int x8 = x + width / 3;
 		int y8 = y + 13 * height / 20;
 		// left upper point
 		int x9 = x;
 		int y9 = y + 2 * height / 5;
 		// left upper creek
-		int x10 = x + 6 * width / 15;
+		int x10 = x + 2 * width / 5;
 		int y10 = y + 7 * height / 15;
 		
 		int n = 10;
@@ -86,17 +86,16 @@ public class PowerStar {
 			g.fillPolygon(dx, dy, 5);
 		} else if (filled >= 0.25) {
 			// right point right upper limit
-			int xd4 = x4+4*(x5-x4)/10;
-			int yd4 = y4+4*(y5-y4)/10;
+			int xd4 = x4+2*(x5-x4)/5;
+			int yd4 = y4+2*(y5-y4)/5;
 
 			// right point left upper limit
 
 			// left point left upper limit
-			int xd8 = x7+6*(x8-x7)/10;
-			int yd8 = y7+6*(y8-y7)/10;
+			int xd8 = x7+3*(x8-x7)/5;
+			int yd8 = y7+3*(y8-y7)/5;
 
 			// left point right upper limit
-
 			int[] dx = {xd4, x5, x6, x7, xd8, x6};
 			int[] dy = {yd4, y5, y6, y7, yd8, y6};
 			g.fillPolygon(dx, dy, 5);

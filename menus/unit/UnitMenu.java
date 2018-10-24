@@ -1,5 +1,6 @@
 /**
- * TODO: write cargo as actual unit and not "Unit " + [number]
+ * TODO: 
+ *  - write cargo as actual unit and not "Unit " + [number]
  */
 package menus.unit;
 
@@ -19,7 +20,8 @@ public class UnitMenu extends Menu {
 													"Dive", 
 													"Emerge", 
 													"Supply", 
-													"Wait"};
+													"Wait"
+												};
 	private UnitMenuRowEntryBooleanHandler unitMenuRowEntryBooleanHandler;
 	private ArrayList<Unit> cargo;
 
@@ -63,11 +65,11 @@ public class UnitMenu extends Menu {
 	}
 
 	public boolean atJoinRow() {
-		return unitMenuRowEntryBooleanHandler.mayJoin();
+		return unitMenuRowEntryBooleanHandler.join == true;
 	}
 
 	public boolean atEnterRow() {
-		if (!unitMenuRowEntryBooleanHandler.mayEnter()) {
+		if (!unitMenuRowEntryBooleanHandler.enter == true) {
 			return false;
 		}
 
@@ -75,7 +77,7 @@ public class UnitMenu extends Menu {
 	}
 	
 	public boolean atFireRow() {
-		if (!unitMenuRowEntryBooleanHandler.mayFire()) {
+		if (!unitMenuRowEntryBooleanHandler.fire == true) {
 			return false;
 		}
 
@@ -83,10 +85,10 @@ public class UnitMenu extends Menu {
 	}
 	
 	public boolean atCaptRow() {
-		if (!unitMenuRowEntryBooleanHandler.mayCapt()) {
+		if (!unitMenuRowEntryBooleanHandler.capt == true) {
 			return false;
 		}
-		if (unitMenuRowEntryBooleanHandler.mayFire()) {
+		if (unitMenuRowEntryBooleanHandler.fire == true) {
 			return menuIndex == 1;
 		} else {
 			return menuIndex == 0;
@@ -94,7 +96,7 @@ public class UnitMenu extends Menu {
 	}
 
 	public boolean atSupplyRow() {
-		if (!unitMenuRowEntryBooleanHandler.maySupply()) {
+		if (!unitMenuRowEntryBooleanHandler.supply == true) {
 			return false;
 		}
 
@@ -106,8 +108,8 @@ public class UnitMenu extends Menu {
 	}
 
 	public void paint(Graphics g) {
-		int menuX = x * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2 + 2 * dimensionValues.getAlignX();
-		int menuY = y * dimensionValues.getTileSize() + dimensionValues.getTileSize() / 2 + dimensionValues.getAlignY();
+		int xAlign = dimensionValues.getTileSize() / 2 + 2 * dimensionValues.getAlignX();
+		int yAlign = dimensionValues.getTileSize() / 2 + dimensionValues.getAlignY();
 
 		paintMenuBackground(g);
 
@@ -117,16 +119,15 @@ public class UnitMenu extends Menu {
 			if (k == 2 && cargo.size() > 0) {
 				for (int i = 0 ; i < cargo.size() ; i++) {
 					// TODO: write the actual unit (type)
-					g.drawString("Unit" + (i+1), menuX, menuY + dimensionValues.getMenuRowHeight() * rowHelpIndex);
+					g.drawString("Unit" + (i+1), x + xAlign, y + yAlign + dimensionValues.getMenuRowHeight() * rowHelpIndex);
 					rowHelpIndex++;
 				}
 			}
 			if (unitMenuRowEntryBooleans[k]) {
-				g.drawString(unitMenuRowEntryText[k], menuX, menuY + dimensionValues.getMenuRowHeight() * rowHelpIndex);
+				g.drawString(unitMenuRowEntryText[k], x + xAlign, y + yAlign + dimensionValues.getMenuRowHeight() * rowHelpIndex);
 				rowHelpIndex++;
 			}
 		}
-
 		paintArrow(g);
 	}
 }

@@ -3,7 +3,7 @@ package units;
 public enum MovementType {
 	INFANTRY(0),
 	MECH(1),
-	BAND(2),
+	TREAD(2),
 	TIRE(3),
 	SHIP(4),
 	TRANSPORT(5),
@@ -22,18 +22,18 @@ public enum MovementType {
 	}
 	
 	public boolean isLandMovementType() {
-		return movementTypeIndex == 0
-			|| movementTypeIndex == 1
-			|| movementTypeIndex == 2
-			|| movementTypeIndex == 3;
+		return movementTypeIndex == INFANTRY.movementTypeIndex
+			|| movementTypeIndex == MECH.movementTypeIndex
+			|| movementTypeIndex == TREAD.movementTypeIndex
+			|| movementTypeIndex == TIRE.movementTypeIndex;
 	}
 
 	public boolean isAirMovementType() {
-		return movementTypeIndex == 6;
+		return movementTypeIndex == AIR.movementTypeIndex;
 	}
 
 	public boolean isSeaMovementType() {
-		return movementTypeIndex == 4
-			|| movementTypeIndex == 5;
+		return movementTypeIndex == SHIP.movementTypeIndex
+			|| movementTypeIndex == TRANSPORT.movementTypeIndex;
 	}
 }

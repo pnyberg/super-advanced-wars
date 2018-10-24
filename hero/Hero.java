@@ -1,7 +1,6 @@
 /**
  * TODO:
  *  - paint Hero
- *  - shouldn't be able to get to negative cash (so check should be removed)
  */
 package hero;
 
@@ -9,7 +8,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import hero.heroPower.HeroPower;
-import hero.heroPower.HeroPowerMeter;
 
 public class Hero {
 	private int cash;
@@ -34,8 +32,6 @@ public class Hero {
 		cash += cashDiff;
 		if (cash >= 1000000) {
 			cash = 999999;
-		} else if (cash < 0) { // TODO: shouldn't be able to happen
-			cash = 0;
 		}
 	}
 	
@@ -82,6 +78,6 @@ public class Hero {
 	}
 
 	public void paint(Graphics g, int x, int y) {
-		// to do
+		// TODO: paint the face of the hero
 	}
 }
