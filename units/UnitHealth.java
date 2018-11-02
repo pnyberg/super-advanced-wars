@@ -54,7 +54,7 @@ public class UnitHealth {
 		return (hp + 9) / 10;
 	}
 
-	protected void paintHP(Graphics g, int x, int y) {
+	public void paintHP(Graphics g, int x, int y) {
 		if (getShowHP() == 10) {
 			return;
 		}

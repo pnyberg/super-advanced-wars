@@ -51,23 +51,39 @@ public class UnitContainedInfoBox {
 			if (unit instanceof APC) {
 				Unit containedUnit = ((APC)unit).getContainedUnit();
 				Color containedUnitColor = containedUnit.getColor();
-				containedUnit.getUnitImage().paint(g, point.getX() + (width-tileSize)/2, point.getY() + 19, containedUnitColor);
+				int containedUnitPosX = point.getX() + (width-tileSize)/2;
+				int containedUnitPosY = point.getY() + 19;
+				containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
+				containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
 			} else if (unit instanceof TCopter) {
 				Unit containedUnit = ((TCopter)unit).getContainedUnit();
 				Color containedUnitColor = containedUnit.getColor();
-				containedUnit.getUnitImage().paint(g, point.getX() + (width-tileSize)/2, point.getY() + 19, containedUnitColor);
+				int containedUnitPosX = point.getX() + (width-tileSize)/2;
+				int containedUnitPosY = point.getY() + 19;
+				containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
+				containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
 			} else if (unit instanceof Lander) {
 				if (((Lander)unit).getNumberOfContainedUnits() > 1) {
 					Unit containedUnit = ((Lander)unit).getUnit(0);
 					Color containedUnitColor = containedUnit.getColor();
-					containedUnit.getUnitImage().paint(g, point.getX() + (width-tileSize)/2, point.getY() + 15, containedUnitColor);
+					int containedUnitPosX = point.getX() + (width-tileSize)/2;
+					int containedUnitPosY = point.getY() + 15;
+					containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
+					containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
 					containedUnit = ((Lander)unit).getUnit(1);
 					containedUnitColor = containedUnit.getColor();
-					containedUnit.getUnitImage().paint(g, point.getX() + (width-tileSize)/2, point.getY() + 20 + tileSize, containedUnitColor);
+
+					containedUnitPosX = point.getX() + (width-tileSize)/2;
+					containedUnitPosY = point.getY() + 20 + tileSize;
+					containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
+					containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
 				} else if (((Lander)unit).getNumberOfContainedUnits() > 0) {
 					Unit containedUnit = ((Lander)unit).getUnit(0);
 					Color containedUnitColor = containedUnit.getColor();
-					containedUnit.getUnitImage().paint(g, point.getX() + (width-tileSize)/2, point.getY() + 15 + tileSize / 2, containedUnitColor);
+					int containedUnitPosX = point.getX() + (width-tileSize)/2;
+					int containedUnitPosY = point.getY() + 15 + tileSize / 2;
+					containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
+					containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
 				}
 			} else if (unit instanceof Cruiser) {
 				// may hold two copters

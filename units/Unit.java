@@ -129,7 +129,7 @@ public abstract class Unit {
 		}
 	}
 	
-	private void paintCaptFlag(Graphics g, int tileSize) {
+	public void paintCaptFlag(Graphics g, int tileSize) {
 		g.setColor(Color.white);
 		g.fillRect(point.getX() + tileSize / 10, point.getY() + 3 * tileSize / 5, tileSize / 3, tileSize / 3);
 		g.setColor(Color.black);
