@@ -66,7 +66,7 @@ public class TCopter extends Unit {
 		return typeName;
 	}
 
-	public Unit getUnit() {
+	public Unit getContainedUnit() {
 		return containedUnit;
 	}
 

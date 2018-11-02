@@ -46,10 +46,10 @@ public class ContUnitHandler {
 		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
 		if (chosenUnit instanceof APC) {
 			((APC)chosenUnit).regulateDroppingOff(true);
-			containedUnit = ((APC)chosenUnit).getUnit();
+			containedUnit = ((APC)chosenUnit).getContainedUnit();
 		} else if (chosenUnit instanceof TCopter) {
 			((TCopter)chosenUnit).regulateDroppingOff(true);
-			containedUnit = ((TCopter)chosenUnit).getUnit();
+			containedUnit = ((TCopter)chosenUnit).getContainedUnit();
 		} else if (chosenUnit instanceof Lander) {
 			((Lander)chosenUnit).regulateDroppingOff(true);
 			containedUnit = ((Lander)chosenUnit).getChosenUnit();
@@ -111,10 +111,10 @@ public class ContUnitHandler {
 		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
 		if (chosenUnit instanceof APC) {
 			((APC)chosenUnit).regulateDroppingOff(true);
-			return unitCanBeDroppedOff(((APC)chosenUnit).getUnit());
+			return unitCanBeDroppedOff(((APC)chosenUnit).getContainedUnit());
 		} else if (chosenUnit instanceof TCopter) {
 			((TCopter)chosenUnit).regulateDroppingOff(true);
-			return unitCanBeDroppedOff(((TCopter)chosenUnit).getUnit());
+			return unitCanBeDroppedOff(((TCopter)chosenUnit).getContainedUnit());
 		} else if (chosenUnit instanceof Lander) {
 			((Lander)chosenUnit).regulateDroppingOff(true);
 			return unitCanBeDroppedOff(((Lander)chosenUnit).getChosenUnit());
@@ -171,9 +171,9 @@ public class ContUnitHandler {
 		Unit containedUnit = null;
 
 		if (chosenUnit instanceof APC) {
-			containedUnit = ((APC)chosenUnit).getUnit();
+			containedUnit = ((APC)chosenUnit).getContainedUnit();
 		} else if (chosenUnit instanceof TCopter) {
-			containedUnit = ((TCopter)chosenUnit).getUnit();
+			containedUnit = ((TCopter)chosenUnit).getContainedUnit();
 		} else if (chosenUnit instanceof Lander) {
 			containedUnit = ((Lander)chosenUnit).getChosenUnit();
 		} else if (chosenUnit instanceof Cruiser) {
@@ -229,9 +229,9 @@ public class ContUnitHandler {
 		Unit containedUnit = null;
 
 		if (chosenUnit instanceof APC) {
-			containedUnit = ((APC)chosenUnit).getUnit();
+			containedUnit = ((APC)chosenUnit).getContainedUnit();
 		} else if (chosenUnit instanceof TCopter) {
-			containedUnit = ((TCopter)chosenUnit).getUnit();
+			containedUnit = ((TCopter)chosenUnit).getContainedUnit();
 		} else if (chosenUnit instanceof Lander) {
 			containedUnit = ((Lander)chosenUnit).getChosenUnit();
 		} else if (chosenUnit instanceof Cruiser) {

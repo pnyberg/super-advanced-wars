@@ -67,14 +67,14 @@ public class UnitMenuHandler {
 				}
 
 				if (((APC)chosenUnit).isFull()) {
-					Unit holdUnit = ((APC)chosenUnit).getUnit();
+					Unit holdUnit = ((APC)chosenUnit).getContainedUnit();
 					unitMenu.containedCargo(holdUnit);
 				}
 			} else if (chosenUnit instanceof TCopter) {
 				int cursorTileX = cursor.getX() / gameProp.getMapDim().tileSize;
 				int cursorTileY = cursor.getY() / gameProp.getMapDim().tileSize;
 				if (((TCopter)chosenUnit).isFull() && areaChecker.isLand(cursorTileX, cursorTileY)) {
-					Unit holdUnit = ((TCopter)chosenUnit).getUnit();
+					Unit holdUnit = ((TCopter)chosenUnit).getContainedUnit();
 					unitMenu.containedCargo(holdUnit);
 				}
 			} else if (chosenUnit instanceof Lander) {

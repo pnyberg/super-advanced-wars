@@ -65,7 +65,7 @@ public class APC extends Unit {
 		return typeName;
 	}
 
-	public Unit getUnit() {
+	public Unit getContainedUnit() {
 		return containedUnit;
 	}
 
