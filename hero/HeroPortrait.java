@@ -27,7 +27,7 @@ public class HeroPortrait {
 		if (cursorTileY < 2) {
 			if (leftSide && cursorTileX < 4) {
 				leftSide = false;
-			} else if (!leftSide && cursorTileX >= 16) {
+			} else if (!leftSide && cursorTileX >= mapDim.getTileWidth() - 4) { 
 				leftSide = true;
 			}
 		}
