@@ -47,9 +47,9 @@ public class ContUnitHandler {
 		if (chosenUnit instanceof APC) {
 			((APC)chosenUnit).regulateDroppingOff(true);
 			containedUnit = ((APC)chosenUnit).getContainedUnit();
-		} else if (chosenUnit instanceof TCopter) {
-			((TCopter)chosenUnit).regulateDroppingOff(true);
-			containedUnit = ((TCopter)chosenUnit).getContainedUnit();
+		} else if (chosenUnit.hasUnitContainer()) {
+			chosenUnit.getUnitContainer().regulateDroppingOff(true);
+			containedUnit = chosenUnit.getUnitContainer().getChosenUnit();
 		} else if (chosenUnit instanceof Lander) {
 			((Lander)chosenUnit).regulateDroppingOff(true);
 			containedUnit = ((Lander)chosenUnit).getChosenUnit();
@@ -90,8 +90,8 @@ public class ContUnitHandler {
 			if (((APC)chosenUnit).isDroppingOff()) {
 				return true;
 			}
-		} else if (chosenUnit instanceof TCopter) {
-			if (((TCopter)chosenUnit).isDroppingOff()) {
+		} else if (chosenUnit != null && chosenUnit.hasUnitContainer()) {
+			if (chosenUnit.getUnitContainer().isDroppingOff()) {
 				return true;
 			}
 		} else if (chosenUnit instanceof Lander) {
@@ -112,9 +112,9 @@ public class ContUnitHandler {
 		if (chosenUnit instanceof APC) {
 			((APC)chosenUnit).regulateDroppingOff(true);
 			return unitCanBeDroppedOff(((APC)chosenUnit).getContainedUnit());
-		} else if (chosenUnit instanceof TCopter) {
-			((TCopter)chosenUnit).regulateDroppingOff(true);
-			return unitCanBeDroppedOff(((TCopter)chosenUnit).getContainedUnit());
+		} else if (chosenUnit.hasUnitContainer()) {
+			chosenUnit.getUnitContainer().regulateDroppingOff(true);
+			return unitCanBeDroppedOff(chosenUnit.getUnitContainer().getChosenUnit());
 		} else if (chosenUnit instanceof Lander) {
 			((Lander)chosenUnit).regulateDroppingOff(true);
 			return unitCanBeDroppedOff(((Lander)chosenUnit).getChosenUnit());
@@ -172,8 +172,8 @@ public class ContUnitHandler {
 
 		if (chosenUnit instanceof APC) {
 			containedUnit = ((APC)chosenUnit).getContainedUnit();
-		} else if (chosenUnit instanceof TCopter) {
-			containedUnit = ((TCopter)chosenUnit).getContainedUnit();
+		} else if (chosenUnit.hasUnitContainer()) {
+			containedUnit = chosenUnit.getUnitContainer().getChosenUnit();
 		} else if (chosenUnit instanceof Lander) {
 			containedUnit = ((Lander)chosenUnit).getChosenUnit();
 		} else if (chosenUnit instanceof Cruiser) {
@@ -230,8 +230,8 @@ public class ContUnitHandler {
 
 		if (chosenUnit instanceof APC) {
 			containedUnit = ((APC)chosenUnit).getContainedUnit();
-		} else if (chosenUnit instanceof TCopter) {
-			containedUnit = ((TCopter)chosenUnit).getContainedUnit();
+		} else if (chosenUnit.hasUnitContainer()) {
+			containedUnit = chosenUnit.getUnitContainer().getChosenUnit();
 		} else if (chosenUnit instanceof Lander) {
 			containedUnit = ((Lander)chosenUnit).getChosenUnit();
 		} else if (chosenUnit instanceof Cruiser) {
@@ -314,7 +314,7 @@ public class ContUnitHandler {
 		if (unit instanceof APC && !((APC)unit).isFull()) {
 			return true;
 		}
-		if (unit instanceof TCopter && !((TCopter)unit).isFull()) {
+		if (unit != null && unit.hasUnitContainer() && !unit.getUnitContainer().isFull()) {
 			return true;
 		}
 		return false;

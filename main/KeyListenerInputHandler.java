@@ -247,8 +247,8 @@ public class KeyListenerInputHandler {
 				Unit entryUnit = unitGetter.getFriendlyUnitExceptSelf(gameProp.getChosenObject().chosenUnit, cursorX, cursorY);
 				if (entryUnit instanceof APC) {
 					((APC)entryUnit).addUnit(gameProp.getChosenObject().chosenUnit);
-				} else if (entryUnit instanceof TCopter) {
-					((TCopter)entryUnit).addUnit(gameProp.getChosenObject().chosenUnit);
+				} else if (entryUnit.hasUnitContainer()) {
+					entryUnit.getUnitContainer().addUnit(gameProp.getChosenObject().chosenUnit);
 				} else if (entryUnit instanceof Lander) {
 					((Lander)entryUnit).addUnit(gameProp.getChosenObject().chosenUnit);
 				} else if (entryUnit instanceof Cruiser) {
@@ -327,9 +327,9 @@ public class KeyListenerInputHandler {
 				Unit exitingUnit = ((APC)gameProp.getChosenObject().chosenUnit).removeUnit();
 				exitingUnit.moveTo(cursor.getX(), cursor.getY());
 				exitingUnit.regulateActive(false);
-			} else if (gameProp.getChosenObject().chosenUnit instanceof TCopter) {
-				((TCopter)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
-				Unit exitingUnit = ((TCopter)gameProp.getChosenObject().chosenUnit).removeUnit();
+			} else if (gameProp.getChosenObject().chosenUnit.hasUnitContainer()) {
+				gameProp.getChosenObject().chosenUnit.getUnitContainer().regulateDroppingOff(false);
+				Unit exitingUnit = gameProp.getChosenObject().chosenUnit.getUnitContainer().removeChosenUnit();
 				exitingUnit.moveTo(cursor.getX(), cursor.getY());
 				exitingUnit.regulateActive(false);
 			} else if (gameProp.getChosenObject().chosenUnit instanceof Lander) {
@@ -344,7 +344,7 @@ public class KeyListenerInputHandler {
 				exitingUnit.regulateActive(false);
 			}
 
-			int fuelUse = routeHandler.getFuelFromArrows(gameProp.getChosenObject().chosenUnit);;
+			int fuelUse = routeHandler.getFuelFromArrows(gameProp.getChosenObject().chosenUnit);
 			gameProp.getChosenObject().chosenUnit.getUnitSupply().useFuel(fuelUse);
 
 			gameProp.getChosenObject().chosenUnit.regulateActive(false);
@@ -367,8 +367,8 @@ public class KeyListenerInputHandler {
 	
 			if (gameProp.getChosenObject().chosenUnit instanceof APC) {
 				((APC)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
-			} else if (gameProp.getChosenObject().chosenUnit instanceof TCopter) {
-				((TCopter)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
+			} else if (gameProp.getChosenObject().chosenUnit.hasUnitContainer()) {
+				gameProp.getChosenObject().chosenUnit.getUnitContainer().regulateDroppingOff(false);
 			} else if (gameProp.getChosenObject().chosenUnit instanceof Lander) {
 				((Lander)gameProp.getChosenObject().chosenUnit).regulateDroppingOff(false);
 			} else if (gameProp.getChosenObject().chosenUnit instanceof Cruiser) {

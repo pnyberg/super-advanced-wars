@@ -17,7 +17,7 @@ public abstract class Unit {
 	protected boolean active;
 	protected boolean capting;
 	protected UnitSupply unitSupply;
-	protected Color color, restingColor;
+	protected UnitContainer unitContainer;
 
 	protected int movement;
 	protected UnitType unitType;
@@ -25,6 +25,8 @@ public abstract class Unit {
 	protected AttackType attackType;
 	protected MovementType movementType;
 	
+	protected Color color;
+	protected Color restingColor;
 	protected UnitImage unitImage;
 
 	public Unit(UnitType unitType, int x, int y, Color color, int tileSize) {
@@ -88,9 +90,17 @@ public abstract class Unit {
 	public boolean isCapting() {
 		return capting;
 	}
+	
+	public boolean hasUnitContainer() {
+		return unitContainer != null;
+	}
 
 	public UnitSupply getUnitSupply() {
 		return unitSupply;
+	}
+	
+	public UnitContainer getUnitContainer() {
+		return unitContainer;
 	}
 	
 	public Color getColor() {

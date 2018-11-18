@@ -11,15 +11,13 @@ import units.AttackType;
 import units.MovementType;
 import units.Unit;
 import units.UnitCategory;
+import units.UnitContainer;
 import units.UnitSupply;
 import units.UnitType;
 
 public class TCopter extends Unit {
 	private static int price = 5000;
 	private static String typeName = "TCopter";
-
-	private Unit containedUnit;
-	private boolean droppingOff;
 
 	public TCopter(int x, int y, Color color, int tileSize) {
 		super(UnitType.TCOPTER, x, y, color, tileSize);
@@ -30,28 +28,17 @@ public class TCopter extends Unit {
 		unitClass = UnitCategory.COPTER;
 		unitSupply = new UnitSupply(99, 0);
 
-		containedUnit = null;
-		droppingOff = false;
+		unitContainer = new UnitContainer(1);
 		
 		unitImage = new TCopterImage(tileSize);
-	}
-
-	public void addUnit(Unit unit) {
-		containedUnit = unit;
-
-		containedUnit.regulateHidden(true);
 	}
 
 	public void moveTo(int x, int y) {
 		super.moveTo(x, y);
 
-		if (containedUnit != null) {
-			containedUnit.moveTo(x, y);
+		if (unitContainer != null) {
+			unitContainer.moveContainedUnits(x, y);
 		}
-	}
-
-	public void regulateDroppingOff(boolean droppingOff) {
-		this.droppingOff = droppingOff;
 	}
 
 	public static void setPrice(int price) {
@@ -66,24 +53,7 @@ public class TCopter extends Unit {
 		return typeName;
 	}
 
-	public Unit getContainedUnit() {
-		return containedUnit;
-	}
-
-	public Unit removeUnit() {
-		Unit unit = containedUnit;
-
-		containedUnit.regulateHidden(false);
-		containedUnit = null;
-
-		return unit;
-	}
-
-	public boolean isFull() {
-		return containedUnit != null;
-	}
-
-	public boolean isDroppingOff() {
-		return droppingOff;
+	public UnitContainer getUnitContainer() {
+		return unitContainer;
 	}
 }

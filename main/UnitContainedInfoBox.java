@@ -35,8 +35,8 @@ public class UnitContainedInfoBox {
 		}
 		if (unit instanceof APC) {
 			return ((APC)unit).isFull();
-		} else if (unit instanceof TCopter) {
-			return ((TCopter)unit).isFull();
+		} else if (unit.hasUnitContainer()) {
+			return unit.getUnitContainer().isFull();
 		} else if (unit instanceof Lander) {
 			return ((Lander)unit).getNumberOfContainedUnits() > 0;
 		}
@@ -55,8 +55,8 @@ public class UnitContainedInfoBox {
 				int containedUnitPosY = point.getY() + 19;
 				containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
 				containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
-			} else if (unit instanceof TCopter) {
-				Unit containedUnit = ((TCopter)unit).getContainedUnit();
+			} else if (unit.hasUnitContainer() && !unit.getUnitContainer().isEmpty()) {
+				Unit containedUnit = unit.getUnitContainer().getChosenUnit();
 				Color containedUnitColor = containedUnit.getColor();
 				int containedUnitPosX = point.getX() + (width-tileSize)/2;
 				int containedUnitPosY = point.getY() + 19;
