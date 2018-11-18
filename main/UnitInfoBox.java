@@ -51,7 +51,12 @@ public class UnitInfoBox {
 	
 	private void paintUnit(Graphics g, Unit unit) {
 		Color unitColor = unit.getColor();
-		unit.getUnitImage().paint(g, point.getX() + (width-tileSize)/2, point.getY() + 19, unitColor);
+		int x = point.getX() + (width-tileSize)/2;
+		int y = point.getY() + 19;
+		unit.getUnitImage().paint(g, x, y, unitColor);
+		if (unit.isCapting()) {
+			unit.paintCaptFlag(g, x, y, tileSize);
+		}
 	}
 	
 	private void paintUnitHealth(Graphics g, Unit unit) {

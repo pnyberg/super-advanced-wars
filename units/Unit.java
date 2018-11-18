@@ -125,19 +125,19 @@ public abstract class Unit {
 		paintUnit(g, tileSize);
 		unitHealth.paintHP(g, point.getX(), point.getY());
 		if (capting) {
-			paintCaptFlag(g, tileSize);
+			paintCaptFlag(g, point.getX(), point.getY(), tileSize);
 		}
 	}
 	
-	public void paintCaptFlag(Graphics g, int tileSize) {
+	public void paintCaptFlag(Graphics g, int unitX, int unitY, int tileSize) {
 		g.setColor(Color.white);
-		g.fillRect(point.getX() + tileSize / 10, point.getY() + 3 * tileSize / 5, tileSize / 3, tileSize / 3);
+		g.fillRect(unitX + tileSize / 10, unitY + 3 * tileSize / 5, tileSize / 3, tileSize / 3);
 		g.setColor(Color.black);
-		g.drawRect(point.getX() + tileSize / 10, point.getY() + 3 * tileSize / 5, tileSize / 3, tileSize / 3);
+		g.drawRect(unitX + tileSize / 10, unitY + 3 * tileSize / 5, tileSize / 3, tileSize / 3);
 
-		g.fillRect(point.getX() + tileSize / 4, point.getY() + 17 * tileSize / 25, tileSize / 8, tileSize / 12);
-		g.drawLine(point.getX() + tileSize / 4, point.getY() + 11 * tileSize / 15, point.getX() + tileSize / 4, point.getY() + 12 * tileSize / 15);
-		g.fillRect(point.getX() + tileSize / 5, point.getY() + 12 * tileSize / 15, tileSize / 6, tileSize / 12);
+		g.fillRect(unitX + tileSize / 4, unitY + 17 * tileSize / 25, tileSize / 8, tileSize / 12);
+		g.drawLine(unitX + tileSize / 4, unitY + 11 * tileSize / 15, unitX + tileSize / 4, unitY + 12 * tileSize / 15);
+		g.fillRect(unitX + tileSize / 5, unitY + 12 * tileSize / 15, tileSize / 6, tileSize / 12);
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
