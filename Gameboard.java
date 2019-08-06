@@ -209,9 +209,9 @@ public class Gameboard extends JPanel implements KeyListener {
 					}
 					handleDroppingOff();
 				} else if (unitMenu.atDiveRow()) {
-					// TODO: 
+					((Sub)chosenUnit).submerge();
 				} else if (unitMenu.atEmergeRow()) {
-					// TODO: 
+					((Sub)chosenUnit).emerge();
 				} else if (unitMenu.atFireRow()) {
 					handleFiring();
 				} else if (unitMenu.atEnterRow()) {
@@ -393,7 +393,6 @@ public class Gameboard extends JPanel implements KeyListener {
 				return; // cannot drop unit off anywhere
 			}
 		}
-
 		cursor.setPosition(x, y);
 	}
 
@@ -401,7 +400,6 @@ public class Gameboard extends JPanel implements KeyListener {
 		if (!unit.isDead()) {
 			return;
 		}
-
 		Hero unitsHero = MapHandler.getHeroPortrait().getHeroFromUnit(unit);
 		unitsHero.removeTroop(unit);
 	}
@@ -452,7 +450,6 @@ public class Gameboard extends JPanel implements KeyListener {
 		if (chosenUnit == null) {
 			return false;
 		}
-
 		return chosenUnit.isAttacking();
 	}
 
@@ -519,11 +516,9 @@ public class Gameboard extends JPanel implements KeyListener {
 
 	private boolean landerAtDroppingOffPosition(int x, int y) {
 		int areaValue = MapHandler.map(x, y);
-
 		if (areaValue == MapHandler.SHORE || areaValue == MapHandler.PORT) {
 			return true;
-		} 
-
+		}
 		return false;
 	}
 
@@ -532,10 +527,8 @@ public class Gameboard extends JPanel implements KeyListener {
 		int unitY = chosenUnit.getY();
 		int cursorX = cursor.getX();
 		int cursorY = cursor.getY();
-
 		int xDiff = cursorX - unitX;
 		int yDiff = cursorY - unitY;
-
 		Unit containedUnit = null;
 
 		if (chosenUnit instanceof APC) {
@@ -550,6 +543,7 @@ public class Gameboard extends JPanel implements KeyListener {
 			return; // shouldn't be able to get here
 		}
 
+		// TODO: remove?
 		int movementType = containedUnit.getMovementType();
 
 		if (xDiff == 1) {
@@ -610,6 +604,7 @@ public class Gameboard extends JPanel implements KeyListener {
 			return; // shouldn't be able to get here
 		}
 		
+		// TODO: remove?
 		int movementType = containedUnit.getMovementType();
 
 		if (xDiff == 1) {
@@ -1152,7 +1147,6 @@ public class Gameboard extends JPanel implements KeyListener {
 		} else {
 			cursor.paint(g);
 		}
-
 		MapHandler.paintPortrait(g);
 	}
 

@@ -1,3 +1,6 @@
+/**
+ * TODO: Changed so that currentHero is not a field and instead we use "heroes.get(heroIndex);"
+ */
 package heroes;
 
 import units.*;
@@ -11,7 +14,6 @@ import graphics.PowerStar;
 
 public class HeroPortrait {
 	private ArrayList<Hero> heroes;
-	private Hero currentHero;
 	private int heroIndex;
 
 	private boolean leftSide;
@@ -21,19 +23,16 @@ public class HeroPortrait {
 		this.mapWidth = mapWidth;
 
 		heroes = new ArrayList<Hero>();
-		currentHero = null;
 		heroIndex = 0;
 		leftSide = true;
 	}
 
 	public void selectStartHero() {
-		currentHero = heroes.get(heroIndex);
+		heroIndex = 0;
 	}
 
 	public void nextHero() {
 		heroIndex = (heroIndex + 1) % heroes.size();
-
-		currentHero = heroes.get(heroIndex);
 	}
 
 	public void addHero(Hero hero) {
@@ -73,8 +72,12 @@ public class HeroPortrait {
 		return heroes.get(index);
 	}
 
+	public int getCurrentHeroIndex() {
+		return heroIndex;
+	}
+
 	public Hero getCurrentHero() {
-		return currentHero;
+		return heroes.get(heroIndex);
 	}
 
 	public void paint(Graphics g) {
@@ -87,6 +90,7 @@ public class HeroPortrait {
 
 	private void paintLeftSide(Graphics g) {
 		int tileSize = MapHandler.tileSize;
+		Hero currentHero = getCurrentHero();
 
 		int borderThickness = 2;
 		int cashBarHeight = 25;
@@ -145,6 +149,7 @@ public class HeroPortrait {
 
 	private void paintRightSide(Graphics g) {
 		int tileSize = MapHandler.tileSize;
+		Hero currentHero = getCurrentHero();
 
 		int borderThickness = 2;
 		int cashBarHeight = 25;
@@ -204,6 +209,7 @@ public class HeroPortrait {
 	private void drawHeroPowerStars(Graphics g, int x, int y) {
 		int starX = x + 1;
 		int starY = y - 8;
+		Hero currentHero = getCurrentHero();
 
 		int powerStars = currentHero.getRequiredPower();
 		int superPowerStars = currentHero.getRequiredSuperPower();

@@ -1,3 +1,7 @@
+/**
+ * TODO: Add flag to show submerged (like APC). 
+ * Didn't have the APC-code on laptop when in Denmark, hence no implementation.
+ */
 package units;
 
 import java.awt.Color;
@@ -6,8 +10,6 @@ import java.awt.Graphics;
 public class Sub extends Unit {
 	private static int price = 20000; // right?
 	private static String typeName = "Sub";
-
-	private boolean submerged;
 
 	public Sub(int x, int y, Color color) {
 		super(x, y, color);
@@ -19,8 +21,6 @@ public class Sub extends Unit {
 		maxFuel = 99; // right?
 		maxAmmo = 9; // right?
 		replentish();
-
-		submerged = false;
 	}
 
 	public static void setPrice(int price) {
@@ -34,9 +34,17 @@ public class Sub extends Unit {
 	public static String getTypeName() {
 		return typeName;
 	}
+	
+	public void submerge() {
+		hidden = true;
+	}
+
+	public void emerge() {
+		hidden = false;
+	}
 
 	public boolean isSubmerged() {
-		return submerged;
+		return isHidden();
 	}
 
 	// TODO

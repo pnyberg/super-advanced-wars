@@ -204,15 +204,14 @@ public class MapHandler {
 	}
 
 	public static Unit getAnyUnit(int x, int y) {
-		for (int h = 0 ; h < portrait.getNumberOfHeroes() ; h++) {
-			for (int k = 0 ; k < portrait.getHero(h).getTroopSize() ; k++) {
-				Unit unit = getUnitFromHero(h, k);
-				if (unit.getX() == x && unit.getY() == y && !unit.isHidden()) {
+		for (int heroIndex = 0 ; heroIndex < portrait.getNumberOfHeroes() ; heroIndex++) {
+			for (int troopIndex = 0 ; troopIndex < portrait.getHero(heroIndex).getTroopSize() ; troopIndex++) {
+				Unit unit = getUnitFromHero(heroIndex, troopIndex);
+				if (unit.getX() == x && unit.getY() == y && (!unit.isHidden() || portrait.getCurrentHeroIndex() == heroIndex)) {
 					return unit;
 				}
 			}
 		}
-
 		return null;
 	}
 
@@ -237,9 +236,9 @@ public class MapHandler {
 	}
 
 	public static Unit getFriendlyUnit(int x, int y) {
-		for (int k = 0 ; k < getFriendlyTroopSize() ; k++) {
-			Unit unit = getFriendlyUnitFromCurrentHero(k);
-			if (unit.getX() == x && unit.getY() == y && !unit.isHidden()) {
+		for (int troopIndex = 0 ; troopIndex < getFriendlyTroopSize() ; troopIndex++) {
+			Unit unit = getFriendlyUnitFromCurrentHero(troopIndex);
+			if (unit.getX() == x && unit.getY() == y) {
 				return unit;
 			}
 		}
@@ -457,11 +456,11 @@ public class MapHandler {
 	}
 
 	public static void paintUnits(Graphics g, Unit chosenUnit) {
-		for (int t = 0 ; t < 2 ; t++) {
-			for (int k = 0 ; k < getTroopSize(t) ; k++) {
-				Unit unit = getUnitFromHero(t, k);
+		for (int heroIndex = 0 ; heroIndex < 2 ; heroIndex++) {
+			for (int unitIndex = 0 ; unitIndex < getTroopSize(heroIndex) ; unitIndex++) {
+				Unit unit = getUnitFromHero(heroIndex, unitIndex);
 				if (unit != chosenUnit) {
-					if (!unit.isHidden()) {
+					if (!unit.isHidden() || portrait.getCurrentHeroIndex() == heroIndex) {
 						unit.paint(g, tileSize);
 					}
 				}
