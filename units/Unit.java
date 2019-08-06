@@ -22,7 +22,7 @@ public abstract class Unit {
 								BOAT = 4,
 								SUB = 5;
 
-	public static final int numberOfUnitTypes = 18;
+	public static final int numberOfUnitTypes = 19;
 
 	// Attack-type
 	public static final int 	NONE = 0,

@@ -1,13 +1,14 @@
-import handlers.*;
-
-import java.awt.Color;
-import java.awt.Graphics;
-
 /***
  * Class to handle the cursor used for the map
  * 
  * @author pernyberg
  */
+
+import handlers.*;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
 public class Cursor {
 	private int x, y;
 

@@ -22,6 +22,9 @@ import javax.swing.JPanel;
  *   - infantry may go over two mountains (very bad)
  * - not crashing on recalculating route
  * - first attack take ages to calculate
+ * - move all details such as movement, movement/unit-type, cost, name etc to txt-file/class? (put it all in the same place)
+ *
+ * - When lander-cursor goes around the island the lander wants to take a shortcut through the land according to the arrow-function
  *
  * @TODO: substitute ArrayList with HashMap for better performance
  */
@@ -205,6 +208,10 @@ public class Gameboard extends JPanel implements KeyListener {
 						((Cruiser)chosenUnit).chooseUnit(index);
 					}
 					handleDroppingOff();
+				} else if (unitMenu.atDiveRow()) {
+					// TODO: 
+				} else if (unitMenu.atEmergeRow()) {
+					// TODO: 
 				} else if (unitMenu.atFireRow()) {
 					handleFiring();
 				} else if (unitMenu.atEnterRow()) {
@@ -219,7 +226,7 @@ public class Gameboard extends JPanel implements KeyListener {
 						((Cruiser)entryUnit).addUnit(chosenUnit);
 					}
 
-					// @TODO cargo-unit enters other unit
+					// @TODO: cargo-unit enters other unit
 				} else if (unitMenu.atSupplyRow()) {
 					int x = chosenUnit.getX();
 					int y = chosenUnit.getY();
@@ -242,6 +249,7 @@ public class Gameboard extends JPanel implements KeyListener {
 					chosenUnit.kill();
 					removeUnitIfDead(chosenUnit);
 				}
+				// else unit at wait-row (so do nothing)
 
 				if (!unitIsDroppingOff() && !unitWantToFire()) {
 					// using fuel
@@ -273,7 +281,7 @@ public class Gameboard extends JPanel implements KeyListener {
 					handleOpenBuildingMenu(cursorX, cursorY);
 				}
 			} else if (!unitSelected) {
-				// @TODO 
+				// @TODO: what? 
 				chosenUnit = MapHandler.getAnyUnit(cursorX, cursorY);
 //				chosenUnit = MapHandler.getFriendlyUnit(cursorX, cursorY);
 
@@ -768,14 +776,12 @@ public class Gameboard extends JPanel implements KeyListener {
 	private void handleOpenUnitMenu(int cursorX, int cursorY) {
 		boolean hurtAtSamePosition = hurtSameTypeUnitAtPosition(chosenUnit, cursorX, cursorY);
 		if (!MapHandler.areaOccupiedByFriendly(chosenUnit, cursorX, cursorY) 
-		|| unitEntryingContainerUnit(chosenUnit, cursorX, cursorY)
-		|| hurtAtSamePosition) {
+				|| unitEntryingContainerUnit(chosenUnit, cursorX, cursorY)
+				|| hurtAtSamePosition) {
 			// @TODO fix join
 			if (hurtAtSamePosition) {
 				unitMenu.unitMayJoin();
-			}
-
-			if (!hurtAtSamePosition && unitCanFire(cursorX, cursorY)) {
+			} else if (unitCanFire(cursorX, cursorY)) {
 				unitMenu.unitMayFire();
 			}
 
@@ -785,7 +791,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				}
 			} else if (chosenUnit instanceof APC) {
 				// should only be allowed this when close to a friendly unit
-				if (mayAPCSUpply(cursorX, cursorY)) {
+				if (mayAPCSupply(cursorX, cursorY)) {
 					unitMenu.unitMaySupply();
 				}
 
@@ -809,6 +815,12 @@ public class Gameboard extends JPanel implements KeyListener {
 				for (int i = 0 ; i < ((Cruiser)chosenUnit).getNumberOfContainedUnits() ; i++) {
 					Unit holdUnit = ((Cruiser)chosenUnit).getUnit(i);
 					unitMenu.containedCargo(holdUnit);
+				}
+			} else if (chosenUnit instanceof Sub) {
+				if (((Sub)chosenUnit).isSubmerged()) {
+					unitMenu.unitMayEmerge();
+				} else {
+					unitMenu.unitMayDive();
 				}
 			}
 
@@ -895,7 +907,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		return false;
 	}
 
-	private boolean mayAPCSUpply(int x, int y) {
+	private boolean mayAPCSupply(int x, int y) {
 		if (MapHandler.getFriendlyUnit(x + 1, y) != null) {
 			return true;
 		} else if (MapHandler.getFriendlyUnit(x, y + 1) != null) {

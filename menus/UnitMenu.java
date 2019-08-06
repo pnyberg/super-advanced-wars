@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class UnitMenu extends Menu {
+	// TODO: rearrange to show the right order, also join "dive" and "emerge"?
 	private boolean 	join, 
 						enter, 
 						fire, 
@@ -21,6 +22,7 @@ public class UnitMenu extends Menu {
 	public UnitMenu(int tileSize) {
 		super(tileSize);
 
+		// TODO: rearrange to show the right order, also join "dive" and "emerge"?
 		join = false;
 		enter = false;
 		fire = false;
@@ -38,6 +40,7 @@ public class UnitMenu extends Menu {
 		visible = false;
 		menuIndex = 0;		
 
+		// TODO: rearrange to show the right order, also join "dive" and "emerge"?
 		join = false;
 		enter = false;
 		fire = false;
@@ -54,6 +57,7 @@ public class UnitMenu extends Menu {
 	protected void updateNumberOfRows() {
 		numberOfRows = 0;
 
+		// TODO: rearrange to show the right order, also join "dive" and "emerge"?
 		if (join) { numberOfRows++; }
 		if (capt) { numberOfRows++; }
 		if (dive) { numberOfRows++; }
@@ -69,6 +73,7 @@ public class UnitMenu extends Menu {
 		}
 	}
 
+	// TODO: rearrange to show the right order, also join "dive" and "emerge"?
 	public void unitMayJoin() {
 		join = true;
 	}
@@ -125,14 +130,31 @@ public class UnitMenu extends Menu {
 		if (!fire) {
 			return false;
 		}
-
 		int comparisonIndex = 0;
-
 		if (join) { numberOfRows++; }
 		if (capt) { numberOfRows++; }
 		if (dive) { numberOfRows++; }
 		if (emerge) { numberOfRows++; }
+		return menuIndex == comparisonIndex;
+	}
 
+	// TODO: is this right?
+	public boolean atDiveRow() {
+		if (!dive) {
+			return false;
+		}
+		int comparisonIndex = 0;
+		if (fire) { comparisonIndex++; }
+		return menuIndex == comparisonIndex;
+	}
+
+	// TODO: is this right?
+	public boolean atEmergeRow() {
+		if (!emerge) {
+			return false;
+		}
+		int comparisonIndex = 0;
+		if (fire) { comparisonIndex++; }
 		return menuIndex == comparisonIndex;
 	}
 
@@ -140,10 +162,8 @@ public class UnitMenu extends Menu {
 		if (!supply) {
 			return false;
 		}
-
 		// if there is units in the "cargo", then supply comes after the cargo
 		int comparisonIndex = cargo.size();
-
 		return menuIndex == comparisonIndex;
 	}
 
@@ -151,11 +171,8 @@ public class UnitMenu extends Menu {
 		if (!enter) {
 			return false;
 		}
-
 		int comparisonIndex = 0;
-
 		if (join) { comparisonIndex++; }
-
 		return menuIndex == comparisonIndex;
 	}
 	

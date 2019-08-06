@@ -51,7 +51,8 @@ public class MapHandler {
 		map = new int[mapWidth][mapHeight];
 		buildings = new ArrayList<Building>();
 
-		initMapAndTroops(mapWidth, mapHeight, 0);
+		int index = 0;
+		MapInitiator.initMap(mapWidth, mapHeight, map, buildings, portrait, index);
 
 		Building.init(1000);
 	}
@@ -140,10 +141,6 @@ public class MapHandler {
 		moveabilityCostMatrix[Unit.BAND][AIRPORT] = true;
 		moveabilityCostMatrix[Unit.TIRE][AIRPORT] = true;
 		moveabilityCostMatrix[Unit.AIR][AIRPORT] = true;
-	}
-
-	private static void initMapAndTroops(int mapWidth, int mapHeight, int index) {
-		MapInitiator.initMap(mapWidth, mapHeight, map, buildings, portrait, index);
 	}
 
 	private static void setOwnerships(Hero[][] ownerMap) {

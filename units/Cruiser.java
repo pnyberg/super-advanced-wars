@@ -140,5 +140,6 @@ public class Cruiser extends Unit {
 
 		g.setColor(Color.black);
 		g.drawRect(x * tileSize + headAlignX, y * tileSize + headAlignY, headWidth, headHeight);
+		g.drawRect(x * tileSize + miniHeadAlignX, y * tileSize + miniHeadAlignY, miniHeadWidth, miniHeadHeight);
 	}
 }

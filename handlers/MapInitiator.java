@@ -21,6 +21,7 @@ import units.Lander;
 import units.Mech;
 import units.Recon;
 import units.Rocket;
+import units.Sub;
 import units.Tank;
 
 import heroes.*;
@@ -166,6 +167,7 @@ public class MapInitiator {
 		hero1.addTroop(new Bomber(10, 4, hero1.getColor()));
 		hero1.addTroop(new BCopter(8, 2, hero1.getColor()));
 		hero1.addTroop(new Cruiser(8, 3, hero1.getColor()));
+		hero1.addTroop(new Sub(9, 6, hero1.getColor()));
 
 		hero2.addTroop(new Infantry(6, 6, hero2.getColor()));
 		hero2.addTroop(new Infantry(5, 7, hero2.getColor()));
