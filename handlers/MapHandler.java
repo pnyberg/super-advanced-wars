@@ -1,3 +1,8 @@
+/**
+ * Handles the map
+ * - contains movementcost and movementability (should perhaps be put in RouteHandler?)
+ *
+ */
 package handlers;
 
 import units.*;
@@ -8,11 +13,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-/**
- * Handles the map
- * - contains movementcost and movementability (should perhaps be put in RouteHandler?)
- *
- */
 public class MapHandler {
 	public static final int 	ROAD = 0,
 								PLAIN = 1,

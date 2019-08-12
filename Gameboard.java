@@ -13,11 +13,11 @@ import javax.swing.JPanel;
 
 /**
  * TODO-list
- * - capting
+ * - capting (should be done?)
  * - only one action/unit per turn
  * - enter classes for HQ, ev Silo
  * - FOG
- * - hero-abilities and powers
+ * - hero-abilities and powers (should be done?)
  * - removed recalculating route which also removes movement-control within accepted area (infantrys may take more than three steps)
  *   - infantry may go over two mountains (very bad)
  * - not crashing on recalculating route
