@@ -43,7 +43,6 @@ public class AreaChecker {
 
 	public boolean areaOccupiedByNonFriendly(int x, int y, Hero hero) {
 		Unit testAnyUnit = unitGetter.getNonFriendlyUnit(x, y, hero);
-
 		return testAnyUnit != null;
 	}
 

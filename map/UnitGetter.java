@@ -38,7 +38,7 @@ public class UnitGetter {
 		return null;
 	}
 
-	public Unit getNonFriendlyUnit(int x, int y) {
+	public Unit getNonFriendlyUnitForCurrentHero(int x, int y) {
 		return getNonFriendlyUnit(x, y, heroHandler.getCurrentHero());
 	}
 

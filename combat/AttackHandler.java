@@ -78,19 +78,19 @@ public class AttackHandler {
 		boolean directionCondition = false;
 		
 		if (direction == Direction.NORTH) {
-			targetUnit = unitGetter.getNonFriendlyUnit(x, y - mapDim.tileSize);
+			targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(x, y - mapDim.tileSize);
 			targetStructure = structureHandler.getStructure(x, y - mapDim.tileSize);
 			directionCondition = y > 0;
 		} else if (direction == Direction.EAST) {
-			targetUnit = unitGetter.getNonFriendlyUnit(x + mapDim.tileSize, y);
+			targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(x + mapDim.tileSize, y);
 			targetStructure = structureHandler.getStructure(x + mapDim.tileSize, y);
 			directionCondition = x < (mapDim.getTileWidth() - 1) * mapDim.tileSize;
 		} else if (direction == Direction.SOUTH) {
-			targetUnit = unitGetter.getNonFriendlyUnit(x, y + mapDim.tileSize);
+			targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(x, y + mapDim.tileSize);
 			targetStructure = structureHandler.getStructure(x, y + mapDim.tileSize);
 			directionCondition = y < (mapDim.getTileHeight() - 1) * mapDim.tileSize;
 		} else if (direction == Direction.WEST) {
-			targetUnit = unitGetter.getNonFriendlyUnit(x - mapDim.tileSize, y);
+			targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(x - mapDim.tileSize, y);
 			targetStructure = structureHandler.getStructure(x - mapDim.tileSize, y);
 			directionCondition = x > 0;
 		}

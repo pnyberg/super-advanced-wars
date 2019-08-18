@@ -6,18 +6,11 @@ import java.util.List;
 import combat.StructureAttackHandler;
 import unitUtils.UnitWorthCalculator;
 import units.Unit;
-import units.airMoving.BCopter;
-import units.airMoving.Bomber;
-import units.footMoving.Infantry;
-import units.footMoving.Mech;
-import units.seaMoving.Battleship;
-import units.tireMoving.Recon;
-import units.tireMoving.Rocket;
-import units.treadMoving.AAir;
-import units.treadMoving.Artillery;
-import units.treadMoving.MDTank;
-import units.treadMoving.Neotank;
-import units.treadMoving.Tank;
+import units.airMoving.*;
+import units.footMoving.*;
+import units.seaMoving.*;
+import units.tireMoving.*;
+import units.treadMoving.*;
 
 public class StructureHandler {
 	private ArrayList<Structure> structures;

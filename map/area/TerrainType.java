@@ -1,3 +1,11 @@
+/**
+ * TODO:
+ *  - add Silo
+ *  - add Pipe
+ *  - add Pipe-seam
+ *  - add Wasteland?
+ */
+
 package map.area;
 
 public enum TerrainType {

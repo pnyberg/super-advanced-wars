@@ -36,7 +36,7 @@ public class FiringCursor {
 		int xDiff = cursor.getX() - chosenUnit.getPoint().getX();
 		int yDiff = cursor.getY() - chosenUnit.getPoint().getY();
 
-		Unit targetUnit = unitGetter.getNonFriendlyUnit(cursor.getX(), cursor.getY());
+		Unit targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(cursor.getX(), cursor.getY());
 		Structure targetStructure = structureHandler.getStructure(cursor.getX(), cursor.getY());
 		int damage = 0;
 		if (targetUnit != null) {

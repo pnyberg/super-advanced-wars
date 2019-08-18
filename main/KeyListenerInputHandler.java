@@ -179,7 +179,7 @@ public class KeyListenerInputHandler {
 		if (containerUnitHandler.unitIsDroppingOff()) {
 			handleDroppingOff();
 		} else if (attackHandler.unitWantsToFire(gameProp.getChosenObject().chosenUnit)) {
-			Unit defendingUnit = unitGetter.getNonFriendlyUnit(cursor.getX(), cursor.getY());
+			Unit defendingUnit = unitGetter.getNonFriendlyUnitForCurrentHero(cursor.getX(), cursor.getY());
 			Structure targetStructure = structureHandler.getStructure(cursor.getX(), cursor.getY());
 			if (defendingUnit != null) {
 				damageHandler.handleAttackingUnit(gameProp.getChosenObject().chosenUnit, defendingUnit);

@@ -20,6 +20,7 @@ public class MiniCannon extends FiringStructure {
 		structureImage = new DirectionalStructureImage(direction, tileSize);
 	}
 	
+	// TODO: rewrite code to make it readable
 	public void fillRangeMap(boolean[][] rangeMap) {
 		if (direction == Direction.SOUTH) {
 			int rangeTileX = point.getX()/tileSize;

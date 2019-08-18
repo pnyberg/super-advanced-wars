@@ -81,7 +81,7 @@ public class AttackRangeHandler {
 
 				int distanceFromUnit = Math.abs(unitTileX - tileX) + Math.abs(unitTileY - tileY);
 				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
-					Unit targetUnit = unitGetter.getNonFriendlyUnit(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
+					Unit targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
 					if (targetUnit != null && damageHandler.validTarget(attackingUnit, targetUnit)) {
 						return true;
 					}
@@ -107,16 +107,16 @@ public class AttackRangeHandler {
 		Structure targetStructure = null;
 		
 		if (direction == Direction.NORTH) {
-			targetUnit = unitGetter.getNonFriendlyUnit(cursor.getX(), cursor.getY() - mapDim.tileSize);
+			targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(cursor.getX(), cursor.getY() - mapDim.tileSize);
 			targetStructure = structureHandler.getStructure(cursor.getX(), cursor.getY() - mapDim.tileSize);
 		} else if (direction == Direction.EAST) {
-			targetUnit = unitGetter.getNonFriendlyUnit(cursor.getX() + mapDim.tileSize, cursor.getY());
+			targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(cursor.getX() + mapDim.tileSize, cursor.getY());
 			targetStructure = structureHandler.getStructure(cursor.getX() + mapDim.tileSize, cursor.getY());
 		} else if (direction == Direction.SOUTH) {
-			targetUnit = unitGetter.getNonFriendlyUnit(cursor.getX(), cursor.getY() + mapDim.tileSize);
+			targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(cursor.getX(), cursor.getY() + mapDim.tileSize);
 			targetStructure = structureHandler.getStructure(cursor.getX(), cursor.getY() + mapDim.tileSize);
 		} else if (direction == Direction.WEST) {
-			targetUnit = unitGetter.getNonFriendlyUnit(cursor.getX() - mapDim.tileSize, cursor.getY());
+			targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(cursor.getX() - mapDim.tileSize, cursor.getY());
 			targetStructure = structureHandler.getStructure(cursor.getX() - mapDim.tileSize, cursor.getY());
 		}
 		
@@ -204,7 +204,7 @@ public class AttackRangeHandler {
 
 				int distanceFromUnit = Math.abs(unitTileX - tileX) + Math.abs(unitTileY - tileY);
 				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
-					Unit targetUnit = unitGetter.getNonFriendlyUnit(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
+					Unit targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
 					Structure targetStructure = structureHandler.getStructure(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
 					if (targetUnit != null && damageHandler.validTarget(indirectUnit, targetUnit)) {
 						Point p = new Point(tileX * mapDim.tileSize, tileY * mapDim.tileSize);

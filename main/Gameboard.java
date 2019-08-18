@@ -12,6 +12,7 @@
  *   - infantry may go over two mountains (very bad)
  * - fix so not crashing on recalculating route
  * - first attack take ages to calculate
+ * - refactor so that methods have "maximum" of three parameters
  *
  * @TODO: substitute ArrayList with HashMap for better performance
  */

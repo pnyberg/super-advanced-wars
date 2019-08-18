@@ -35,7 +35,6 @@ public abstract class Building {
 
 	public void capt(int captingValue) {
 		this.captingValue -= captingValue;
-
 		if (this.captingValue < 0) {
 			this.captingValue = 0;
 		}
