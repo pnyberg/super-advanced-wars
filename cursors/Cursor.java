@@ -9,12 +9,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Cursor {
-	private int x;
-	private int y;
-
 	private final Color fillColor = Color.red;
 	private final Color edgeColor = Color.yellow;
 
+	private int x;
+	private int y;
 	private int tileSize;
 	private int smallPiece;
 	private int bigPiece;

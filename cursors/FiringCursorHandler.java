@@ -19,6 +19,7 @@ public class FiringCursorHandler {
 		this.damageHandler = damageHandler;
 	}
 
+	// TODO: rewrite code to make it more readable
 	public void moveFiringCursorClockwise() {
 		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
 		MapDim mapDim = gameProp.getMapDim();

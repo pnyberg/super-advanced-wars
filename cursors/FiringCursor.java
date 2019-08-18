@@ -20,7 +20,8 @@ public class FiringCursor {
 	private HeroHandler heroHandler;
 	private DamageHandler damageHandler;
 	private StructureHandler structureHandler;
-	
+
+	// TODO: to many parameters?
 	public FiringCursor(MapDim mapDim, GameMap gameMap, UnitGetter unitGetter, HeroHandler heroHandler, DamageHandler damageHandler, StructureHandler structureHandler) {
 		this.mapDim = mapDim;
 		this.gameMap = gameMap;
@@ -30,6 +31,7 @@ public class FiringCursor {
 		this.structureHandler = structureHandler;
 	}
 	
+	// TODO: rewrite code to make it more readable
 	public void paint(Graphics g, Cursor cursor, Unit chosenUnit) {
 		int tileSize = mapDim.tileSize;
 
