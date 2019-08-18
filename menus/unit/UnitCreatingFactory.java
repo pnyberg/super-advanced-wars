@@ -1,7 +1,3 @@
-/**
- * TODO: 
- *  - Add sub
- */
 package menus.unit;
 
 import java.awt.Color;
@@ -60,7 +56,6 @@ public class UnitCreatingFactory {
 //		} else if (unitName.equals("Sub")) {
 //			return new Sub(x, y, color, tileSize);
 		}
-
 		return null;
 	}
 }

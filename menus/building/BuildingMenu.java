@@ -52,29 +52,26 @@ public class BuildingMenu extends Menu {
 	}
 
 	public int getNumberOfRows() {
-		if (currentBuildingMenuType == TerrainType.FACTORY) {
-			return buildingItemFactory.getStandardFactoryItems().length;
-		} else if (currentBuildingMenuType == TerrainType.AIRPORT) {
-			return buildingItemFactory.getStandardAirportItems().length;
-		} else if (currentBuildingMenuType == TerrainType.PORT) {
-			return buildingItemFactory.getStandardPortItems().length;
+		BuildingItem[] menuItems = getMenuItems();
+		if (menuItems == null) {
+			return 0;
 		}
-		return 0;
+		return menuItems.length;
 	}
 
 	public void buySelectedTroop() {
 		Hero currentHero = heroHandler.getCurrentHero();
-		currentHero.manageCash(-getStandardItems()[menuIndex].getPrice());
+		currentHero.manageCash(-getMenuItems()[menuIndex].getPrice());
 		Unit unit = createUnitFromIndex(currentHero);
 		currentHero.getTroopHandler().addTroop(unit);
 	}
 
 	private Unit createUnitFromIndex(Hero hero) {
-		String unitName = getStandardItems()[menuIndex].getName();
+		String unitName = getMenuItems()[menuIndex].getName();
 		return unitCreatingFactory.createUnit(unitName, x, y, hero.getColor());
 	}
 	
-	private BuildingItem[] getStandardItems() {
+	private BuildingItem[] getMenuItems() {
 		if (currentBuildingMenuType == TerrainType.FACTORY) {
 			return buildingItemFactory.getStandardFactoryItems();
 		} else if (currentBuildingMenuType == TerrainType.AIRPORT) {
@@ -87,13 +84,9 @@ public class BuildingMenu extends Menu {
 
 	public void paint(Graphics g) {
 		int yAdjust = dimensionValues.getTileSize() / 2 + dimensionValues.getAlignY();
-		BuildingItem[] items = new BuildingItem[0];
-		if (currentBuildingMenuType == TerrainType.FACTORY) {
-			items = buildingItemFactory.getStandardFactoryItems();
-		} else if (currentBuildingMenuType == TerrainType.AIRPORT) {
-			items = buildingItemFactory.getStandardAirportItems();
-		} else if (currentBuildingMenuType == TerrainType.PORT) {
-			items = buildingItemFactory.getStandardPortItems();
+		BuildingItem[] items = getMenuItems();
+		if (items == null) {
+			items = new BuildingItem[0];
 		}
 
 		paintMenuBackground(g);

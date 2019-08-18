@@ -28,6 +28,7 @@ public class BuildingItemFactory {
 				new BuildingItem(Battleship.getTypeName(), Battleship.getPrice()),
 				new BuildingItem(Lander.getTypeName(), Lander.getPrice()),
 				new BuildingItem(Cruiser.getTypeName(), Cruiser.getPrice())
+				//new BuildingItem(Sub.getTypeName(), Sub.getPrice())
 			};
 	}
 

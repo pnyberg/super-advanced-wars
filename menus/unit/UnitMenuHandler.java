@@ -40,6 +40,7 @@ public class UnitMenuHandler {
 		this.containerUnitHandler = containerUnitHandler; 
 	}
 
+	// TODO: rewrite code to make it more readable
 	public void handleOpenUnitMenu(Cursor cursor) {
 		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
 		boolean hurtAtSamePosition = unitGetter.hurtSameTypeUnitAtPosition(chosenUnit, cursor.getX(), cursor.getY());

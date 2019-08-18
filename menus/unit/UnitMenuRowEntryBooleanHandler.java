@@ -32,16 +32,13 @@ public class UnitMenuRowEntryBooleanHandler {
 	}
 	
 	public int getNumberOfExistingRows() {
-		return
-			  (join ? 1 : 0)
-			+ (enter ? 1 : 0)
-			+ (fire ? 1 : 0)
-			+ (capt ? 1 : 0)
-			+ (launch ? 1 : 0)
-			+ (dive ? 1 : 0)
-			+ (emerge ? 1 : 0)
-			+ (supply ? 1 : 0)
-			+ (wait ? 1 : 0);
+		int num = 0;
+		for (boolean menuRowShowing : getAsBooleanArray()) {
+			if (menuRowShowing) {
+				num++;
+			}
+		}
+		return num;
 	}
 	
 	public boolean[] getAsBooleanArray() {

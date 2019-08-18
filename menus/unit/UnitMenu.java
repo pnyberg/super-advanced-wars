@@ -27,15 +27,13 @@ public class UnitMenu extends Menu {
 
 	public UnitMenu(int tileSize) {
 		super(tileSize);
-
 		cargo = new ArrayList<Unit>();
 		unitMenuRowEntryBooleanHandler = new UnitMenuRowEntryBooleanHandler();
 	}
 
 	public void closeMenu() {
 		visible = false;
-		menuIndex = 0;		
-
+		menuIndex = 0;
 		unitMenuRowEntryBooleanHandler.clear();
 		cargo.clear();
 	}
@@ -52,11 +50,9 @@ public class UnitMenu extends Menu {
 
 	public int getNumberOfRows() {
 		int numberOfRows = unitMenuRowEntryBooleanHandler.getNumberOfExistingRows();
-
 		if (cargo.size() > 0) {
 			numberOfRows += cargo.size();
 		}
-		
 		return numberOfRows;
 	}
 
@@ -72,7 +68,6 @@ public class UnitMenu extends Menu {
 		if (!unitMenuRowEntryBooleanHandler.enter == true) {
 			return false;
 		}
-
 		return menuIndex == 0;
 	}
 	
@@ -80,7 +75,6 @@ public class UnitMenu extends Menu {
 		if (!unitMenuRowEntryBooleanHandler.fire == true) {
 			return false;
 		}
-
 		return menuIndex == 0;
 	}
 	
@@ -99,7 +93,6 @@ public class UnitMenu extends Menu {
 		if (!unitMenuRowEntryBooleanHandler.supply == true) {
 			return false;
 		}
-
 		return menuIndex == cargo.size();
 	}
 

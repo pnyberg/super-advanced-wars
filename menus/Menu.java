@@ -1,6 +1,6 @@
 /**
  * TODO:
- *  - take DimensionValues as parameter instead?
+ *  - take DimensionValues as parameter instead
  */
 package menus;
 
