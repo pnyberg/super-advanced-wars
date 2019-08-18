@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import combat.StructureAttackHandler;
+import unitUtils.UnitWorthCalculator;
 import units.Unit;
-import units.UnitWorthCalculator;
 import units.airMoving.BCopter;
 import units.airMoving.Bomber;
 import units.footMoving.Infantry;

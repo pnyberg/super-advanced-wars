@@ -7,8 +7,8 @@ import java.awt.Graphics;
 import cursors.Cursor;
 import map.UnitGetter;
 import point.Point;
+import unitUtils.UnitType;
 import units.Unit;
-import units.UnitType;
 
 public class UnitInfoBox {
 	private Point point;

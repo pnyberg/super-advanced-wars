@@ -12,7 +12,7 @@ import main.HeroHandler;
 import map.GameMap;
 import map.area.AreaChecker;
 import map.area.TerrainType;
-import units.MovementType;
+import unitUtils.MovementType;
 import units.Unit;
 
 public class RouteChecker {

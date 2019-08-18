@@ -10,11 +10,11 @@ import javax.imageio.ImageIO;
 
 import graphics.images.units.InfantryImage;
 import graphics.images.units.MechImage;
-import units.MovementType;
+import unitUtils.MovementType;
+import unitUtils.UnitCategory;
+import unitUtils.UnitSupply;
+import unitUtils.UnitType;
 import units.Unit;
-import units.UnitCategory;
-import units.UnitSupply;
-import units.UnitType;
 
 public class Mech extends Unit {
 	private static int price = 3000;

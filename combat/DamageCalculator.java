@@ -2,8 +2,8 @@ package combat;
 
 import hero.Hero;
 import map.area.TerrainType;
+import unitUtils.UnitType;
 import units.Unit;
-import units.UnitType;
 
 public class DamageCalculator {
 	private int[][][] damageMatrix;

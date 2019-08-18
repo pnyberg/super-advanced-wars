@@ -3,11 +3,11 @@ package units.treadMoving;
 import java.awt.Color;
 
 import graphics.images.units.NeotankImage;
-import units.MovementType;
+import unitUtils.MovementType;
+import unitUtils.UnitCategory;
+import unitUtils.UnitSupply;
+import unitUtils.UnitType;
 import units.Unit;
-import units.UnitCategory;
-import units.UnitSupply;
-import units.UnitType;
 
 public class Neotank extends Unit {
 	private static int price = 22000;

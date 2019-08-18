@@ -1,4 +1,4 @@
-package units;
+package unitUtils;
 
 public enum AttackType {
 	NONE(0),

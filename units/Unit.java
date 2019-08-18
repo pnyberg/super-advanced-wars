@@ -5,6 +5,13 @@ import java.awt.Graphics;
 
 import graphics.images.units.UnitImage;
 import point.Point;
+import unitUtils.AttackType;
+import unitUtils.MovementType;
+import unitUtils.UnitCategory;
+import unitUtils.UnitContainer;
+import unitUtils.UnitHealth;
+import unitUtils.UnitSupply;
+import unitUtils.UnitType;
 
 public abstract class Unit {
 	protected static int price;
@@ -30,6 +37,7 @@ public abstract class Unit {
 	protected UnitImage unitImage;
 
 	public Unit(UnitType unitType, int x, int y, Color color, int tileSize) {
+		this.unitType = unitType;
 		point = new Point(x, y);
 		this.color = color;
 		restingColor = color.darker();
@@ -40,7 +48,6 @@ public abstract class Unit {
 		active = false;
 		capting = false;
 
-		this.unitType = unitType;
 		attackType = AttackType.DIRECT_ATTACK;
 	}
 

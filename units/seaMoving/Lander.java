@@ -8,12 +8,12 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import graphics.images.units.LanderImage;
-import units.AttackType;
-import units.MovementType;
+import unitUtils.AttackType;
+import unitUtils.MovementType;
+import unitUtils.UnitCategory;
+import unitUtils.UnitSupply;
+import unitUtils.UnitType;
 import units.Unit;
-import units.UnitCategory;
-import units.UnitSupply;
-import units.UnitType;
 
 public class Lander extends Unit {
 	private static int price = 12000;

@@ -7,12 +7,12 @@ package units.treadMoving;
 import java.awt.Color;
 
 import graphics.images.units.APCImage;
-import units.AttackType;
-import units.MovementType;
+import unitUtils.AttackType;
+import unitUtils.MovementType;
+import unitUtils.UnitCategory;
+import unitUtils.UnitSupply;
+import unitUtils.UnitType;
 import units.Unit;
-import units.UnitCategory;
-import units.UnitSupply;
-import units.UnitType;
 
 public class APC extends Unit {
 	private static int price = 6000;

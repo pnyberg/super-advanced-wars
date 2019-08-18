@@ -1,6 +1,8 @@
-package units;
+package unitUtils;
 
 import java.util.ArrayList;
+
+import units.Unit;
 
 public class UnitContainer {
 	private int size;

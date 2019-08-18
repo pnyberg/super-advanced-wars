@@ -37,9 +37,9 @@ import map.structures.Structure;
 import map.structures.StructureHandler;
 import menus.unit.UnitMenu;
 import point.Point;
-import units.ContUnitHandler;
+import unitUtils.ContUnitHandler;
+import unitUtils.UnitWorthCalculator;
 import units.Unit;
-import units.UnitWorthCalculator;
 
 public class Gameboard extends JPanel implements KeyListener {
 	private InternalStructureObject internalStructureObject;

@@ -8,8 +8,8 @@ import combat.DamageHandler;
 import combat.DefenceValueCalculator;
 import main.HeroHandler;
 import map.GameMap;
+import unitUtils.UnitWorthCalculator;
 import units.Unit;
-import units.UnitWorthCalculator;
 
 public class UnitBattleInteractionHandler {
 	private DamageHandler damageHandler;

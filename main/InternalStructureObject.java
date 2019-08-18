@@ -28,8 +28,8 @@ import routing.MovementCostCalculator;
 import routing.MovementMap;
 import routing.RouteChecker;
 import routing.RouteHandler;
-import units.ContUnitHandler;
-import units.UnitWorthCalculator;
+import unitUtils.ContUnitHandler;
+import unitUtils.UnitWorthCalculator;
 
 public class InternalStructureObject {
 	private AreaChecker areaChecker;

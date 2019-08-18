@@ -3,11 +3,11 @@ package units.tireMoving;
 import java.awt.Color;
 
 import graphics.images.units.RocketImage;
+import unitUtils.MovementType;
+import unitUtils.UnitCategory;
+import unitUtils.UnitSupply;
+import unitUtils.UnitType;
 import units.IndirectUnit;
-import units.MovementType;
-import units.UnitCategory;
-import units.UnitSupply;
-import units.UnitType;
 
 public class Rocket extends IndirectUnit {
 	private static int price = 15000;

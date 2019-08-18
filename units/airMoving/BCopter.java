@@ -1,14 +1,13 @@
 package units.airMoving;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
 import graphics.images.units.BCopterImage;
-import units.MovementType;
+import unitUtils.MovementType;
+import unitUtils.UnitCategory;
+import unitUtils.UnitSupply;
+import unitUtils.UnitType;
 import units.Unit;
-import units.UnitCategory;
-import units.UnitSupply;
-import units.UnitType;
 
 public class BCopter extends Unit {
 	private static int price = 9000;

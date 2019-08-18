@@ -3,11 +3,11 @@ package units.tireMoving;
 import java.awt.Color;
 
 import graphics.images.units.ReconImage;
-import units.MovementType;
+import unitUtils.MovementType;
+import unitUtils.UnitCategory;
+import unitUtils.UnitSupply;
+import unitUtils.UnitType;
 import units.Unit;
-import units.UnitCategory;
-import units.UnitSupply;
-import units.UnitType;
 
 public class Recon extends Unit {
 	private static int price = 4000;

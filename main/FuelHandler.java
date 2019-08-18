@@ -2,7 +2,7 @@ package main;
 
 import gameObjects.GameProp;
 import hero.Hero;
-import units.MovementType;
+import unitUtils.MovementType;
 import units.Unit;
 
 public class FuelHandler {

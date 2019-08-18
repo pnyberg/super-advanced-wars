@@ -33,9 +33,10 @@ public class UnitContainedInfoBox {
 		if (!unit.getUnitType().isTransportUnit()) {
 			return false;
 		}
+		// TODO: make this more readable
 		if (unit instanceof APC) {
 			return ((APC)unit).isFull();
-		} else if (unit.hasUnitContainer()) {
+		} else if (unit.hasUnitContainer()) { // TCopter
 			return unit.getUnitContainer().isFull();
 		} else if (unit instanceof Lander) {
 			return ((Lander)unit).getNumberOfContainedUnits() > 0;
@@ -43,6 +44,7 @@ public class UnitContainedInfoBox {
 		return false;
 	}
 	
+	// TODO: rewrite this to make it more readable
 	public void paint(Graphics g) {
 		Unit unit = unitGetter.getAnyUnit(cursor.getX(), cursor.getY());
 		if (unit != null && unitIsTransportingOtherUnit(unit)) {

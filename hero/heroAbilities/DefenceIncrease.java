@@ -1,6 +1,6 @@
 package hero.heroAbilities;
 
-import units.UnitType;
+import unitUtils.UnitType;
 
 public class DefenceIncrease extends CommanderEffect {
 	private int[] defencePercents;

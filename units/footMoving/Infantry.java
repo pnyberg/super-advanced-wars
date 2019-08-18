@@ -3,11 +3,11 @@ package units.footMoving;
 import java.awt.Color;
 
 import graphics.images.units.InfantryImage;
-import units.MovementType;
+import unitUtils.MovementType;
+import unitUtils.UnitCategory;
+import unitUtils.UnitSupply;
+import unitUtils.UnitType;
 import units.Unit;
-import units.UnitCategory;
-import units.UnitSupply;
-import units.UnitType;
 
 public class Infantry extends Unit {
 	private static int price = 1000;

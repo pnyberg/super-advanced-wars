@@ -1,6 +1,8 @@
 package units;
 
 import point.Point;
+import unitUtils.AttackType;
+import unitUtils.UnitType;
 
 import java.awt.Color;
 import java.util.ArrayList;

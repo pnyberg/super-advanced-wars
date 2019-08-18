@@ -1,7 +1,7 @@
 package routing;
 
 import map.area.TerrainType;
-import units.MovementType;
+import unitUtils.MovementType;
 
 public class MovementCostMatrixFactory {
 	private int[][] movementCostMatrix;

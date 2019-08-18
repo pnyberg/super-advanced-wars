@@ -9,7 +9,7 @@ import map.area.AreaChecker;
 import map.buildings.Building;
 import map.buildings.BuildingHandler;
 import point.Point;
-import units.ContUnitHandler;
+import unitUtils.ContUnitHandler;
 import units.Unit;
 import units.airMoving.TCopter;
 import units.footMoving.Infantry;

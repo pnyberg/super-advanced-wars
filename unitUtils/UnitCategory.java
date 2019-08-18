@@ -1,4 +1,4 @@
-package units;
+package unitUtils;
 
 public enum UnitCategory {
 	FOOTMAN(0),

@@ -1,4 +1,5 @@
-package units;
+// TODO: rewrite code to be more readable
+package unitUtils;
 
 import cursors.Cursor;
 import gameObjects.GameProp;
@@ -8,6 +9,7 @@ import map.UnitGetter;
 import map.area.AreaChecker;
 import map.area.TerrainType;
 import routing.RouteChecker;
+import units.Unit;
 import units.airMoving.BCopter;
 import units.airMoving.TCopter;
 import units.footMoving.Infantry;

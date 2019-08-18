@@ -4,8 +4,8 @@ import hero.Hero;
 import main.HeroHandler;
 import map.GameMap;
 import map.UnitGetter;
+import unitUtils.UnitType;
 import units.Unit;
-import units.UnitType;
 
 public class AreaChecker {
 	private HeroHandler heroHandler;

@@ -7,13 +7,13 @@ package units.airMoving;
 import java.awt.Color;
 
 import graphics.images.units.TCopterImage;
-import units.AttackType;
-import units.MovementType;
+import unitUtils.AttackType;
+import unitUtils.MovementType;
+import unitUtils.UnitCategory;
+import unitUtils.UnitContainer;
+import unitUtils.UnitSupply;
+import unitUtils.UnitType;
 import units.Unit;
-import units.UnitCategory;
-import units.UnitContainer;
-import units.UnitSupply;
-import units.UnitType;
 
 public class TCopter extends Unit {
 	private static int price = 5000;

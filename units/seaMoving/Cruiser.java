@@ -4,11 +4,11 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import graphics.images.units.CruiserImage;
-import units.MovementType;
+import unitUtils.MovementType;
+import unitUtils.UnitCategory;
+import unitUtils.UnitSupply;
+import unitUtils.UnitType;
 import units.Unit;
-import units.UnitCategory;
-import units.UnitSupply;
-import units.UnitType;
 
 public class Cruiser extends Unit {
 	private static int price = 18000;

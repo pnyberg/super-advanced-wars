@@ -5,7 +5,7 @@ import hero.heroAbilities.AttackIncrease;
 import hero.heroAbilities.CommanderEffect;
 import hero.heroAbilities.DefenceIncrease;
 import map.area.TerrainType;
-import units.MovementType;
+import unitUtils.MovementType;
 
 public class DefenceValueCalculator {
 

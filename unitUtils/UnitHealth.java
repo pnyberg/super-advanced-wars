@@ -1,4 +1,4 @@
-package units;
+package unitUtils;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -15,12 +15,14 @@ public class UnitHealth {
 
 	public void heal(int health) {
 		hp += health;
-		
 		hp = Math.min(hp, 100);
 	}
 	
 	public void takeDamage(int damage) {
 		hp -= damage;
+		if (hp < 0) {
+			hp = 0;
+		}
 	}
 	
 	public void takeNonLethalDamage(int damage) {
@@ -43,7 +45,7 @@ public class UnitHealth {
 	}
 
 	public boolean isDead() {
-		return hp <= 0;
+		return hp == 0;
 	}
 
 	public int getHP() {
@@ -58,18 +60,15 @@ public class UnitHealth {
 		if (getShowHP() == 10) {
 			return;
 		}
-
 		int paintHPX = x  + (3 * tileSize) / 4;
 		int paintHPY = y  + (3 * tileSize) / 4;
 
 		Font currentFont = g.getFont();
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
-
 		g.setColor(Color.black);
 		g.fillRect(paintHPX, paintHPY, tileSize / 4, tileSize / 4);
 		g.setColor(Color.white);
 		g.drawString("" + getShowHP() + "", paintHPX + 3, paintHPY + tileSize / 8 + 4);
-
 		g.setFont(currentFont);
 	}
 }

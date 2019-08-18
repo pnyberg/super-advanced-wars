@@ -1,4 +1,4 @@
-package units;
+package unitUtils;
 
 public class UnitSupply {
 	private int maxFuel;
@@ -30,7 +30,7 @@ public class UnitSupply {
 		return currentAmmo > 0;
 	}
 
-	public boolean hasFuel(int fuelNeeded) {
+	public boolean hasSufficientFuel(int fuelNeeded) {
 		return currentFuel >= fuelNeeded;
 	}
 	

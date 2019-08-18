@@ -3,11 +3,11 @@ package units.treadMoving;
 import java.awt.Color;
 
 import graphics.images.units.AAirImage;
-import units.MovementType;
+import unitUtils.MovementType;
+import unitUtils.UnitCategory;
+import unitUtils.UnitSupply;
+import unitUtils.UnitType;
 import units.Unit;
-import units.UnitCategory;
-import units.UnitSupply;
-import units.UnitType;
 
 public class AAir extends Unit {
 	private static int price = 8000;

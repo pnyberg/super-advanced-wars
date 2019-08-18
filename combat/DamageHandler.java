@@ -10,6 +10,8 @@ import main.StarPowerCalculator;
 import map.GameMap;
 import map.area.TerrainType;
 import map.structures.Structure;
+import unitUtils.UnitType;
+import unitUtils.UnitWorthCalculator;
 
 public class DamageHandler {
 	private DamageCalculator damageCalculator;

@@ -2,7 +2,7 @@ package routing;
 
 import map.GameMap;
 import map.area.TerrainType;
-import units.MovementType;
+import unitUtils.MovementType;
 
 public class MovementCostCalculator {
 	private int[][] movementCostMatrix;

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import gameObjects.MapDim;
 import graphics.RouteArrowPathPainter;
 import point.Point;
-import units.MovementType;
+import unitUtils.MovementType;
 import units.Unit;
 
 public class RouteArrowPath {

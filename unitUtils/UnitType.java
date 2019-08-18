@@ -1,23 +1,11 @@
-package units;
+package unitUtils;
 
-import units.airMoving.BCopter;
-import units.airMoving.Bomber;
-import units.airMoving.Fighter;
-import units.airMoving.TCopter;
-import units.footMoving.Infantry;
-import units.footMoving.Mech;
-import units.seaMoving.Battleship;
-import units.seaMoving.Cruiser;
-import units.seaMoving.Lander;
-import units.tireMoving.Missiles;
-import units.tireMoving.Recon;
-import units.tireMoving.Rocket;
-import units.treadMoving.AAir;
-import units.treadMoving.APC;
-import units.treadMoving.Artillery;
-import units.treadMoving.MDTank;
-import units.treadMoving.Neotank;
-import units.treadMoving.Tank;
+import units.Unit;
+import units.airMoving.*;
+import units.footMoving.*;
+import units.seaMoving.*;
+import units.tireMoving.*;
+import units.treadMoving.*;
 
 public enum UnitType {
 	INFANTRY ("Infantry", "Inftry", 1000, 0),
@@ -73,6 +61,7 @@ public enum UnitType {
 	public boolean isTransportUnit() {
 		return unitIndex == APC.unitIndex
 			|| unitIndex == TCOPTER.unitIndex
+			|| unitIndex == CRUISER.unitIndex
 			|| unitIndex == LANDER.unitIndex;
 	}
 

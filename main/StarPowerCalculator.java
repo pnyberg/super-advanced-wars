@@ -1,8 +1,8 @@
 package main;
 
 import hero.Hero;
+import unitUtils.UnitWorthCalculator;
 import units.Unit;
-import units.UnitWorthCalculator;
 
 public class StarPowerCalculator {
 	private UnitWorthCalculator unitWorthCalculator;

@@ -5,7 +5,7 @@
  */
 package combat;
 
-import units.UnitType;
+import unitUtils.UnitType;
 
 public class DamageMatrixFactory {
 	private int[][][] damageMatrix;
