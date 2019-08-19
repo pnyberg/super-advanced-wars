@@ -15,6 +15,7 @@ public class TurnHandler {
 	private int day;
 	private boolean firstHeroOfTheDay;
 
+	// TODO: rewrite with fewer parameters
 	public TurnHandler(GameProp gameProp, CashHandler cashHandler, RepairHandler repairHandler, HeroHandler heroHandler, StructureHandler structureHandler, MapMenu mapMenu) {
 		this.cashHandler = cashHandler;
 		fuelHandler = new FuelHandler(gameProp, heroHandler);

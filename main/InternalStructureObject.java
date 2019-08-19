@@ -1,4 +1,5 @@
 package main;
+
 import java.util.ArrayList;
 
 import combat.AttackHandler;
@@ -60,6 +61,8 @@ public class InternalStructureObject {
 	private TurnHandler turnHandler;
 	private UnitMenuHandler unitMenuHandler;
 	
+	// TODO: rewrite with fewer parameters
+	// TODO: rewrite the code to minimize decoupling
 	public InternalStructureObject(GameProp gameProp, InfoBox infoBox, HeroHandler heroHandler, 
 									GameMap gameMap, Cursor cursor, ArrayList<Building> buildings, 
 									ArrayList<Structure> structures, UnitGetter unitGetter, 

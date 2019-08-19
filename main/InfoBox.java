@@ -18,10 +18,12 @@ public class InfoBox {
 	private UnitInfoBox unitInfoBox;
 	private UnitContainedInfoBox unitContainedInfoBox; 
 	
+	// TODO: rewrite with fewer parameters
 	public InfoBox(Point point, int width, int height, int tileSize, GameMap gameMap, Cursor cursor, UnitGetter unitGetter, BuildingHandler buildingHandler, StructureHandler structureHandler) {
 		this.point = point;
 		this.width = width;
 		this.height = height;
+		// TODO: rewrite code
 		Point terrainInfoBoxPoint = new Point(point.getX() + tileSize / 4, point.getY() + tileSize / 8);
 		terrainInfoBox = new TerrainInfoBox(terrainInfoBoxPoint, tileSize * 2, height - tileSize / 4, tileSize, gameMap, cursor, buildingHandler, structureHandler);
 		Point unitInfoBoxPoint = new Point(point.getX() + tileSize * 2 + tileSize / 4 + 5, point.getY() + tileSize / 8);

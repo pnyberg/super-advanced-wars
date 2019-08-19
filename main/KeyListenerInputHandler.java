@@ -1,7 +1,6 @@
 /**
  * TODO:
- *  - can an APC enter a Lander?
- *  - can a T-Copter enter a Cruiser?
+ *  - rewrite code to make it more readable
  */
 package main;
 

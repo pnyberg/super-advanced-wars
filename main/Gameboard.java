@@ -13,6 +13,8 @@
  * - fix so not crashing on recalculating route
  * - first attack take ages to calculate
  * - refactor so that methods have "maximum" of three parameters
+ * - can an APC enter a Lander?
+ * - can a T-Copter enter a Cruiser?
  *
  * @TODO: substitute ArrayList with HashMap for better performance
  */

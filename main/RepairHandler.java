@@ -32,7 +32,8 @@ public class RepairHandler {
 	}
 	
 	private boolean unitIsRepairable(Unit unit, Building building) {
-		if (unit.getMovementType().isLandMovementType() && (building instanceof City || building instanceof Factory/* || building instanceof HQ*/)) {
+		if (unit.getMovementType().isLandMovementType() && 
+				(building instanceof City || building instanceof Factory/* || building instanceof HQ*/)) {
 			return true;
 		} else if (unit.getMovementType().isAirMovementType() && (building instanceof Airport)) {
 			return true;
@@ -43,10 +44,12 @@ public class RepairHandler {
 	}
 
 	private void repairUnit(Unit unit) {
+		// restore hp to an even 10
 		int restoreHp = 10 - unit.getUnitHealth().getHP() % 10;
 		if (restoreHp < 10) {
 			unit.getUnitHealth().heal(restoreHp);
 		}
+		// restore up to two "show-hp"
 		int repairCost = unitWorthCalculator.getFullHealthUnitWorth(unit) / 10;
 		for (int i = 0 ; i < 2 ; i++) {
 			if (heroHandler.getCurrentHero().getCash() >= repairCost && !unit.getUnitHealth().atFullHealth()) {

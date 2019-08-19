@@ -8,6 +8,10 @@ public class Point {
 		this.y = y;
 	}
 	
+	public boolean isSamePosition(Point p) {
+		return isSamePosition(p.getX(), p.getY());
+	}
+
 	public boolean isSamePosition(int x, int y) {
 		return this.x == x && this.y == y;
 	}

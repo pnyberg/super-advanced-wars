@@ -17,15 +17,9 @@ public class SupplyHandler {
 	}
 
 	public boolean mayAPCSUpply(int x, int y) {
-		if (unitGetter.getFriendlyUnit(x + tileSize, y) != null) {
-			return true;
-		} else if (unitGetter.getFriendlyUnit(x, y + tileSize) != null) {
-			return true;
-		} else if (unitGetter.getFriendlyUnit(x - tileSize, y) != null) {
-			return true;
-		} else if (unitGetter.getFriendlyUnit(x, y - tileSize) != null) {
-			return true;
-		}
-		return false;
+		return unitGetter.getFriendlyUnit(x + tileSize, y) != null 
+				|| unitGetter.getFriendlyUnit(x, y + tileSize) != null
+				|| unitGetter.getFriendlyUnit(x - tileSize, y) != null
+				|| unitGetter.getFriendlyUnit(x, y - tileSize) != null;
 	}
 }

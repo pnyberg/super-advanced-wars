@@ -18,6 +18,7 @@ public class UnitInfoBox {
 	private Cursor cursor;
 	private UnitGetter unitGetter;
 	
+	// TODO: rewrite with fewer parameters
 	public UnitInfoBox(Point point, int width, int height, int tileSize, Cursor cursor, UnitGetter unitGetter) {
 		this.point = point;
 		this.width = width;
@@ -29,11 +30,9 @@ public class UnitInfoBox {
 
 	public void paint(Graphics g) {
 		Unit unit = unitGetter.getAnyUnit(cursor.getX(), cursor.getY());
-		
 		if (unit != null) {
 			g.setColor(Color.lightGray);
 			g.fillRect(point.getX(), point.getY(), width, height);
-
 			g.setColor(Color.black);
 			Font currentFont = g.getFont();
 			UnitType unitType = unit.getUnitType();
@@ -41,7 +40,6 @@ public class UnitInfoBox {
 			int xAdjust = (width - g.getFontMetrics().stringWidth(unitType.unitTypeShowName())) / 2;
 			g.drawString(unitType.unitTypeShowName(), point.getX() + xAdjust, point.getY() + 20);
 			g.setFont(currentFont);
-			
 			paintUnit(g, unit);
 			paintUnitHealth(g, unit);
 			paintUnitFuel(g, unit);
@@ -59,6 +57,7 @@ public class UnitInfoBox {
 		}
 	}
 	
+	// TODO: replace code with image
 	private void paintUnitHealth(Graphics g, Unit unit) {
 		int healthValue = unit.getUnitHealth().getShowHP();
 		

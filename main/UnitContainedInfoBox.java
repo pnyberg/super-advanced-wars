@@ -20,6 +20,7 @@ public class UnitContainedInfoBox {
 	private Cursor cursor;
 	private UnitGetter unitGetter;
 	
+	// TODO: rewrite with fewer parameters
 	public UnitContainedInfoBox(Point point, int width, int height, int tileSize, Cursor cursor, UnitGetter unitGetter) {
 		this.point = point;
 		this.width = width;

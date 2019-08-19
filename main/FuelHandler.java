@@ -25,8 +25,8 @@ public class FuelHandler {
 	}
 	
 	private boolean movementTypeConsumesFuelDaily(MovementType movementType) {
-		return movementType == MovementType.SHIP ||
-				movementType == MovementType.TRANSPORT ||
-				movementType == MovementType.AIR;
+		return movementType == MovementType.SHIP
+			|| movementType == MovementType.TRANSPORT
+			|| movementType == MovementType.AIR;
 	}
 }
