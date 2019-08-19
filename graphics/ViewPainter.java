@@ -3,7 +3,7 @@ package graphics;
 import java.awt.Graphics;
 
 import combat.AttackRangeHandler;
-import gameObjects.MapDim;
+import gameObjects.MapDimension;
 import main.HeroHandler;
 import map.GameMap;
 import map.buildings.Building;
@@ -17,7 +17,7 @@ public class ViewPainter {
 	private MapViewType mapViewType;
 	private CommanderView commanderView;
 	private HeroHandler heroHandler;
-	private MapDim mapDim;
+	private MapDimension mapDim;
 	private GameMap gameMap;
 	private RouteHandler routeHandler;
 	private AttackRangeHandler attackRangeHandler;
@@ -25,7 +25,7 @@ public class ViewPainter {
 	private StructureHandler structureHandler;
 	
 	// TODO: rewrite with fewer parameters
-	public ViewPainter(CommanderView commanderView, HeroHandler heroHandler, MapDim mapDimension, GameMap gameMap, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler, BuildingHandler buildingGetter, StructureHandler structureHandler) {
+	public ViewPainter(CommanderView commanderView, HeroHandler heroHandler, MapDimension mapDimension, GameMap gameMap, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler, BuildingHandler buildingGetter, StructureHandler structureHandler) {
 		mapViewType = MapViewType.MAIN_MAP_MENU_VIEW;
 		this.commanderView = commanderView;
 		this.heroHandler = heroHandler;

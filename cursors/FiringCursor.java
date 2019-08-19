@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import combat.DamageHandler;
-import gameObjects.MapDim;
+import gameObjects.MapDimension;
 import main.HeroHandler;
 import map.GameMap;
 import map.UnitGetter;
@@ -14,14 +14,14 @@ import map.structures.StructureHandler;
 import units.Unit;
 
 public class FiringCursor {
-	private MapDim mapDim;
+	private MapDimension mapDim;
 	private UnitGetter unitGetter;
 	private HeroHandler heroHandler;
 	private DamageHandler damageHandler;
 	private StructureHandler structureHandler;
 
 	// TODO: to many parameters?
-	public FiringCursor(MapDim mapDim, UnitGetter unitGetter, HeroHandler heroHandler, DamageHandler damageHandler, StructureHandler structureHandler) {
+	public FiringCursor(MapDimension mapDim, UnitGetter unitGetter, HeroHandler heroHandler, DamageHandler damageHandler, StructureHandler structureHandler) {
 		this.mapDim = mapDim;
 		this.unitGetter = unitGetter;
 		this.heroHandler = heroHandler;

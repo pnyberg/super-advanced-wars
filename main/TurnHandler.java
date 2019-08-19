@@ -11,18 +11,16 @@ public class TurnHandler {
 	private RepairHandler repairHandler;
 	private HeroHandler heroHandler;
 	private StructureHandler structureHandler;
-	private MapMenu mapMenu;
 	private int day;
 	private boolean firstHeroOfTheDay;
 
 	// TODO: rewrite with fewer parameters
-	public TurnHandler(GameProperties gameProp, CashHandler cashHandler, RepairHandler repairHandler, HeroHandler heroHandler, StructureHandler structureHandler, MapMenu mapMenu) {
+	public TurnHandler(GameProperties gameProp, CashHandler cashHandler, RepairHandler repairHandler, HeroHandler heroHandler, StructureHandler structureHandler) {
 		this.cashHandler = cashHandler;
 		fuelHandler = new FuelHandler(gameProp, heroHandler);
 		this.repairHandler = repairHandler;
 		this.heroHandler = heroHandler;
 		this.structureHandler = structureHandler;
-		this.mapMenu = mapMenu;
 		day = 1;
 		firstHeroOfTheDay = false;
 	}
@@ -48,8 +46,7 @@ public class TurnHandler {
 		}
 	}
 
-	public void endTurnActions() {
-		mapMenu.closeMenu();
+	private void endTurnActions() {
 		resetActiveVariable();
 		heroHandler.nextHero();
 		if (heroHandler.getCurrentHero() == heroHandler.getHero(0)) {

@@ -2,19 +2,20 @@ package map;
 
 import java.util.ArrayList;
 
-import gameObjects.MapDim;
+import gameObjects.MapDimension;
 import map.area.Area;
 import map.buildings.Building;
 import map.structures.Structure;
 
 public class MapLoadingObject {
 	private GameMap gameMap;
-	private MapDim mapDim;
+	private MapDimension mapDim;
 	private ArrayList<Building> buildings;
 	private ArrayList<Structure> structures;
 	
 	public MapLoadingObject() {
 		gameMap = null;
+		mapDim = null;
 		buildings = new ArrayList<>();
 		structures = new ArrayList<>();
 	}
@@ -23,7 +24,7 @@ public class MapLoadingObject {
 		this.gameMap = gameMap;
 	}
 	
-	public void setMapDim(MapDim mapDim) {
+	public void setMapDim(MapDimension mapDim) {
 		this.mapDim = mapDim;
 	}
 	
@@ -43,7 +44,7 @@ public class MapLoadingObject {
 		return gameMap;
 	}
 	
-	public MapDim getMapDim() {
+	public MapDimension getMapDim() {
 		return mapDim;
 	}
 	

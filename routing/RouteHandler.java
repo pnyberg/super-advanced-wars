@@ -9,13 +9,13 @@ package routing;
 import point.*;
 import units.*;
 
-import gameObjects.MapDim;
+import gameObjects.MapDimension;
 
 public class RouteHandler {
 	private RouteArrowPath routeArrowPath;
 	private MovementMap movementMap;
 
-	public RouteHandler(MapDim mapDimension, MovementMap movementMap, MovementCostCalculator movementCostCalculator) {
+	public RouteHandler(MapDimension mapDimension, MovementMap movementMap, MovementCostCalculator movementCostCalculator) {
 		routeArrowPath = new RouteArrowPath(mapDimension, movementCostCalculator);
 		this.movementMap = movementMap;
 	}

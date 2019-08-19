@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import cursors.Cursor;
 import gameObjects.Direction;
-import gameObjects.MapDim;
+import gameObjects.MapDimension;
 import map.UnitGetter;
 import map.structures.FiringStructure;
 import map.structures.Structure;
@@ -20,7 +20,7 @@ import units.seaMoving.Lander;
 import units.treadMoving.APC;
 
 public class AttackRangeHandler {
-	private MapDim mapDim;
+	private MapDimension mapDim;
 	private UnitGetter unitGetter;
 	private boolean[][] rangeMap;
 	private DamageHandler damageHandler;
@@ -28,7 +28,7 @@ public class AttackRangeHandler {
 	private RouteChecker routeChecker;
 	private MovementMap movementMap;
 
-	public AttackRangeHandler(MapDim mapDim, UnitGetter unitGetter, DamageHandler damageHandler, StructureHandler structureHandler, RouteChecker routeChecker, MovementMap movementMap) {
+	public AttackRangeHandler(MapDimension mapDim, UnitGetter unitGetter, DamageHandler damageHandler, StructureHandler structureHandler, RouteChecker routeChecker, MovementMap movementMap) {
 		this.mapDim = mapDim;
 		this.unitGetter = unitGetter;
 		rangeMap = new boolean[mapDim.getTileWidth()][mapDim.getTileHeight()];

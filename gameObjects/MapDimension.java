@@ -1,11 +1,11 @@
 package gameObjects;
 
-public class MapDim {
+public class MapDimension {
 	private int tileWidth;
 	private int tileHeight;
 	public final int tileSize;
 	
-	public MapDim(int tileWidth, int tileHeight, int tileSize) {
+	public MapDimension(int tileWidth, int tileHeight, int tileSize) {
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
 		this.tileSize = tileSize;

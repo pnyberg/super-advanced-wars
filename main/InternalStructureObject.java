@@ -7,7 +7,6 @@ import combat.AttackRangeHandler;
 import combat.AttackValueCalculator;
 import combat.DamageHandler;
 import combat.DefenceValueCalculator;
-import combat.StructureAttackHandler;
 import cursors.Cursor;
 import cursors.FiringCursor;
 import gameObjects.GameProperties;
@@ -22,7 +21,6 @@ import map.buildings.BuildingHandler;
 import map.structures.Structure;
 import map.structures.StructureHandler;
 import menus.building.BuildingMenu;
-import menus.map.MapMenu;
 import menus.unit.UnitMenuHandler;
 import routing.MoveabilityMatrixFactory;
 import routing.MovementCostCalculator;
@@ -48,8 +46,6 @@ public class InternalStructureObject {
 	private GameMap gameMap;
 	private HeroPortrait heroPortrait;
 	private InfoBox infoBox;
-	private KeyListenerInputHandler keyListenerInputHandler;
-	private MapMenu mapMenu;
 	private ViewPainter mainViewPainter;
 	private boolean[][] moveabilityMatrix;
 	private MovementCostCalculator movementCostCalculator;
@@ -58,7 +54,6 @@ public class InternalStructureObject {
 	private RouteChecker routeChecker;
 	private RouteHandler routeHandler;
 	private SupplyHandler supplyHandler;
-	private TurnHandler turnHandler;
 	private UnitMenuHandler unitMenuHandler;
 	
 	// TODO: rewrite with fewer parameters
@@ -66,7 +61,6 @@ public class InternalStructureObject {
 	public InternalStructureObject(GameProperties gameProp, InfoBox infoBox, HeroHandler heroHandler, 
 									GameMap gameMap, Cursor cursor, ArrayList<Building> buildings, 
 									ArrayList<Structure> structures, UnitGetter unitGetter, 
-									StructureAttackHandler structureAttackHandler,
 									UnitWorthCalculator unitWorthCalculator, 
 									BuildingHandler buildingHandler,
 									StructureHandler structureHandler) {
@@ -79,7 +73,6 @@ public class InternalStructureObject {
 		this.gameMap = gameMap;
 		heroPortrait = new HeroPortrait(gameProp.getMapDim(), heroHandler);
 		this.infoBox = infoBox;
-		mapMenu = new MapMenu(tileSize, heroHandler);
 		moveabilityMatrix = new MoveabilityMatrixFactory().getMoveabilityMatrix();
 		movementMap = new MovementMap(gameProp.getMapDim());
 
@@ -101,15 +94,11 @@ public class InternalStructureObject {
 		attackRangeHandler = new AttackRangeHandler(gameProp.getMapDim(), unitGetter, damageHandler, structureHandler, routeChecker, movementMap);
 		containerUnitHandler = new ContUnitHandler(gameProp, gameMap, cursor, unitGetter, areaChecker, routeChecker); 
 		firingCursor = new FiringCursor(gameProp.getMapDim(), unitGetter, heroHandler, damageHandler, structureHandler);
-		turnHandler = new TurnHandler(gameProp, cashHandler, repairHandler, heroHandler, structureHandler, mapMenu);
 
 		// required init from fourth init-round
 		attackHandler = new AttackHandler(gameProp.getMapDim(), unitGetter, attackRangeHandler, damageHandler, structureHandler);
 		mainViewPainter = new ViewPainter(commanderView, heroHandler, gameProp.getMapDim(), gameMap, routeHandler, attackRangeHandler, buildingHandler, structureHandler);
 		unitMenuHandler = new UnitMenuHandler(gameProp, containerUnitHandler, supplyHandler, unitGetter, areaChecker, buildingHandler, attackRangeHandler);
-
-		// required init from fifth init-round
-		keyListenerInputHandler = new KeyListenerInputHandler(gameProp, gameMap, mainViewPainter, unitGetter, buildingHandler, structureHandler, cursor, unitMenuHandler, mapMenu, buildingMenu, containerUnitHandler, attackHandler, attackRangeHandler, movementMap, routeHandler, routeChecker, damageHandler, heroHandler, supplyHandler, turnHandler, unitWorthCalculator);
 	}
 	
 	public AttackHandler getAttackHandler() {
@@ -124,12 +113,20 @@ public class InternalStructureObject {
 		return buildingMenu;
 	}
 	
+	public CashHandler getCashHandler() {
+		return cashHandler;
+	}
+	
 	public ContUnitHandler getContUnitHandler() {
 		return containerUnitHandler;
 	}
 
 	public Cursor getCursor() {
 		return cursor;
+	}
+	
+	public DamageHandler getDamageHandler() {
+		return damageHandler;
 	}
 	
 	public FiringCursor getFiringCursor() {
@@ -148,20 +145,24 @@ public class InternalStructureObject {
 		return infoBox;
 	}
 	
-	public KeyListenerInputHandler getKeyListenerInputHandler() {
-		return keyListenerInputHandler;
+	public MovementMap getMovementMap() {
+		return movementMap;
 	}
 	
-	public MapMenu getMapMenu() {
-		return mapMenu;
+	public RepairHandler getRepairHandler() {
+		return repairHandler;
 	}
 	
+	public RouteChecker getRouteChecker() {
+		return routeChecker;
+	}
+
 	public RouteHandler getRouteHandler() {
 		return routeHandler;
 	}
-
-	public TurnHandler getTurnHandler() {
-		return turnHandler;
+	
+	public SupplyHandler getSupplyHandler() {
+		return supplyHandler;
 	}
 	
 	public UnitMenuHandler getUnitMenuHandler() {

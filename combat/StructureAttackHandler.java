@@ -3,17 +3,17 @@ package combat;
 import java.util.ArrayList;
 import java.util.List;
 
-import gameObjects.MapDim;
+import gameObjects.MapDimension;
 import hero.Hero;
 import map.UnitGetter;
 import map.structures.FiringStructure;
 import units.Unit;
 
 public class StructureAttackHandler {
-	private MapDim mapDim;
+	private MapDimension mapDim;
 	private UnitGetter unitGetter;
 	
-	public StructureAttackHandler(MapDim mapDim, UnitGetter unitGetter) {
+	public StructureAttackHandler(MapDimension mapDim, UnitGetter unitGetter) {
 		this.mapDim = mapDim;
 		this.unitGetter = unitGetter;
 	}

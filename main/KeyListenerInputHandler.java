@@ -65,7 +65,7 @@ public class KeyListenerInputHandler {
 	private HeroPowerHandler heroPowerHandler;
 	private UnitWorthCalculator unitWorthCalculator;
 	
-	public KeyListenerInputHandler(GameProperties gameProp, GameMap gameMap, ViewPainter viewPainter, UnitGetter unitGetter, BuildingHandler buildingHandler, StructureHandler structureHandler, Cursor cursor, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler, UnitWorthCalculator unitWorthCalculator) {
+	public KeyListenerInputHandler(GameProperties gameProp, GameMap gameMap, ViewPainter viewPainter, UnitGetter unitGetter, BuildingHandler buildingHandler, StructureHandler structureHandler, Cursor cursor, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
 		this.gameProp = gameProp;
 		this.gameMap = gameMap;
 		this.viewPainter = viewPainter;
@@ -89,7 +89,7 @@ public class KeyListenerInputHandler {
 		this.turnHandler = turnHandler;
 		firingCursorHandler = new FiringCursorHandler(gameProp, cursor, unitGetter, damageHandler);
 		heroPowerHandler = new HeroPowerHandler(heroHandler);
-		this.unitWorthCalculator = unitWorthCalculator;
+		unitWorthCalculator = new UnitWorthCalculator();
 	}
 	
 	public void manageKeyPressedInput(KeyEvent e) {
@@ -220,6 +220,7 @@ public class KeyListenerInputHandler {
 				heroPowerHandler.activateSuperPower();
 				mapMenu.closeMenu();
 			} else if (mapMenu.atEndRow()) {
+				mapMenu.closeMenu();
 				turnHandler.endTurn();
 			}
 		} else if (unitMenuHandler.getUnitMenu().isVisible()) {

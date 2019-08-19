@@ -3,7 +3,7 @@ package unitUtils;
 
 import cursors.Cursor;
 import gameObjects.GameProperties;
-import gameObjects.MapDim;
+import gameObjects.MapDimension;
 import map.GameMap;
 import map.UnitGetter;
 import map.area.AreaChecker;
@@ -132,7 +132,7 @@ public class ContUnitHandler {
 		if (unit == null) {
 			return false;
 		}
-		MapDim mapDim = gameProp.getMapDim();
+		MapDimension mapDim = gameProp.getMapDim();
 		int tileX = gameProp.getChosenObject().chosenUnit.getPoint().getX() / gameProp.getMapDim().tileSize;
 		int tileY = gameProp.getChosenObject().chosenUnit.getPoint().getY() / gameProp.getMapDim().tileSize;
 
@@ -163,7 +163,7 @@ public class ContUnitHandler {
 
 	public void moveDroppingOffCursorClockwise() {
 		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
-		MapDim mapDim = gameProp.getMapDim();
+		MapDimension mapDim = gameProp.getMapDim();
 		int cursorTileX = cursor.getX() / gameProp.getMapDim().tileSize;
 		int cursorTileY = cursor.getY() / gameProp.getMapDim().tileSize;
 		int unitTileX = chosenUnit.getPoint().getX() / gameProp.getMapDim().tileSize;
@@ -221,7 +221,7 @@ public class ContUnitHandler {
 
 	public void moveDroppingOffCursorCounterclockwise() {
 		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
-		MapDim mapDim = gameProp.getMapDim();
+		MapDimension mapDim = gameProp.getMapDim();
 		int unitTileX = chosenUnit.getPoint().getX() / gameProp.getMapDim().tileSize;
 		int unitTileY = chosenUnit.getPoint().getY() / gameProp.getMapDim().tileSize;
 		int cursorTileX = cursor.getX() / gameProp.getMapDim().tileSize;
