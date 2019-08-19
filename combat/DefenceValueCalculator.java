@@ -1,3 +1,7 @@
+/**
+ * TODO:
+ *  - rewrite code to be more readable
+ */
 package combat;
 
 import hero.Hero;
@@ -9,9 +13,7 @@ import unitUtils.MovementType;
 
 public class DefenceValueCalculator {
 
-	public DefenceValueCalculator() {
-		
-	}
+	public DefenceValueCalculator() {}
 	
 	public int calculateDefenceValue(Hero defendingHero, int defendingUnitIndex) {
 		int normalDefenceValue = defendingHero.getPassiveHeroAbilities().getDefenceValue(defendingUnitIndex);

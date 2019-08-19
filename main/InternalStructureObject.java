@@ -85,7 +85,7 @@ public class InternalStructureObject {
 		buildingMenu = new BuildingMenu(tileSize, heroHandler, gameMap);
 		cashHandler = new CashHandler(heroPortrait, buildings);
 		commanderView = new CommanderView(gameProp.getMapDim(), heroHandler, attackValueCalculator, defenceValueCalculator);
-		damageHandler = new DamageHandler(heroHandler, gameMap, attackValueCalculator, defenceValueCalculator, unitWorthCalculator, tileSize);
+		damageHandler = new DamageHandler(heroHandler, gameMap, attackValueCalculator, defenceValueCalculator, unitWorthCalculator);
 		movementCostCalculator = new MovementCostCalculator(gameMap);
 		supplyHandler = new SupplyHandler(unitGetter, tileSize);
 
@@ -97,7 +97,7 @@ public class InternalStructureObject {
 		// required init from third init-round
 		attackRangeHandler = new AttackRangeHandler(gameProp.getMapDim(), unitGetter, damageHandler, structureHandler, routeChecker, movementMap);
 		containerUnitHandler = new ContUnitHandler(gameProp, gameMap, cursor, unitGetter, areaChecker, routeChecker); 
-		firingCursor = new FiringCursor(gameProp.getMapDim(), gameMap, unitGetter, heroHandler, damageHandler, structureHandler);
+		firingCursor = new FiringCursor(gameProp.getMapDim(), unitGetter, heroHandler, damageHandler, structureHandler);
 		turnHandler = new TurnHandler(gameProp, cashHandler, repairHandler, heroHandler, structureHandler, mapMenu);
 
 		// required init from fourth init-round

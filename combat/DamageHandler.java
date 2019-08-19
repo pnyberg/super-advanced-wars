@@ -18,50 +18,41 @@ public class DamageHandler {
 	private StarPowerCalculator starPowerCalculator;
 	private HeroHandler heroHandler;
 	private GameMap gameMap;
-	private int tileSize;
 
-	public DamageHandler(HeroHandler heroHandler, GameMap gameMap, AttackValueCalculator attackValueCalculator, DefenceValueCalculator defenceValueCalculator, UnitWorthCalculator unitWorthCalculator, int tileSize) {
+	// TODO: rewrite code to make it fewer parameters
+	public DamageHandler(HeroHandler heroHandler, GameMap gameMap, AttackValueCalculator attackValueCalculator, DefenceValueCalculator defenceValueCalculator, UnitWorthCalculator unitWorthCalculator) {
 		damageCalculator = new DamageCalculator(attackValueCalculator, defenceValueCalculator);
 		starPowerCalculator = new StarPowerCalculator(unitWorthCalculator);
 		this.heroHandler = heroHandler;
 		this.gameMap = gameMap;
-		this.tileSize = tileSize;
 	}
 
-	public void handleAttackingUnit(Unit attacking, Unit defending) {
-		Hero attackingHero = heroHandler.getHeroFromUnit(attacking);
-		Hero defendingHero = heroHandler.getHeroFromUnit(defending); 
-		int attackTileX = attacking.getPoint().getX() / tileSize;
-		int attackTileY = attacking.getPoint().getY() / tileSize;
-		int defendTileX = defending.getPoint().getX() / tileSize;
-		int defendTileY = defending.getPoint().getY() / tileSize;
-		
-		TerrainType defendingTerrainType = gameMap.getMap()[defendTileX][defendTileY].getTerrainType();
-
+	public void handleAttackingUnit(Unit attackingUnit, Unit defendingUnit) {
 		// deal damage from attacker to defender
-		performDamageCalculation(attacking, attackingHero, defending, defendingHero, defendingTerrainType);
-
-		if (defending.getUnitHealth().getHP() > 0 && counterAttackable(attacking, defending)) {
-			TerrainType attackingTerrainType = gameMap.getMap()[attackTileX][attackTileY].getTerrainType();
-			// deal damage from defender to attacker (counterattack)
-			performDamageCalculation(defending, defendingHero, attacking, attackingHero, attackingTerrainType);
+		performDamageCalculation(attackingUnit, defendingUnit);
+		if (canCounterAttack(attackingUnit, defendingUnit)) {
+			// deal counterattack-damage from defender to attacker (counterattack)
+			performDamageCalculation(defendingUnit, attackingUnit);
 		}
 	}
 
-	private void performDamageCalculation(Unit attacker, Hero attHero, Unit defender, Hero defHero, TerrainType defTerrainType) {
-		int damageValue = damageCalculator.calculateRNGDamage(attacker, attHero, defender, defHero, defTerrainType);
-		defender.getUnitHealth().takeDamage(damageValue);
-
-		starPowerCalculator.calculateStarPowerOpponent(attHero, defender, damageValue);
-		starPowerCalculator.calculateStarPowerSelf(defHero, defender, damageValue);
+	private void performDamageCalculation(Unit attackingUnit, Unit defendingUnit) {
+		TerrainType defendingTerrainType = gameMap.getTerrainTypeAtUnitsPosition(defendingUnit);
+		int damageValue = damageCalculator.calculateRNGDamage(heroHandler, attackingUnit, defendingUnit, defendingTerrainType);
+		defendingUnit.getUnitHealth().takeDamage(damageValue);
+		Hero attackingHero = heroHandler.getHeroFromUnit(attackingUnit);
+		Hero defendingHero = heroHandler.getHeroFromUnit(defendingUnit); 
+		starPowerCalculator.calculateStarPowerOpponent(attackingHero, defendingUnit, damageValue);
+		starPowerCalculator.calculateStarPowerSelf(defendingHero, defendingUnit, damageValue);
 	}
 	
-	private boolean counterAttackable(Unit attacking, Unit defending) {
-		return !(attacking instanceof IndirectUnit
-				|| defending instanceof IndirectUnit
-				|| defending instanceof APC
-				|| defending instanceof Lander
-				|| defending instanceof TCopter);
+	private boolean canCounterAttack(Unit attacking, Unit defending) {
+		return defending.getUnitHealth().getHP() > 0 && 
+				!(attacking instanceof IndirectUnit
+					|| defending instanceof IndirectUnit
+					|| defending instanceof APC
+					|| defending instanceof Lander
+					|| defending instanceof TCopter);
 	}
 	
 	/*
@@ -75,16 +66,18 @@ public class DamageHandler {
 		targetStructure.takeDamage(damage);
 	}
 	
-	public int getNonRNGDamageValue(Unit attacker, Hero attHero, Unit defender, Hero defHero, TerrainType defTerrainType) {
-		return damageCalculator.calculateNonRNGDamage(attacker, attHero, defender, defHero, defTerrainType);
+	public int getNonRNGDamageValue(Unit attackingUnit, Unit defendingUnit) {
+		TerrainType defendingTerrainType = gameMap.getTerrainTypeAtUnitsPosition(defendingUnit);
+		return damageCalculator.calculateNonRNGDamage(heroHandler, attackingUnit, defendingUnit, defendingTerrainType);
 	}
 
+	// TODO: rename method?
 	public boolean validTarget(Unit attackingUnit, Unit targetUnit) {
 		int attUnitType = UnitType.getTypeFromUnit(attackingUnit);
 		int targetUnitType = UnitType.getTypeFromUnit(targetUnit);
-
-		return (attackingUnit.getUnitSupply().hasAmmo() && getBaseDamageValue(attUnitType, targetUnitType, 0) > -1)
-			|| getBaseDamageValue(attUnitType, targetUnitType, 1) > -1;
+		boolean canFireMainWeapon = attackingUnit.getUnitSupply().hasAmmo() && getBaseDamageValue(attUnitType, targetUnitType, 0) > -1;
+		boolean canFireSecondaryWeapon = getBaseDamageValue(attUnitType, targetUnitType, 1) > -1;
+		return canFireMainWeapon || canFireSecondaryWeapon;
 	}
 
 	public int getBaseDamageValue(int attType, int defType, int gunNumber) {

@@ -18,6 +18,7 @@ public class StructureAttackHandler {
 		this.unitGetter = unitGetter;
 	}
 
+	// TODO: rewrite code to be more readable
 	public List<Unit> getPossibleTargets(FiringStructure firingStructure) {
 		List<Unit> targetUnits = new ArrayList<>();
 		Hero owningHero = firingStructure.getOwner(); 

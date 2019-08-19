@@ -15,16 +15,14 @@ import units.Unit;
 
 public class FiringCursor {
 	private MapDim mapDim;
-	private GameMap gameMap;
 	private UnitGetter unitGetter;
 	private HeroHandler heroHandler;
 	private DamageHandler damageHandler;
 	private StructureHandler structureHandler;
 
 	// TODO: to many parameters?
-	public FiringCursor(MapDim mapDim, GameMap gameMap, UnitGetter unitGetter, HeroHandler heroHandler, DamageHandler damageHandler, StructureHandler structureHandler) {
+	public FiringCursor(MapDim mapDim, UnitGetter unitGetter, HeroHandler heroHandler, DamageHandler damageHandler, StructureHandler structureHandler) {
 		this.mapDim = mapDim;
-		this.gameMap = gameMap;
 		this.unitGetter = unitGetter;
 		this.heroHandler = heroHandler;
 		this.damageHandler = damageHandler;
@@ -42,8 +40,7 @@ public class FiringCursor {
 		Structure targetStructure = structureHandler.getStructure(cursor.getX(), cursor.getY());
 		int damage = 0;
 		if (targetUnit != null) {
-			TerrainType terrainType = gameMap.getMap()[cursor.getX() / tileSize][cursor.getY() / tileSize].getTerrainType();
-			damage = damageHandler.getNonRNGDamageValue(chosenUnit, heroHandler.getCurrentHero(), targetUnit, heroHandler.getHeroFromUnit(targetUnit), terrainType);
+			damage = damageHandler.getNonRNGDamageValue(chosenUnit, targetUnit);
 		} else if (targetStructure != null) {
 			damage = damageHandler.getStructureDamage(chosenUnit, heroHandler.getCurrentHero());
 		}

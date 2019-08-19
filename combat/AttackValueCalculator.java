@@ -10,7 +10,6 @@ public class AttackValueCalculator {
 		int normalAttackValue = hero.getPassiveHeroAbilities().getAttackValue(unitIndex);
 		int powerAttackValue = calculatePowerAttackValue(hero, unitIndex);
 		int superPowerAttackValue = calculateSuperPowerAttackValue(hero, unitIndex);
-		
 		return normalAttackValue + powerAttackValue + superPowerAttackValue;
 	}
 	

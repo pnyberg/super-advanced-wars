@@ -418,7 +418,7 @@ public class KeyListenerInputHandler {
 				if (gameProp.getChosenObject().rangeUnit.getAttackType() == AttackType.DIRECT_ATTACK) {
 					attackRangeHandler.findPossibleDirectAttackLocations(gameProp.getChosenObject().rangeUnit);
 				} else if (gameProp.getChosenObject().rangeUnit.getAttackType() == AttackType.INDIRECT_ATTACK) {
-					attackRangeHandler.createRangeAttackLocations(gameProp.getChosenObject().rangeUnit);
+					attackRangeHandler.fillRangeAttackMap(gameProp.getChosenObject().rangeUnit);
 				}
 			}
 		}
