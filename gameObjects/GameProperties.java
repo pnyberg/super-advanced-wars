@@ -1,11 +1,11 @@
 package gameObjects;
 
-public class GameProp {
+public class GameProperties {
 	public final int fuelMaintenancePerTurn;
 	private MapDim mapDim;
 	private ChosenObject chosenObject;
 	
-	public GameProp(int fuelMaintenancePerTurn, MapDim mapDim, ChosenObject chosenObject) {
+	public GameProperties(int fuelMaintenancePerTurn, MapDim mapDim, ChosenObject chosenObject) {
 		this.fuelMaintenancePerTurn = fuelMaintenancePerTurn;
 		this.mapDim = mapDim;
 		this.chosenObject = chosenObject;

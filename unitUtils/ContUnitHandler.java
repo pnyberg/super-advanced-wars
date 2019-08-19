@@ -2,7 +2,7 @@
 package unitUtils;
 
 import cursors.Cursor;
-import gameObjects.GameProp;
+import gameObjects.GameProperties;
 import gameObjects.MapDim;
 import map.GameMap;
 import map.UnitGetter;
@@ -27,14 +27,14 @@ import units.treadMoving.Neotank;
 import units.treadMoving.Tank;
 
 public class ContUnitHandler {
-	private GameProp gameProp;
+	private GameProperties gameProp;
 	private GameMap gameMap;
 	private Cursor cursor;
 	private UnitGetter unitGetter;
 	private AreaChecker areaChecker;
 	private RouteChecker routeChecker;
 	
-	public ContUnitHandler(GameProp gameProp, GameMap gameMap, Cursor cursor, UnitGetter unitGetter, AreaChecker areaChecker, RouteChecker routeChecker) {
+	public ContUnitHandler(GameProperties gameProp, GameMap gameMap, Cursor cursor, UnitGetter unitGetter, AreaChecker areaChecker, RouteChecker routeChecker) {
 		this.gameProp = gameProp;
 		this.gameMap = gameMap;
 		this.cursor = cursor;

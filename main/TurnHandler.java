@@ -1,6 +1,6 @@
 package main;
 
-import gameObjects.GameProp;
+import gameObjects.GameProperties;
 import hero.Hero;
 import map.structures.StructureHandler;
 import menus.map.MapMenu;
@@ -16,7 +16,7 @@ public class TurnHandler {
 	private boolean firstHeroOfTheDay;
 
 	// TODO: rewrite with fewer parameters
-	public TurnHandler(GameProp gameProp, CashHandler cashHandler, RepairHandler repairHandler, HeroHandler heroHandler, StructureHandler structureHandler, MapMenu mapMenu) {
+	public TurnHandler(GameProperties gameProp, CashHandler cashHandler, RepairHandler repairHandler, HeroHandler heroHandler, StructureHandler structureHandler, MapMenu mapMenu) {
 		this.cashHandler = cashHandler;
 		fuelHandler = new FuelHandler(gameProp, heroHandler);
 		this.repairHandler = repairHandler;

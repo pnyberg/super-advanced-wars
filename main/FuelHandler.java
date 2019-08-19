@@ -1,15 +1,15 @@
 package main;
 
-import gameObjects.GameProp;
+import gameObjects.GameProperties;
 import hero.Hero;
 import unitUtils.MovementType;
 import units.Unit;
 
 public class FuelHandler {
-	private GameProp gameProp;
+	private GameProperties gameProp;
 	private HeroHandler heroHandler;
 	
-	public FuelHandler(GameProp gameProp, HeroHandler heroHandler) {
+	public FuelHandler(GameProperties gameProp, HeroHandler heroHandler) {
 		this.gameProp = gameProp;
 		this.heroHandler = heroHandler;
 	}

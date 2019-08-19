@@ -1,18 +1,18 @@
 package cursors;
 
 import combat.DamageHandler;
-import gameObjects.GameProp;
+import gameObjects.GameProperties;
 import gameObjects.MapDim;
 import map.UnitGetter;
 import units.Unit;
 
 public class FiringCursorHandler {
-	private GameProp gameProp;
+	private GameProperties gameProp;
 	private Cursor cursor;
 	private UnitGetter unitGetter;
 	private DamageHandler damageHandler;
 	
-	public FiringCursorHandler(GameProp gameProp, Cursor cursor, UnitGetter unitGetter, DamageHandler damageHandler) {
+	public FiringCursorHandler(GameProperties gameProp, Cursor cursor, UnitGetter unitGetter, DamageHandler damageHandler) {
 		this.gameProp = gameProp;
 		this.cursor = cursor;
 		this.unitGetter = unitGetter;

@@ -11,7 +11,7 @@ import combat.AttackRangeHandler;
 import combat.DamageHandler;
 import cursors.Cursor;
 import cursors.FiringCursorHandler;
-import gameObjects.GameProp;
+import gameObjects.GameProperties;
 import graphics.MapViewType;
 import graphics.ViewPainter;
 import hero.Hero;
@@ -40,7 +40,7 @@ import units.seaMoving.*;
 import units.treadMoving.*;
 
 public class KeyListenerInputHandler {
-	private GameProp gameProp;
+	private GameProperties gameProp;
 	private ViewPainter viewPainter;
 	private UnitGetter unitGetter;
 	private BuildingHandler buildingHandler;
@@ -65,7 +65,7 @@ public class KeyListenerInputHandler {
 	private HeroPowerHandler heroPowerHandler;
 	private UnitWorthCalculator unitWorthCalculator;
 	
-	public KeyListenerInputHandler(GameProp gameProp, GameMap gameMap, ViewPainter viewPainter, UnitGetter unitGetter, BuildingHandler buildingHandler, StructureHandler structureHandler, Cursor cursor, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler, UnitWorthCalculator unitWorthCalculator) {
+	public KeyListenerInputHandler(GameProperties gameProp, GameMap gameMap, ViewPainter viewPainter, UnitGetter unitGetter, BuildingHandler buildingHandler, StructureHandler structureHandler, Cursor cursor, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler, UnitWorthCalculator unitWorthCalculator) {
 		this.gameProp = gameProp;
 		this.gameMap = gameMap;
 		this.viewPainter = viewPainter;

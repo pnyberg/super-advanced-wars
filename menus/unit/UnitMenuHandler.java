@@ -2,7 +2,7 @@ package menus.unit;
 
 import combat.AttackRangeHandler;
 import cursors.Cursor;
-import gameObjects.GameProp;
+import gameObjects.GameProperties;
 import main.SupplyHandler;
 import map.UnitGetter;
 import map.area.AreaChecker;
@@ -20,7 +20,7 @@ import units.treadMoving.APC;
 
 public class UnitMenuHandler {
 	private UnitMenu unitMenu;
-	private GameProp gameProp;
+	private GameProperties gameProp;
 	private ContUnitHandler containerUnitHandler;
 	private SupplyHandler supplyHandler;
 	private UnitGetter unitGetter;
@@ -28,7 +28,7 @@ public class UnitMenuHandler {
 	private BuildingHandler buildingHandler;
 	private AttackRangeHandler attackRangeHandler;
 
-	public UnitMenuHandler(GameProp gameProp, ContUnitHandler containerUnitHandler, SupplyHandler supplyHandler, UnitGetter unitGetter, AreaChecker areaChecker, BuildingHandler buildingHandler, AttackRangeHandler attackRangeHandler) {
+	public UnitMenuHandler(GameProperties gameProp, ContUnitHandler containerUnitHandler, SupplyHandler supplyHandler, UnitGetter unitGetter, AreaChecker areaChecker, BuildingHandler buildingHandler, AttackRangeHandler attackRangeHandler) {
 		unitMenu = new UnitMenu(gameProp.getMapDim().tileSize);
 		this.gameProp = gameProp;
 		this.containerUnitHandler = containerUnitHandler;

@@ -10,7 +10,7 @@ import combat.DefenceValueCalculator;
 import combat.StructureAttackHandler;
 import cursors.Cursor;
 import cursors.FiringCursor;
-import gameObjects.GameProp;
+import gameObjects.GameProperties;
 import graphics.CommanderView;
 import graphics.ViewPainter;
 import hero.HeroPortrait;
@@ -63,7 +63,7 @@ public class InternalStructureObject {
 	
 	// TODO: rewrite with fewer parameters
 	// TODO: rewrite the code to minimize decoupling
-	public InternalStructureObject(GameProp gameProp, InfoBox infoBox, HeroHandler heroHandler, 
+	public InternalStructureObject(GameProperties gameProp, InfoBox infoBox, HeroHandler heroHandler, 
 									GameMap gameMap, Cursor cursor, ArrayList<Building> buildings, 
 									ArrayList<Structure> structures, UnitGetter unitGetter, 
 									StructureAttackHandler structureAttackHandler,
