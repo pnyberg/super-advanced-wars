@@ -215,10 +215,10 @@ public class KeyListenerInputHandler {
 				viewPainter.setViewType(MapViewType.CO_MAP_MENU_VIEW);
 				mapMenu.closeMenu();
 			} else if (mapMenu.atPowerRow()) {
-				heroPowerHandler.handlePower();
+				heroPowerHandler.activatePower();
 				mapMenu.closeMenu();
 			} else if (mapMenu.atSuperPowerRow()) {
-				heroPowerHandler.handleSuperPower();
+				heroPowerHandler.activateSuperPower();
 				mapMenu.closeMenu();
 			} else if (mapMenu.atEndRow()) {
 				turnHandler.endTurn();

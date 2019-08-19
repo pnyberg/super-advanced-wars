@@ -18,7 +18,7 @@ public class HeroPowerHandler {
 		this.heroHandler = heroHandler;
 	}
 
-	public void handlePower() {
+	public void activatePower() {
 		heroHandler.getCurrentHero().setPowerActive(true);
 		for(CommanderEffect commanderEffect : heroHandler.getCurrentHero().getHeroPower().getPowerEffects()) {
 			if (commanderEffect instanceof DamageAll) {
@@ -29,7 +29,7 @@ public class HeroPowerHandler {
 		}
 	}
 
-	public void handleSuperPower() {
+	public void activateSuperPower() {
 		heroHandler.getCurrentHero().setSuperPowerActive(true);
 		for(CommanderEffect commanderEffect : heroHandler.getCurrentHero().getHeroPower().getSuperPowerEffects()) {
 			if (commanderEffect instanceof DamageAll) {

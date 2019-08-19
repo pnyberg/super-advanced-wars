@@ -8,22 +8,21 @@ import graphics.HeroPortraitPainter;
 import main.HeroHandler;
 
 public class HeroPortrait {
+	private MapDim mapDim;
 	private HeroHandler heroHandler;
 	private boolean leftSide;
 	private HeroPortraitPainter heroPortraitPainter;
-	private MapDim mapDim;
 
 	public HeroPortrait(MapDim mapDim, HeroHandler heroHandler) {
+		this.mapDim = mapDim;
 		this.heroHandler = heroHandler;
 		leftSide = true;
 		heroPortraitPainter = new HeroPortraitPainter(mapDim);
-		this.mapDim = mapDim;
 	}
 
 	public void updateSideChoice(Cursor cursor) {
 		int cursorTileX = cursor.getX() / mapDim.tileSize;
 		int cursorTileY = cursor.getY() / mapDim.tileSize;
-
 		if (cursorTileY < 2) {
 			if (leftSide && cursorTileX < 4) {
 				leftSide = false;

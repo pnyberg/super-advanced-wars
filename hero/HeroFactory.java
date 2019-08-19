@@ -33,7 +33,7 @@ public class HeroFactory {
 			PassiveHeroAbilities passiveHeroAbilities = new PassiveHeroAbilities(110, 110);
 			HeroPowerMeter heroPowerMeter = new HeroPowerMeter(4, 7);
 			int[] powerAttackPercents = {20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 
-									20, 20, 20};
+											20, 20, 20};
 			List<CommanderEffect> powerList = new ArrayList<>();
 			powerList.add(new AttackIncrease(powerAttackPercents));
 			ArrayList<CommanderEffect> superPowerList = new ArrayList<>();
