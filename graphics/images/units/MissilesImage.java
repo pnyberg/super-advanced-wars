@@ -42,6 +42,5 @@ public class MissilesImage extends UnitImage {
 
 		g.setColor(Color.black);
 		g.drawPolygon(cannonX, cannonY, npoints);
-
 	}
 }

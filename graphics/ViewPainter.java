@@ -24,6 +24,7 @@ public class ViewPainter {
 	private BuildingHandler buildingHandler;
 	private StructureHandler structureHandler;
 	
+	// TODO: rewrite with fewer parameters
 	public ViewPainter(CommanderView commanderView, HeroHandler heroHandler, MapDim mapDimension, GameMap gameMap, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler, BuildingHandler buildingGetter, StructureHandler structureHandler) {
 		mapViewType = MapViewType.MAIN_MAP_MENU_VIEW;
 		this.commanderView = commanderView;
@@ -53,8 +54,8 @@ public class ViewPainter {
 	}
 	
 	private void paintMap(Graphics g) {
-		for (int tileX = 0 ; tileX < gameMap.getMap().length ; tileX++) {
-			for (int tileY = 0 ; tileY < gameMap.getMap()[0].length ; tileY++) {
+		for (int tileX = 0 ; tileX < gameMap.getTileWidth() ; tileX++) {
+			for (int tileY = 0 ; tileY < gameMap.getTileHeight() ; tileY++) {
 				paintArea(g, tileX, tileY);
 			}
 		}
@@ -63,7 +64,6 @@ public class ViewPainter {
 	private void paintArea(Graphics g, int tileX, int tileY) {
 		boolean movementAble = routeHandler.getMovementMap().isAcceptedMove(tileX, tileY);
 		boolean rangeAble = attackRangeHandler.getRangeMap()[tileX][tileY];
-
 		Structure structure = structureHandler.getFiringStructure(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
 		Building building = buildingHandler.getBuilding(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
 		if (structure != null && !rangeAble) {
@@ -71,7 +71,7 @@ public class ViewPainter {
 		} else if (building != null && !rangeAble) {
 			building.paint(g);
 		} else {
-			gameMap.getMap()[tileX][tileY].paint(g, movementAble, rangeAble);
+			gameMap.getArea(tileX,tileY).paint(g, movementAble, rangeAble);
 		}
 	}
 

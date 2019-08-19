@@ -46,8 +46,8 @@ public class CommanderView {
 	private void initUnitCollection() {
 		int[] unitColPos = {mapDim.tileSize, 5 * mapDim.tileSize, 9 * mapDim.tileSize, 13 * mapDim.tileSize};
 		int[] unitRowPos = {3 * mapDim.tileSize, 4 * mapDim.tileSize, 5 * mapDim.tileSize, 6 * mapDim.tileSize, 7 * mapDim.tileSize};
-		
 		Color heroColor = heroHandler.getCurrentHero().getColor();
+		
 		Infantry infantry = new Infantry(unitColPos[0], unitRowPos[0], heroColor, mapDim.tileSize);
 		Mech mech = new Mech(unitColPos[1], unitRowPos[0], heroColor, mapDim.tileSize);
 		Recon recon = new Recon(unitColPos[2], unitRowPos[0], heroColor, mapDim.tileSize);
@@ -71,36 +71,15 @@ public class CommanderView {
 		unitCollection = new Unit[]{infantry, mech, recon, apc, tank, mdTank, aair, neotank, artillery, rocket, 
 									missiles, fighter, bomber, bCopter, tCopter, bship, cruiser, 
 									/*sub,*/ lander};
-		
 		for (Unit unit : unitCollection) {
 			unit.regulateActive(true);
 		}
 	}
 	
 	public void paintView(Graphics g) {
-		paintUnitWithPowerBar(g, UnitType.INFANTRY.unitIndex());
-		paintUnitWithPowerBar(g, UnitType.MECH.unitIndex());
-		paintUnitWithPowerBar(g, UnitType.RECON.unitIndex());
-		paintUnitWithPowerBar(g, UnitType.APC.unitIndex());
-
-		paintUnitWithPowerBar(g, UnitType.TANK.unitIndex());
-		paintUnitWithPowerBar(g, UnitType.MDTANK.unitIndex());
-		paintUnitWithPowerBar(g, UnitType.A_AIR.unitIndex());
-		paintUnitWithPowerBar(g, UnitType.NEOTANK.unitIndex());
-
-		paintUnitWithPowerBar(g, UnitType.ARTILLERY.unitIndex());
-		paintUnitWithPowerBar(g, UnitType.ROCKET.unitIndex());
-		paintUnitWithPowerBar(g, UnitType.MISSILES.unitIndex());
-
-		paintUnitWithPowerBar(g, UnitType.FIGHTER.unitIndex());
-		paintUnitWithPowerBar(g, UnitType.BOMBER.unitIndex());
-		paintUnitWithPowerBar(g, UnitType.BCOPTER.unitIndex());
-		paintUnitWithPowerBar(g, UnitType.TCOPTER.unitIndex());
-
-		paintUnitWithPowerBar(g, UnitType.BATTLESHIP.unitIndex());
-		paintUnitWithPowerBar(g, UnitType.CRUISER.unitIndex());
-		//paintUnitWithPowerBar(g, UnitType.SUB.unitIndex());
-		paintUnitWithPowerBar(g, UnitType.LANDER.unitIndex());
+		for (UnitType unitType : UnitType.allUnitTypes) {
+			paintUnitWithPowerBar(g, unitType.unitIndex());
+		}
 	}
 	
 	private void paintUnitWithPowerBar(Graphics g, int unitIndex) {

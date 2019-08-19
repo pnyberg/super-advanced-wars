@@ -17,6 +17,10 @@ public class GameMap {
 		map = new Area[width][height];
 	}
 	
+	public Area getArea(int tileX, int tileY) {
+		return map[tileX][tileY];
+	}
+	
 	public TerrainType getTerrainType(int tileX, int tileY) {
 		return map[tileX][tileY].getTerrainType();
 	}

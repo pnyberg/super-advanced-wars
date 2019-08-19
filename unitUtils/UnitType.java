@@ -29,6 +29,11 @@ public enum UnitType {
 //	SUB ("Sub", "Sub", 20000, 18);
 
 	public static final int numberOfUnitTypes = 18;
+	public static final UnitType[] allUnitTypes = { INFANTRY, MECH, RECON,
+													TANK, MDTANK, NEOTANK, APC,
+													ARTILLERY, ROCKET, A_AIR, MISSILES,
+													FIGHTER, BOMBER, BCOPTER, TCOPTER,
+													BATTLESHIP, CRUISER, LANDER};
 
 	private final String unitTypeName;
 	private final String unitTypeShowName;

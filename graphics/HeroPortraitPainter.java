@@ -13,6 +13,7 @@ public class HeroPortraitPainter {
 		this.mapDim = mapDim;
 	}
 
+	// TODO: replace with an image
 	public void paintLeftSide(Graphics g, Hero currentHero) {
 		int borderThickness = 2;
 		int cashBarHeight = 25;
@@ -60,6 +61,7 @@ public class HeroPortraitPainter {
 		paintHeroAttributes(g, currentHero, outerBorderX, outerBorderY);
 	}
 
+	// TODO: replace with an image
 	public void paintRightSide(Graphics g, Hero currentHero) {
 		int borderThickness = 2;
 		int cashBarHeight = 25;
@@ -107,6 +109,7 @@ public class HeroPortraitPainter {
 		paintHeroAttributes(g, currentHero, outerBorderX, outerBorderY);
 	}
 	
+	// TODO: rewrite with fewer parameter
 	private void paintBorders(Graphics g, Hero currentHero, int[] outerBorderX, int[] outerBorderY, int[] innerBorderX, int[] innerBorderY) {
 		g.setColor(currentHero.getColor());
 		g.fillPolygon(outerBorderX, outerBorderY, 7);
@@ -142,7 +145,6 @@ public class HeroPortraitPainter {
 			PowerStar.paintNormal(g, starX, starY, amountFilled);
 			starX += PowerStar.smallSize;
 		}
-
 		starY -= PowerStar.bigSize - PowerStar.smallSize;
 		for (int i = 0 ; i < (superPowerStars - powerStars) ; i++) {
 			double amountFilled = Math.max(0, (currentPower - i - powerStars));
