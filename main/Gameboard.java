@@ -33,6 +33,7 @@ import cursors.Cursor;
 import gameObjects.ChosenObject;
 import gameObjects.GameProperties;
 import gameObjects.MapDim;
+import hero.HeroFactory;
 import map.GameMap;
 import map.MapLoader;
 import map.MapLoadingObject;
@@ -50,8 +51,16 @@ import units.Unit;
 public class Gameboard extends JPanel implements KeyListener {
 	private InternalStructureObject internalStructureObject;
 	private GameProperties gameProperties;
+	private final int tileSize = 40;
+	private final int fuelMaintenancePerTurn = 5;
 	
-	public Gameboard(int tileSize, int fuelMaintenancePerTurn, HeroHandler heroHandler) {
+	public Gameboard() {
+		HeroHandler heroHandler = new HeroHandler();
+		HeroFactory heroFactory = new HeroFactory();
+		heroHandler.addHero(heroFactory.createHero(0));
+		heroHandler.addHero(heroFactory.createHero(1));
+		heroHandler.selectStartHero();
+		
 		MapLoader mapLoader = new MapLoader(tileSize, heroHandler);
 		MapLoadingObject mapLoadingObject = mapLoader.loadMap("map-files/test_map.txt");
 		GameMap gameMap = mapLoadingObject.getGameMap();
