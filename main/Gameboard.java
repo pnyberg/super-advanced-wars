@@ -28,9 +28,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import combat.AttackHandler;
-import combat.StructureAttackHandler;
 import cursors.Cursor;
-import gameObjects.ChosenObject;
 import gameObjects.GameMapAndCursor;
 import gameObjects.GameProperties;
 import gameObjects.GameState;
@@ -38,18 +36,13 @@ import gameObjects.GraphicMetrics;
 import gameObjects.MapDimension;
 import hero.HeroFactory;
 import hero.HeroPortrait;
-import map.BuildingStructureHandlerObject;
 import map.GameMap;
 import map.MapLoader;
 import map.MapLoadingObject;
-import map.UnitGetter;
 import map.buildings.Building;
-import map.buildings.BuildingHandler;
 import map.structures.Structure;
-import map.structures.StructureHandler;
 import menus.map.MapMenu;
 import menus.unit.UnitMenu;
-import point.Point;
 import unitUtils.ContUnitHandler;
 import units.Unit;
 
@@ -88,16 +81,13 @@ public class Gameboard extends JPanel implements KeyListener {
 		// Game-properties
 		gameProperties = new GameProperties(mapDimension, gameMap);
 
-		GraphicMetrics infoBoxGraphicMetrics = gameProperties.getInfoBoxGraphicMetrics();
-		GameMapAndCursor gameMapAndCursor = new GameMapAndCursor(gameMap, gameState.getCursor());
-		infoBox = new InfoBox(infoBoxGraphicMetrics, gameState, mapDimension, gameMapAndCursor);
-		internalStructureObject = new InternalStructureObject(gameProperties, gameState, gameMapAndCursor);
+		infoBox = new InfoBox(gameProperties, gameState);
+		internalStructureObject = new InternalStructureObject(gameProperties, gameState);
 		mapMenu = new MapMenu(tileSize, heroHandler);
 		heroPortrait = new HeroPortrait(mapDimension, heroHandler);
 		turnHandler = new TurnHandler(gameProperties, gameState);
 		keyListenerInputHandler = new KeyListenerInputHandler(gameProperties, 
 											gameState,
-											gameMapAndCursor, 
 											internalStructureObject.getMainViewPainter(), 
 											internalStructureObject.getUnitMenuHandler(), 
 											mapMenu,

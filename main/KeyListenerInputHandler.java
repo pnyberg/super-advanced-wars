@@ -69,15 +69,15 @@ public class KeyListenerInputHandler {
 	private HeroPowerHandler heroPowerHandler;
 	private UnitWorthCalculator unitWorthCalculator;
 	
-	public KeyListenerInputHandler(GameProperties gameProperties, GameState gameState, GameMapAndCursor gameMapAndCursor, ViewPainter viewPainter, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
+	public KeyListenerInputHandler(GameProperties gameProperties, GameState gameState, ViewPainter viewPainter, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
 		this.gameProp = gameProperties;
 		this.gameState = gameState;
-		this.gameMap = gameMapAndCursor.gameMap;
+		this.gameMap = gameProperties.getGameMap();
 		this.viewPainter = viewPainter;
 		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
 		this.buildingHandler = new BuildingHandler(gameState);
 		this.structureHandler = new StructureHandler(gameState, gameProperties.getMapDimension());
-		this.cursor = gameMapAndCursor.cursor;
+		this.cursor = gameState.getCursor();
 		this.unitMenuHandler = unitMenuHandler;
 		this.mapMenu = mapMenu;
 		this.buildingMenu = buildingMenu;

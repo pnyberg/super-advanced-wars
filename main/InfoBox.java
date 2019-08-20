@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import gameObjects.GraphicMetrics;
 import gameObjects.MapDimension;
 import gameObjects.GameMapAndCursor;
+import gameObjects.GameProperties;
 import gameObjects.GameState;
 import map.BuildingStructureHandlerObject;
 import map.UnitGetter;
@@ -20,11 +21,11 @@ public class InfoBox {
 	private UnitContainedInfoBox unitContainedInfoBox; 
 	
 	// TODO: rewrite with fewer parameters
-	public InfoBox(GraphicMetrics infoBoxGraphicMetrics, GameState gameState, MapDimension mapDimension, GameMapAndCursor gameMapAndCursor) {
+	public InfoBox(GameProperties gameProperties, GameState gameState) {
+		GraphicMetrics infoBoxGraphicMetrics = gameProperties.getInfoBoxGraphicMetrics();
 		this.anchorPoint = infoBoxGraphicMetrics.anchorPoint;
 		this.width = infoBoxGraphicMetrics.width;
 		this.height = infoBoxGraphicMetrics.height;
-
 		int tileSize = infoBoxGraphicMetrics.tileSize;
 
 		// terrain-infobox
@@ -34,7 +35,7 @@ public class InfoBox {
 		int terrainInfoBoxWidth = tileSize * 2;
 		int terrainInfoBoxHeight = height - tileSize / 4;
 		GraphicMetrics terrainInfoBoxGraphicMetrics = new GraphicMetrics(terrainInfoBoxPoint, terrainInfoBoxWidth, terrainInfoBoxHeight, tileSize);
-		terrainInfoBox = new TerrainInfoBox(terrainInfoBoxGraphicMetrics, gameMapAndCursor, gameState, mapDimension);
+		terrainInfoBox = new TerrainInfoBox(terrainInfoBoxGraphicMetrics, gameProperties, gameState);
 
 		// unit-infobox
 		int unitInfoBoxPosX = anchorPoint.getX() + tileSize * 2 + tileSize / 4 + 5;
