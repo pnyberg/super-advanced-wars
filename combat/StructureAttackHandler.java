@@ -3,6 +3,7 @@ package combat;
 import java.util.ArrayList;
 import java.util.List;
 
+import gameObjects.GameState;
 import gameObjects.MapDimension;
 import hero.Hero;
 import map.UnitGetter;
@@ -13,9 +14,9 @@ public class StructureAttackHandler {
 	private MapDimension mapDim;
 	private UnitGetter unitGetter;
 	
-	public StructureAttackHandler(MapDimension mapDim, UnitGetter unitGetter) {
+	public StructureAttackHandler(MapDimension mapDim, GameState gameState) {
 		this.mapDim = mapDim;
-		this.unitGetter = unitGetter;
+		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
 	}
 
 	// TODO: rewrite code to be more readable

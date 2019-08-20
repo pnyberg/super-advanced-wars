@@ -89,15 +89,14 @@ public class Gameboard extends JPanel implements KeyListener {
 		gameProperties = new GameProperties(mapDimension, gameMap);
 
 		Point point = gameProperties.getInfoBoxAnchorPoint();
-		UnitGetter unitGetter = new UnitGetter(heroHandler);
 		BuildingHandler buildingHandler = new BuildingHandler(heroHandler, buildings);
-		StructureAttackHandler structureAttackHandler = new StructureAttackHandler(mapDimension, unitGetter);
+		StructureAttackHandler structureAttackHandler = new StructureAttackHandler(mapDimension, gameState);
 		StructureHandler structureHandler = new StructureHandler(structures, structureAttackHandler);
 		BuildingStructureHandlerObject buildingStructureHandlerObject = new BuildingStructureHandlerObject(buildingHandler, structureHandler);
 		GraphicMetrics infoBoxGraphicMetrics = new GraphicMetrics(point, mapDimension.getTileWidth() * tileSize, 3 * tileSize, tileSize);
 		GameMapAndCursor gameMapAndCursor = new GameMapAndCursor(gameMap, gameState.getCursor());
-		infoBox = new InfoBox(infoBoxGraphicMetrics, gameMapAndCursor, unitGetter, buildingStructureHandlerObject);
-		internalStructureObject = new InternalStructureObject(gameProperties, gameState, heroHandler, gameMapAndCursor, unitGetter, 
+		infoBox = new InfoBox(infoBoxGraphicMetrics, gameState, gameMapAndCursor, buildingStructureHandlerObject);
+		internalStructureObject = new InternalStructureObject(gameProperties, gameState, gameMapAndCursor,  
 												buildingStructureHandlerObject);
 		mapMenu = new MapMenu(tileSize, heroHandler);
 		heroPortrait = new HeroPortrait(mapDimension, heroHandler);
@@ -106,7 +105,6 @@ public class Gameboard extends JPanel implements KeyListener {
 											gameState,
 											gameMapAndCursor, 
 											internalStructureObject.getMainViewPainter(), 
-											unitGetter, 
 											buildingStructureHandlerObject, 
 											internalStructureObject.getUnitMenuHandler(), 
 											mapMenu,

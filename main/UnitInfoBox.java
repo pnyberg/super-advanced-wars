@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 import cursors.Cursor;
+import gameObjects.GameState;
 import gameObjects.GraphicMetrics;
 import map.UnitGetter;
 import point.Point;
@@ -19,13 +20,13 @@ public class UnitInfoBox {
 	private Cursor cursor;
 	private UnitGetter unitGetter;
 	
-	public UnitInfoBox(GraphicMetrics unitInfoBoxGraphicMetrics, Cursor cursor, UnitGetter unitGetter) {
+	public UnitInfoBox(GraphicMetrics unitInfoBoxGraphicMetrics, GameState gameState) {
 		this.anchorPoint = unitInfoBoxGraphicMetrics.anchorPoint;
 		this.width = unitInfoBoxGraphicMetrics.width;
 		this.height = unitInfoBoxGraphicMetrics.height;
 		this.tileSize = unitInfoBoxGraphicMetrics.tileSize;
-		this.cursor = cursor;
-		this.unitGetter = unitGetter;
+		this.cursor = gameState.getCursor();
+		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
 	}
 
 	public void paint(Graphics g) {

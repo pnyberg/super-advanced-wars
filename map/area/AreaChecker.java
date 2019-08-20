@@ -13,9 +13,9 @@ public class AreaChecker {
 	private GameMap gridMap;
 	private boolean[][] moveabilityMatrix;
 
-	public AreaChecker(HeroHandler heroHandler, UnitGetter unitGetter, GameMap gridMap, boolean[][] moveabilityMatrix) {
+	public AreaChecker(HeroHandler heroHandler, GameMap gridMap, boolean[][] moveabilityMatrix) {
 		this.heroHandler = heroHandler;
-		this.unitGetter = unitGetter;
+		this.unitGetter = new UnitGetter(heroHandler);
 		this.gridMap = gridMap;
 		this.moveabilityMatrix = moveabilityMatrix;
 	}

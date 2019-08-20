@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import cursors.Cursor;
+import gameObjects.GameState;
 import gameObjects.GraphicMetrics;
 import map.UnitGetter;
 import point.Point;
@@ -21,13 +22,13 @@ public class UnitContainedInfoBox {
 	private Cursor cursor;
 	private UnitGetter unitGetter;
 	
-	public UnitContainedInfoBox(GraphicMetrics unitContainedInfoBoxGraphicMetrics, Cursor cursor, UnitGetter unitGetter) {
+	public UnitContainedInfoBox(GraphicMetrics unitContainedInfoBoxGraphicMetrics, GameState gameState) {
 		this.anchorPoint = unitContainedInfoBoxGraphicMetrics.anchorPoint;
 		this.width = unitContainedInfoBoxGraphicMetrics.width;
 		this.height = unitContainedInfoBoxGraphicMetrics.height;
 		this.tileSize = unitContainedInfoBoxGraphicMetrics.tileSize;
-		this.cursor = cursor;
-		this.unitGetter = unitGetter;
+		this.cursor = gameState.getCursor();
+		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
 	}
 	
 	private boolean unitIsTransportingOtherUnit(Unit unit) {

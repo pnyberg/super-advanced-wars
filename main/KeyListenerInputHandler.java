@@ -69,12 +69,12 @@ public class KeyListenerInputHandler {
 	private HeroPowerHandler heroPowerHandler;
 	private UnitWorthCalculator unitWorthCalculator;
 	
-	public KeyListenerInputHandler(GameProperties gameProp, GameState gameState,GameMapAndCursor gameMapAndCursor, ViewPainter viewPainter, UnitGetter unitGetter, BuildingStructureHandlerObject buildingStructureHandlerObject, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
+	public KeyListenerInputHandler(GameProperties gameProp, GameState gameState, GameMapAndCursor gameMapAndCursor, ViewPainter viewPainter, BuildingStructureHandlerObject buildingStructureHandlerObject, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
 		this.gameProp = gameProp;
 		this.gameState = gameState;
 		this.gameMap = gameMapAndCursor.gameMap;
 		this.viewPainter = viewPainter;
-		this.unitGetter = unitGetter;
+		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
 		this.buildingHandler = buildingStructureHandlerObject.buildingHandler;
 		this.structureHandler = buildingStructureHandlerObject.structureHandler;
 		this.cursor = gameMapAndCursor.cursor;

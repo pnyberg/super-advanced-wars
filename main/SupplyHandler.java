@@ -1,5 +1,7 @@
 package main;
 
+import gameObjects.GameState;
+import map.GameMap;
 import map.UnitGetter;
 import units.Unit;
 
@@ -7,8 +9,8 @@ public class SupplyHandler {
 	private UnitGetter unitGetter;
 	private int tileSize;
 
-	public SupplyHandler(UnitGetter unitGetter, int tileSize) {
-		this.unitGetter = unitGetter;
+	public SupplyHandler(GameState gameState, int tileSize) {
+		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
 		this.tileSize = tileSize;
 	}
 	

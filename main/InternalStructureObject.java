@@ -56,10 +56,11 @@ public class InternalStructureObject {
 	
 	// TODO: rewrite with fewer parameters
 	// TODO: rewrite the code to minimize decoupling
-	public InternalStructureObject(GameProperties gameProp, GameState gameState, HeroHandler heroHandler, 
-									GameMapAndCursor gameMapAndCursor, UnitGetter unitGetter, 
+	public InternalStructureObject(GameProperties gameProp, GameState gameState, 
+									GameMapAndCursor gameMapAndCursor, 
 									BuildingStructureHandlerObject buildingStructureHandlerObject) {
 		int tileSize = gameProp.getMapDim().tileSize;
+		HeroHandler heroHandler = gameState.getHeroHandler();
 		
 		// no previously required init
 		attackValueCalculator = new AttackValueCalculator();
@@ -70,26 +71,26 @@ public class InternalStructureObject {
 		movementMap = new MovementMap(gameProp.getMapDim());
 
 		// required init from first init-round
-		areaChecker = new AreaChecker(heroHandler, unitGetter, gameMap, moveabilityMatrix);
+		areaChecker = new AreaChecker(heroHandler, gameMap, moveabilityMatrix);
 		buildingMenu = new BuildingMenu(tileSize, heroHandler, gameMap);
 		commanderView = new CommanderView(gameProp.getMapDim(), heroHandler, attackValueCalculator, defenceValueCalculator);
 		damageHandler = new DamageHandler(heroHandler, gameMap, attackValueCalculator, defenceValueCalculator);
 		movementCostCalculator = new MovementCostCalculator(gameMap);
-		supplyHandler = new SupplyHandler(unitGetter, tileSize);
+		supplyHandler = new SupplyHandler(gameState, tileSize);
 
 		// required init from second init-round
 		routeChecker = new RouteChecker(gameProp.getMapDim(), heroHandler, gameMap, movementMap, moveabilityMatrix, areaChecker, movementCostCalculator);
 		routeHandler = new RouteHandler(gameProp.getMapDim(), movementMap, movementCostCalculator);
 
 		// required init from third init-round
-		attackRangeHandler = new AttackRangeHandler(gameProp.getMapDim(), unitGetter, damageHandler, buildingStructureHandlerObject.structureHandler, routeChecker, movementMap);
-		containerUnitHandler = new ContUnitHandler(gameProp, gameState, gameMap, cursor, unitGetter, areaChecker, routeChecker); 
-		firingCursor = new FiringCursor(gameProp.getMapDim(), unitGetter, heroHandler, damageHandler, buildingStructureHandlerObject.structureHandler);
+		attackRangeHandler = new AttackRangeHandler(gameProp.getMapDim(), gameState, damageHandler, buildingStructureHandlerObject.structureHandler, routeChecker, movementMap);
+		containerUnitHandler = new ContUnitHandler(gameProp, gameState, gameMap, areaChecker, routeChecker); 
+		firingCursor = new FiringCursor(gameProp.getMapDim(), heroHandler, damageHandler, buildingStructureHandlerObject.structureHandler);
 
 		// required init from fourth init-round
-		attackHandler = new AttackHandler(gameProp.getMapDim(), unitGetter, attackRangeHandler, damageHandler, buildingStructureHandlerObject.structureHandler);
+		attackHandler = new AttackHandler(gameProp.getMapDim(), gameState, attackRangeHandler, damageHandler, buildingStructureHandlerObject.structureHandler);
 		mainViewPainter = new ViewPainter(commanderView, heroHandler, gameProp.getMapDim(), gameMap, routeHandler, attackRangeHandler, buildingStructureHandlerObject);
-		unitMenuHandler = new UnitMenuHandler(gameProp, gameState, containerUnitHandler, supplyHandler, unitGetter, areaChecker, buildingStructureHandlerObject.buildingHandler, attackRangeHandler);
+		unitMenuHandler = new UnitMenuHandler(gameProp, gameState, containerUnitHandler, supplyHandler, areaChecker, buildingStructureHandlerObject.buildingHandler, attackRangeHandler);
 	}
 	
 	public AttackHandler getAttackHandler() {

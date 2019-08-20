@@ -30,13 +30,13 @@ public class UnitMenuHandler {
 	private BuildingHandler buildingHandler;
 	private AttackRangeHandler attackRangeHandler;
 
-	public UnitMenuHandler(GameProperties gameProp, GameState gameState, ContUnitHandler containerUnitHandler, SupplyHandler supplyHandler, UnitGetter unitGetter, AreaChecker areaChecker, BuildingHandler buildingHandler, AttackRangeHandler attackRangeHandler) {
+	public UnitMenuHandler(GameProperties gameProp, GameState gameState, ContUnitHandler containerUnitHandler, SupplyHandler supplyHandler, AreaChecker areaChecker, BuildingHandler buildingHandler, AttackRangeHandler attackRangeHandler) {
 		unitMenu = new UnitMenu(gameProp.getMapDim().tileSize);
 		this.gameProp = gameProp;
 		this.gameState = gameState;
 		this.containerUnitHandler = containerUnitHandler;
 		this.supplyHandler = supplyHandler;
-		this.unitGetter = unitGetter;
+		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
 		this.areaChecker = areaChecker;
 		this.buildingHandler = buildingHandler;
 		this.attackRangeHandler = attackRangeHandler;

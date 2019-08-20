@@ -21,9 +21,9 @@ public class FiringCursor {
 	private StructureHandler structureHandler;
 
 	// TODO: to many parameters?
-	public FiringCursor(MapDimension mapDim, UnitGetter unitGetter, HeroHandler heroHandler, DamageHandler damageHandler, StructureHandler structureHandler) {
+	public FiringCursor(MapDimension mapDim, HeroHandler heroHandler, DamageHandler damageHandler, StructureHandler structureHandler) {
 		this.mapDim = mapDim;
-		this.unitGetter = unitGetter;
+		this.unitGetter = new UnitGetter(heroHandler);
 		this.heroHandler = heroHandler;
 		this.damageHandler = damageHandler;
 		this.structureHandler = structureHandler;

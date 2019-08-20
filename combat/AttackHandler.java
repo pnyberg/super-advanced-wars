@@ -2,6 +2,7 @@ package combat;
 
 import cursors.Cursor;
 import gameObjects.Direction;
+import gameObjects.GameState;
 import gameObjects.MapDimension;
 import map.UnitGetter;
 import map.structures.Structure;
@@ -18,9 +19,9 @@ public class AttackHandler {
 	private StructureHandler structureHandler;
 	
 	// TODO: rewrite to have fewer parameters
-	public AttackHandler(MapDimension mapDim, UnitGetter unitGetter, AttackRangeHandler attackRangeHandler, DamageHandler damageHandler, StructureHandler structureHandler) {
+	public AttackHandler(MapDimension mapDim, GameState gameState, AttackRangeHandler attackRangeHandler, DamageHandler damageHandler, StructureHandler structureHandler) {
 		this.mapDim = mapDim;
-		this.unitGetter = unitGetter;
+		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
 		this.attackRangeHandler = attackRangeHandler;
 		this.damageHandler = damageHandler;
 		this.structureHandler = structureHandler;
