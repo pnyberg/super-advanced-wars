@@ -9,6 +9,7 @@ import combat.DamageHandler;
 import combat.DefenceValueCalculator;
 import cursors.Cursor;
 import cursors.FiringCursor;
+import gameObjects.GameMapAndCursor;
 import gameObjects.GameProperties;
 import graphics.CommanderView;
 import graphics.ViewPainter;
@@ -43,7 +44,6 @@ public class InternalStructureObject {
 	private DamageHandler damageHandler;
 	private DefenceValueCalculator defenceValueCalculator;
 	private FiringCursor firingCursor;
-	private GameMap gameMap;
 	private InfoBox infoBox;
 	private ViewPainter mainViewPainter;
 	private boolean[][] moveabilityMatrix;
@@ -57,16 +57,16 @@ public class InternalStructureObject {
 	// TODO: rewrite with fewer parameters
 	// TODO: rewrite the code to minimize decoupling
 	public InternalStructureObject(GameProperties gameProp, InfoBox infoBox, HeroHandler heroHandler, 
-									GameMap gameMap, Cursor cursor, ArrayList<Building> buildings, 
+									GameMapAndCursor gameMapAndCursor, ArrayList<Building> buildings, 
 									ArrayList<Structure> structures, UnitGetter unitGetter, 
 									BuildingStructureHandlerObject buildingStructureHandlerObject) {
 		int tileSize = gameProp.getMapDim().tileSize;
 		
 		// no previously required init
 		attackValueCalculator = new AttackValueCalculator();
-		this.cursor = cursor;
+		this.cursor = gameMapAndCursor.cursor;
 		defenceValueCalculator = new DefenceValueCalculator();
-		this.gameMap = gameMap;
+		GameMap gameMap = gameMapAndCursor.gameMap;
 		this.infoBox = infoBox;
 		moveabilityMatrix = new MoveabilityMatrixFactory().getMoveabilityMatrix();
 		movementMap = new MovementMap(gameProp.getMapDim());
@@ -120,10 +120,6 @@ public class InternalStructureObject {
 	
 	public FiringCursor getFiringCursor() {
 		return firingCursor;
-	}
-	
-	public GameMap getGameMap() {
-		return gameMap;
 	}
 	
 	public InfoBox getInfoBox() {

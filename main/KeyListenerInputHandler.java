@@ -11,6 +11,7 @@ import combat.AttackRangeHandler;
 import combat.DamageHandler;
 import cursors.Cursor;
 import cursors.FiringCursorHandler;
+import gameObjects.GameMapAndCursor;
 import gameObjects.GameProperties;
 import graphics.MapViewType;
 import graphics.ViewPainter;
@@ -66,14 +67,14 @@ public class KeyListenerInputHandler {
 	private HeroPowerHandler heroPowerHandler;
 	private UnitWorthCalculator unitWorthCalculator;
 	
-	public KeyListenerInputHandler(GameProperties gameProp, GameMap gameMap, ViewPainter viewPainter, UnitGetter unitGetter, BuildingStructureHandlerObject buildingStructureHandlerObject, Cursor cursor, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
+	public KeyListenerInputHandler(GameProperties gameProp, GameMapAndCursor gameMapAndCursor, ViewPainter viewPainter, UnitGetter unitGetter, BuildingStructureHandlerObject buildingStructureHandlerObject, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
 		this.gameProp = gameProp;
-		this.gameMap = gameMap;
+		this.gameMap = gameMapAndCursor.gameMap;
 		this.viewPainter = viewPainter;
 		this.unitGetter = unitGetter;
 		this.buildingHandler = buildingStructureHandlerObject.buildingHandler;
 		this.structureHandler = buildingStructureHandlerObject.structureHandler;
-		this.cursor = cursor;
+		this.cursor = gameMapAndCursor.cursor;
 		this.unitMenuHandler = unitMenuHandler;
 		this.mapMenu = mapMenu;
 		this.buildingMenu = buildingMenu;
@@ -453,7 +454,7 @@ public class KeyListenerInputHandler {
 		if (targetStructure.isDestroyed()) {
 			int tileX = targetStructure.getPoint().getX() / gameProp.getMapDim().tileSize;
 			int tileY = targetStructure.getPoint().getY() / gameProp.getMapDim().tileSize;
-			gameMap.getMap()[tileX][tileY].setTerrainType(TerrainType.UMI);
+			gameMap.getArea(tileX, tileY).setTerrainType(TerrainType.UMI);
 			structureHandler.removeStructure(targetStructure);
 		}
 	}

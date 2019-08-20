@@ -31,6 +31,7 @@ import combat.AttackHandler;
 import combat.StructureAttackHandler;
 import cursors.Cursor;
 import gameObjects.ChosenObject;
+import gameObjects.GameMapAndCursor;
 import gameObjects.GameProperties;
 import gameObjects.GraphicMetrics;
 import gameObjects.MapDimension;
@@ -56,6 +57,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	private final int fuelMaintenancePerTurn = 5;
 	private final int initialMoneyPerBuilding = 1000;
 
+	private GameMap gameMap;
 	private InternalStructureObject internalStructureObject;
 	private MapMenu mapMenu;
 	private HeroPortrait heroPortrait;
@@ -72,7 +74,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		
 		MapLoader mapLoader = new MapLoader(tileSize, heroHandler);
 		MapLoadingObject mapLoadingObject = mapLoader.loadMap("map-files/test_map.txt");
-		GameMap gameMap = mapLoadingObject.getGameMap();
+		gameMap = mapLoadingObject.getGameMap();
 		MapDimension mapDimension = mapLoadingObject.getMapDimension();
 		ArrayList<Building> buildings = mapLoadingObject.getBuildingList();
 		ArrayList<Structure> structures = mapLoadingObject.getStructureList();
@@ -86,19 +88,18 @@ public class Gameboard extends JPanel implements KeyListener {
 		StructureHandler structureHandler = new StructureHandler(structures, structureAttackHandler);
 		BuildingStructureHandlerObject buildingStructureHandlerObject = new BuildingStructureHandlerObject(buildingHandler, structureHandler);
 		GraphicMetrics infoBoxGraphicMetrics = new GraphicMetrics(point, mapDimension.getTileWidth() * tileSize, 3 * tileSize, tileSize);
-		InfoBox infoBox = new InfoBox(infoBoxGraphicMetrics, gameMap, 
-										cursor, unitGetter, buildingStructureHandlerObject);
-		internalStructureObject = new InternalStructureObject(gameProperties, infoBox, heroHandler, gameMap, 
-												cursor, buildings, structures, unitGetter, 
+		GameMapAndCursor gameMapAndCursor = new GameMapAndCursor(gameMap, cursor);
+		InfoBox infoBox = new InfoBox(infoBoxGraphicMetrics, gameMapAndCursor, unitGetter, buildingStructureHandlerObject);
+		internalStructureObject = new InternalStructureObject(gameProperties, infoBox, heroHandler, gameMapAndCursor, buildings, structures, unitGetter, 
 												buildingStructureHandlerObject);
 		mapMenu = new MapMenu(tileSize, heroHandler);
 		heroPortrait = new HeroPortrait(mapDimension, heroHandler);
 		turnHandler = new TurnHandler(fuelMaintenancePerTurn, heroHandler, buildingStructureHandlerObject);
-		keyListenerInputHandler = new KeyListenerInputHandler(gameProperties, gameMap, 
+		keyListenerInputHandler = new KeyListenerInputHandler(gameProperties, 
+											gameMapAndCursor, 
 											internalStructureObject.getMainViewPainter(), 
 											unitGetter, 
 											buildingStructureHandlerObject, 
-											cursor, 
 											internalStructureObject.getUnitMenuHandler(), 
 											mapMenu,
 											internalStructureObject.getBuildingMenu(), 
@@ -129,11 +130,11 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 	
 	public int getBoardWidth() {
-		return internalStructureObject.getGameMap().getTileWidth() * gameProperties.getMapDim().tileSize;
+		return gameMap.getTileWidth() * gameProperties.getMapDim().tileSize;
 	}
 
 	public int getBoardHeight() {
-		return internalStructureObject.getGameMap().getTileHeight() * gameProperties.getMapDim().tileSize
+		return gameMap.getTileHeight() * gameProperties.getMapDim().tileSize
 				+ internalStructureObject.getInfoBox().getHeight();
 	}
 

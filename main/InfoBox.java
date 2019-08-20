@@ -3,11 +3,9 @@ package main;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import cursors.Cursor;
 import gameObjects.GraphicMetrics;
 import gameObjects.GameMapAndCursor;
 import map.BuildingStructureHandlerObject;
-import map.GameMap;
 import map.UnitGetter;
 import point.Point;
 
