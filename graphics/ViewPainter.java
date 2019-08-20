@@ -63,16 +63,17 @@ public class ViewPainter {
 	}
 
 	private void paintArea(Graphics g, int tileX, int tileY) {
-		boolean movementAble = routeHandler.getMovementMap().isAcceptedMove(tileX, tileY);
-		boolean rangeAble = attackRangeHandler.getRangeMap()[tileX][tileY];
+		boolean rangeAttackableLocation = attackRangeHandler.getRangeMap()[tileX][tileY];
 		Structure structure = structureHandler.getFiringStructure(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
 		Building building = buildingHandler.getBuilding(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
-		if (structure != null && !rangeAble) {
+
+		if (structure != null && !rangeAttackableLocation) {
 			structure.paint(g);
-		} else if (building != null && !rangeAble) {
+		} else if (building != null && !rangeAttackableLocation) {
 			building.paint(g);
 		} else {
-			gameMap.getArea(tileX,tileY).paint(g, movementAble, rangeAble);
+			boolean movementAble = routeHandler.getMovementMap().isAcceptedMove(tileX, tileY);
+			gameMap.getArea(tileX,tileY).paint(g, movementAble, rangeAttackableLocation);
 		}
 	}
 

@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 import cursors.Cursor;
+import gameObjects.GameMapAndCursor;
 import gameObjects.GraphicMetrics;
 import graphics.PowerStar;
 import hero.Hero;
@@ -28,20 +29,23 @@ public class TerrainInfoBox {
 	private BuildingHandler buildingHandler;
 	private StructureHandler structureHandler;
 	
-	// TODO: rewrite with fewer parameters
-	public TerrainInfoBox(GraphicMetrics terrainInfoBoxGraphicMetrics, GameMap gameMap, Cursor cursor, BuildingStructureHandlerObject buildingStructureHandlerObject) {
+	public TerrainInfoBox(GraphicMetrics terrainInfoBoxGraphicMetrics, GameMapAndCursor gameMapAndCursor, BuildingStructureHandlerObject buildingStructureHandlerObject) {
 		this.anchorPoint = terrainInfoBoxGraphicMetrics.anchorPoint;
 		this.width = terrainInfoBoxGraphicMetrics.width;
 		this.height = terrainInfoBoxGraphicMetrics.height;
 		this.tileSize = terrainInfoBoxGraphicMetrics.tileSize;
-		this.gameMap = gameMap;
-		this.cursor = cursor;
+		this.gameMap = gameMapAndCursor.gameMap;
+		this.cursor = gameMapAndCursor.cursor;
 		this.buildingHandler = buildingStructureHandlerObject.buildingHandler;
 		this.structureHandler = buildingStructureHandlerObject.structureHandler;
 	}
 	
+	private Area getAreaForCursor() {
+		return gameMap.getArea(cursor.getX() / tileSize, cursor.getY() / tileSize);
+	}
+	
 	public void paint(Graphics g) {
-		Area area = gameMap.getArea(cursor.getX() / tileSize, cursor.getY() / tileSize);
+		Area area = getAreaForCursor();
 		g.setColor(Color.lightGray);
 		g.fillRect(anchorPoint.getX(), anchorPoint.getY(), width, height);
 		g.setColor(Color.black);

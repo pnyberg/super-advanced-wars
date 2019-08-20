@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 import cursors.Cursor;
 import gameObjects.GraphicMetrics;
+import gameObjects.GameMapAndCursor;
 import map.BuildingStructureHandlerObject;
 import map.GameMap;
 import map.UnitGetter;
@@ -19,7 +20,7 @@ public class InfoBox {
 	private UnitContainedInfoBox unitContainedInfoBox; 
 	
 	// TODO: rewrite with fewer parameters
-	public InfoBox(GraphicMetrics infoBoxGraphicMetrics, GameMap gameMap, Cursor cursor, UnitGetter unitGetter, BuildingStructureHandlerObject buildingStructureHandlerObject) {
+	public InfoBox(GraphicMetrics infoBoxGraphicMetrics, GameMapAndCursor gameMapAndCursor, UnitGetter unitGetter, BuildingStructureHandlerObject buildingStructureHandlerObject) {
 		this.anchorPoint = infoBoxGraphicMetrics.anchorPoint;
 		this.width = infoBoxGraphicMetrics.width;
 		this.height = infoBoxGraphicMetrics.height;
@@ -33,7 +34,7 @@ public class InfoBox {
 		int terrainInfoBoxWidth = tileSize * 2;
 		int terrainInfoBoxHeight = height - tileSize / 4;
 		GraphicMetrics terrainInfoBoxGraphicMetrics = new GraphicMetrics(terrainInfoBoxPoint, terrainInfoBoxWidth, terrainInfoBoxHeight, tileSize);
-		terrainInfoBox = new TerrainInfoBox(terrainInfoBoxGraphicMetrics, gameMap, cursor, buildingStructureHandlerObject);
+		terrainInfoBox = new TerrainInfoBox(terrainInfoBoxGraphicMetrics, gameMapAndCursor, buildingStructureHandlerObject);
 
 		// unit-infobox
 		int unitInfoBoxPosX = anchorPoint.getX() + tileSize * 2 + tileSize / 4 + 5;
@@ -42,7 +43,7 @@ public class InfoBox {
 		int unitInfoBoxWidth = tileSize * 2;
 		int unitInfoBoxHeight = height - tileSize / 4;
 		GraphicMetrics unitInfoBoxGraphicMetrics = new GraphicMetrics(unitInfoBoxPoint, unitInfoBoxWidth, unitInfoBoxHeight, tileSize);
-		unitInfoBox = new UnitInfoBox(unitInfoBoxGraphicMetrics, cursor, unitGetter);
+		unitInfoBox = new UnitInfoBox(unitInfoBoxGraphicMetrics, gameMapAndCursor.cursor, unitGetter);
 		
 		// unitContained-infobox
 		int unitContainedInfoBoxPosX = anchorPoint.getX() + tileSize * 4 + tileSize / 4 + 10;
@@ -51,7 +52,7 @@ public class InfoBox {
 		int unitContainedInfoBoxWidht = tileSize * 2;
 		int unitContainedInfoBoxHeight = height - tileSize / 4;
 		GraphicMetrics unitContainedInfoBoxGraphicMetrics = new GraphicMetrics(unitContainedInfoBoxPoint, unitContainedInfoBoxWidht, unitContainedInfoBoxHeight, tileSize);
-		unitContainedInfoBox = new UnitContainedInfoBox(unitContainedInfoBoxGraphicMetrics, cursor, unitGetter);
+		unitContainedInfoBox = new UnitContainedInfoBox(unitContainedInfoBoxGraphicMetrics, gameMapAndCursor.cursor, unitGetter);
 	}
 	
 	public int getWidth() {
