@@ -54,6 +54,7 @@ import units.Unit;
 
 public class Gameboard extends JPanel implements KeyListener {
 	private GameProperties gameProperties;
+	private GameState gameState;
 	private GameMap gameMap;
 	private MapDimension mapDimension;
 	private ChosenObject chosenObject;
@@ -65,14 +66,15 @@ public class Gameboard extends JPanel implements KeyListener {
 	private KeyListenerInputHandler keyListenerInputHandler;
 
 	public Gameboard(int tileSize) {
-		HeroHandler heroHandler = new HeroHandler();
+		gameState = new GameState();
+		HeroHandler heroHandler = gameState.getHeroHandler();
 		HeroFactory heroFactory = new HeroFactory();
 		heroHandler.addHero(heroFactory.createHero(0));
 		heroHandler.addHero(heroFactory.createHero(1));
 		heroHandler.selectStartHero();
 		
-		MapLoader mapLoader = new MapLoader(tileSize, heroHandler);
-		MapLoadingObject mapLoadingObject = mapLoader.loadMap("map-files/test_map.txt");
+		MapLoader mapLoader = new MapLoader();
+		MapLoadingObject mapLoadingObject = mapLoader.loadMap("map-files/test_map.txt", tileSize, gameState);
 		gameMap = mapLoadingObject.getGameMap();
 		mapDimension = mapLoadingObject.getMapDimension();
 		ArrayList<Building> buildings = mapLoadingObject.getBuildingList();
