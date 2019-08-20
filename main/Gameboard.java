@@ -58,6 +58,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	private final int initialMoneyPerBuilding = 1000;
 
 	private GameMap gameMap;
+	private InfoBox infoBox;
 	private InternalStructureObject internalStructureObject;
 	private MapMenu mapMenu;
 	private HeroPortrait heroPortrait;
@@ -89,8 +90,8 @@ public class Gameboard extends JPanel implements KeyListener {
 		BuildingStructureHandlerObject buildingStructureHandlerObject = new BuildingStructureHandlerObject(buildingHandler, structureHandler);
 		GraphicMetrics infoBoxGraphicMetrics = new GraphicMetrics(point, mapDimension.getTileWidth() * tileSize, 3 * tileSize, tileSize);
 		GameMapAndCursor gameMapAndCursor = new GameMapAndCursor(gameMap, cursor);
-		InfoBox infoBox = new InfoBox(infoBoxGraphicMetrics, gameMapAndCursor, unitGetter, buildingStructureHandlerObject);
-		internalStructureObject = new InternalStructureObject(gameProperties, infoBox, heroHandler, gameMapAndCursor, buildings, structures, unitGetter, 
+		infoBox = new InfoBox(infoBoxGraphicMetrics, gameMapAndCursor, unitGetter, buildingStructureHandlerObject);
+		internalStructureObject = new InternalStructureObject(gameProperties, heroHandler, gameMapAndCursor, unitGetter, 
 												buildingStructureHandlerObject);
 		mapMenu = new MapMenu(tileSize, heroHandler);
 		heroPortrait = new HeroPortrait(mapDimension, heroHandler);
@@ -134,8 +135,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 
 	public int getBoardHeight() {
-		return gameMap.getTileHeight() * gameProperties.getMapDim().tileSize
-				+ internalStructureObject.getInfoBox().getHeight();
+		return gameMap.getTileHeight() * gameProperties.getMapDim().tileSize + infoBox.getHeight();
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		internalStructureObject.getMainViewPainter().paintUnits(g, chosenUnit);
 		paintMenusAndCursors(g);
 		heroPortrait.paint(g);
-		internalStructureObject.getInfoBox().paint(g);
+		infoBox.paint(g);
 	}
 	
 	private void paintMenusAndCursors(Graphics g) {
