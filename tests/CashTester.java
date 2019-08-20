@@ -10,18 +10,18 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import gameObjects.DimensionObject;
+import gameObjects.MapDimension;
 import hero.*;
 
 public class CashTester {
-	private DimensionObject mapDimension;
+	private MapDimension mapDimension;
 	private HeroPortrait portrait;
 	private HeroFactory heroFactory;
 	private Hero hero0, hero1;
 
 	@Before
 	public void init() {
-		mapDimension = new DimensionObject(0, 0, 0);
+		mapDimension = new MapDimension(0, 0, 0);
 		portrait = new HeroPortrait(mapDimension, new HeroHandler());
 		heroFactory = new HeroFactory();
 		hero0 = heroFactory.createHero(0);

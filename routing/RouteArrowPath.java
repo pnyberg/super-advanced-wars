@@ -12,19 +12,19 @@ package routing;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-import gameObjects.DimensionObject;
+import gameObjects.MapDimension;
 import graphics.RouteArrowPathPainter;
 import point.Point;
 import unitUtils.MovementType;
 import units.Unit;
 
 public class RouteArrowPath {
-	private DimensionObject mapDim;
+	private MapDimension mapDim;
 	private ArrayList<Point> arrowPoints;
 	private RouteArrowPathPainter routeArrowPathPainter;
 	private MovementCostCalculator movementCostCalculator;
 
-	public RouteArrowPath(DimensionObject mapDim, MovementCostCalculator movementCostCalculator) {
+	public RouteArrowPath(MapDimension mapDim, MovementCostCalculator movementCostCalculator) {
 		this.mapDim = mapDim;
 		arrowPoints = new ArrayList<Point>();
 		routeArrowPathPainter = new RouteArrowPathPainter(mapDim);

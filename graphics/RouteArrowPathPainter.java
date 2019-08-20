@@ -5,13 +5,13 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import gameObjects.Direction;
-import gameObjects.DimensionObject;
+import gameObjects.MapDimension;
 import point.Point;
 
 public class RouteArrowPathPainter {
-	private DimensionObject mapDimension;
+	private MapDimension mapDimension;
 	
-	public RouteArrowPathPainter(DimensionObject mapDimension) {
+	public RouteArrowPathPainter(MapDimension mapDimension) {
 		this.mapDimension = mapDimension;
 	}
 

@@ -2,14 +2,14 @@ package map;
 
 import java.util.ArrayList;
 
-import gameObjects.DimensionObject;
+import gameObjects.MapDimension;
 import map.area.Area;
 import map.buildings.Building;
 import map.structures.Structure;
 
 public class MapLoadingObject {
 	private GameMap gameMap;
-	private DimensionObject mapDim;
+	private MapDimension mapDim;
 	private ArrayList<Building> buildings;
 	private ArrayList<Structure> structures;
 	
@@ -24,7 +24,7 @@ public class MapLoadingObject {
 		this.gameMap = gameMap;
 	}
 	
-	public void setMapDim(DimensionObject mapDim) {
+	public void setMapDim(MapDimension mapDim) {
 		this.mapDim = mapDim;
 	}
 	
@@ -44,7 +44,7 @@ public class MapLoadingObject {
 		return gameMap;
 	}
 	
-	public DimensionObject getMapDimension() {
+	public MapDimension getMapDim() {
 		return mapDim;
 	}
 	

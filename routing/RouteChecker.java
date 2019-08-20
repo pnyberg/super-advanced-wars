@@ -6,7 +6,7 @@
  */
 package routing;
 
-import gameObjects.DimensionObject;
+import gameObjects.MapDimension;
 import hero.Hero;
 import main.HeroHandler;
 import map.GameMap;
@@ -16,7 +16,7 @@ import unitUtils.MovementType;
 import units.Unit;
 
 public class RouteChecker {
-	private DimensionObject mapDim;
+	private MapDimension mapDim;
 	private HeroHandler heroHandler;
 	private GameMap gameMap;
 	private MovementMap movementMap;
@@ -24,7 +24,7 @@ public class RouteChecker {
 	private AreaChecker areaChecker;
 	private MovementCostCalculator movementCostCalculator;
 	
-	public RouteChecker(DimensionObject mapDimension, HeroHandler heroHandler, GameMap gameMap, MovementMap movementMap, boolean[][] moveabilityMatrix, AreaChecker areaChecker, MovementCostCalculator movementCostCalculator) {
+	public RouteChecker(MapDimension mapDimension, HeroHandler heroHandler, GameMap gameMap, MovementMap movementMap, boolean[][] moveabilityMatrix, AreaChecker areaChecker, MovementCostCalculator movementCostCalculator) {
 		this.mapDim = mapDimension;
 		this.heroHandler = heroHandler;
 		this.gameMap = gameMap;

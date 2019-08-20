@@ -1,12 +1,12 @@
 package routing;
 
-import gameObjects.DimensionObject;
+import gameObjects.MapDimension;
 
 public class MovementMap {
 	private boolean[][] movementMap;
-	private DimensionObject mapDim;
+	private MapDimension mapDim;
 	
-	public MovementMap(DimensionObject mapDim) {
+	public MovementMap(MapDimension mapDim) {
 		this.mapDim = mapDim;
 		clearMovementMap();
 	}

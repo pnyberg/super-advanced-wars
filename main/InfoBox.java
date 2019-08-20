@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import cursors.Cursor;
-import gameObjects.DimensionObject;
 import map.BuildingStructureHandlerObject;
 import map.GameMap;
 import map.UnitGetter;
@@ -21,11 +20,10 @@ public class InfoBox {
 	private UnitContainedInfoBox unitContainedInfoBox; 
 	
 	// TODO: rewrite with fewer parameters
-	public InfoBox(Point point, DimensionObject dimensionObject, GameMap gameMap, Cursor cursor, UnitGetter unitGetter, BuildingStructureHandlerObject buildingStructureHandlerObject) {
+	public InfoBox(Point point, int width, int height, int tileSize, GameMap gameMap, Cursor cursor, UnitGetter unitGetter, BuildingStructureHandlerObject buildingStructureHandlerObject) {
 		this.point = point;
-		int tileSize = dimensionObject.tileSize;
-		width = dimensionObject.getTileWidth() * tileSize;
-		height = dimensionObject.getTileHeight() * tileSize;
+		this.width = width;
+		this.height = height;
 		// TODO: rewrite code
 		Point terrainInfoBoxPoint = new Point(point.getX() + tileSize / 4, point.getY() + tileSize / 8);
 		terrainInfoBox = new TerrainInfoBox(terrainInfoBoxPoint, tileSize * 2, height - tileSize / 4, tileSize, gameMap, cursor, buildingStructureHandlerObject);
@@ -48,6 +46,7 @@ public class InfoBox {
 		g.fillRect(point.getX(), point.getY(), width, height);
 		g.setColor(Color.black);
 		g.drawRect(point.getX(), point.getY(), width, height);
+		
 		terrainInfoBox.paint(g);
 		unitInfoBox.paint(g);
 		unitContainedInfoBox.paint(g);

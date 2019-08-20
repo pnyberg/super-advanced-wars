@@ -2,7 +2,7 @@ package cursors;
 
 import combat.DamageHandler;
 import gameObjects.GameProperties;
-import gameObjects.DimensionObject;
+import gameObjects.MapDimension;
 import map.UnitGetter;
 import units.Unit;
 
@@ -22,7 +22,7 @@ public class FiringCursorHandler {
 	// TODO: rewrite code to make it more readable
 	public void moveFiringCursorClockwise() {
 		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
-		DimensionObject mapDim = gameProp.getMapDim();
+		MapDimension mapDim = gameProp.getMapDim();
 		int unitX = chosenUnit.getPoint().getX();
 		int unitY = chosenUnit.getPoint().getY();
 
@@ -78,7 +78,7 @@ public class FiringCursorHandler {
 
 	public void moveFiringCursorCounterclockwise() {
 		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
-		DimensionObject mapDim = gameProp.getMapDim();
+		MapDimension mapDim = gameProp.getMapDim();
 		int unitX = chosenUnit.getPoint().getX();
 		int unitY = chosenUnit.getPoint().getY();
 
