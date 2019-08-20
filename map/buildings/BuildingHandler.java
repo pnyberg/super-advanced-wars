@@ -17,6 +17,10 @@ public class BuildingHandler {
 		Building building = getBuilding(x, y);
 		return building != null && building.getOwner() != heroHandler.getCurrentHero();
 	}
+	
+	public ArrayList<Building> getAllBuildings() {
+		return buildings;
+	}
 
 	public Building getBuilding(int x, int y) {
 		for (Building building : buildings) {

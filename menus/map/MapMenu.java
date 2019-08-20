@@ -19,7 +19,6 @@ public class MapMenu extends Menu {
 
 	public MapMenu(int tileSize, HeroHandler heroHandler) {
 		super(tileSize);
-
 		this.heroHandler = heroHandler;
 	}
 

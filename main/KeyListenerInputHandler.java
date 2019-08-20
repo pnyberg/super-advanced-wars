@@ -16,6 +16,7 @@ import graphics.MapViewType;
 import graphics.ViewPainter;
 import hero.Hero;
 import hero.heroPower.HeroPowerHandler;
+import map.BuildingStructureHandlerObject;
 import map.GameMap;
 import map.UnitGetter;
 import map.area.TerrainType;
@@ -65,13 +66,13 @@ public class KeyListenerInputHandler {
 	private HeroPowerHandler heroPowerHandler;
 	private UnitWorthCalculator unitWorthCalculator;
 	
-	public KeyListenerInputHandler(GameProperties gameProp, GameMap gameMap, ViewPainter viewPainter, UnitGetter unitGetter, BuildingHandler buildingHandler, StructureHandler structureHandler, Cursor cursor, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
+	public KeyListenerInputHandler(GameProperties gameProp, GameMap gameMap, ViewPainter viewPainter, UnitGetter unitGetter, BuildingStructureHandlerObject buildingStructureHandlerObject, Cursor cursor, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
 		this.gameProp = gameProp;
 		this.gameMap = gameMap;
 		this.viewPainter = viewPainter;
 		this.unitGetter = unitGetter;
-		this.buildingHandler = buildingHandler;
-		this.structureHandler = structureHandler;
+		this.buildingHandler = buildingStructureHandlerObject.buildingHandler;
+		this.structureHandler = buildingStructureHandlerObject.structureHandler;
 		this.cursor = cursor;
 		this.unitMenuHandler = unitMenuHandler;
 		this.mapMenu = mapMenu;

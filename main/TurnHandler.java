@@ -1,9 +1,8 @@
 package main;
 
-import gameObjects.GameProperties;
 import hero.Hero;
+import map.BuildingStructureHandlerObject;
 import map.structures.StructureHandler;
-import menus.map.MapMenu;
 
 public class TurnHandler {
 	private CashHandler cashHandler;
@@ -14,13 +13,12 @@ public class TurnHandler {
 	private int day;
 	private boolean firstHeroOfTheDay;
 
-	// TODO: rewrite with fewer parameters
-	public TurnHandler(GameProperties gameProp, CashHandler cashHandler, RepairHandler repairHandler, HeroHandler heroHandler, StructureHandler structureHandler) {
-		this.cashHandler = cashHandler;
-		fuelHandler = new FuelHandler(gameProp, heroHandler);
-		this.repairHandler = repairHandler;
+	public TurnHandler(int fuelMaintenancePerTurn, HeroHandler heroHandler, BuildingStructureHandlerObject buildingStructureHandlerObject) {
+		fuelHandler = new FuelHandler(fuelMaintenancePerTurn, heroHandler);
 		this.heroHandler = heroHandler;
-		this.structureHandler = structureHandler;
+		this.structureHandler = buildingStructureHandlerObject.structureHandler;
+		cashHandler = new CashHandler(heroHandler, buildingStructureHandlerObject.buildingHandler);
+		repairHandler = new RepairHandler(heroHandler, buildingStructureHandlerObject.buildingHandler);
 		day = 1;
 		firstHeroOfTheDay = false;
 	}

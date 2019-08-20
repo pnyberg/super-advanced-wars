@@ -8,34 +8,30 @@ import graphics.HeroPortraitPainter;
 import main.HeroHandler;
 
 public class HeroPortrait {
-	private MapDimension mapDim;
+	private MapDimension mapDimension;
 	private HeroHandler heroHandler;
 	private boolean leftSide;
 	private HeroPortraitPainter heroPortraitPainter;
 
-	public HeroPortrait(MapDimension mapDim, HeroHandler heroHandler) {
-		this.mapDim = mapDim;
+	public HeroPortrait(MapDimension mapDimensionDim, HeroHandler heroHandler) {
+		this.mapDimension = mapDimensionDim;
 		this.heroHandler = heroHandler;
 		leftSide = true;
-		heroPortraitPainter = new HeroPortraitPainter(mapDim);
+		heroPortraitPainter = new HeroPortraitPainter(mapDimensionDim);
 	}
 
 	public void updateSideChoice(Cursor cursor) {
-		int cursorTileX = cursor.getX() / mapDim.tileSize;
-		int cursorTileY = cursor.getY() / mapDim.tileSize;
+		int cursorTileX = cursor.getX() / mapDimension.tileSize;
+		int cursorTileY = cursor.getY() / mapDimension.tileSize;
 		if (cursorTileY < 2) {
 			if (leftSide && cursorTileX < 4) {
 				leftSide = false;
-			} else if (!leftSide && cursorTileX >= mapDim.getTileWidth() - 4) { 
+			} else if (!leftSide && cursorTileX >= mapDimension.getTileWidth() - 4) { 
 				leftSide = true;
 			}
 		}
 	}
 	
-	public HeroHandler getHeroHandler() {
-		return heroHandler;
-	}
-
 	public void paint(Graphics g) {
 		if (leftSide) {
 			heroPortraitPainter.paintLeftSide(g, heroHandler.getCurrentHero());

@@ -1,16 +1,15 @@
 package main;
 
-import gameObjects.GameProperties;
 import hero.Hero;
 import unitUtils.MovementType;
 import units.Unit;
 
 public class FuelHandler {
-	private GameProperties gameProp;
+	private int fuelMaintenancePerTurn;
 	private HeroHandler heroHandler;
 	
-	public FuelHandler(GameProperties gameProp, HeroHandler heroHandler) {
-		this.gameProp = gameProp;
+	public FuelHandler(int fuelMaintenancePerTurn, HeroHandler heroHandler) {
+		this.fuelMaintenancePerTurn = fuelMaintenancePerTurn;
 		this.heroHandler = heroHandler;
 	}
 
@@ -19,7 +18,7 @@ public class FuelHandler {
 		for (int k = 0 ; k < hero.getTroopHandler().getTroopSize() ; k++) {
 			Unit unit = hero.getTroopHandler().getTroop(k);
 			if (movementTypeConsumesFuelDaily(unit.getMovementType())) {
-				unit.getUnitSupply().useFuel(gameProp.fuelMaintenancePerTurn);
+				unit.getUnitSupply().useFuel(fuelMaintenancePerTurn);
 			}
 		}
 	}

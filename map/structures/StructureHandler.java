@@ -17,10 +17,10 @@ public class StructureHandler {
 	private StructureAttackHandler structureAttackHandler;
 	private UnitWorthCalculator unitWorthCalculator;	
 	
-	public StructureHandler(ArrayList<Structure> structures, StructureAttackHandler structureAttackHandler, UnitWorthCalculator unitWorthCalculator) {
+	public StructureHandler(ArrayList<Structure> structures, StructureAttackHandler structureAttackHandler) {
 		this.structures = structures;
 		this.structureAttackHandler = structureAttackHandler;
-		this.unitWorthCalculator = unitWorthCalculator;
+		unitWorthCalculator = new UnitWorthCalculator();
 	}
 	
 	public void doStructureActions() {

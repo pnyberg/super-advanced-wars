@@ -1,3 +1,6 @@
+/**
+ * TODO: needs repairing after refactoring
+ */
 package tests;
 
 import main.HeroHandler;
@@ -24,8 +27,10 @@ public class CashTester {
 		hero0 = heroFactory.createHero(0);
 		hero1 = heroFactory.createHero(1);
 
+		/*
 		portrait.getHeroHandler().addHero(hero0);
 		portrait.getHeroHandler().addHero(hero1);
+		*/
 	}
 
 	@Test

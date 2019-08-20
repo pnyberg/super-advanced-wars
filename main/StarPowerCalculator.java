@@ -7,8 +7,8 @@ import units.Unit;
 public class StarPowerCalculator {
 	private UnitWorthCalculator unitWorthCalculator;
 	
-	public StarPowerCalculator(UnitWorthCalculator unitWorthCalculator) {
-		this.unitWorthCalculator = unitWorthCalculator;
+	public StarPowerCalculator() {
+		unitWorthCalculator = new UnitWorthCalculator();
 	}
 
 	public void calculateStarPowerOpponent(Hero hero, Unit unit, int damage) {

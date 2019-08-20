@@ -14,10 +14,10 @@ public class RepairHandler {
 	private BuildingHandler buildingHandler;
 	private UnitWorthCalculator unitWorthCalculator;
 	
-	public RepairHandler(HeroHandler heroHandler, BuildingHandler buildingHandler, UnitWorthCalculator unitWorthCalculator) {
+	public RepairHandler(HeroHandler heroHandler, BuildingHandler buildingHandler) {
 		this.heroHandler = heroHandler;
 		this.buildingHandler = buildingHandler;
-		this.unitWorthCalculator = unitWorthCalculator;
+		unitWorthCalculator = new UnitWorthCalculator();
 	}
 
 	public void repairUnits() {

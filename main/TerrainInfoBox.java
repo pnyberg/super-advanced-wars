@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import cursors.Cursor;
 import graphics.PowerStar;
 import hero.Hero;
+import map.BuildingStructureHandlerObject;
 import map.GameMap;
 import map.area.Area;
 import map.area.TerrainType;
@@ -27,15 +28,15 @@ public class TerrainInfoBox {
 	private StructureHandler structureHandler;
 	
 	// TODO: rewrite with fewer parameters
-	public TerrainInfoBox(Point point, int width, int height, int tileSize, GameMap gameMap, Cursor cursor, BuildingHandler buildingHandler, StructureHandler structureHandler) {
+	public TerrainInfoBox(Point point, int width, int height, int tileSize, GameMap gameMap, Cursor cursor, BuildingStructureHandlerObject buildingStructureHandlerObject) {
 		this.point = point;
 		this.width = width;
 		this.height = height;
 		this.tileSize = tileSize;
 		this.gameMap = gameMap;
 		this.cursor = cursor;
-		this.buildingHandler = buildingHandler;
-		this.structureHandler = structureHandler;
+		this.buildingHandler = buildingStructureHandlerObject.buildingHandler;
+		this.structureHandler = buildingStructureHandlerObject.structureHandler;
 	}
 	
 	public void paint(Graphics g) {

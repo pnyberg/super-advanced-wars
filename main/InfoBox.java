@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import cursors.Cursor;
+import map.BuildingStructureHandlerObject;
 import map.GameMap;
 import map.UnitGetter;
 import map.buildings.BuildingHandler;
@@ -19,13 +20,13 @@ public class InfoBox {
 	private UnitContainedInfoBox unitContainedInfoBox; 
 	
 	// TODO: rewrite with fewer parameters
-	public InfoBox(Point point, int width, int height, int tileSize, GameMap gameMap, Cursor cursor, UnitGetter unitGetter, BuildingHandler buildingHandler, StructureHandler structureHandler) {
+	public InfoBox(Point point, int width, int height, int tileSize, GameMap gameMap, Cursor cursor, UnitGetter unitGetter, BuildingStructureHandlerObject buildingStructureHandlerObject) {
 		this.point = point;
 		this.width = width;
 		this.height = height;
 		// TODO: rewrite code
 		Point terrainInfoBoxPoint = new Point(point.getX() + tileSize / 4, point.getY() + tileSize / 8);
-		terrainInfoBox = new TerrainInfoBox(terrainInfoBoxPoint, tileSize * 2, height - tileSize / 4, tileSize, gameMap, cursor, buildingHandler, structureHandler);
+		terrainInfoBox = new TerrainInfoBox(terrainInfoBoxPoint, tileSize * 2, height - tileSize / 4, tileSize, gameMap, cursor, buildingStructureHandlerObject);
 		Point unitInfoBoxPoint = new Point(point.getX() + tileSize * 2 + tileSize / 4 + 5, point.getY() + tileSize / 8);
 		unitInfoBox = new UnitInfoBox(unitInfoBoxPoint, tileSize * 2, height - tileSize / 4, tileSize, cursor, unitGetter);
 		Point unitContainedInfoBoxPoint = new Point(point.getX() + tileSize * 4 + tileSize / 4 + 10, point.getY() + tileSize / 8);
