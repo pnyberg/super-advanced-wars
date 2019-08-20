@@ -3,17 +3,17 @@ package hero;
 import java.awt.Graphics;
 
 import cursors.Cursor;
-import gameObjects.MapDimension;
+import gameObjects.DimensionObject;
 import graphics.HeroPortraitPainter;
 import main.HeroHandler;
 
 public class HeroPortrait {
-	private MapDimension mapDimension;
+	private DimensionObject mapDimension;
 	private HeroHandler heroHandler;
 	private boolean leftSide;
 	private HeroPortraitPainter heroPortraitPainter;
 
-	public HeroPortrait(MapDimension mapDimensionDim, HeroHandler heroHandler) {
+	public HeroPortrait(DimensionObject mapDimensionDim, HeroHandler heroHandler) {
 		this.mapDimension = mapDimensionDim;
 		this.heroHandler = heroHandler;
 		leftSide = true;

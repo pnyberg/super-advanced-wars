@@ -2,10 +2,10 @@ package gameObjects;
 
 public class GameProperties {
 	public final int fuelMaintenancePerTurn;
-	private MapDimension mapDim;
+	private DimensionObject mapDim;
 	private ChosenObject chosenObject;
 	
-	public GameProperties(int fuelMaintenancePerTurn, MapDimension mapDim, ChosenObject chosenObject) {
+	public GameProperties(int fuelMaintenancePerTurn, DimensionObject mapDim, ChosenObject chosenObject) {
 		this.fuelMaintenancePerTurn = fuelMaintenancePerTurn;
 		this.mapDim = mapDim;
 		this.chosenObject = chosenObject;
@@ -15,7 +15,7 @@ public class GameProperties {
 		return chosenObject;
 	}
 	
-	public MapDimension getMapDim() {
+	public DimensionObject getMapDim() {
 		return mapDim;
 	}
 }

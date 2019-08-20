@@ -3,13 +3,13 @@ package graphics;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import gameObjects.MapDimension;
+import gameObjects.DimensionObject;
 import hero.Hero;
 
 public class HeroPortraitPainter {
-	private MapDimension mapDim;
+	private DimensionObject mapDim;
 	
-	public HeroPortraitPainter(MapDimension mapDim) {
+	public HeroPortraitPainter(DimensionObject mapDim) {
 		this.mapDim = mapDim;
 	}
 

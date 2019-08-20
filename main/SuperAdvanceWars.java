@@ -3,7 +3,7 @@ import javax.swing.JFrame;
 
 import gameObjects.ChosenObject;
 import gameObjects.GameProperties;
-import gameObjects.MapDimension;
+import gameObjects.DimensionObject;
 import hero.HeroFactory;
 
 public class SuperAdvanceWars extends JFrame {

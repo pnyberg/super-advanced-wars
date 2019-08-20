@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import gameObjects.Direction;
-import gameObjects.MapDimension;
+import gameObjects.DimensionObject;
 import hero.Hero;
 import main.HeroHandler;
 import map.area.Area;
@@ -45,7 +45,7 @@ public class MapLoader {
 			int mapWidth = mapLines.get(0).split(" ").length;
 			int mapHeight = mapLines.size();
 			mapLoadingObject.setGameMap(new GameMap(mapWidth, mapHeight, tileSize));
-			mapLoadingObject.setMapDim(new MapDimension(mapWidth, mapHeight, tileSize));
+			mapLoadingObject.setMapDim(new DimensionObject(mapWidth, mapHeight, tileSize));
 			for (int tileY = 0 ; tileY < mapHeight ; tileY++) {
 				String nextLine = mapLines.get(tileY);
 				String[] tokens = nextLine.split(" ");

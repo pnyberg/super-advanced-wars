@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import combat.AttackValueCalculator;
 import combat.DefenceValueCalculator;
-import gameObjects.MapDimension;
+import gameObjects.DimensionObject;
 import main.HeroHandler;
 import unitUtils.UnitType;
 import units.Unit;
@@ -29,13 +29,13 @@ import units.treadMoving.Neotank;
 import units.treadMoving.Tank;
 
 public class CommanderView {
-	private MapDimension mapDim;
+	private DimensionObject mapDim;
 	private HeroHandler heroHandler;
 	private AttackValueCalculator attackValueCalculator;
 	private DefenceValueCalculator defenceValueCalculator;
 	private Unit[] unitCollection;
 	
-	public CommanderView(MapDimension mapDim, HeroHandler heroHandler, AttackValueCalculator attackValueCalculator, DefenceValueCalculator defenceValueCalculator) {
+	public CommanderView(DimensionObject mapDim, HeroHandler heroHandler, AttackValueCalculator attackValueCalculator, DefenceValueCalculator defenceValueCalculator) {
 		this.mapDim = mapDim;
 		this.heroHandler = heroHandler;
 		this.attackValueCalculator = attackValueCalculator;
