@@ -44,7 +44,7 @@ public class MapLoadingObject {
 		return gameMap;
 	}
 	
-	public MapDimension getMapDim() {
+	public MapDimension getMapDimension() {
 		return mapDim;
 	}
 	

@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 import cursors.Cursor;
+import gameObjects.GraphicMetrics;
 import graphics.PowerStar;
 import hero.Hero;
 import map.BuildingStructureHandlerObject;
@@ -18,7 +19,7 @@ import map.structures.StructureHandler;
 import point.Point;
 
 public class TerrainInfoBox {
-	private Point point;
+	private Point anchorPoint;
 	private int width;
 	private int height;
 	private int tileSize;
@@ -28,11 +29,11 @@ public class TerrainInfoBox {
 	private StructureHandler structureHandler;
 	
 	// TODO: rewrite with fewer parameters
-	public TerrainInfoBox(Point point, int width, int height, int tileSize, GameMap gameMap, Cursor cursor, BuildingStructureHandlerObject buildingStructureHandlerObject) {
-		this.point = point;
-		this.width = width;
-		this.height = height;
-		this.tileSize = tileSize;
+	public TerrainInfoBox(GraphicMetrics terrainInfoBoxGraphicMetrics, GameMap gameMap, Cursor cursor, BuildingStructureHandlerObject buildingStructureHandlerObject) {
+		this.anchorPoint = terrainInfoBoxGraphicMetrics.anchorPoint;
+		this.width = terrainInfoBoxGraphicMetrics.width;
+		this.height = terrainInfoBoxGraphicMetrics.height;
+		this.tileSize = terrainInfoBoxGraphicMetrics.tileSize;
 		this.gameMap = gameMap;
 		this.cursor = cursor;
 		this.buildingHandler = buildingStructureHandlerObject.buildingHandler;
@@ -42,13 +43,13 @@ public class TerrainInfoBox {
 	public void paint(Graphics g) {
 		Area area = gameMap.getArea(cursor.getX() / tileSize, cursor.getY() / tileSize);
 		g.setColor(Color.lightGray);
-		g.fillRect(point.getX(), point.getY(), width, height);
+		g.fillRect(anchorPoint.getX(), anchorPoint.getY(), width, height);
 		g.setColor(Color.black);
 		Font currentFont = g.getFont();
 		g.setFont(new Font("ComicSans", Font.BOLD, 20));
 		TerrainType terrainType = area.getTerrainType();
 		int xAdjust = (width - g.getFontMetrics().stringWidth(terrainType.showName())) / 2;
-		g.drawString(terrainType.showName(), point.getX() + xAdjust, point.getY() + 20);
+		g.drawString(terrainType.showName(), anchorPoint.getX() + xAdjust, anchorPoint.getY() + 20);
 		g.setFont(currentFont);
 		
 		paintArea(g, area);
@@ -61,29 +62,29 @@ public class TerrainInfoBox {
 			Building building = buildingHandler.getBuilding(area.getPoint().getX(), area.getPoint().getY());
 			Hero owner = building.getOwner();
 			Color buildingColor = owner == null ? Color.white : owner.getColor();
-			building.getBuildingImage().paint(g, point.getX() + (width-tileSize)/2, point.getY() + 22, buildingColor);
+			building.getBuildingImage().paint(g, anchorPoint.getX() + (width-tileSize)/2, anchorPoint.getY() + 22, buildingColor);
 		} else if (area.getTerrainType().isStructure()) {
 			Structure structure = structureHandler.getStructure(area.getPoint().getX(), area.getPoint().getY());
 			Hero owner = structure.getOwner();
 			Color cannonColor = owner == null ? Color.darkGray : owner.getColor();
-			structure.getStructureImage().paint(g, point.getX() + (width-tileSize)/2, point.getY() + 22, cannonColor);
+			structure.getStructureImage().paint(g, anchorPoint.getX() + (width-tileSize)/2, anchorPoint.getY() + 22, cannonColor);
 		} else {
-			area.getAreaImage().paint(g, point.getX() + (width-tileSize)/2, point.getY() + 22, false, false);
+			area.getAreaImage().paint(g, anchorPoint.getX() + (width-tileSize)/2, anchorPoint.getY() + 22, false, false);
 		}
 	}
 	
 	private void paintDefenceValue(Graphics g, Area area) {
-		PowerStar.paintNormal(g, point.getX() + (width-tileSize)/2 - 5, point.getY() + tileSize + 26, 0);
+		PowerStar.paintNormal(g, anchorPoint.getX() + (width-tileSize)/2 - 5, anchorPoint.getY() + tileSize + 26, 0);
 		g.setColor(Color.black);
 		Font currentFont = g.getFont();
 		g.setFont(new Font("ComicSans", Font.BOLD, 20));
-		g.drawString("" + area.getTerrainType().defenceValue() + "", point.getX() + width/2 - 5 + 10, point.getY() + 2 * tileSize + 3);
+		g.drawString("" + area.getTerrainType().defenceValue() + "", anchorPoint.getX() + width/2 - 5 + 10, anchorPoint.getY() + 2 * tileSize + 3);
 		g.setFont(currentFont);
 	}
 	
 	private void paintCaptValue(Graphics g, Area area) {
-		int captBoxPosX = point.getX() + (width-tileSize)/2 - 5 + 1;
-		int captBoxPosY = point.getY() + tileSize + 26 + 20;
+		int captBoxPosX = anchorPoint.getX() + (width-tileSize)/2 - 5 + 1;
+		int captBoxPosY = anchorPoint.getY() + tileSize + 26 + 20;
 		if (area.getTerrainType().isBuilding()) {
 			g.setColor(Color.white);
 			g.fillRect(captBoxPosX, captBoxPosY, tileSize / 3, tileSize / 2);
@@ -96,7 +97,7 @@ public class TerrainInfoBox {
 			Building building = buildingHandler.getBuilding(area.getPoint().getX(), area.getPoint().getY());
 			int captValue = building.getCaptingValue();
 			int xAdjust = captValue < 10 ? 10 : 0;
-			g.drawString("" + captValue + "", point.getX() + width/2 - 5 + xAdjust, point.getY() + tileSize + 26 + 20 + 18);
+			g.drawString("" + captValue + "", anchorPoint.getX() + width/2 - 5 + xAdjust, anchorPoint.getY() + tileSize + 26 + 20 + 18);
 			g.setFont(currentFont);
 		}
 	}

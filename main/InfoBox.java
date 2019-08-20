@@ -4,15 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import cursors.Cursor;
+import gameObjects.GraphicMetrics;
 import map.BuildingStructureHandlerObject;
 import map.GameMap;
 import map.UnitGetter;
-import map.buildings.BuildingHandler;
-import map.structures.StructureHandler;
 import point.Point;
 
 public class InfoBox {
-	private Point point;
+	private Point anchorPoint;
 	private int width;
 	private int height;
 	private TerrainInfoBox terrainInfoBox;
@@ -20,17 +19,39 @@ public class InfoBox {
 	private UnitContainedInfoBox unitContainedInfoBox; 
 	
 	// TODO: rewrite with fewer parameters
-	public InfoBox(Point point, int width, int height, int tileSize, GameMap gameMap, Cursor cursor, UnitGetter unitGetter, BuildingStructureHandlerObject buildingStructureHandlerObject) {
-		this.point = point;
-		this.width = width;
-		this.height = height;
-		// TODO: rewrite code
-		Point terrainInfoBoxPoint = new Point(point.getX() + tileSize / 4, point.getY() + tileSize / 8);
-		terrainInfoBox = new TerrainInfoBox(terrainInfoBoxPoint, tileSize * 2, height - tileSize / 4, tileSize, gameMap, cursor, buildingStructureHandlerObject);
-		Point unitInfoBoxPoint = new Point(point.getX() + tileSize * 2 + tileSize / 4 + 5, point.getY() + tileSize / 8);
-		unitInfoBox = new UnitInfoBox(unitInfoBoxPoint, tileSize * 2, height - tileSize / 4, tileSize, cursor, unitGetter);
-		Point unitContainedInfoBoxPoint = new Point(point.getX() + tileSize * 4 + tileSize / 4 + 10, point.getY() + tileSize / 8);
-		unitContainedInfoBox = new UnitContainedInfoBox(unitContainedInfoBoxPoint, tileSize * 2, height - tileSize / 4, tileSize, cursor, unitGetter);
+	public InfoBox(GraphicMetrics infoBoxGraphicMetrics, GameMap gameMap, Cursor cursor, UnitGetter unitGetter, BuildingStructureHandlerObject buildingStructureHandlerObject) {
+		this.anchorPoint = infoBoxGraphicMetrics.anchorPoint;
+		this.width = infoBoxGraphicMetrics.width;
+		this.height = infoBoxGraphicMetrics.height;
+
+		int tileSize = infoBoxGraphicMetrics.tileSize;
+
+		// terrain-infobox
+		int terrainInfoBoxPosX = anchorPoint.getX() + tileSize / 4;
+		int terrainInfoBoxPosY = anchorPoint.getY() + tileSize / 8;
+		Point terrainInfoBoxPoint = new Point(terrainInfoBoxPosX, terrainInfoBoxPosY);
+		int terrainInfoBoxWidth = tileSize * 2;
+		int terrainInfoBoxHeight = height - tileSize / 4;
+		GraphicMetrics terrainInfoBoxGraphicMetrics = new GraphicMetrics(terrainInfoBoxPoint, terrainInfoBoxWidth, terrainInfoBoxHeight, tileSize);
+		terrainInfoBox = new TerrainInfoBox(terrainInfoBoxGraphicMetrics, gameMap, cursor, buildingStructureHandlerObject);
+
+		// unit-infobox
+		int unitInfoBoxPosX = anchorPoint.getX() + tileSize * 2 + tileSize / 4 + 5;
+		int unitInfoBoxPosY = anchorPoint.getY() + tileSize / 8;
+		Point unitInfoBoxPoint = new Point(unitInfoBoxPosX, unitInfoBoxPosY);
+		int unitInfoBoxWidth = tileSize * 2;
+		int unitInfoBoxHeight = height - tileSize / 4;
+		GraphicMetrics unitInfoBoxGraphicMetrics = new GraphicMetrics(unitInfoBoxPoint, unitInfoBoxWidth, unitInfoBoxHeight, tileSize);
+		unitInfoBox = new UnitInfoBox(unitInfoBoxGraphicMetrics, cursor, unitGetter);
+		
+		// unitContained-infobox
+		int unitContainedInfoBoxPosX = anchorPoint.getX() + tileSize * 4 + tileSize / 4 + 10;
+		int unitContainedInfoBoxPosY = anchorPoint.getY() + tileSize / 8;
+		Point unitContainedInfoBoxPoint = new Point(unitContainedInfoBoxPosX, unitContainedInfoBoxPosY);
+		int unitContainedInfoBoxWidht = tileSize * 2;
+		int unitContainedInfoBoxHeight = height - tileSize / 4;
+		GraphicMetrics unitContainedInfoBoxGraphicMetrics = new GraphicMetrics(unitContainedInfoBoxPoint, unitContainedInfoBoxWidht, unitContainedInfoBoxHeight, tileSize);
+		unitContainedInfoBox = new UnitContainedInfoBox(unitContainedInfoBoxGraphicMetrics, cursor, unitGetter);
 	}
 	
 	public int getWidth() {
@@ -43,9 +64,9 @@ public class InfoBox {
 	
 	public void paint(Graphics g) {
 		g.setColor(Color.darkGray);
-		g.fillRect(point.getX(), point.getY(), width, height);
+		g.fillRect(anchorPoint.getX(), anchorPoint.getY(), width, height);
 		g.setColor(Color.black);
-		g.drawRect(point.getX(), point.getY(), width, height);
+		g.drawRect(anchorPoint.getX(), anchorPoint.getY(), width, height);
 		
 		terrainInfoBox.paint(g);
 		unitInfoBox.paint(g);

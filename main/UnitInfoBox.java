@@ -5,25 +5,25 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 import cursors.Cursor;
+import gameObjects.GraphicMetrics;
 import map.UnitGetter;
 import point.Point;
 import unitUtils.UnitType;
 import units.Unit;
 
 public class UnitInfoBox {
-	private Point point;
+	private Point anchorPoint;
 	private int width;
 	private int height;
 	private int tileSize;
 	private Cursor cursor;
 	private UnitGetter unitGetter;
 	
-	// TODO: rewrite with fewer parameters
-	public UnitInfoBox(Point point, int width, int height, int tileSize, Cursor cursor, UnitGetter unitGetter) {
-		this.point = point;
-		this.width = width;
-		this.height = height;
-		this.tileSize = tileSize;
+	public UnitInfoBox(GraphicMetrics unitInfoBoxGraphicMetrics, Cursor cursor, UnitGetter unitGetter) {
+		this.anchorPoint = unitInfoBoxGraphicMetrics.anchorPoint;
+		this.width = unitInfoBoxGraphicMetrics.width;
+		this.height = unitInfoBoxGraphicMetrics.height;
+		this.tileSize = unitInfoBoxGraphicMetrics.tileSize;
 		this.cursor = cursor;
 		this.unitGetter = unitGetter;
 	}
@@ -32,13 +32,13 @@ public class UnitInfoBox {
 		Unit unit = unitGetter.getAnyUnit(cursor.getX(), cursor.getY());
 		if (unit != null) {
 			g.setColor(Color.lightGray);
-			g.fillRect(point.getX(), point.getY(), width, height);
+			g.fillRect(anchorPoint.getX(), anchorPoint.getY(), width, height);
 			g.setColor(Color.black);
 			Font currentFont = g.getFont();
 			UnitType unitType = unit.getUnitType();
 			g.setFont(new Font("ComicSans", Font.BOLD, 17));
 			int xAdjust = (width - g.getFontMetrics().stringWidth(unitType.unitTypeShowName())) / 2;
-			g.drawString(unitType.unitTypeShowName(), point.getX() + xAdjust, point.getY() + 20);
+			g.drawString(unitType.unitTypeShowName(), anchorPoint.getX() + xAdjust, anchorPoint.getY() + 20);
 			g.setFont(currentFont);
 			paintUnit(g, unit);
 			paintUnitHealth(g, unit);
@@ -49,8 +49,8 @@ public class UnitInfoBox {
 	
 	private void paintUnit(Graphics g, Unit unit) {
 		Color unitColor = unit.getColor();
-		int x = point.getX() + (width-tileSize)/2;
-		int y = point.getY() + 19;
+		int x = anchorPoint.getX() + (width-tileSize)/2;
+		int y = anchorPoint.getY() + 19;
 		unit.getUnitImage().paint(g, x, y, unitColor);
 		if (unit.isCapting()) {
 			unit.paintCaptFlag(g, x, y, tileSize);
@@ -61,8 +61,8 @@ public class UnitInfoBox {
 	private void paintUnitHealth(Graphics g, Unit unit) {
 		int healthValue = unit.getUnitHealth().getShowHP();
 		
-		int heartX = point.getX() + (width-tileSize)/2 - 3; 
-		int heartY = point.getY() + 3 * tileSize/2 + 2;
+		int heartX = anchorPoint.getX() + (width-tileSize)/2 - 3; 
+		int heartY = anchorPoint.getY() + 3 * tileSize/2 + 2;
 
 		// heart-points
 		int cx1 = heartX + 9;
@@ -111,8 +111,8 @@ public class UnitInfoBox {
 	
 	private void paintUnitFuel(Graphics g, Unit unit) {
 		int fuel = unit.getUnitSupply().getFuel();
-		int fuelX = point.getX() + (width-tileSize)/2 + 1;
-		int fuelY = point.getY() + 2 * tileSize - 3;
+		int fuelX = anchorPoint.getX() + (width-tileSize)/2 + 1;
+		int fuelY = anchorPoint.getY() + 2 * tileSize - 3;
 		
 		int fuelWidth = tileSize / 4;
 		int fuelHeight = tileSize / 3;
@@ -133,8 +133,8 @@ public class UnitInfoBox {
 	private void paintUnitAmmo(Graphics g, Unit unit) {
 		if (unit.getUnitSupply().getMaxAmmo() > 0) {
 			int ammo = unit.getUnitSupply().getAmmo();
-			int ammoX = point.getX() + (width-tileSize)/2 + 1;
-			int ammoY = point.getY() + 9 * tileSize/4 + 2;
+			int ammoX = anchorPoint.getX() + (width-tileSize)/2 + 1;
+			int ammoY = anchorPoint.getY() + 9 * tileSize/4 + 2;
 			
 			int ammoWidth = tileSize / 4;
 			int ammoHeight = tileSize / 8 + 2;

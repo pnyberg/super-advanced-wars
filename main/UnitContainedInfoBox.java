@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import cursors.Cursor;
+import gameObjects.GraphicMetrics;
 import map.UnitGetter;
 import point.Point;
 import units.Unit;
@@ -13,19 +14,18 @@ import units.seaMoving.Lander;
 import units.treadMoving.APC;
 
 public class UnitContainedInfoBox {
-	private Point point;
+	private Point anchorPoint;
 	private int width;
 	private int height;
 	private int tileSize;
 	private Cursor cursor;
 	private UnitGetter unitGetter;
 	
-	// TODO: rewrite with fewer parameters
-	public UnitContainedInfoBox(Point point, int width, int height, int tileSize, Cursor cursor, UnitGetter unitGetter) {
-		this.point = point;
-		this.width = width;
-		this.height = height;
-		this.tileSize = tileSize;
+	public UnitContainedInfoBox(GraphicMetrics unitContainedInfoBoxGraphicMetrics, Cursor cursor, UnitGetter unitGetter) {
+		this.anchorPoint = unitContainedInfoBoxGraphicMetrics.anchorPoint;
+		this.width = unitContainedInfoBoxGraphicMetrics.width;
+		this.height = unitContainedInfoBoxGraphicMetrics.height;
+		this.tileSize = unitContainedInfoBoxGraphicMetrics.tileSize;
 		this.cursor = cursor;
 		this.unitGetter = unitGetter;
 	}
@@ -50,41 +50,41 @@ public class UnitContainedInfoBox {
 		Unit unit = unitGetter.getAnyUnit(cursor.getX(), cursor.getY());
 		if (unit != null && unitIsTransportingOtherUnit(unit)) {
 			g.setColor(Color.lightGray);
-			g.fillRect(point.getX(), point.getY(), width, height);
+			g.fillRect(anchorPoint.getX(), anchorPoint.getY(), width, height);
 			if (unit instanceof APC) {
 				Unit containedUnit = ((APC)unit).getContainedUnit();
 				Color containedUnitColor = containedUnit.getColor();
-				int containedUnitPosX = point.getX() + (width-tileSize)/2;
-				int containedUnitPosY = point.getY() + 19;
+				int containedUnitPosX = anchorPoint.getX() + (width-tileSize)/2;
+				int containedUnitPosY = anchorPoint.getY() + 19;
 				containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
 				containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
 			} else if (unit.hasUnitContainer() && !unit.getUnitContainer().isEmpty()) {
 				Unit containedUnit = unit.getUnitContainer().getChosenUnit();
 				Color containedUnitColor = containedUnit.getColor();
-				int containedUnitPosX = point.getX() + (width-tileSize)/2;
-				int containedUnitPosY = point.getY() + 19;
+				int containedUnitPosX = anchorPoint.getX() + (width-tileSize)/2;
+				int containedUnitPosY = anchorPoint.getY() + 19;
 				containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
 				containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
 			} else if (unit instanceof Lander) {
 				if (((Lander)unit).getNumberOfContainedUnits() > 1) {
 					Unit containedUnit = ((Lander)unit).getUnit(0);
 					Color containedUnitColor = containedUnit.getColor();
-					int containedUnitPosX = point.getX() + (width-tileSize)/2;
-					int containedUnitPosY = point.getY() + 15;
+					int containedUnitPosX = anchorPoint.getX() + (width-tileSize)/2;
+					int containedUnitPosY = anchorPoint.getY() + 15;
 					containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
 					containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
 					containedUnit = ((Lander)unit).getUnit(1);
 					containedUnitColor = containedUnit.getColor();
 
-					containedUnitPosX = point.getX() + (width-tileSize)/2;
-					containedUnitPosY = point.getY() + 20 + tileSize;
+					containedUnitPosX = anchorPoint.getX() + (width-tileSize)/2;
+					containedUnitPosY = anchorPoint.getY() + 20 + tileSize;
 					containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
 					containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
 				} else if (((Lander)unit).getNumberOfContainedUnits() > 0) {
 					Unit containedUnit = ((Lander)unit).getUnit(0);
 					Color containedUnitColor = containedUnit.getColor();
-					int containedUnitPosX = point.getX() + (width-tileSize)/2;
-					int containedUnitPosY = point.getY() + 15 + tileSize / 2;
+					int containedUnitPosX = anchorPoint.getX() + (width-tileSize)/2;
+					int containedUnitPosY = anchorPoint.getY() + 15 + tileSize / 2;
 					containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
 					containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
 				}

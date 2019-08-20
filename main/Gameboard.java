@@ -32,6 +32,7 @@ import combat.StructureAttackHandler;
 import cursors.Cursor;
 import gameObjects.ChosenObject;
 import gameObjects.GameProperties;
+import gameObjects.GraphicMetrics;
 import gameObjects.MapDimension;
 import hero.HeroFactory;
 import hero.HeroPortrait;
@@ -73,7 +74,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		MapLoader mapLoader = new MapLoader(tileSize, heroHandler);
 		MapLoadingObject mapLoadingObject = mapLoader.loadMap("map-files/test_map.txt");
 		GameMap gameMap = mapLoadingObject.getGameMap();
-		MapDimension mapDimension = mapLoadingObject.getMapDim();
+		MapDimension mapDimension = mapLoadingObject.getMapDimension();
 		ArrayList<Building> buildings = mapLoadingObject.getBuildingList();
 		ArrayList<Structure> structures = mapLoadingObject.getStructureList();
 		gameProperties = new GameProperties(fuelMaintenancePerTurn, mapDimension, new ChosenObject());
@@ -84,8 +85,9 @@ public class Gameboard extends JPanel implements KeyListener {
 		BuildingHandler buildingHandler = new BuildingHandler(heroHandler, buildings);
 		StructureAttackHandler structureAttackHandler = new StructureAttackHandler(mapDimension, unitGetter);
 		StructureHandler structureHandler = new StructureHandler(structures, structureAttackHandler);
-		BuildingStructureHandlerObject buildingStructureHandlerObject = new BuildingStructureHandlerObject(buildingHandler, structureHandler); 
-		InfoBox infoBox = new InfoBox(point, mapDimension.getTileWidth() * tileSize, 3 * tileSize, tileSize, gameMap, 
+		BuildingStructureHandlerObject buildingStructureHandlerObject = new BuildingStructureHandlerObject(buildingHandler, structureHandler);
+		GraphicMetrics infoBoxGraphicMetrics = new GraphicMetrics(point, mapDimension.getTileWidth() * tileSize, 3 * tileSize, tileSize);
+		InfoBox infoBox = new InfoBox(infoBoxGraphicMetrics, gameMap, 
 										cursor, unitGetter, buildingStructureHandlerObject);
 		internalStructureObject = new InternalStructureObject(gameProperties, infoBox, heroHandler, gameMap, 
 												cursor, buildings, structures, unitGetter, 
