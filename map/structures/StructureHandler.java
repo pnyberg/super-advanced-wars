@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import combat.StructureAttackHandler;
+import gameObjects.GameState;
+import gameObjects.MapDimension;
 import unitUtils.UnitWorthCalculator;
 import units.Unit;
 import units.airMoving.*;
@@ -17,9 +19,9 @@ public class StructureHandler {
 	private StructureAttackHandler structureAttackHandler;
 	private UnitWorthCalculator unitWorthCalculator;	
 	
-	public StructureHandler(ArrayList<Structure> structures, StructureAttackHandler structureAttackHandler) {
-		this.structures = structures;
-		this.structureAttackHandler = structureAttackHandler;
+	public StructureHandler(GameState gameState, MapDimension mapDimension) {
+		this.structures = gameState.getStructures();
+		this.structureAttackHandler = new StructureAttackHandler(mapDimension, gameState);
 		unitWorthCalculator = new UnitWorthCalculator();
 	}
 	

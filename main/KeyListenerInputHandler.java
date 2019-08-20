@@ -69,14 +69,14 @@ public class KeyListenerInputHandler {
 	private HeroPowerHandler heroPowerHandler;
 	private UnitWorthCalculator unitWorthCalculator;
 	
-	public KeyListenerInputHandler(GameProperties gameProp, GameState gameState, GameMapAndCursor gameMapAndCursor, ViewPainter viewPainter, BuildingStructureHandlerObject buildingStructureHandlerObject, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
-		this.gameProp = gameProp;
+	public KeyListenerInputHandler(GameProperties gameProperties, GameState gameState, GameMapAndCursor gameMapAndCursor, ViewPainter viewPainter, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
+		this.gameProp = gameProperties;
 		this.gameState = gameState;
 		this.gameMap = gameMapAndCursor.gameMap;
 		this.viewPainter = viewPainter;
 		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
-		this.buildingHandler = buildingStructureHandlerObject.buildingHandler;
-		this.structureHandler = buildingStructureHandlerObject.structureHandler;
+		this.buildingHandler = new BuildingHandler(gameState);
+		this.structureHandler = new StructureHandler(gameState, gameProperties.getMapDimension());
 		this.cursor = gameMapAndCursor.cursor;
 		this.unitMenuHandler = unitMenuHandler;
 		this.mapMenu = mapMenu;
@@ -92,7 +92,7 @@ public class KeyListenerInputHandler {
 		captHandler = new CaptHandler(heroHandler);
 		this.supplyHandler = supplyHandler;
 		this.turnHandler = turnHandler;
-		firingCursorHandler = new FiringCursorHandler(gameProp, gameState, cursor, unitGetter, damageHandler);
+		firingCursorHandler = new FiringCursorHandler(gameProperties, gameState, cursor, unitGetter, damageHandler);
 		heroPowerHandler = new HeroPowerHandler(heroHandler);
 		unitWorthCalculator = new UnitWorthCalculator();
 	}
@@ -115,7 +115,7 @@ public class KeyListenerInputHandler {
 					firingCursorHandler.moveFiringCursorCounterclockwise();
 				}
 			} else if (cursorY > 0 && !menuVisible) {
-				routeHandler.updateArrowPath(new Point(cursorX, cursorY - gameProp.getMapDim().tileSize), gameState.getChosenObject().chosenUnit);
+				routeHandler.updateArrowPath(new Point(cursorX, cursorY - gameProp.getMapDimension().tileSize), gameState.getChosenObject().chosenUnit);
 				cursor.moveUp();
 			} else if (mapMenu.isVisible()) {
 				mapMenu.moveArrowUp();
@@ -136,8 +136,8 @@ public class KeyListenerInputHandler {
 				} else {
 					firingCursorHandler.moveFiringCursorClockwise();
 				}
-			} else if (cursorY < (gameProp.getMapDim().getTileHeight() - 1) * gameProp.getMapDim().tileSize && !menuVisible) {
-				routeHandler.updateArrowPath(new Point(cursorX, cursorY + gameProp.getMapDim().tileSize), gameState.getChosenObject().chosenUnit);
+			} else if (cursorY < (gameProp.getMapDimension().getTileHeight() - 1) * gameProp.getMapDimension().tileSize && !menuVisible) {
+				routeHandler.updateArrowPath(new Point(cursorX, cursorY + gameProp.getMapDimension().tileSize), gameState.getChosenObject().chosenUnit);
 				cursor.moveDown();
 			} else if (mapMenu.isVisible()) {
 				mapMenu.moveArrowDown();
@@ -148,12 +148,12 @@ public class KeyListenerInputHandler {
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			if (cursorX > 0 && !menuVisible && !containerUnitHandler.unitIsDroppingOff() && !attackHandler.unitWantsToFire(gameState.getChosenObject().chosenUnit)) {
-				routeHandler.updateArrowPath(new Point(cursorX - gameProp.getMapDim().tileSize, cursorY), gameState.getChosenObject().chosenUnit);
+				routeHandler.updateArrowPath(new Point(cursorX - gameProp.getMapDimension().tileSize, cursorY), gameState.getChosenObject().chosenUnit);
 				cursor.moveLeft();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (cursorX < (gameProp.getMapDim().getTileWidth() - 1) * gameProp.getMapDim().tileSize && !menuVisible && !containerUnitHandler.unitIsDroppingOff() && !attackHandler.unitWantsToFire(gameState.getChosenObject().chosenUnit)) {
-				routeHandler.updateArrowPath(new Point(cursorX + gameProp.getMapDim().tileSize, cursorY), gameState.getChosenObject().chosenUnit);
+			if (cursorX < (gameProp.getMapDimension().getTileWidth() - 1) * gameProp.getMapDimension().tileSize && !menuVisible && !containerUnitHandler.unitIsDroppingOff() && !attackHandler.unitWantsToFire(gameState.getChosenObject().chosenUnit)) {
+				routeHandler.updateArrowPath(new Point(cursorX + gameProp.getMapDimension().tileSize, cursorY), gameState.getChosenObject().chosenUnit);
 				cursor.moveRight();
 			}
 		}
@@ -278,10 +278,10 @@ public class KeyListenerInputHandler {
 				int x = gameState.getChosenObject().chosenUnit.getPoint().getX();
 				int y = gameState.getChosenObject().chosenUnit.getPoint().getY();
 
-				replentishIfUnitAtPosition(x, y - gameProp.getMapDim().tileSize);
-				replentishIfUnitAtPosition(x + gameProp.getMapDim().tileSize, y);
-				replentishIfUnitAtPosition(x, y + gameProp.getMapDim().tileSize);
-				replentishIfUnitAtPosition(x - gameProp.getMapDim().tileSize, y);
+				replentishIfUnitAtPosition(x, y - gameProp.getMapDimension().tileSize);
+				replentishIfUnitAtPosition(x + gameProp.getMapDimension().tileSize, y);
+				replentishIfUnitAtPosition(x, y + gameProp.getMapDimension().tileSize);
+				replentishIfUnitAtPosition(x - gameProp.getMapDimension().tileSize, y);
 			}
 
 			if (!containerUnitHandler.unitIsDroppingOff() && !attackHandler.unitWantsToFire(gameState.getChosenObject().chosenUnit)) {
@@ -299,7 +299,7 @@ public class KeyListenerInputHandler {
 		} else if (buildingMenu.isVisible()) {
 			buildingMenu.buySelectedTroop();
 			buildingMenu.closeMenu();
-		} else if (gameState.getChosenObject().chosenUnit != null && movementMap.isAcceptedMove(cursorX / gameProp.getMapDim().tileSize, cursorY / gameProp.getMapDim().tileSize) && gameState.getChosenObject().rangeUnit == null) {
+		} else if (gameState.getChosenObject().chosenUnit != null && movementMap.isAcceptedMove(cursorX / gameProp.getMapDimension().tileSize, cursorY / gameProp.getMapDimension().tileSize) && gameState.getChosenObject().rangeUnit == null) {
 			int x = gameState.getChosenObject().chosenUnit.getPoint().getX();
 			int y = gameState.getChosenObject().chosenUnit.getPoint().getY();
 			if (unitGetter.getFriendlyUnit(x, y) != null) {
@@ -413,7 +413,7 @@ public class KeyListenerInputHandler {
 				movementMap.clearMovementMap();
 				routeHandler.clearArrowPoints();
 			}
-		} else if (gameMap.getMap()[cursor.getX() / gameProp.getMapDim().tileSize][cursor.getY() / gameProp.getMapDim().tileSize].getTerrainType() == TerrainType.MINI_CANNON) {
+		} else if (gameMap.getMap()[cursor.getX() / gameProp.getMapDimension().tileSize][cursor.getY() / gameProp.getMapDimension().tileSize].getTerrainType() == TerrainType.MINI_CANNON) {
 			gameState.getChosenObject().rangeStructure = structureHandler.getFiringStructure(cursor.getX(), cursor.getY());
 			attackRangeHandler.importStructureAttackLocations(gameState.getChosenObject().rangeStructure);
 		} else {
@@ -455,8 +455,8 @@ public class KeyListenerInputHandler {
 	
 	private void removeStructureIfDestroyed(Structure targetStructure) {
 		if (targetStructure.isDestroyed()) {
-			int tileX = targetStructure.getPoint().getX() / gameProp.getMapDim().tileSize;
-			int tileY = targetStructure.getPoint().getY() / gameProp.getMapDim().tileSize;
+			int tileX = targetStructure.getPoint().getX() / gameProp.getMapDimension().tileSize;
+			int tileY = targetStructure.getPoint().getY() / gameProp.getMapDimension().tileSize;
 			gameMap.getArea(tileX, tileY).setTerrainType(TerrainType.UMI);
 			structureHandler.removeStructure(targetStructure);
 		}

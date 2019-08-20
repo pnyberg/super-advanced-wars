@@ -6,7 +6,9 @@ import java.awt.Graphics;
 
 import cursors.Cursor;
 import gameObjects.GameMapAndCursor;
+import gameObjects.GameState;
 import gameObjects.GraphicMetrics;
+import gameObjects.MapDimension;
 import graphics.PowerStar;
 import hero.Hero;
 import map.BuildingStructureHandlerObject;
@@ -29,15 +31,15 @@ public class TerrainInfoBox {
 	private BuildingHandler buildingHandler;
 	private StructureHandler structureHandler;
 	
-	public TerrainInfoBox(GraphicMetrics terrainInfoBoxGraphicMetrics, GameMapAndCursor gameMapAndCursor, BuildingStructureHandlerObject buildingStructureHandlerObject) {
+	public TerrainInfoBox(GraphicMetrics terrainInfoBoxGraphicMetrics, GameMapAndCursor gameMapAndCursor, GameState gameState, MapDimension mapDimension) {
 		this.anchorPoint = terrainInfoBoxGraphicMetrics.anchorPoint;
 		this.width = terrainInfoBoxGraphicMetrics.width;
 		this.height = terrainInfoBoxGraphicMetrics.height;
 		this.tileSize = terrainInfoBoxGraphicMetrics.tileSize;
 		this.gameMap = gameMapAndCursor.gameMap;
 		this.cursor = gameMapAndCursor.cursor;
-		this.buildingHandler = buildingStructureHandlerObject.buildingHandler;
-		this.structureHandler = buildingStructureHandlerObject.structureHandler;
+		this.buildingHandler = new BuildingHandler(gameState);
+		this.structureHandler = new StructureHandler(gameState, mapDimension);
 	}
 	
 	private Area getAreaForCursor() {

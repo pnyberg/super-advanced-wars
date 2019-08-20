@@ -29,12 +29,12 @@ public class AttackRangeHandler {
 	private RouteChecker routeChecker;
 	private MovementMap movementMap;
 
-	public AttackRangeHandler(MapDimension mapDim, GameState gameState, DamageHandler damageHandler, StructureHandler structureHandler, RouteChecker routeChecker, MovementMap movementMap) {
-		this.mapDim = mapDim;
+	public AttackRangeHandler(MapDimension mapDimension, GameState gameState, DamageHandler damageHandler, RouteChecker routeChecker, MovementMap movementMap) {
+		this.mapDim = mapDimension;
 		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
-		rangeMap = new boolean[mapDim.getTileWidth()][mapDim.getTileHeight()];
+		rangeMap = new boolean[mapDimension.getTileWidth()][mapDimension.getTileHeight()];
 		this.damageHandler = damageHandler;
-		this.structureHandler = structureHandler;
+		this.structureHandler = new StructureHandler(gameState, mapDimension);
 		this.routeChecker = routeChecker;
 		this.movementMap = movementMap;
 	}

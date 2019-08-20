@@ -19,12 +19,12 @@ public class AttackHandler {
 	private StructureHandler structureHandler;
 	
 	// TODO: rewrite to have fewer parameters
-	public AttackHandler(MapDimension mapDim, GameState gameState, AttackRangeHandler attackRangeHandler, DamageHandler damageHandler, StructureHandler structureHandler) {
-		this.mapDim = mapDim;
+	public AttackHandler(MapDimension mapDimension, GameState gameState, AttackRangeHandler attackRangeHandler, DamageHandler damageHandler) {
+		this.mapDim = mapDimension;
 		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
 		this.attackRangeHandler = attackRangeHandler;
 		this.damageHandler = damageHandler;
-		this.structureHandler = structureHandler;
+		this.structureHandler = new StructureHandler(gameState, mapDimension);
 	}
 
 	// TODO: rewrite code to make it simpler (if possible)

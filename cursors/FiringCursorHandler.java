@@ -25,7 +25,7 @@ public class FiringCursorHandler {
 	// TODO: rewrite code to make it more readable
 	public void moveFiringCursorClockwise() {
 		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
-		MapDimension mapDim = gameProp.getMapDim();
+		MapDimension mapDim = gameProp.getMapDimension();
 		int unitX = chosenUnit.getPoint().getX();
 		int unitY = chosenUnit.getPoint().getY();
 
@@ -81,7 +81,7 @@ public class FiringCursorHandler {
 
 	public void moveFiringCursorCounterclockwise() {
 		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
-		MapDimension mapDim = gameProp.getMapDim();
+		MapDimension mapDim = gameProp.getMapDimension();
 		int unitX = chosenUnit.getPoint().getX();
 		int unitY = chosenUnit.getPoint().getY();
 

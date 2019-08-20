@@ -9,21 +9,22 @@ public class GameProperties {
 
 	private MapDimension mapDimension;
 	private GameMap gameMap;
-	private Point infoBoxAnchorPoint;
+	private GraphicMetrics infoBoxGraphicMetrics;
 	
 	public GameProperties(MapDimension mapDimension, GameMap gameMap) {
 		this.mapDimension = mapDimension;
 		this.gameMap = gameMap;
 		
-		infoBoxAnchorPoint = new Point(0, gameMap.getTileHeight() * mapDimension.tileSize);
+		Point infoBoxAnchorPoint = new Point(0, gameMap.getTileHeight() * mapDimension.tileSize);
+		infoBoxGraphicMetrics = new GraphicMetrics(infoBoxAnchorPoint, mapDimension.getTileWidth() * mapDimension.tileSize, 3 * mapDimension.tileSize, mapDimension.tileSize);
 	}
 	
 	public GameMap getGameMap() {
 		return gameMap;
 	}
 	
-	public Point getInfoBoxAnchorPoint() {
-		return infoBoxAnchorPoint;
+	public GraphicMetrics getInfoBoxGraphicMetrics() {
+		return infoBoxGraphicMetrics;
 	}
 	
 	public int getTileSize() {
@@ -31,7 +32,7 @@ public class GameProperties {
 	}
 	
 	// TODO: remove when possible
-	public MapDimension getMapDim() {
+	public MapDimension getMapDimension() {
 		return mapDimension;
 	}
 }

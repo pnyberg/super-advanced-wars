@@ -39,4 +39,12 @@ public class GameState {
 	public Cursor getCursor() {
 		return cursor;
 	}
+	
+	public ArrayList<Building> getBuildings() {
+		return buildings;
+	}
+	
+	public ArrayList<Structure> getStructures() {
+		return structures;
+	}
 }

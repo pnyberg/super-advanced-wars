@@ -2,15 +2,16 @@ package map.buildings;
 
 import java.util.ArrayList;
 
+import gameObjects.GameState;
 import main.HeroHandler;
 
 public class BuildingHandler {
 	private HeroHandler heroHandler;
 	private ArrayList<Building> buildings;
 	
-	public BuildingHandler(HeroHandler heroHandler, ArrayList<Building> buildings) {
-		this.heroHandler = heroHandler;
-		this.buildings = buildings;
+	public BuildingHandler(GameState gameState) {
+		this.heroHandler = gameState.getHeroHandler();
+		this.buildings = gameState.getBuildings();
 	}
 	
 	public boolean isNonFriendlyBuilding(int x, int y) {

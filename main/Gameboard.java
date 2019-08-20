@@ -88,24 +88,17 @@ public class Gameboard extends JPanel implements KeyListener {
 		// Game-properties
 		gameProperties = new GameProperties(mapDimension, gameMap);
 
-		Point point = gameProperties.getInfoBoxAnchorPoint();
-		BuildingHandler buildingHandler = new BuildingHandler(heroHandler, buildings);
-		StructureAttackHandler structureAttackHandler = new StructureAttackHandler(mapDimension, gameState);
-		StructureHandler structureHandler = new StructureHandler(structures, structureAttackHandler);
-		BuildingStructureHandlerObject buildingStructureHandlerObject = new BuildingStructureHandlerObject(buildingHandler, structureHandler);
-		GraphicMetrics infoBoxGraphicMetrics = new GraphicMetrics(point, mapDimension.getTileWidth() * tileSize, 3 * tileSize, tileSize);
+		GraphicMetrics infoBoxGraphicMetrics = gameProperties.getInfoBoxGraphicMetrics();
 		GameMapAndCursor gameMapAndCursor = new GameMapAndCursor(gameMap, gameState.getCursor());
-		infoBox = new InfoBox(infoBoxGraphicMetrics, gameState, gameMapAndCursor, buildingStructureHandlerObject);
-		internalStructureObject = new InternalStructureObject(gameProperties, gameState, gameMapAndCursor,  
-												buildingStructureHandlerObject);
+		infoBox = new InfoBox(infoBoxGraphicMetrics, gameState, mapDimension, gameMapAndCursor);
+		internalStructureObject = new InternalStructureObject(gameProperties, gameState, gameMapAndCursor);
 		mapMenu = new MapMenu(tileSize, heroHandler);
 		heroPortrait = new HeroPortrait(mapDimension, heroHandler);
-		turnHandler = new TurnHandler(gameProperties.fuelMaintenancePerTurn, heroHandler, buildingStructureHandlerObject);
+		turnHandler = new TurnHandler(gameProperties, gameState);
 		keyListenerInputHandler = new KeyListenerInputHandler(gameProperties, 
 											gameState,
 											gameMapAndCursor, 
 											internalStructureObject.getMainViewPainter(), 
-											buildingStructureHandlerObject, 
 											internalStructureObject.getUnitMenuHandler(), 
 											mapMenu,
 											internalStructureObject.getBuildingMenu(), 

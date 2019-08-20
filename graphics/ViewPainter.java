@@ -3,6 +3,7 @@ package graphics;
 import java.awt.Graphics;
 
 import combat.AttackRangeHandler;
+import gameObjects.GameState;
 import gameObjects.MapDimension;
 import main.HeroHandler;
 import map.BuildingStructureHandlerObject;
@@ -26,16 +27,16 @@ public class ViewPainter {
 	private StructureHandler structureHandler;
 	
 	// TODO: rewrite with fewer parameters
-	public ViewPainter(CommanderView commanderView, HeroHandler heroHandler, MapDimension mapDimension, GameMap gameMap, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler, BuildingStructureHandlerObject buildingStructureHandlerObject) {
+	public ViewPainter(CommanderView commanderView, MapDimension mapDimension, GameState gameState, GameMap gameMap, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler) {
 		mapViewType = MapViewType.MAIN_MAP_MENU_VIEW;
 		this.commanderView = commanderView;
-		this.heroHandler = heroHandler;
+		this.heroHandler = gameState.getHeroHandler();
 		this.mapDim = mapDimension;
 		this.gameMap = gameMap;
 		this.routeHandler = routeHandler;
 		this.attackRangeHandler = attackRangeHandler;
-		this.buildingHandler = buildingStructureHandlerObject.buildingHandler;
-		this.structureHandler = buildingStructureHandlerObject.structureHandler;
+		this.buildingHandler = new BuildingHandler(gameState);
+		this.structureHandler = new StructureHandler(gameState, mapDimension);
 	}
 	
 	public void setViewType(MapViewType mapViewType) {

@@ -30,15 +30,15 @@ public class UnitMenuHandler {
 	private BuildingHandler buildingHandler;
 	private AttackRangeHandler attackRangeHandler;
 
-	public UnitMenuHandler(GameProperties gameProp, GameState gameState, ContUnitHandler containerUnitHandler, SupplyHandler supplyHandler, AreaChecker areaChecker, BuildingHandler buildingHandler, AttackRangeHandler attackRangeHandler) {
-		unitMenu = new UnitMenu(gameProp.getMapDim().tileSize);
+	public UnitMenuHandler(GameProperties gameProp, GameState gameState, ContUnitHandler containerUnitHandler, SupplyHandler supplyHandler, AreaChecker areaChecker, AttackRangeHandler attackRangeHandler) {
+		unitMenu = new UnitMenu(gameProp.getMapDimension().tileSize);
 		this.gameProp = gameProp;
 		this.gameState = gameState;
 		this.containerUnitHandler = containerUnitHandler;
 		this.supplyHandler = supplyHandler;
 		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
 		this.areaChecker = areaChecker;
-		this.buildingHandler = buildingHandler;
+		this.buildingHandler = new BuildingHandler(gameState);
 		this.attackRangeHandler = attackRangeHandler;
 		this.containerUnitHandler = containerUnitHandler; 
 	}
@@ -75,8 +75,8 @@ public class UnitMenuHandler {
 					unitMenu.containedCargo(holdUnit);
 				}
 			} else if (chosenUnit.hasUnitContainer()) {
-				int cursorTileX = cursor.getX() / gameProp.getMapDim().tileSize;
-				int cursorTileY = cursor.getY() / gameProp.getMapDim().tileSize;
+				int cursorTileX = cursor.getX() / gameProp.getMapDimension().tileSize;
+				int cursorTileY = cursor.getY() / gameProp.getMapDimension().tileSize;
 				if (chosenUnit.getUnitContainer().isFull() && areaChecker.isLand(cursorTileX, cursorTileY)) {
 					Unit holdUnit = chosenUnit.getUnitContainer().getChosenUnit();
 					unitMenu.containedCargo(holdUnit);

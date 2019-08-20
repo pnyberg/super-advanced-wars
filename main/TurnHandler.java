@@ -1,7 +1,10 @@
 package main;
 
+import gameObjects.GameProperties;
+import gameObjects.GameState;
 import hero.Hero;
 import map.BuildingStructureHandlerObject;
+import map.buildings.BuildingHandler;
 import map.structures.StructureHandler;
 
 public class TurnHandler {
@@ -13,12 +16,13 @@ public class TurnHandler {
 	private int day;
 	private boolean firstHeroOfTheDay;
 
-	public TurnHandler(int fuelMaintenancePerTurn, HeroHandler heroHandler, BuildingStructureHandlerObject buildingStructureHandlerObject) {
-		fuelHandler = new FuelHandler(fuelMaintenancePerTurn, heroHandler);
-		this.heroHandler = heroHandler;
-		this.structureHandler = buildingStructureHandlerObject.structureHandler;
-		cashHandler = new CashHandler(heroHandler, buildingStructureHandlerObject.buildingHandler);
-		repairHandler = new RepairHandler(heroHandler, buildingStructureHandlerObject.buildingHandler);
+	public TurnHandler(GameProperties gameProperties, GameState gameState) {
+		fuelHandler = new FuelHandler(gameProperties.fuelMaintenancePerTurn, heroHandler);
+		this.heroHandler = gameState.getHeroHandler();
+		this.structureHandler = new StructureHandler(gameState, gameProperties.getMapDimension());
+		BuildingHandler buildingHandler = new BuildingHandler(gameState);
+		cashHandler = new CashHandler(heroHandler, buildingHandler);
+		repairHandler = new RepairHandler(heroHandler, buildingHandler);
 		day = 1;
 		firstHeroOfTheDay = false;
 	}
