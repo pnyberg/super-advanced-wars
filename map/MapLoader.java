@@ -8,7 +8,6 @@ import java.util.Scanner;
 import gameObjects.Direction;
 import gameObjects.MapDimension;
 import hero.Hero;
-import main.GameState;
 import main.HeroHandler;
 import map.area.Area;
 import map.area.TerrainType;
@@ -22,10 +21,15 @@ import map.structures.Structure;
 import point.Point;
 
 public class MapLoader {
-	public MapLoader() {
+	private int tileSize;
+	private HeroHandler heroHandler;
+	
+	public MapLoader(int tileSize, HeroHandler heroHandler) {
+		this.tileSize = tileSize;
+		this.heroHandler = heroHandler;
 	}
 	
-	public MapLoadingObject loadMap(String fileName, int tileSize, GameState gameState) {
+	public MapLoadingObject loadMap(String fileName) {
 		MapLoadingObject mapLoadingObject = new MapLoadingObject();
 		try {
 			Scanner scanner = new Scanner(new File(fileName));
@@ -47,7 +51,7 @@ public class MapLoader {
 				String[] tokens = nextLine.split(" ");
 				for (int tileX = 0 ; tileX < mapWidth ; tileX++) {
 					String tileCode = tokens[tileX];
-					insertMapTile(mapLoadingObject, tileSize, tileCode, new Point(tileX, tileY));
+					insertMapTile(mapLoadingObject, tileCode, new Point(tileX, tileY));
 				}
 			}
 		} catch (IOException e) {
@@ -56,8 +60,7 @@ public class MapLoader {
 		return mapLoadingObject;
 	}
 	
-	private void insertMapTile(MapLoadingObject mapLoadingObject, int tileSize, String tileCode, Point tilePoint) {
-		HeroHandler heroHandler = gameState.getHeroHandler();
+	private void insertMapTile(MapLoadingObject mapLoadingObject, String tileCode, Point tilePoint) {
 		int tileX = tilePoint.getX();
 		int tileY = tilePoint.getY();
 		TerrainType terrainType = null;
@@ -89,7 +92,7 @@ public class MapLoader {
 			mapLoadingObject.addBuilding(city);
 			String numString = tileCode.substring(2, 4);
 			if (!numString.equals("00")) {
-				city.setOwnership(getHeroFromNumber(heroHandler, numString));
+				city.setOwnership(getHeroFromNumber(numString));
 			}
 		} else if (tileCode.substring(0, 3).equals(factoryAbbrev + "0") && tileCode.substring(3, 4).matches("[0-4]")) {
 			terrainType = TerrainType.FACTORY;
@@ -97,7 +100,7 @@ public class MapLoader {
 			mapLoadingObject.addBuilding(factory);
 			String numString = tileCode.substring(2, 4);
 			if (!numString.equals("00")) {
-				factory.setOwnership(getHeroFromNumber(heroHandler, numString));
+				factory.setOwnership(getHeroFromNumber(numString));
 			}
 		} else if (tileCode.substring(0, 3).equals(airportAbbrev + "0") && tileCode.substring(3, 4).matches("[0-4]")) {
 			terrainType = TerrainType.AIRPORT;
@@ -105,7 +108,7 @@ public class MapLoader {
 			mapLoadingObject.addBuilding(airport);
 			String numString = tileCode.substring(2, 4);
 			if (!numString.equals("00")) {
-				airport.setOwnership(getHeroFromNumber(heroHandler, numString));
+				airport.setOwnership(getHeroFromNumber(numString));
 			}
 		} else if (tileCode.substring(0, 3).equals(portAbbrev + "0") && tileCode.substring(3, 4).matches("[0-4]")) {
 			terrainType = TerrainType.PORT;
@@ -113,12 +116,12 @@ public class MapLoader {
 			mapLoadingObject.addBuilding(port);
 			String numString = tileCode.substring(2, 4);
 			if (!numString.equals("00")) {
-				port.setOwnership(getHeroFromNumber(heroHandler, numString));
+				port.setOwnership(getHeroFromNumber(numString));
 			}
 		} else if (tileCode.substring(0, 2).equals(miniCannonAbbrev) && tileCode.substring(2, 3).matches("[NESW]") && tileCode.substring(3, 4).matches("[0-4]")) {
 			Direction direction = getDirectionFromLetter(tileCode.substring(2, 3));
 			String numString = tileCode.substring(3, 4);
-			Hero hero = numString.equals("0") ? null : getHeroFromNumber(heroHandler, numString);
+			Hero hero = numString.equals("0") ? null : getHeroFromNumber(numString);
 			terrainType = TerrainType.MINI_CANNON;
 			mapLoadingObject.addStructure(new MiniCannon(tileX * tileSize, tileY * tileSize, direction, hero, tileSize));
 		}
@@ -127,7 +130,7 @@ public class MapLoader {
 		mapLoadingObject.setAreaAtPosition(area, tileX, tileY);
 	}
 	
-	private Hero getHeroFromNumber(HeroHandler heroHandler, String numberString) {
+	private Hero getHeroFromNumber(String numberString) {
 		int number = Integer.parseInt(numberString) - 1;
 		return heroHandler.getHero(number);
 	}
