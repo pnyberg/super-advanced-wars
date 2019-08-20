@@ -1,13 +1,14 @@
 package gameObjects;
 
 public class GameProperties {
-	public final int fuelMaintenancePerTurn;
-	private MapDimension mapDim;
+	public final int fuelMaintenancePerTurn = 5;
+	public final int initialMoneyPerBuilding = 1000;
+
+	private MapDimension mapDimension;
 	private ChosenObject chosenObject;
 	
-	public GameProperties(int fuelMaintenancePerTurn, MapDimension mapDim, ChosenObject chosenObject) {
-		this.fuelMaintenancePerTurn = fuelMaintenancePerTurn;
-		this.mapDim = mapDim;
+	public GameProperties(MapDimension mapDimension, ChosenObject chosenObject) {
+		this.mapDimension = mapDimension;
 		this.chosenObject = chosenObject;
 	}
 	
@@ -15,7 +16,12 @@ public class GameProperties {
 		return chosenObject;
 	}
 	
+	public int getTileSize() {
+		return mapDimension.tileSize;
+	}
+	
+	// TODO: remove when possible
 	public MapDimension getMapDim() {
-		return mapDim;
+		return mapDimension;
 	}
 }

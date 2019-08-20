@@ -53,20 +53,18 @@ import unitUtils.ContUnitHandler;
 import units.Unit;
 
 public class Gameboard extends JPanel implements KeyListener {
-	private final int tileSize = 40;
-	private final int fuelMaintenancePerTurn = 5;
-	private final int initialMoneyPerBuilding = 1000;
-
+	private GameProperties gameProperties;
 	private GameMap gameMap;
+	private MapDimension mapDimension;
+	private ChosenObject chosenObject;
 	private InfoBox infoBox;
 	private InternalStructureObject internalStructureObject;
 	private MapMenu mapMenu;
 	private HeroPortrait heroPortrait;
 	private TurnHandler turnHandler;
 	private KeyListenerInputHandler keyListenerInputHandler;
-	private GameProperties gameProperties;
 
-	public Gameboard() {
+	public Gameboard(int tileSize) {
 		HeroHandler heroHandler = new HeroHandler();
 		HeroFactory heroFactory = new HeroFactory();
 		heroHandler.addHero(heroFactory.createHero(0));
@@ -76,10 +74,11 @@ public class Gameboard extends JPanel implements KeyListener {
 		MapLoader mapLoader = new MapLoader(tileSize, heroHandler);
 		MapLoadingObject mapLoadingObject = mapLoader.loadMap("map-files/test_map.txt");
 		gameMap = mapLoadingObject.getGameMap();
-		MapDimension mapDimension = mapLoadingObject.getMapDimension();
+		mapDimension = mapLoadingObject.getMapDimension();
 		ArrayList<Building> buildings = mapLoadingObject.getBuildingList();
 		ArrayList<Structure> structures = mapLoadingObject.getStructureList();
-		gameProperties = new GameProperties(fuelMaintenancePerTurn, mapDimension, new ChosenObject());
+		chosenObject = new ChosenObject();
+		gameProperties = new GameProperties(mapDimension, chosenObject);
 
 		Point point = new Point(0, gameMap.getTileHeight() * tileSize);
 		Cursor cursor = new Cursor(0, 0, tileSize);
@@ -95,7 +94,7 @@ public class Gameboard extends JPanel implements KeyListener {
 												buildingStructureHandlerObject);
 		mapMenu = new MapMenu(tileSize, heroHandler);
 		heroPortrait = new HeroPortrait(mapDimension, heroHandler);
-		turnHandler = new TurnHandler(fuelMaintenancePerTurn, heroHandler, buildingStructureHandlerObject);
+		turnHandler = new TurnHandler(gameProperties.fuelMaintenancePerTurn, heroHandler, buildingStructureHandlerObject);
 		keyListenerInputHandler = new KeyListenerInputHandler(gameProperties, 
 											gameMapAndCursor, 
 											internalStructureObject.getMainViewPainter(), 
@@ -119,7 +118,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 	
 	private void init() {
-		Building.init(initialMoneyPerBuilding);
+		Building.init(gameProperties.initialMoneyPerBuilding);
 		turnHandler.startTurnActions(); // setup
 		updatePortraitSideChoice();
 		repaint();
@@ -131,11 +130,11 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 	
 	public int getBoardWidth() {
-		return gameMap.getTileWidth() * gameProperties.getMapDim().tileSize;
+		return gameMap.getTileWidth() * mapDimension.tileSize;
 	}
 
 	public int getBoardHeight() {
-		return gameMap.getTileHeight() * gameProperties.getMapDim().tileSize + infoBox.getHeight();
+		return gameMap.getTileHeight() * mapDimension.tileSize + infoBox.getHeight();
 	}
 
 	/**
@@ -160,7 +159,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		AttackHandler attackHandler = internalStructureObject.getAttackHandler();
-		Unit chosenUnit = gameProperties.getChosenObject().chosenUnit;
+		Unit chosenUnit = chosenObject.chosenUnit;
 		UnitMenu unitMenu = internalStructureObject.getUnitMenuHandler().getUnitMenu();
 		ContUnitHandler contUnitHandler = internalStructureObject.getContUnitHandler();
 		internalStructureObject.getMainViewPainter().paint(g);
@@ -170,7 +169,7 @@ public class Gameboard extends JPanel implements KeyListener {
 				internalStructureObject.getRouteHandler().getRouteArrowPath().paintArrow(g);
 			}
 
-			chosenUnit.paint(g, gameProperties.getMapDim().tileSize);
+			chosenUnit.paint(g, mapDimension.tileSize);
 		}
 		internalStructureObject.getAttackRangeHandler().paintRange(g);
 		internalStructureObject.getMainViewPainter().paintUnits(g, chosenUnit);
@@ -182,7 +181,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	private void paintMenusAndCursors(Graphics g) {
 		UnitMenu unitMenu = internalStructureObject.getUnitMenuHandler().getUnitMenu();
 		AttackHandler attackHandler = internalStructureObject.getAttackHandler();
-		Unit chosenUnit = gameProperties.getChosenObject().chosenUnit;
+		Unit chosenUnit = chosenObject.chosenUnit;
 		Cursor cursor = internalStructureObject.getCursor();
 		// when the mapMenu is open the cursor is hidden
 		if (mapMenu.isVisible()) {

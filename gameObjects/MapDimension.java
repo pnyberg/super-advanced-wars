@@ -11,11 +11,6 @@ public class MapDimension {
 		this.tileSize = tileSize;
 	}
 	
-	public void setDimension(int tileWidth, int tileHeight) {
-		this.tileWidth = tileWidth;
-		this.tileHeight = tileHeight;
-	}
-	
 	public int getTileWidth() {
 		return tileWidth;
 	}
