@@ -3,6 +3,7 @@ package menus.unit;
 import combat.AttackRangeHandler;
 import cursors.Cursor;
 import gameObjects.GameProperties;
+import gameObjects.GameState;
 import main.SupplyHandler;
 import map.UnitGetter;
 import map.area.AreaChecker;
@@ -21,6 +22,7 @@ import units.treadMoving.APC;
 public class UnitMenuHandler {
 	private UnitMenu unitMenu;
 	private GameProperties gameProp;
+	private GameState gameState;
 	private ContUnitHandler containerUnitHandler;
 	private SupplyHandler supplyHandler;
 	private UnitGetter unitGetter;
@@ -28,9 +30,10 @@ public class UnitMenuHandler {
 	private BuildingHandler buildingHandler;
 	private AttackRangeHandler attackRangeHandler;
 
-	public UnitMenuHandler(GameProperties gameProp, ContUnitHandler containerUnitHandler, SupplyHandler supplyHandler, UnitGetter unitGetter, AreaChecker areaChecker, BuildingHandler buildingHandler, AttackRangeHandler attackRangeHandler) {
+	public UnitMenuHandler(GameProperties gameProp, GameState gameState, ContUnitHandler containerUnitHandler, SupplyHandler supplyHandler, UnitGetter unitGetter, AreaChecker areaChecker, BuildingHandler buildingHandler, AttackRangeHandler attackRangeHandler) {
 		unitMenu = new UnitMenu(gameProp.getMapDim().tileSize);
 		this.gameProp = gameProp;
+		this.gameState = gameState;
 		this.containerUnitHandler = containerUnitHandler;
 		this.supplyHandler = supplyHandler;
 		this.unitGetter = unitGetter;
@@ -42,7 +45,7 @@ public class UnitMenuHandler {
 
 	// TODO: rewrite code to make it more readable
 	public void handleOpenUnitMenu(Cursor cursor) {
-		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
+		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
 		boolean hurtAtSamePosition = unitGetter.hurtSameTypeUnitAtPosition(chosenUnit, cursor.getX(), cursor.getY());
 		
 		if (!areaChecker.areaOccupiedByFriendly(chosenUnit, cursor.getX(), cursor.getY()) || hurtAtSamePosition

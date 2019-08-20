@@ -11,6 +11,7 @@ import cursors.Cursor;
 import cursors.FiringCursor;
 import gameObjects.GameMapAndCursor;
 import gameObjects.GameProperties;
+import gameObjects.GameState;
 import graphics.CommanderView;
 import graphics.ViewPainter;
 import hero.HeroPortrait;
@@ -55,7 +56,7 @@ public class InternalStructureObject {
 	
 	// TODO: rewrite with fewer parameters
 	// TODO: rewrite the code to minimize decoupling
-	public InternalStructureObject(GameProperties gameProp, HeroHandler heroHandler, 
+	public InternalStructureObject(GameProperties gameProp, GameState gameState, HeroHandler heroHandler, 
 									GameMapAndCursor gameMapAndCursor, UnitGetter unitGetter, 
 									BuildingStructureHandlerObject buildingStructureHandlerObject) {
 		int tileSize = gameProp.getMapDim().tileSize;
@@ -82,13 +83,13 @@ public class InternalStructureObject {
 
 		// required init from third init-round
 		attackRangeHandler = new AttackRangeHandler(gameProp.getMapDim(), unitGetter, damageHandler, buildingStructureHandlerObject.structureHandler, routeChecker, movementMap);
-		containerUnitHandler = new ContUnitHandler(gameProp, gameMap, cursor, unitGetter, areaChecker, routeChecker); 
+		containerUnitHandler = new ContUnitHandler(gameProp, gameState, gameMap, cursor, unitGetter, areaChecker, routeChecker); 
 		firingCursor = new FiringCursor(gameProp.getMapDim(), unitGetter, heroHandler, damageHandler, buildingStructureHandlerObject.structureHandler);
 
 		// required init from fourth init-round
 		attackHandler = new AttackHandler(gameProp.getMapDim(), unitGetter, attackRangeHandler, damageHandler, buildingStructureHandlerObject.structureHandler);
 		mainViewPainter = new ViewPainter(commanderView, heroHandler, gameProp.getMapDim(), gameMap, routeHandler, attackRangeHandler, buildingStructureHandlerObject);
-		unitMenuHandler = new UnitMenuHandler(gameProp, containerUnitHandler, supplyHandler, unitGetter, areaChecker, buildingStructureHandlerObject.buildingHandler, attackRangeHandler);
+		unitMenuHandler = new UnitMenuHandler(gameProp, gameState, containerUnitHandler, supplyHandler, unitGetter, areaChecker, buildingStructureHandlerObject.buildingHandler, attackRangeHandler);
 	}
 	
 	public AttackHandler getAttackHandler() {

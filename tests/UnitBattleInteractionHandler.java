@@ -16,7 +16,7 @@ public class UnitBattleInteractionHandler {
 	private UnitCollection unitCollection;
 
 	public UnitBattleInteractionHandler(UnitCollection unitCollection) {
-		damageHandler = new DamageHandler(new HeroHandler(), new GameMap(1, 1, 1), new AttackValueCalculator(), new DefenceValueCalculator(), new UnitWorthCalculator());
+		//damageHandler = new DamageHandler(new HeroHandler(), new GameMap(1, 1, 1), new AttackValueCalculator(), new DefenceValueCalculator(), new UnitWorthCalculator());
 		this.unitCollection = unitCollection;
 	}
 

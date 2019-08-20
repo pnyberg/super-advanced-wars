@@ -2,18 +2,21 @@ package cursors;
 
 import combat.DamageHandler;
 import gameObjects.GameProperties;
+import gameObjects.GameState;
 import gameObjects.MapDimension;
 import map.UnitGetter;
 import units.Unit;
 
 public class FiringCursorHandler {
 	private GameProperties gameProp;
+	private GameState gameState;
 	private Cursor cursor;
 	private UnitGetter unitGetter;
 	private DamageHandler damageHandler;
 	
-	public FiringCursorHandler(GameProperties gameProp, Cursor cursor, UnitGetter unitGetter, DamageHandler damageHandler) {
+	public FiringCursorHandler(GameProperties gameProp, GameState gameState, Cursor cursor, UnitGetter unitGetter, DamageHandler damageHandler) {
 		this.gameProp = gameProp;
+		this.gameState = gameState;
 		this.cursor = cursor;
 		this.unitGetter = unitGetter;
 		this.damageHandler = damageHandler;
@@ -21,7 +24,7 @@ public class FiringCursorHandler {
 
 	// TODO: rewrite code to make it more readable
 	public void moveFiringCursorClockwise() {
-		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
+		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
 		MapDimension mapDim = gameProp.getMapDim();
 		int unitX = chosenUnit.getPoint().getX();
 		int unitY = chosenUnit.getPoint().getY();
@@ -77,7 +80,7 @@ public class FiringCursorHandler {
 	}
 
 	public void moveFiringCursorCounterclockwise() {
-		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
+		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
 		MapDimension mapDim = gameProp.getMapDim();
 		int unitX = chosenUnit.getPoint().getX();
 		int unitY = chosenUnit.getPoint().getY();

@@ -3,6 +3,7 @@ package unitUtils;
 
 import cursors.Cursor;
 import gameObjects.GameProperties;
+import gameObjects.GameState;
 import gameObjects.MapDimension;
 import map.GameMap;
 import map.UnitGetter;
@@ -28,14 +29,16 @@ import units.treadMoving.Tank;
 
 public class ContUnitHandler {
 	private GameProperties gameProp;
+	private GameState gameState;
 	private GameMap gameMap;
 	private Cursor cursor;
 	private UnitGetter unitGetter;
 	private AreaChecker areaChecker;
 	private RouteChecker routeChecker;
 	
-	public ContUnitHandler(GameProperties gameProp, GameMap gameMap, Cursor cursor, UnitGetter unitGetter, AreaChecker areaChecker, RouteChecker routeChecker) {
+	public ContUnitHandler(GameProperties gameProp, GameState gameState, GameMap gameMap, Cursor cursor, UnitGetter unitGetter, AreaChecker areaChecker, RouteChecker routeChecker) {
 		this.gameProp = gameProp;
+		this.gameState = gameState;
 		this.gameMap = gameMap;
 		this.cursor = cursor;
 		this.unitGetter = unitGetter;
@@ -45,7 +48,7 @@ public class ContUnitHandler {
 
 	public void handleDroppingOff() {
 		Unit containedUnit = null;
-		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
+		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
 		if (chosenUnit instanceof APC) {
 			((APC)chosenUnit).regulateDroppingOff(true);
 			containedUnit = ((APC)chosenUnit).getContainedUnit();
@@ -87,7 +90,7 @@ public class ContUnitHandler {
 	}
 
 	public boolean unitIsDroppingOff() {
-		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
+		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
 		if (chosenUnit instanceof APC) {
 			if (((APC)chosenUnit).isDroppingOff()) {
 				return true;
@@ -110,7 +113,7 @@ public class ContUnitHandler {
 	}
 
 	public boolean unitCanBeDroppedOff() {
-		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
+		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
 		if (chosenUnit instanceof APC) {
 			((APC)chosenUnit).regulateDroppingOff(true);
 			return unitCanBeDroppedOff(((APC)chosenUnit).getContainedUnit());
@@ -133,8 +136,8 @@ public class ContUnitHandler {
 			return false;
 		}
 		MapDimension mapDim = gameProp.getMapDim();
-		int tileX = gameProp.getChosenObject().chosenUnit.getPoint().getX() / gameProp.getMapDim().tileSize;
-		int tileY = gameProp.getChosenObject().chosenUnit.getPoint().getY() / gameProp.getMapDim().tileSize;
+		int tileX = gameState.getChosenObject().chosenUnit.getPoint().getX() / gameProp.getMapDim().tileSize;
+		int tileY = gameState.getChosenObject().chosenUnit.getPoint().getY() / gameProp.getMapDim().tileSize;
 
 		if (tileY > 0 && validPosition(unit, tileX, tileY - 1)) {
 			return true;
@@ -162,7 +165,7 @@ public class ContUnitHandler {
 	}
 
 	public void moveDroppingOffCursorClockwise() {
-		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
+		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
 		MapDimension mapDim = gameProp.getMapDim();
 		int cursorTileX = cursor.getX() / gameProp.getMapDim().tileSize;
 		int cursorTileY = cursor.getY() / gameProp.getMapDim().tileSize;
@@ -220,7 +223,7 @@ public class ContUnitHandler {
 	}
 
 	public void moveDroppingOffCursorCounterclockwise() {
-		Unit chosenUnit = gameProp.getChosenObject().chosenUnit;
+		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
 		MapDimension mapDim = gameProp.getMapDim();
 		int unitTileX = chosenUnit.getPoint().getX() / gameProp.getMapDim().tileSize;
 		int unitTileY = chosenUnit.getPoint().getY() / gameProp.getMapDim().tileSize;
