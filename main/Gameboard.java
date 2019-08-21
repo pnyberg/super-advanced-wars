@@ -23,33 +23,24 @@ package main;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
-
 import javax.swing.JPanel;
 
 import combat.AttackHandler;
 import combat.AttackRangeHandler;
 import cursors.Cursor;
 import cursors.FiringCursor;
-import gameObjects.GameMapAndCursor;
 import gameObjects.GameProperties;
 import gameObjects.GameState;
-import gameObjects.GraphicMetrics;
-import gameObjects.MapDimension;
 import graphics.ViewPainter;
 import hero.HeroFactory;
 import hero.HeroPortrait;
-import map.GameMap;
 import map.GameLoader;
 import map.GameLoadingObject;
 import map.buildings.Building;
-import map.structures.Structure;
 import menus.building.BuildingMenu;
 import menus.map.MapMenu;
 import menus.unit.UnitMenu;
-import routing.MovementCostCalculator;
 import routing.RouteArrowPath;
-import routing.RouteHandler;
 import unitUtils.ContUnitHandler;
 import units.Unit;
 
@@ -127,25 +118,35 @@ public class Gameboard extends JPanel implements KeyListener {
 		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
 		mainViewPainter.paint(g);
 		if (chosenUnit != null) {
-			UnitMenu unitMenu = new UnitMenu(gameProperties.getTileSize(), gameState);
-			ContUnitHandler contUnitHandler = new ContUnitHandler(gameProperties, gameState);
-			AttackHandler attackHandler = new AttackHandler(gameProperties, gameState);
-			if (!unitMenu.isVisible() && !contUnitHandler.unitIsDroppingOff() 
-									&& !attackHandler.unitWantsToFire(chosenUnit)) {
-				RouteArrowPath routeArrowPath = new RouteArrowPath(gameProperties, gameState);
-				routeArrowPath.paintArrow(g);
-			}
-
-			chosenUnit.paint(g, gameProperties.getTileSize());
+			paintChosenUnitGraphics(g);
 		}
 		AttackRangeHandler attackRangeHandler = new AttackRangeHandler(gameProperties, gameState);
 		InfoBox infoBox = new InfoBox(gameProperties, gameState);
 		HeroPortrait heroPortrait = new HeroPortrait(gameProperties.getMapDimension(), gameState);
+		// paint general map-graphics
 		attackRangeHandler.paintRange(g);
 		mainViewPainter.paintUnits(g, chosenUnit);
 		paintMenusAndCursors(g);
 		heroPortrait.paint(g);
 		infoBox.paint(g);
+	}
+	
+	private void paintChosenUnitGraphics(Graphics g) {
+		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
+		if (showRoutePath()) {
+			RouteArrowPath routeArrowPath = new RouteArrowPath(gameProperties, gameState);
+			routeArrowPath.paintArrow(g);
+		}
+		chosenUnit.paint(g, gameProperties.getTileSize());
+	}
+	
+	private boolean showRoutePath() {
+		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
+		UnitMenu unitMenu = new UnitMenu(gameProperties.getTileSize(), gameState);
+		ContUnitHandler contUnitHandler = new ContUnitHandler(gameProperties, gameState);
+		AttackHandler attackHandler = new AttackHandler(gameProperties, gameState);
+		return !unitMenu.isVisible() && !contUnitHandler.unitIsDroppingOff() 
+				&& !attackHandler.unitWantsToFire(chosenUnit);
 	}
 	
 	private void paintMenusAndCursors(Graphics g) {
