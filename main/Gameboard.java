@@ -1,7 +1,5 @@
 /**
  * Refactor-bugs
- *  - "pressing B on a structure/unit"
- *  - "menu for unit-action"
  *  - "missing arrows for movement"
  * 
  * TODO-list
@@ -96,6 +94,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		ArrayList<Structure> structures = mapLoadingObject.getStructureList();
 		gameState.addStructures(structures);
 		gameState.setMovementMap(mapLoadingObject.getMovementMap());
+		gameState.initRangeMap(mapDimension);
 		
 		// Game-properties
 		gameProperties = new GameProperties(mapDimension, gameMap);

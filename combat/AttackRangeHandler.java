@@ -24,24 +24,22 @@ import units.treadMoving.APC;
 public class AttackRangeHandler {
 	private MapDimension mapDimension;
 	private UnitGetter unitGetter;
-	private boolean[][] rangeMap;
 	private DamageHandler damageHandler;
 	private StructureHandler structureHandler; 
 	private RouteChecker routeChecker;
-	private MovementMap movementMap;
+	private GameState gameState;
 
 	public AttackRangeHandler(GameProperties gameProperties, GameState gameState) {
 		this.mapDimension = gameProperties.getMapDimension();
 		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
-		rangeMap = new boolean[mapDimension.getTileWidth()][mapDimension.getTileHeight()];
 		this.damageHandler = new DamageHandler(gameState.getHeroHandler(), gameProperties.getGameMap());
 		this.structureHandler = new StructureHandler(gameState, mapDimension);
 		routeChecker = new RouteChecker(gameProperties, gameState);
-		this.movementMap = gameState.getMovementMap();
+		this.gameState = gameState;
 	}
 	
 	public void clearRangeMap() {
-		rangeMap = new boolean[mapDimension.getTileWidth()][mapDimension.getTileHeight()];
+		gameState.resetRangeMap();
 	}
 
 	public boolean unitCanFire(Unit chosenUnit, Cursor cursor) {
@@ -135,6 +133,7 @@ public class AttackRangeHandler {
 	}
 
 	public void findPossibleDirectAttackLocations(Unit chosenUnit) {
+		MovementMap movementMap = gameState.getMovementMap();
 		// TODO: change so that this call returns a map?
 		routeChecker.findPossibleMovementLocations(chosenUnit);
 		for (int tileY = 0 ; tileY < mapDimension.getTileHeight() ; tileY++) {
@@ -142,16 +141,16 @@ public class AttackRangeHandler {
 				if (movementMap.isAcceptedMove(tileX, tileY)) {
 					// add possible attack-locations from "current position"
 					if (tileX > 0) {
-						rangeMap[tileX - 1][tileY] = true;
+						gameState.enableRangeMapLocation(tileX - 1, tileY);
 					}
 					if (tileX < (mapDimension.getTileWidth() - 1)) {
-						rangeMap[tileX + 1][tileY] = true;
+						gameState.enableRangeMapLocation(tileX + 1, tileY);
 					}
 					if (tileY > 0) {
-						rangeMap[tileX][tileY - 1] = true;
+						gameState.enableRangeMapLocation(tileX, tileY - 1);
 					}
 					if (tileY < (mapDimension.getTileHeight() - 1)) {
-						rangeMap[tileX][tileY + 1] = true;
+						gameState.enableRangeMapLocation(tileX, tileY + 1);
 					}
 				}
 			}
@@ -179,7 +178,7 @@ public class AttackRangeHandler {
 				}
 				int distanceFromUnit = Math.abs(unitTileX - tileX) + Math.abs(unitTileY - tileY);
 				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
-					rangeMap[tileX][tileY] = true;
+					gameState.enableRangeMapLocation(tileX, tileY);
 				}
 			}
 		}
@@ -210,11 +209,11 @@ public class AttackRangeHandler {
 					if (targetUnit != null && damageHandler.validTarget(indirectUnit, targetUnit)) {
 						Point p = new Point(tileX * mapDimension.tileSize, tileY * mapDimension.tileSize);
 						indirectUnit.addFiringLocation(p);
-						rangeMap[tileX][tileY] = true;
+						gameState.enableRangeMapLocation(tileX, tileY);
 					} else if (targetStructure != null && structureHandler.unitCanAttackStructure(indirectUnit, targetStructure)) {
 						Point p = new Point(tileX * mapDimension.tileSize, tileY * mapDimension.tileSize);
 						indirectUnit.addFiringLocation(p);
-						rangeMap[tileX][tileY] = true;
+						gameState.enableRangeMapLocation(tileX, tileY);
 					}
 				}
 			}
@@ -222,17 +221,17 @@ public class AttackRangeHandler {
 	}
 	
 	public void importStructureAttackLocations(FiringStructure firingStructure) {
-		firingStructure.fillRangeMap(rangeMap);
+		firingStructure.importRangeMap(gameState.getRangeMap());
 	}
 	
 	public boolean[][] getRangeMap() {
-		return rangeMap;
+		return gameState.getRangeMap();
 	}
 	
 	public void paintRange(Graphics g) {
 		for (int n = 0 ; n < mapDimension.getTileHeight() ; n++) {
 			for (int i = 0 ; i < mapDimension.getTileWidth() ; i++) {
-				if (rangeMap[i][n]) {
+				if (gameState.getRangeMapLocation(i, n)) {
 					int paintX = i * mapDimension.tileSize;
 					int paintY = n * mapDimension.tileSize;
 

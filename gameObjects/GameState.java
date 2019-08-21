@@ -21,6 +21,7 @@ public class GameState {
 	private MenuState buildingMenuState;
 	private MenuState mapMenuState;
 	private UnitMenuState unitMenuState;
+	private boolean[][] rangeMap;
 	
 	public GameState(int tileSize) {
 		heroHandler = new HeroHandler();
@@ -31,6 +32,12 @@ public class GameState {
 		buildingMenuState = new BuildingMenuState();
 		mapMenuState = new MenuState();
 		unitMenuState = new UnitMenuState();
+		movementMap = null;
+		rangeMap = null;
+	}
+	
+	public void initRangeMap(MapDimension mapDimension) {
+		rangeMap = new boolean[mapDimension.getTileWidth()][mapDimension.getTileHeight()];
 	}
 	
 	public void addBuildings(ArrayList<Building> buildings) {
@@ -39,6 +46,14 @@ public class GameState {
 	
 	public void addStructures(ArrayList<Structure> structures) {
 		this.structures.addAll(structures);
+	}
+	
+	public void enableRangeMapLocation(int tileX, int tileY) {
+		rangeMap[tileX][tileY] = true;
+	}
+	
+	public void resetRangeMap() {
+		rangeMap = new boolean[rangeMap.length][rangeMap[0].length];
 	}
 	
 	public void setMovementMap(MovementMap movementMap) {
@@ -59,6 +74,14 @@ public class GameState {
 	
 	public MovementMap getMovementMap() {
 		return movementMap;
+	}
+
+	public boolean[][] getRangeMap() {
+		return rangeMap;
+	}
+	
+	public boolean getRangeMapLocation(int tileX, int tileY) {
+		return rangeMap[tileX][tileY];
 	}
 	
 	public ArrayList<Building> getBuildings() {

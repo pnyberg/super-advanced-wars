@@ -9,5 +9,5 @@ public abstract class FiringStructure extends Structure {
 
 	public abstract int getDamage();
 	
-	public abstract void fillRangeMap(boolean[][] rangeMap);
+	public abstract void importRangeMap(boolean[][] rangeMap);
 }

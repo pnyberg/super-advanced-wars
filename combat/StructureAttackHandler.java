@@ -25,7 +25,7 @@ public class StructureAttackHandler {
 		Hero owningHero = firingStructure.getOwner(); 
 		
 		boolean[][] firingRangeMap = new boolean[mapDim.getTileWidth()][mapDim.getTileHeight()];
-		firingStructure.fillRangeMap(firingRangeMap);
+		firingStructure.importRangeMap(firingRangeMap);
 		
 		for (int tileY = 0 ; tileY < mapDim.getTileHeight() ; tileY++) {
 			for (int tileX = 0 ; tileX < mapDim.getTileWidth() ; tileX++) {

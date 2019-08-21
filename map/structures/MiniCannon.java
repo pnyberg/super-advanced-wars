@@ -21,7 +21,7 @@ public class MiniCannon extends FiringStructure {
 	}
 	
 	// TODO: rewrite code to make it readable
-	public void fillRangeMap(boolean[][] rangeMap) {
+	public void importRangeMap(boolean[][] rangeMap) {
 		if (direction == Direction.SOUTH) {
 			int rangeTileX = point.getX()/tileSize;
 			int rangeTileY = point.getY()/tileSize + 1;
