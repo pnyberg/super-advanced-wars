@@ -8,8 +8,8 @@ public class GameMap {
 	private Area[][] map;
 	private int tileSize;
 	
-	public GameMap(int width, int height, int tileSize) {
-		map = new Area[width][height];
+	public GameMap(Area[][] map, int tileSize) {
+		this.map = map;
 		this.tileSize = tileSize;
 	}
 	

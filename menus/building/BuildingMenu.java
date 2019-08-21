@@ -14,6 +14,7 @@ import menus.unit.UnitCreatingFactory;
 
 import java.awt.Graphics;
 
+import gameObjects.GameProperties;
 import gameObjects.GameState;
 import hero.*;
 
@@ -25,15 +26,15 @@ public class BuildingMenu extends Menu {
 	private BuildingMenuPainter buildingMenuPainter;
 	private GameMap gameMap;
 
-	public BuildingMenu(int tileSize, GameState gameState, GameMap gameMap) {
-		super(gameState.getBuildingMenuState(), tileSize);
+	public BuildingMenu(GameProperties gameProperties, GameState gameState) {
+		super(gameState.getBuildingMenuState(), gameProperties.getTileSize());
 		this.heroHandler = gameState.getHeroHandler();
 		dimensionValues.menuRowWidth = 118;
 		priceAlign = 70;
 		buildingItemFactory = new BuildingItemFactory();
 		unitCreatingFactory = new UnitCreatingFactory(tileSize);
 		buildingMenuPainter = new BuildingMenuPainter(heroHandler, dimensionValues, priceAlign);
-		this.gameMap = gameMap;
+		this.gameMap = gameProperties.getGameMap();
 	}
 
 	public void openMenu(int x, int y) {

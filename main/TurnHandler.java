@@ -2,6 +2,7 @@ package main;
 
 import gameObjects.GameProperties;
 import gameObjects.GameState;
+import gameObjects.TurnState;
 import hero.Hero;
 import map.BuildingStructureHandlerObject;
 import map.buildings.BuildingHandler;
@@ -13,8 +14,7 @@ public class TurnHandler {
 	private RepairHandler repairHandler;
 	private HeroHandler heroHandler;
 	private StructureHandler structureHandler;
-	private int day;
-	private boolean firstHeroOfTheDay;
+	private TurnState turnState;
 
 	public TurnHandler(GameProperties gameProperties, GameState gameState) {
 		this.heroHandler = gameState.getHeroHandler();
@@ -23,8 +23,7 @@ public class TurnHandler {
 		BuildingHandler buildingHandler = new BuildingHandler(gameState);
 		cashHandler = new CashHandler(heroHandler, buildingHandler);
 		repairHandler = new RepairHandler(heroHandler, buildingHandler);
-		day = 1;
-		firstHeroOfTheDay = false;
+		turnState = gameState.getTurnState();
 	}
 	
 	public void endTurn() {
@@ -41,10 +40,10 @@ public class TurnHandler {
 		} else if (heroHandler.getCurrentHero().isSuperPowerActive()) {
 			heroHandler.getCurrentHero().setSuperPowerActive(false);
 		}
-		if (firstHeroOfTheDay) {
-			day++;
+		if (turnState.isFirstHeroOfTheDay()) {
+			turnState.incrementDay();
 			structureHandler.doStructureActions();
-			firstHeroOfTheDay = false;
+			turnState.setFirstHeroOfTheDay(false);
 		}
 	}
 
@@ -52,7 +51,7 @@ public class TurnHandler {
 		resetActiveVariable();
 		heroHandler.nextHero();
 		if (heroHandler.getCurrentHero() == heroHandler.getHero(0)) {
-			firstHeroOfTheDay = true;
+			turnState.setFirstHeroOfTheDay(true);
 		}
 	}
 

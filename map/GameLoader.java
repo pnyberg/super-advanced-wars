@@ -6,25 +6,33 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import gameObjects.Direction;
+import gameObjects.GameProperties;
+import gameObjects.GameState;
 import gameObjects.MapDimension;
 import hero.Hero;
 import main.HeroHandler;
 import map.area.Area;
 import map.area.TerrainType;
 import map.buildings.Airport;
+import map.buildings.Building;
 import map.buildings.City;
 import map.buildings.Factory;
 import map.buildings.Port;
 import map.structures.MiniCannon;
+import map.structures.Structure;
 import point.Point;
 import routing.MovementMap;
 
-public class MapLoader {
-	public MapLoader() {
+public class GameLoader {
+	private HeroHandler heroHandler;
+	private int tileSize;
+	
+	public GameLoader(HeroHandler heroHandler, int tileSize) {
+		this.heroHandler = heroHandler;
+		this.tileSize = tileSize;
 	}
 	
-	public MapLoadingObject loadMap(String fileName, HeroHandler heroHandler, int tileSize) {
-		MapLoadingObject mapLoadingObject = new MapLoadingObject();
+	public GameLoadingObject loadMap(String fileName) {
 		try {
 			Scanner scanner = new Scanner(new File(fileName));
 			ArrayList<String> mapLines = new ArrayList<>();
@@ -38,34 +46,48 @@ public class MapLoader {
 			}
 			int mapWidth = mapLines.get(0).split(" ").length;
 			int mapHeight = mapLines.size();
-			mapLoadingObject.setGameMap(new GameMap(mapWidth, mapHeight, tileSize));
+			Area[][] map = new Area[mapWidth][mapHeight];
 			MapDimension mapDimension = new MapDimension(mapWidth, mapHeight, tileSize);
-			mapLoadingObject.setMapDimension(mapDimension);
-			mapLoadingObject.setMovementMap(new MovementMap(mapDimension));
+			ArrayList<Building> buildings = new ArrayList<>();
+			ArrayList<Structure> structures = new ArrayList<>();
 			for (int tileY = 0 ; tileY < mapHeight ; tileY++) {
 				String nextLine = mapLines.get(tileY);
 				String[] tokens = nextLine.split(" ");
 				for (int tileX = 0 ; tileX < mapWidth ; tileX++) {
 					String tileCode = tokens[tileX];
-					insertMapTile(mapLoadingObject, heroHandler, tileSize, tileCode, new Point(tileX, tileY));
+					MapTileObject mapTileObject = createMapTile(tileCode, new Point(tileX, tileY));
+					map[tileX][tileY] = mapTileObject.area;
+					if (mapTileObject.building != null) {
+						buildings.add(mapTileObject.building);
+					} else if (mapTileObject.structure != null) {
+						structures.add(mapTileObject.structure);
+					}
 				}
 			}
+			GameMap gameMap = new GameMap(map, tileSize);
+			GameProperties gameProperties = new GameProperties(mapDimension, gameMap);
+			GameState gameState = new GameState(mapDimension, heroHandler, buildings, structures);
+			GameLoadingObject gameLoadingObject = new GameLoadingObject(gameProperties, gameState);
+			return gameLoadingObject;
 		} catch (IOException e) {
 			System.err.println("Couldn't load file '" + fileName + "'.");
 		}
-		return mapLoadingObject;
+		return null;
 	}
 	
-	private void insertMapTile(MapLoadingObject mapLoadingObject, HeroHandler heroHandler, int tileSize, String tileCode, Point tilePoint) {
-		int tileX = tilePoint.getX();
-		int tileY = tilePoint.getY();
-		TerrainType terrainType = null;
+	private MapTileObject createMapTile(String tileCode, Point tilePoint) {
 		final String cityAbbrev = "CT";
 		final String factoryAbbrev = "FT";
 		final String airportAbbrev = "AT";
 		final String portAbbrev = "PT";
 		final String miniCannonAbbrev = "MC";
 		
+		int tileX = tilePoint.getX();
+		int tileY = tilePoint.getY();
+		TerrainType terrainType = null;
+		Building building = null;
+		Structure structure = null;
+
 		if (tileCode.equals("PLAN")) {
 			terrainType = TerrainType.PLAIN;
 		} else if (tileCode.equals("WOOD")) {
@@ -85,47 +107,47 @@ public class MapLoader {
 		} else if (tileCode.substring(0, 3).equals(cityAbbrev + "0") && tileCode.substring(3, 4).matches("[0-4]")) {
 			terrainType = TerrainType.CITY;
 			City city = new City(tileX * tileSize, tileY * tileSize, tileSize); 
-			mapLoadingObject.addBuilding(city);
 			String numString = tileCode.substring(2, 4);
 			if (!numString.equals("00")) {
-				city.setOwnership(getHeroFromNumber(heroHandler, numString));
+				city.setOwnership(getHeroFromNumber(numString));
 			}
+			building = city;
 		} else if (tileCode.substring(0, 3).equals(factoryAbbrev + "0") && tileCode.substring(3, 4).matches("[0-4]")) {
 			terrainType = TerrainType.FACTORY;
 			Factory factory = new Factory(tileX * tileSize, tileY * tileSize, tileSize); 
-			mapLoadingObject.addBuilding(factory);
 			String numString = tileCode.substring(2, 4);
 			if (!numString.equals("00")) {
-				factory.setOwnership(getHeroFromNumber(heroHandler, numString));
+				factory.setOwnership(getHeroFromNumber(numString));
 			}
+			building = factory;
 		} else if (tileCode.substring(0, 3).equals(airportAbbrev + "0") && tileCode.substring(3, 4).matches("[0-4]")) {
 			terrainType = TerrainType.AIRPORT;
 			Airport airport = new Airport(tileX * tileSize, tileY * tileSize, tileSize); 
-			mapLoadingObject.addBuilding(airport);
 			String numString = tileCode.substring(2, 4);
 			if (!numString.equals("00")) {
-				airport.setOwnership(getHeroFromNumber(heroHandler, numString));
+				airport.setOwnership(getHeroFromNumber(numString));
 			}
+			building = airport;
 		} else if (tileCode.substring(0, 3).equals(portAbbrev + "0") && tileCode.substring(3, 4).matches("[0-4]")) {
 			terrainType = TerrainType.PORT;
 			Port port = new Port(tileX * tileSize, tileY * tileSize, tileSize); 
-			mapLoadingObject.addBuilding(port);
 			String numString = tileCode.substring(2, 4);
 			if (!numString.equals("00")) {
-				port.setOwnership(getHeroFromNumber(heroHandler, numString));
+				port.setOwnership(getHeroFromNumber(numString));
 			}
+			building = port;
 		} else if (tileCode.substring(0, 2).equals(miniCannonAbbrev) && tileCode.substring(2, 3).matches("[NESW]") && tileCode.substring(3, 4).matches("[0-4]")) {
 			Direction direction = getDirectionFromLetter(tileCode.substring(2, 3));
 			String numString = tileCode.substring(3, 4);
-			Hero hero = numString.equals("0") ? null : getHeroFromNumber(heroHandler, numString);
+			Hero hero = numString.equals("0") ? null : getHeroFromNumber(numString);
 			terrainType = TerrainType.MINI_CANNON;
-			mapLoadingObject.addStructure(new MiniCannon(tileX * tileSize, tileY * tileSize, direction, hero, tileSize));
+			structure = new MiniCannon(tileX * tileSize, tileY * tileSize, direction, hero, tileSize);
 		}
 		Area area = new Area(terrainType, new Point(tileX * tileSize, tileY * tileSize), tileSize);
-		mapLoadingObject.setAreaAtPosition(area, tileX, tileY);
+		return new MapTileObject(area, building, structure);
 	}
 	
-	private Hero getHeroFromNumber(HeroHandler heroHandler, String numberString) {
+	private Hero getHeroFromNumber(String numberString) {
 		int number = Integer.parseInt(numberString) - 1;
 		return heroHandler.getHero(number);
 	}

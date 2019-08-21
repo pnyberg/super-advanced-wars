@@ -1,6 +1,6 @@
 /**
- * Refactor-bugs
- *  - "missing arrows for movement"
+ * Refactor-bug
+ *  - HeroPortrait always in upper left corner
  * 
  * TODO-list
  * - only one action/unit per turn
@@ -43,14 +43,15 @@ import graphics.ViewPainter;
 import hero.HeroFactory;
 import hero.HeroPortrait;
 import map.GameMap;
-import map.MapLoader;
-import map.MapLoadingObject;
+import map.GameLoader;
+import map.GameLoadingObject;
 import map.buildings.Building;
 import map.structures.Structure;
 import menus.building.BuildingMenu;
 import menus.map.MapMenu;
 import menus.unit.UnitMenu;
 import routing.MovementCostCalculator;
+import routing.RouteArrowPath;
 import routing.RouteHandler;
 import unitUtils.ContUnitHandler;
 import units.Unit;
@@ -58,73 +59,30 @@ import units.Unit;
 public class Gameboard extends JPanel implements KeyListener {
 	private GameState gameState;
 	private GameProperties gameProperties;
-	private GameMap gameMap;
-	private MapDimension mapDimension;
-	private InfoBox infoBox;
-	private MapMenu mapMenu;
-	private UnitMenu unitMenu;
-	private BuildingMenu buildingMenu;
-	private HeroPortrait heroPortrait;
-	private FiringCursor firingCursor;
-	private ViewPainter mainViewPainter;
-	private AttackHandler attackHandler;
-	private TurnHandler turnHandler;
-	private ContUnitHandler contUnitHandler;
-	private RouteHandler routeHandler;
-	private AttackRangeHandler attackRangeHandler;
 	private KeyListenerInputHandler keyListenerInputHandler;
 
 	public Gameboard(int tileSize) {
-		gameState = new GameState(tileSize);
-		
 		// Init heroes
-		HeroHandler heroHandler = gameState.getHeroHandler();
+		HeroHandler heroHandler = new HeroHandler();
 		HeroFactory heroFactory = new HeroFactory();
 		heroHandler.addHero(heroFactory.createHero(0));
 		heroHandler.addHero(heroFactory.createHero(1));
 		heroHandler.selectStartHero();
 		
-		// Load map
-		MapLoader mapLoader = new MapLoader();
-		MapLoadingObject mapLoadingObject = mapLoader.loadMap("map-files/test_map.txt", heroHandler, tileSize);
-		gameMap = mapLoadingObject.getGameMap();
-		mapDimension = mapLoadingObject.getMapDimension();
-		ArrayList<Building> buildings = mapLoadingObject.getBuildingList();
-		gameState.addBuildings(buildings);
-		ArrayList<Structure> structures = mapLoadingObject.getStructureList();
-		gameState.addStructures(structures);
-		gameState.setMovementMap(mapLoadingObject.getMovementMap());
-		gameState.initRangeMap(mapDimension);
+		// Load game
+		GameLoader gameLoader = new GameLoader(heroHandler, tileSize);
+		GameLoadingObject gameLoadingObject = gameLoader.loadMap("map-files/test_map.txt");
+		gameProperties = gameLoadingObject.getGameProperties();
+		gameState = gameLoadingObject.getInitalGameState();
 		
-		// Game-properties
-		gameProperties = new GameProperties(mapDimension, gameMap);
-
-		// Create graphics 
-		infoBox = new InfoBox(gameProperties, gameState);
-		mapMenu = new MapMenu(tileSize, gameState);
-		heroPortrait = new HeroPortrait(mapDimension, gameState);
-		firingCursor = new FiringCursor(gameProperties, gameState);
-		unitMenu = new UnitMenu(gameProperties.getTileSize(), gameState);
-		buildingMenu = new BuildingMenu(gameProperties.getTileSize(), gameState, gameMap);
-		mainViewPainter = new ViewPainter(gameProperties, gameState);
-
-		// Create handlers
-		attackHandler = new AttackHandler(gameProperties, gameState);
-		turnHandler = new TurnHandler(gameProperties, gameState);
-		contUnitHandler = new ContUnitHandler(gameProperties, gameState);
-		routeHandler = new RouteHandler(gameProperties, gameState);
-		attackRangeHandler = new AttackRangeHandler(gameProperties, gameState);
-
-		keyListenerInputHandler = new KeyListenerInputHandler(gameProperties, 
-											gameState,
-											mapMenu,
-											turnHandler);
+		keyListenerInputHandler = new KeyListenerInputHandler(gameProperties, gameState);
 		addKeyListener(this);
 		init();
 	}
 	
 	private void init() {
 		Building.init(gameProperties.initialMoneyPerBuilding);
+		TurnHandler turnHandler = new TurnHandler(gameProperties, gameState);
 		turnHandler.startTurnActions(); // setup
 		updatePortraitSideChoice();
 		repaint();
@@ -132,15 +90,19 @@ public class Gameboard extends JPanel implements KeyListener {
 	
 	private void updatePortraitSideChoice() {
 		Cursor cursor = gameState.getCursor();
+		HeroPortrait heroPortrait = new HeroPortrait(gameProperties.getMapDimension(), gameState);
 		heroPortrait.updateSideChoice(cursor);
 	}
 	
 	public int getBoardWidth() {
-		return gameMap.getTileWidth() * mapDimension.tileSize;
+		int mapTileWidth = gameProperties.getGameMap().getTileWidth();
+		return mapTileWidth * gameProperties.getTileSize();
 	}
 
 	public int getBoardHeight() {
-		return gameMap.getTileHeight() * mapDimension.tileSize + infoBox.getHeight();
+		int mapTileHeight = gameProperties.getGameMap().getTileHeight();
+		int infoBoxHeight = gameProperties.getInfoBoxGraphicMetrics().height;
+		return mapTileHeight * gameProperties.getTileSize() + infoBoxHeight;
 	}
 
 	/**
@@ -164,16 +126,24 @@ public class Gameboard extends JPanel implements KeyListener {
 	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		ViewPainter mainViewPainter = new ViewPainter(gameProperties, gameState);
 		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
 		mainViewPainter.paint(g);
 		if (chosenUnit != null) {
+			UnitMenu unitMenu = new UnitMenu(gameProperties.getTileSize(), gameState);
+			ContUnitHandler contUnitHandler = new ContUnitHandler(gameProperties, gameState);
+			AttackHandler attackHandler = new AttackHandler(gameProperties, gameState);
 			if (!unitMenu.isVisible() && !contUnitHandler.unitIsDroppingOff() 
 									&& !attackHandler.unitWantsToFire(chosenUnit)) {
-				routeHandler.getRouteArrowPath().paintArrow(g);
+				RouteArrowPath routeArrowPath = new RouteArrowPath(gameProperties, gameState);
+				routeArrowPath.paintArrow(g);
 			}
 
-			chosenUnit.paint(g, mapDimension.tileSize);
+			chosenUnit.paint(g, gameProperties.getTileSize());
 		}
+		AttackRangeHandler attackRangeHandler = new AttackRangeHandler(gameProperties, gameState);
+		InfoBox infoBox = new InfoBox(gameProperties, gameState);
+		HeroPortrait heroPortrait = new HeroPortrait(gameProperties.getMapDimension(), gameState);
 		attackRangeHandler.paintRange(g);
 		mainViewPainter.paintUnits(g, chosenUnit);
 		paintMenusAndCursors(g);
@@ -182,6 +152,10 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 	
 	private void paintMenusAndCursors(Graphics g) {
+		MapMenu mapMenu = new MapMenu(gameProperties.getTileSize(), gameState);
+		UnitMenu unitMenu = new UnitMenu(gameProperties.getTileSize(), gameState);
+		BuildingMenu buildingMenu = new BuildingMenu(gameProperties, gameState);
+		AttackHandler attackHandler = new AttackHandler(gameProperties, gameState);
 		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
 		Cursor cursor = gameState.getCursor();
 		// when the mapMenu is open the cursor is hidden
@@ -192,6 +166,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		} else if (buildingMenu.isVisible()) {
 			buildingMenu.paint(g);
 		} else if (attackHandler.unitWantsToFire(chosenUnit)) {
+			FiringCursor firingCursor = new FiringCursor(gameProperties, gameState);
 			firingCursor.paint(g, cursor, chosenUnit);
 		} else {
 			gameState.getCursor().paint(g);

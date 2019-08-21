@@ -79,7 +79,6 @@ public class RouteArrowPath {
 		int tiley1 = arrowPoints.get(size - 2).getY() / mapDimension.tileSize;
 		int tilex2 = arrowPoints.get(size - 1).getX() / mapDimension.tileSize;
 		int tiley2 = arrowPoints.get(size - 1).getY() / mapDimension.tileSize;
-
 		return Math.abs(tilex1 - tilex2) + Math.abs(tiley1 - tiley2) > 1;
 	}
 

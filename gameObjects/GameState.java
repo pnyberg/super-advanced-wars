@@ -24,23 +24,21 @@ public class GameState {
 	private UnitMenuState unitMenuState;
 	private boolean[][] rangeMap;
 	private ArrayList<Point> arrowPoints;
+	private TurnState turnState;
 	
-	public GameState(int tileSize) {
-		heroHandler = new HeroHandler();
+	public GameState(MapDimension mapDimension, HeroHandler heroHandler, ArrayList<Building> buildings, ArrayList<Structure> structures) {
+		this.heroHandler = heroHandler;
+		this.buildings = buildings;
+		this.structures = structures;
 		chosenObject = new ChosenObject();
-		cursor = new Cursor(0, 0, tileSize);
-		buildings = new ArrayList<>();
-		structures = new ArrayList<>();
+		cursor = new Cursor(0, 0, mapDimension.tileSize);
 		buildingMenuState = new BuildingMenuState();
 		mapMenuState = new MenuState();
 		unitMenuState = new UnitMenuState();
-		movementMap = null;
-		rangeMap = null;
-		arrowPoints = new ArrayList<Point>();
-	}
-	
-	public void initRangeMap(MapDimension mapDimension) {
+		movementMap = new MovementMap(mapDimension);		
 		rangeMap = new boolean[mapDimension.getTileWidth()][mapDimension.getTileHeight()];
+		arrowPoints = new ArrayList<Point>();
+		turnState = new TurnState();
 	}
 	
 	public void addBuildings(ArrayList<Building> buildings) {
@@ -109,5 +107,9 @@ public class GameState {
 	
 	public UnitMenuState getUnitMenuState() {
 		return unitMenuState;
+	}
+	
+	public TurnState getTurnState() {
+		return turnState;
 	}
 }

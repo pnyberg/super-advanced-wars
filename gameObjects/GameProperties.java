@@ -14,7 +14,6 @@ public class GameProperties {
 	public GameProperties(MapDimension mapDimension, GameMap gameMap) {
 		this.mapDimension = mapDimension;
 		this.gameMap = gameMap;
-		
 		Point infoBoxAnchorPoint = new Point(0, gameMap.getTileHeight() * mapDimension.tileSize);
 		infoBoxGraphicMetrics = new GraphicMetrics(infoBoxAnchorPoint, mapDimension.getTileWidth() * mapDimension.tileSize, 3 * mapDimension.tileSize, mapDimension.tileSize);
 	}

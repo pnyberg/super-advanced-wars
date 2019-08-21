@@ -75,7 +75,7 @@ public class KeyListenerInputHandler {
 	private HeroPowerHandler heroPowerHandler;
 	private UnitWorthCalculator unitWorthCalculator;
 	
-	public KeyListenerInputHandler(GameProperties gameProperties, GameState gameState, MapMenu mapMenu, TurnHandler turnHandler) {
+	public KeyListenerInputHandler(GameProperties gameProperties, GameState gameState) {
 		this.gameProp = gameProperties;
 		this.gameState = gameState;
 		this.gameMap = gameProperties.getGameMap();
@@ -83,9 +83,9 @@ public class KeyListenerInputHandler {
 		this.buildingHandler = new BuildingHandler(gameState);
 		this.structureHandler = new StructureHandler(gameState, gameProperties.getMapDimension());
 		this.cursor = gameState.getCursor();
-		this.mapMenu = mapMenu;
+		mapMenu = new MapMenu(gameProperties.getTileSize(), gameState);
 		captHandler = new CaptHandler(gameState.getHeroHandler());
-		this.turnHandler = turnHandler;
+		turnHandler = new TurnHandler(gameProperties, gameState);
 	
 		int tileSize = gameProperties.getMapDimension().tileSize;
 		
@@ -100,7 +100,7 @@ public class KeyListenerInputHandler {
 
 		// required init from first init-round
 		AreaChecker areaChecker = new AreaChecker(gameState.getHeroHandler(), gameMap);
-		buildingMenu = new BuildingMenu(tileSize, gameState, gameMap);
+		buildingMenu = new BuildingMenu(gameProperties, gameState);
 		damageHandler = new DamageHandler(gameState.getHeroHandler(), gameMap);
 		MovementCostCalculator movementCostCalculator = new MovementCostCalculator(gameMap);
 		supplyHandler = new SupplyHandler(gameState, tileSize);

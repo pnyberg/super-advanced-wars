@@ -14,11 +14,11 @@ public class HeroPortrait {
 	private boolean leftSide;
 	private HeroPortraitPainter heroPortraitPainter;
 
-	public HeroPortrait(MapDimension mapDimensionDim, GameState gameState) {
-		this.mapDimension = mapDimensionDim;
+	public HeroPortrait(MapDimension mapDimension, GameState gameState) {
+		this.mapDimension = mapDimension;
 		this.heroHandler = gameState.getHeroHandler();
 		leftSide = true;
-		heroPortraitPainter = new HeroPortraitPainter(mapDimensionDim);
+		heroPortraitPainter = new HeroPortraitPainter(mapDimension);
 	}
 
 	public void updateSideChoice(Cursor cursor) {
