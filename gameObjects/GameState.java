@@ -9,6 +9,7 @@ import map.structures.Structure;
 import menus.BuildingMenuState;
 import menus.MenuState;
 import menus.UnitMenuState;
+import point.Point;
 import routing.MovementMap;
 
 public class GameState {
@@ -22,6 +23,7 @@ public class GameState {
 	private MenuState mapMenuState;
 	private UnitMenuState unitMenuState;
 	private boolean[][] rangeMap;
+	private ArrayList<Point> arrowPoints;
 	
 	public GameState(int tileSize) {
 		heroHandler = new HeroHandler();
@@ -34,6 +36,7 @@ public class GameState {
 		unitMenuState = new UnitMenuState();
 		movementMap = null;
 		rangeMap = null;
+		arrowPoints = new ArrayList<Point>();
 	}
 	
 	public void initRangeMap(MapDimension mapDimension) {
@@ -82,6 +85,10 @@ public class GameState {
 	
 	public boolean getRangeMapLocation(int tileX, int tileY) {
 		return rangeMap[tileX][tileY];
+	}
+	
+	public ArrayList<Point> getArrowPoints() {
+		return arrowPoints;
 	}
 	
 	public ArrayList<Building> getBuildings() {

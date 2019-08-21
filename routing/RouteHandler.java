@@ -8,25 +8,24 @@ package routing;
 
 import point.*;
 import units.*;
-
+import gameObjects.GameProperties;
+import gameObjects.GameState;
 import gameObjects.MapDimension;
 
 public class RouteHandler {
 	private RouteArrowPath routeArrowPath;
 	private MovementMap movementMap;
 
-	public RouteHandler(MapDimension mapDimension, MovementMap movementMap, MovementCostCalculator movementCostCalculator) {
-		routeArrowPath = new RouteArrowPath(mapDimension, movementCostCalculator);
-		this.movementMap = movementMap;
+	public RouteHandler(GameProperties gameProperties, GameState gameState) {
+		routeArrowPath = new RouteArrowPath(gameProperties, gameState);
+		this.movementMap = gameState.getMovementMap();
 	}
 
-	// TODO: which one should stay - what is the difference?
 	public void addNewArrowPoint(Point point) {
 		routeArrowPath.addArrowPoint(point);
 	}
 
-	// TODO: which one should stay - what is the difference?
-	public void updateArrowPath(Point point, Unit chosenUnit) {
+	public void updateCurrentArrowPath(Point point, Unit chosenUnit) {
 		routeArrowPath.updateArrowPath(point, chosenUnit, movementMap);
 	}
 	

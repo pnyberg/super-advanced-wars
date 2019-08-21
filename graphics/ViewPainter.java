@@ -35,7 +35,7 @@ public class ViewPainter {
 		this.mapDimension = gameProperties.getMapDimension();
 		this.commanderView = new CommanderView(mapDimension, gameState.getHeroHandler());
 		this.gameMap = gameProperties.getGameMap();
-		this.routeHandler = new RouteHandler(mapDimension, gameState.getMovementMap(), new MovementCostCalculator(gameMap));
+		this.routeHandler = new RouteHandler(gameProperties, gameState);
 		this.attackRangeHandler = new AttackRangeHandler(gameProperties, gameState);
 		this.buildingHandler = new BuildingHandler(gameState);
 		this.structureHandler = new StructureHandler(gameState, mapDimension);

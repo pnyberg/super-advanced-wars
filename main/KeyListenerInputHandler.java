@@ -106,7 +106,7 @@ public class KeyListenerInputHandler {
 		supplyHandler = new SupplyHandler(gameState, tileSize);
 
 		// required init from second init-round
-		routeHandler = new RouteHandler(gameProperties.getMapDimension(), movementMap, movementCostCalculator);
+		routeHandler = new RouteHandler(gameProperties, gameState);
 
 		// required init from third init-round
 		containerUnitHandler = new ContUnitHandler(gameProperties, gameState);
@@ -138,7 +138,7 @@ public class KeyListenerInputHandler {
 					firingCursorHandler.moveFiringCursorCounterclockwise();
 				}
 			} else if (cursorY > 0 && !menuVisible) {
-				routeHandler.updateArrowPath(new Point(cursorX, cursorY - gameProp.getMapDimension().tileSize), gameState.getChosenObject().chosenUnit);
+				routeHandler.updateCurrentArrowPath(new Point(cursorX, cursorY - gameProp.getMapDimension().tileSize), gameState.getChosenObject().chosenUnit);
 				cursor.moveUp();
 			} else if (mapMenu.isVisible()) {
 				mapMenu.moveArrowUp();
@@ -160,7 +160,7 @@ public class KeyListenerInputHandler {
 					firingCursorHandler.moveFiringCursorClockwise();
 				}
 			} else if (cursorY < (gameProp.getMapDimension().getTileHeight() - 1) * gameProp.getMapDimension().tileSize && !menuVisible) {
-				routeHandler.updateArrowPath(new Point(cursorX, cursorY + gameProp.getMapDimension().tileSize), gameState.getChosenObject().chosenUnit);
+				routeHandler.updateCurrentArrowPath(new Point(cursorX, cursorY + gameProp.getMapDimension().tileSize), gameState.getChosenObject().chosenUnit);
 				cursor.moveDown();
 			} else if (mapMenu.isVisible()) {
 				mapMenu.moveArrowDown();
@@ -171,12 +171,12 @@ public class KeyListenerInputHandler {
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			if (cursorX > 0 && !menuVisible && !containerUnitHandler.unitIsDroppingOff() && !attackHandler.unitWantsToFire(gameState.getChosenObject().chosenUnit)) {
-				routeHandler.updateArrowPath(new Point(cursorX - gameProp.getMapDimension().tileSize, cursorY), gameState.getChosenObject().chosenUnit);
+				routeHandler.updateCurrentArrowPath(new Point(cursorX - gameProp.getMapDimension().tileSize, cursorY), gameState.getChosenObject().chosenUnit);
 				cursor.moveLeft();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			if (cursorX < (gameProp.getMapDimension().getTileWidth() - 1) * gameProp.getMapDimension().tileSize && !menuVisible && !containerUnitHandler.unitIsDroppingOff() && !attackHandler.unitWantsToFire(gameState.getChosenObject().chosenUnit)) {
-				routeHandler.updateArrowPath(new Point(cursorX + gameProp.getMapDimension().tileSize, cursorY), gameState.getChosenObject().chosenUnit);
+				routeHandler.updateCurrentArrowPath(new Point(cursorX + gameProp.getMapDimension().tileSize, cursorY), gameState.getChosenObject().chosenUnit);
 				cursor.moveRight();
 			}
 		}

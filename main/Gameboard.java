@@ -112,7 +112,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		attackHandler = new AttackHandler(gameProperties, gameState);
 		turnHandler = new TurnHandler(gameProperties, gameState);
 		contUnitHandler = new ContUnitHandler(gameProperties, gameState);
-		routeHandler = new RouteHandler(mapDimension, gameState.getMovementMap(), new MovementCostCalculator(gameMap));
+		routeHandler = new RouteHandler(gameProperties, gameState);
 		attackRangeHandler = new AttackRangeHandler(gameProperties, gameState);
 
 		keyListenerInputHandler = new KeyListenerInputHandler(gameProperties, 
