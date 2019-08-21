@@ -19,7 +19,7 @@ public class MapMenu extends Menu {
 	private HeroHandler heroHandler;
 
 	public MapMenu(int tileSize, GameState gameState) {
-		super(tileSize);
+		super(gameState.getMapMenuState(), tileSize);
 		this.heroHandler = gameState.getHeroHandler();
 	}
 
@@ -29,21 +29,21 @@ public class MapMenu extends Menu {
 	}
 	
 	public boolean atCoRow() {
-		return menuIndex == 0;
+		return menuState.getMenuIndex() == 0;
 	}
 	
 	public boolean atPowerRow() {
 		if (!heroHandler.getCurrentHero().getHeroPower().getHeroPowerMeter().powerUsable()) {
 			return false;
 		}
-		return menuIndex == 2;
+		return menuState.getMenuIndex() == 2;
 	}
 	
 	public boolean atSuperPowerRow() {
 		if (!heroHandler.getCurrentHero().getHeroPower().getHeroPowerMeter().superPowerUsable()) {
 			return false;
 		}
-		return menuIndex == 3;
+		return menuState.getMenuIndex() == 3;
 	}
 
 	public void paint(Graphics g) {
@@ -54,6 +54,8 @@ public class MapMenu extends Menu {
 	
 	private void paintMenuForeground(Graphics g) {
 		HeroPowerMeter heroPowerMeter = heroHandler.getCurrentHero().getHeroPower().getHeroPowerMeter();
+		int x = menuState.getX();
+		int y = menuState.getY();
 		int xAlign = dimensionValues.getTileSize() / 2 + dimensionValues.getAlignX();
 		int yAlign = dimensionValues.getTileSize() / 2 + dimensionValues.getAlignY();
 		int rowHelpIndex = 1;

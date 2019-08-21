@@ -10,20 +10,14 @@ import java.awt.Graphics;
 import graphics.MenuArrow;
 
 public abstract class Menu {
-	protected int x;
-	protected int y;
 	protected int tileSize;
-	protected int menuIndex;
-	protected boolean visible;
+	protected MenuState menuState;
 	protected DimensionValues dimensionValues;	
 	private MenuArrow arrow;
 
-	public Menu(int tileSize) {
-		x = 0;
-		y = 0;
+	public Menu(MenuState menuState, int tileSize) {
 		this.tileSize = tileSize;
-		menuIndex = 0;
-		visible = false;
+		this.menuState = menuState;
 		dimensionValues = new DimensionValues();
 		dimensionValues.tileSize = tileSize;
 		dimensionValues.xAlign = 4;
@@ -34,55 +28,40 @@ public abstract class Menu {
 	}
 
 	public void openMenu(int x, int y) {
-		this.x = x;
-		this.y = y;
-		visible = true;
+		menuState.setPosition(x, y);
+		menuState.setVisible(true);
 	}
 
 	public void closeMenu() {
-		visible = false;
-		menuIndex = 0;
+		menuState.setVisible(false);
+		menuState.resetMenuIndex();
 	}
 
 	public void moveArrowUp() {
-		if (menuIndex > 0) {
-			menuIndex--;
-		} else {
-			menuIndex = getNumberOfRows() - 1;
-		}
+		menuState.decrementMenuIndexIfPossible();
 	}
 
 	public void moveArrowDown() {
-		if (menuIndex < (getNumberOfRows() - 1)) {
-			menuIndex++;
-		} else {
-			menuIndex = 0;
-		}
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
+		menuState.incrementMenuIndexIfPossible(getNumberOfRows());
 	}
 
 	public int getMenuIndex() {
-		return menuIndex;
+		return menuState.getMenuIndex();
 	}
 	
 	public abstract int getNumberOfRows();
 
 	public boolean isVisible() {
-		return visible;
+		return menuState.isVisible();
 	}
 	
 	public boolean atEndRow() {
-		return menuIndex == getNumberOfRows()-1;
+		return getMenuIndex() == getNumberOfRows()-1;
 	}
 
 	protected void paintMenuBackground(Graphics g) {
+		int x = menuState.getX();
+		int y = menuState.getY();
 		int menuHeight = getNumberOfRows() * dimensionValues.getMenuRowHeight() + 10;
 		int xAlign = dimensionValues.getTileSize() / 2;
 		int yAlign = dimensionValues.getTileSize() / 2;
@@ -97,6 +76,9 @@ public abstract class Menu {
 	}
 
 	protected void paintArrow(Graphics g) {
+		int x = menuState.getX();
+		int y = menuState.getY();
+		int menuIndex = menuState.getMenuIndex();
 		arrow.paint(g, x, y, menuIndex);
 	}
 }

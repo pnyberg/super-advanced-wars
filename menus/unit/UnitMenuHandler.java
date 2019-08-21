@@ -31,7 +31,7 @@ public class UnitMenuHandler {
 	private AttackRangeHandler attackRangeHandler;
 
 	public UnitMenuHandler(GameProperties gameProp, GameState gameState, ContUnitHandler containerUnitHandler, SupplyHandler supplyHandler, AreaChecker areaChecker, AttackRangeHandler attackRangeHandler) {
-		unitMenu = new UnitMenu(gameProp.getMapDimension().tileSize);
+		unitMenu = new UnitMenu(gameProp.getMapDimension().tileSize, gameState);
 		this.gameProp = gameProp;
 		this.gameState = gameState;
 		this.containerUnitHandler = containerUnitHandler;
@@ -51,62 +51,62 @@ public class UnitMenuHandler {
 		if (!areaChecker.areaOccupiedByFriendly(chosenUnit, cursor.getX(), cursor.getY()) || hurtAtSamePosition
 				|| containerUnitHandler.unitEntryingContainerUnit(chosenUnit, cursor.getX(), cursor.getY())) {
 			if (hurtAtSamePosition) {
-				unitMenu.getUnitMenuRowEntryBooleanHandler().join = true;
+				unitMenu.enableJoinOption();
 			} else if (attackRangeHandler.unitCanFire(chosenUnit, cursor)) {
-				unitMenu.getUnitMenuRowEntryBooleanHandler().fire = true;
+				unitMenu.enableFireOption();
 			}
 
 			if (chosenUnit instanceof Infantry || chosenUnit instanceof Mech) {
 				if (containerUnitHandler.footsoldierEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
-					unitMenu.getUnitMenuRowEntryBooleanHandler().enter = true;
+					unitMenu.enableEnterOption();
 				}
 				if (buildingHandler.isNonFriendlyBuilding(cursor.getX(), cursor.getY()) 
 						&& unitGetter.getFriendlyUnitExceptSelf(chosenUnit, cursor.getX(), cursor.getY()) == null) {
-					unitMenu.getUnitMenuRowEntryBooleanHandler().capt = true;
+					unitMenu.enableCaptOption();
 				}
 			} else if (chosenUnit instanceof APC) {
 				// should only be allowed this when close to a friendly unit
 				if (supplyHandler.mayAPCSUpply(cursor.getX(), cursor.getY())) {
-					unitMenu.getUnitMenuRowEntryBooleanHandler().supply = true;
+					unitMenu.enableSupplyOption();
 				}
 
 				if (((APC)chosenUnit).isFull()) {
 					Unit holdUnit = ((APC)chosenUnit).getContainedUnit();
-					unitMenu.containedCargo(holdUnit);
+					unitMenu.addContainedCargoRow(holdUnit);
 				}
 			} else if (chosenUnit.hasUnitContainer()) {
 				int cursorTileX = cursor.getX() / gameProp.getMapDimension().tileSize;
 				int cursorTileY = cursor.getY() / gameProp.getMapDimension().tileSize;
 				if (chosenUnit.getUnitContainer().isFull() && areaChecker.isLand(cursorTileX, cursorTileY)) {
 					Unit holdUnit = chosenUnit.getUnitContainer().getChosenUnit();
-					unitMenu.containedCargo(holdUnit);
+					unitMenu.addContainedCargoRow(holdUnit);
 				}
 			} else if (chosenUnit instanceof Lander) {
 				if (containerUnitHandler.landerAtDroppingOffPosition(cursor.getX(), cursor.getY())) {
 					for (int i = 0 ; i < ((Lander)chosenUnit).getNumberOfContainedUnits() ; i++) {
 						Unit holdUnit = ((Lander)chosenUnit).getUnit(i);
-						unitMenu.containedCargo(holdUnit);
+						unitMenu.addContainedCargoRow(holdUnit);
 					}
 				}
 			} else if (chosenUnit instanceof Cruiser) {
 				for (int i = 0 ; i < ((Cruiser)chosenUnit).getNumberOfContainedUnits() ; i++) {
 					Unit holdUnit = ((Cruiser)chosenUnit).getUnit(i);
-					unitMenu.containedCargo(holdUnit);
+					unitMenu.addContainedCargoRow(holdUnit);
 				}
 			}
 
 			if (containerUnitHandler.landbasedEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
 				if (!(chosenUnit instanceof Lander)) {
-					unitMenu.getUnitMenuRowEntryBooleanHandler().enter = true;
+					unitMenu.enableEnterOption();
 				}
 			} else if (containerUnitHandler.copterEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
 				if (!(chosenUnit instanceof Cruiser)) {
-					unitMenu.getUnitMenuRowEntryBooleanHandler().enter = true;
+					unitMenu.enableEnterOption();
 				}
 			}
 
 			if (!areaChecker.areaOccupiedByFriendly(chosenUnit, cursor.getX(), cursor.getY())) {
-				unitMenu.getUnitMenuRowEntryBooleanHandler().wait = true;
+				unitMenu.enableWaitOption();
 			}
 
 			unitMenu.openMenu(cursor.getX(), cursor.getY());

@@ -100,7 +100,7 @@ public class KeyListenerInputHandler {
 
 		// required init from first init-round
 		AreaChecker areaChecker = new AreaChecker(gameState.getHeroHandler(), gameMap);
-		buildingMenu = new BuildingMenu(tileSize, gameState.getHeroHandler(), gameMap);
+		buildingMenu = new BuildingMenu(tileSize, gameState, gameMap);
 		damageHandler = new DamageHandler(gameState.getHeroHandler(), gameMap);
 		MovementCostCalculator movementCostCalculator = new MovementCostCalculator(gameMap);
 		supplyHandler = new SupplyHandler(gameState, tileSize);

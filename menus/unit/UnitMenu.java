@@ -9,7 +9,9 @@ import units.*;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import gameObjects.GameState;
 import menus.Menu;
+import menus.UnitMenuState;
 
 public class UnitMenu extends Menu {
 	private final String[] unitMenuRowEntryText = {	"Join", 
@@ -22,92 +24,101 @@ public class UnitMenu extends Menu {
 													"Supply", 
 													"Wait"
 												};
-	private UnitMenuRowEntryBooleanHandler unitMenuRowEntryBooleanHandler;
-	private ArrayList<Unit> cargo;
 
-	public UnitMenu(int tileSize) {
-		super(tileSize);
-		cargo = new ArrayList<Unit>();
-		unitMenuRowEntryBooleanHandler = new UnitMenuRowEntryBooleanHandler();
+	public UnitMenu(int tileSize, GameState gameState) {
+		super(gameState.getUnitMenuState(), tileSize);
 	}
 
 	public void closeMenu() {
-		visible = false;
-		menuIndex = 0;
-		unitMenuRowEntryBooleanHandler.clear();
-		cargo.clear();
+		super.closeMenu();
+		((UnitMenuState)menuState).resetRowEntries();
 	}
 
-	public void containedCargo(Unit containedUnit) {
-		cargo.add(containedUnit);
+	public void addContainedCargoRow(Unit containedUnit) {
+		((UnitMenuState)menuState).addCargoRow(containedUnit);
 	}
 
-	public void containedCargo(ArrayList<Unit> containedCargo) {
+	public void addContainedCargoRows(ArrayList<Unit> containedCargo) {
 		for (int i = 0 ; i < containedCargo.size() ; i++) {
-			cargo.add(containedCargo.get(i));
+			addContainedCargoRow(containedCargo.get(i));
 		}
+	}
+	
+	public void enableCaptOption() {
+		((UnitMenuState)menuState).setCaptOption(true);
+	}
+
+	public void enableDiveOption() {
+		((UnitMenuState)menuState).setDiveOption(true);
+	}
+
+	public void enableEmergeOption() {
+		((UnitMenuState)menuState).setEmergeOption(true);
+	}
+
+	public void enableEnterOption() {
+		((UnitMenuState)menuState).setEnterOption(true);
+	}
+
+	public void enableFireOption() {
+		((UnitMenuState)menuState).setFireOption(true);
+	}
+
+	public void enableJoinOption() {
+		((UnitMenuState)menuState).setJoinOption(true);
+	}
+
+	public void enableLaunchOption() {
+		((UnitMenuState)menuState).setLaunchOption(true);
+	}
+
+	public void enableSupplyOption() {
+		((UnitMenuState)menuState).setSupplyOption(true);
+	}
+
+	public void enableWaitOption() {
+		((UnitMenuState)menuState).setWaitOption(true);
 	}
 
 	public int getNumberOfRows() {
-		int numberOfRows = unitMenuRowEntryBooleanHandler.getNumberOfExistingRows();
-		if (cargo.size() > 0) {
-			numberOfRows += cargo.size();
-		}
-		return numberOfRows;
+		return ((UnitMenuState)menuState).getNumberOfExistingRows();
 	}
 
 	public boolean atUnitRow() {
-		return menuIndex < cargo.size();
+		return ((UnitMenuState)menuState).atUnitRow();
 	}
 
 	public boolean atJoinRow() {
-		return unitMenuRowEntryBooleanHandler.join == true;
+		return ((UnitMenuState)menuState).atJoinRow();
 	}
 
 	public boolean atEnterRow() {
-		if (!unitMenuRowEntryBooleanHandler.enter == true) {
-			return false;
-		}
-		return menuIndex == 0;
+		return ((UnitMenuState)menuState).atEnterRow();
 	}
 	
 	public boolean atFireRow() {
-		if (!unitMenuRowEntryBooleanHandler.fire == true) {
-			return false;
-		}
-		return menuIndex == 0;
+		return ((UnitMenuState)menuState).atFireRow();
 	}
 	
 	public boolean atCaptRow() {
-		if (!unitMenuRowEntryBooleanHandler.capt == true) {
-			return false;
-		}
-		if (unitMenuRowEntryBooleanHandler.fire == true) {
-			return menuIndex == 1;
-		} else {
-			return menuIndex == 0;
-		}
+		return ((UnitMenuState)menuState).atCaptRow();
 	}
 
 	public boolean atSupplyRow() {
-		if (!unitMenuRowEntryBooleanHandler.supply == true) {
-			return false;
-		}
-		return menuIndex == cargo.size();
-	}
-
-	public UnitMenuRowEntryBooleanHandler getUnitMenuRowEntryBooleanHandler() {
-		return unitMenuRowEntryBooleanHandler;
+		return ((UnitMenuState)menuState).atSupplyRow();
 	}
 
 	public void paint(Graphics g) {
+		int x = menuState.getX();
+		int y = menuState.getY();
 		int xAlign = dimensionValues.getTileSize() / 2 + 2 * dimensionValues.getAlignX();
 		int yAlign = dimensionValues.getTileSize() / 2 + dimensionValues.getAlignY();
 
 		paintMenuBackground(g);
 
 		int rowHelpIndex = 1;
-		boolean[] unitMenuRowEntryBooleans = unitMenuRowEntryBooleanHandler.getAsBooleanArray();
+		boolean[] unitMenuRowEntryBooleans = ((UnitMenuState)menuState).getRowEntryShowingStatus();
+		ArrayList<Unit> cargo = ((UnitMenuState)menuState).getCargo();
 		for (int k = 0 ; k < unitMenuRowEntryBooleans.length ; k++) {
 			if (k == 2 && cargo.size() > 0) {
 				for (int i = 0 ; i < cargo.size() ; i++) {

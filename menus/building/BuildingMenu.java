@@ -8,47 +8,47 @@ import units.*;
 import main.HeroHandler;
 import map.GameMap;
 import map.area.TerrainType;
+import menus.BuildingMenuState;
 import menus.Menu;
 import menus.unit.UnitCreatingFactory;
 
 import java.awt.Graphics;
 
+import gameObjects.GameState;
 import hero.*;
 
 public class BuildingMenu extends Menu {
 	private int priceAlign;
-	private TerrainType currentBuildingMenuType;
 	private BuildingItemFactory buildingItemFactory;
 	private UnitCreatingFactory unitCreatingFactory;
 	private HeroHandler heroHandler;
 	private BuildingMenuPainter buildingMenuPainter;
-	private GameMap gridMap;
+	private GameMap gameMap;
 
-	public BuildingMenu(int tileSize, HeroHandler heroHandler, GameMap gridMap) {
-		super(tileSize);
-		this.heroHandler = heroHandler;
+	public BuildingMenu(int tileSize, GameState gameState, GameMap gameMap) {
+		super(gameState.getBuildingMenuState(), tileSize);
+		this.heroHandler = gameState.getHeroHandler();
 		dimensionValues.menuRowWidth = 118;
 		priceAlign = 70;
-		currentBuildingMenuType = null;
 		buildingItemFactory = new BuildingItemFactory();
 		unitCreatingFactory = new UnitCreatingFactory(tileSize);
 		buildingMenuPainter = new BuildingMenuPainter(heroHandler, dimensionValues, priceAlign);
-		this.gridMap = gridMap;
+		this.gameMap = gameMap;
 	}
 
 	public void openMenu(int x, int y) {
 		super.openMenu(x, y);
 		int tileX = x / tileSize;
 		int tileY = y / tileSize;
-		TerrainType terrainType = gridMap.getMap()[tileX][tileY].getTerrainType();
+		TerrainType terrainType = gameMap.getMap()[tileX][tileY].getTerrainType();
 		if (terrainType == TerrainType.FACTORY || terrainType == TerrainType.AIRPORT || terrainType == TerrainType.PORT) {
-			currentBuildingMenuType = terrainType;
+			((BuildingMenuState)menuState).setBuildingMenuType(terrainType);
 		}
 	}
 
 	public void closeMenu() {
 		super.closeMenu();
-		currentBuildingMenuType = null;
+		((BuildingMenuState)menuState).resetBuildingMenuType();
 	}
 
 	public int getNumberOfRows() {
@@ -61,17 +61,20 @@ public class BuildingMenu extends Menu {
 
 	public void buySelectedTroop() {
 		Hero currentHero = heroHandler.getCurrentHero();
-		currentHero.manageCash(-getMenuItems()[menuIndex].getPrice());
+		currentHero.manageCash(-getMenuItems()[menuState.getMenuIndex()].getPrice());
 		Unit unit = createUnitFromIndex(currentHero);
 		currentHero.getTroopHandler().addTroop(unit);
 	}
 
 	private Unit createUnitFromIndex(Hero hero) {
-		String unitName = getMenuItems()[menuIndex].getName();
+		int x = menuState.getX();
+		int y = menuState.getY();
+		String unitName = getMenuItems()[menuState.getMenuIndex()].getName();
 		return unitCreatingFactory.createUnit(unitName, x, y, hero.getColor());
 	}
 	
 	private BuildingItem[] getMenuItems() {
+		TerrainType currentBuildingMenuType = ((BuildingMenuState)menuState).getBuildingMenuType();
 		if (currentBuildingMenuType == TerrainType.FACTORY) {
 			return buildingItemFactory.getStandardFactoryItems();
 		} else if (currentBuildingMenuType == TerrainType.AIRPORT) {
@@ -83,6 +86,8 @@ public class BuildingMenu extends Menu {
 	}
 
 	public void paint(Graphics g) {
+		int x = menuState.getX();
+		int y = menuState.getY();
 		int yAdjust = dimensionValues.getTileSize() / 2 + dimensionValues.getAlignY();
 		BuildingItem[] items = getMenuItems();
 		if (items == null) {

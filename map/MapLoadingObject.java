@@ -27,8 +27,8 @@ public class MapLoadingObject {
 		this.gameMap = gameMap;
 	}
 	
-	public void setMapDimension(MapDimension mapDim) {
-		this.mapDimension = mapDim;
+	public void setMapDimension(MapDimension mapDimension) {
+		this.mapDimension = mapDimension;
 	}
 	
 	public void setMovementMap(MovementMap movementMap) {

@@ -1,7 +1,8 @@
 /**
  * Refactor-bugs
  *  - "pressing B on a structure/unit"
- *  - "menu for buying new units"
+ *  - "menu for unit-action"
+ *  - "missing arrows for movement"
  * 
  * TODO-list
  * - only one action/unit per turn
@@ -104,8 +105,8 @@ public class Gameboard extends JPanel implements KeyListener {
 		mapMenu = new MapMenu(tileSize, gameState);
 		heroPortrait = new HeroPortrait(mapDimension, gameState);
 		firingCursor = new FiringCursor(gameProperties, gameState);
-		unitMenu = new UnitMenu(gameProperties.getTileSize());
-		buildingMenu = new BuildingMenu(gameProperties.getTileSize(), gameState.getHeroHandler(), gameMap);
+		unitMenu = new UnitMenu(gameProperties.getTileSize(), gameState);
+		buildingMenu = new BuildingMenu(gameProperties.getTileSize(), gameState, gameMap);
 		mainViewPainter = new ViewPainter(gameProperties, gameState);
 
 		// Create handlers
