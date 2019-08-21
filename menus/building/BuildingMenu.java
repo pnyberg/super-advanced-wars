@@ -5,7 +5,6 @@
 package menus.building;
 
 import units.*;
-import main.HeroHandler;
 import map.GameMap;
 import map.area.TerrainType;
 import menus.BuildingMenuState;
@@ -62,7 +61,7 @@ public class BuildingMenu extends Menu {
 
 	public void buySelectedTroop() {
 		Hero currentHero = heroHandler.getCurrentHero();
-		currentHero.manageCash(-getMenuItems()[menuState.getMenuIndex()].getPrice());
+		currentHero.spendCash(getMenuItems()[menuState.getMenuIndex()].getPrice());
 		Unit unit = createUnitFromIndex(currentHero);
 		currentHero.getTroopHandler().addTroop(unit);
 	}

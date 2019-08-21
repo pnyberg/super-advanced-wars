@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import combat.AttackValueCalculator;
 import combat.DamageHandler;
 import combat.DefenceValueCalculator;
-import main.HeroHandler;
+import hero.HeroHandler;
 import map.GameMap;
 import unitUtils.UnitWorthCalculator;
 import units.Unit;

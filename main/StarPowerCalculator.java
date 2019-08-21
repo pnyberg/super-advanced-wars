@@ -24,7 +24,6 @@ public class StarPowerCalculator {
 		int starWorth = 18000; // how much money a star is "worth"
 				
 		worth = worth / starWorth * damage / 100 * starMultiplier;
-		
 		hero.getHeroPower().getHeroPowerMeter().addStarPower(worth);
 	}
 }

@@ -66,7 +66,7 @@ public class UnitMenuHandler {
 				}
 			} else if (chosenUnit instanceof APC) {
 				// should only be allowed this when close to a friendly unit
-				if (supplyHandler.mayAPCSUpply(cursor.getX(), cursor.getY())) {
+				if (supplyHandler.apcMaySupply(cursor.getX(), cursor.getY())) {
 					unitMenu.enableSupplyOption();
 				}
 

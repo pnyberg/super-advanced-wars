@@ -6,7 +6,7 @@ import combat.AttackRangeHandler;
 import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.MapDimension;
-import main.HeroHandler;
+import hero.HeroHandler;
 import map.BuildingStructureHandlerObject;
 import map.GameMap;
 import map.buildings.Building;

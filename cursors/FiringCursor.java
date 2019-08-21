@@ -7,7 +7,7 @@ import combat.DamageHandler;
 import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.MapDimension;
-import main.HeroHandler;
+import hero.HeroHandler;
 import map.GameMap;
 import map.UnitGetter;
 import map.area.TerrainType;

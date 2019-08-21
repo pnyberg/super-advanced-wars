@@ -1,7 +1,7 @@
 package map.area;
 
 import hero.Hero;
-import main.HeroHandler;
+import hero.HeroHandler;
 import map.GameMap;
 import map.UnitGetter;
 import routing.MoveabilityMatrixFactory;

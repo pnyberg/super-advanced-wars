@@ -1,7 +1,7 @@
 package combat;
 
 import hero.Hero;
-import main.HeroHandler;
+import hero.HeroHandler;
 import map.area.TerrainType;
 import unitUtils.UnitType;
 import units.Unit;

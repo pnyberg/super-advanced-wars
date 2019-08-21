@@ -4,7 +4,7 @@ import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.TurnState;
 import hero.Hero;
-import map.BuildingStructureHandlerObject;
+import hero.HeroHandler;
 import map.buildings.BuildingHandler;
 import map.structures.StructureHandler;
 
@@ -35,6 +35,7 @@ public class TurnHandler {
 		cashHandler.updateCash();
 		fuelHandler.fuelMaintenance();
 		repairHandler.repairUnits();
+
 		if (heroHandler.getCurrentHero().isPowerActive()) {
 			heroHandler.getCurrentHero().setPowerActive(false);
 		} else if (heroHandler.getCurrentHero().isSuperPowerActive()) {

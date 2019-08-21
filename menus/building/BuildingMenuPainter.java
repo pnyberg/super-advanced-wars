@@ -3,7 +3,7 @@ package menus.building;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import main.HeroHandler;
+import hero.HeroHandler;
 import menus.DimensionValues;
 
 public class BuildingMenuPainter {

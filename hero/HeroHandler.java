@@ -1,8 +1,7 @@
-package main;
+package hero;
 
 import java.util.ArrayList;
 
-import hero.Hero;
 import units.Unit;
 
 public class HeroHandler {

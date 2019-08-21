@@ -1,6 +1,7 @@
 package main;
 
 import hero.Hero;
+import hero.HeroHandler;
 import map.buildings.Building;
 import units.Unit;
 

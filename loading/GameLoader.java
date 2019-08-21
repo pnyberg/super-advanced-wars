@@ -1,4 +1,4 @@
-package map;
+package loading;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +10,9 @@ import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.MapDimension;
 import hero.Hero;
-import main.HeroHandler;
+import hero.HeroHandler;
+import map.GameMap;
+import map.MapTileObject;
 import map.area.Area;
 import map.area.TerrainType;
 import map.buildings.Airport;
@@ -21,7 +23,6 @@ import map.buildings.Port;
 import map.structures.MiniCannon;
 import map.structures.Structure;
 import point.Point;
-import routing.MovementMap;
 
 public class GameLoader {
 	private HeroHandler heroHandler;

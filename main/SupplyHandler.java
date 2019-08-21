@@ -1,7 +1,6 @@
 package main;
 
 import gameObjects.GameState;
-import map.GameMap;
 import map.UnitGetter;
 import units.Unit;
 
@@ -18,7 +17,7 @@ public class SupplyHandler {
 		unit.getUnitSupply().replentish();
 	}
 
-	public boolean mayAPCSUpply(int x, int y) {
+	public boolean apcMaySupply(int x, int y) {
 		return unitGetter.getFriendlyUnit(x + tileSize, y) != null 
 				|| unitGetter.getFriendlyUnit(x, y + tileSize) != null
 				|| unitGetter.getFriendlyUnit(x - tileSize, y) != null

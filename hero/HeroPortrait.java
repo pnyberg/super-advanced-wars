@@ -6,7 +6,6 @@ import cursors.Cursor;
 import gameObjects.GameState;
 import gameObjects.MapDimension;
 import graphics.HeroPortraitPainter;
-import main.HeroHandler;
 
 public class HeroPortrait {
 	private MapDimension mapDimension;

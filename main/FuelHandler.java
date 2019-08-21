@@ -1,6 +1,7 @@
 package main;
 
 import hero.Hero;
+import hero.HeroHandler;
 import unitUtils.MovementType;
 import units.Unit;
 

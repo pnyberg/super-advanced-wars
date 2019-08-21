@@ -28,24 +28,29 @@ public class UnitInfoBox {
 		this.cursor = gameState.getCursor();
 		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
 	}
-
-	public void paint(Graphics g) {
+	
+	public boolean showUnitInfo() {
 		Unit unit = unitGetter.getAnyUnit(cursor.getX(), cursor.getY());
-		if (unit != null) {
-			g.setColor(Color.lightGray);
-			g.fillRect(anchorPoint.getX(), anchorPoint.getY(), width, height);
-			g.setColor(Color.black);
-			Font currentFont = g.getFont();
-			UnitType unitType = unit.getUnitType();
-			g.setFont(new Font("ComicSans", Font.BOLD, 17));
-			int xAdjust = (width - g.getFontMetrics().stringWidth(unitType.unitTypeShowName())) / 2;
-			g.drawString(unitType.unitTypeShowName(), anchorPoint.getX() + xAdjust, anchorPoint.getY() + 20);
-			g.setFont(currentFont);
-			paintUnit(g, unit);
-			paintUnitHealth(g, unit);
-			paintUnitFuel(g, unit);
-			paintUnitAmmo(g, unit);
-		}
+		return unit != null;
+	}
+	
+	public void paint(Graphics g) {
+		g.setColor(Color.lightGray);
+		g.fillRect(anchorPoint.getX(), anchorPoint.getY(), width, height);
+
+		Font currentFont = g.getFont();
+		Unit unit = unitGetter.getAnyUnit(cursor.getX(), cursor.getY());
+		UnitType unitType = unit.getUnitType();
+		g.setFont(new Font("ComicSans", Font.BOLD, 17));
+		int xAdjust = (width - g.getFontMetrics().stringWidth(unitType.unitTypeShowName())) / 2;
+		g.setColor(Color.black);
+		g.drawString(unitType.unitTypeShowName(), anchorPoint.getX() + xAdjust, anchorPoint.getY() + 20);
+		g.setFont(currentFont);
+
+		paintUnit(g, unit);
+		paintUnitHealth(g, unit);
+		paintUnitFuel(g, unit);
+		paintUnitAmmo(g, unit);
 	}
 	
 	private void paintUnit(Graphics g, Unit unit) {

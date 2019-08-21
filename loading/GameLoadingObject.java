@@ -1,4 +1,4 @@
-package map;
+package loading;
 
 import gameObjects.GameProperties;
 import gameObjects.GameState;

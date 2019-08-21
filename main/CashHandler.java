@@ -1,6 +1,7 @@
 package main;
 
 import hero.Hero;
+import hero.HeroHandler;
 import map.buildings.Building;
 import map.buildings.BuildingHandler;
 
@@ -14,14 +15,14 @@ public class CashHandler {
 	}
 	
 	public void updateCash() {
-		int numberOfCashgivers = 0;
+		int numberOfCashgivingBuildings = 0;
 		Hero hero = heroHandler.getCurrentHero();
 		for (Building building : buildingHandler.getAllBuildings()) {
 			if (building.getOwner() == hero) {
-				numberOfCashgivers++;
+				numberOfCashgivingBuildings++;
 			}
 		}
-		int newCash = Building.getIncome() * numberOfCashgivers;
-		hero.manageCash(newCash);
+		int newCash = Building.getIncome() * numberOfCashgivingBuildings;
+		hero.earnCash(newCash);
 	}
 }

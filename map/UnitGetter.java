@@ -1,7 +1,7 @@
 package map;
 
 import hero.Hero;
-import main.HeroHandler;
+import hero.HeroHandler;
 import units.Unit;
 
 public class UnitGetter {

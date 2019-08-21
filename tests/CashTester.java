@@ -3,8 +3,6 @@
  */
 package tests;
 
-import main.HeroHandler;
-
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -47,22 +45,22 @@ public class CashTester {
 
 		assertEquals(hero0.getCash(), 0);
 
-		hero0.manageCash(maxAmount);
+		hero0.earnCash(maxAmount);
 		assertEquals(hero0.getCash(), maxAmount);
 
-		hero0.manageCash(1);
+		hero0.earnCash(1);
 		assertEquals(hero0.getCash(), maxAmount);
 
-		hero0.manageCash(-maxAmount);
+		hero0.spendCash(maxAmount);
 		assertEquals(hero0.getCash(), 0);
 
-		hero0.manageCash(-1);
+		hero0.earnCash(-1);
 		assertEquals(hero0.getCash(), -1);
 
-		hero0.manageCash(12345 + 1);
+		hero0.earnCash(12345 + 1);
 		assertEquals(hero0.getCash(), 12345);
 
-		hero0.manageCash(-12345);
+		hero0.spendCash(12345);
 		assertEquals(hero0.getCash(), 0);
 	}
 	
@@ -70,6 +68,6 @@ public class CashTester {
 	public void testSpending() {
 		assertEquals(hero0.getCash(), 0);
 		
-		hero0.manageCash(1000);
+		hero0.earnCash(1000);
 	}
 }

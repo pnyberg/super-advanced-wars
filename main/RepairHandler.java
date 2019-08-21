@@ -1,5 +1,6 @@
 package main;
 
+import hero.HeroHandler;
 import map.buildings.Airport;
 import map.buildings.Building;
 import map.buildings.BuildingHandler;
@@ -12,28 +13,30 @@ import units.Unit;
 public class RepairHandler {
 	private HeroHandler heroHandler;
 	private BuildingHandler buildingHandler;
-	private UnitWorthCalculator unitWorthCalculator;
 	
 	public RepairHandler(HeroHandler heroHandler, BuildingHandler buildingHandler) {
 		this.heroHandler = heroHandler;
 		this.buildingHandler = buildingHandler;
-		unitWorthCalculator = new UnitWorthCalculator();
 	}
 
 	public void repairUnits() {
 		for (int i = 0 ; i < heroHandler.getCurrentHeroTroopSize() ; i++) {
 			Unit unit = heroHandler.getCurrentHero().getTroopHandler().getTroop(i);
-			Building building = buildingHandler.getBuilding(unit.getPoint().getX(), unit.getPoint().getY());
-			if (building != null && building.getOwner() == heroHandler.getCurrentHero() && unitIsRepairable(unit, building)) {
+			if (unitCanBeRepaired(unit)) {
 				repairUnit(unit);
 				unit.getUnitSupply().replentish();
 			}
 		}
 	}
 	
-	private boolean unitIsRepairable(Unit unit, Building building) {
-		if (unit.getMovementType().isLandMovementType() && 
-				(building instanceof City || building instanceof Factory/* || building instanceof HQ*/)) {
+	private boolean unitCanBeRepaired(Unit unit) {
+		Building building = buildingHandler.getBuilding(unit.getPoint().getX(), unit.getPoint().getY());
+		return building != null && building.getOwner() == heroHandler.getCurrentHero() 
+				&& unitIsRepairableByBuilding(unit, building);
+	}
+	
+	private boolean unitIsRepairableByBuilding(Unit unit, Building building) {
+		if (unit.getMovementType().isLandMovementType() && landRepairableBuilding(building)) {
 			return true;
 		} else if (unit.getMovementType().isAirMovementType() && (building instanceof Airport)) {
 			return true;
@@ -42,8 +45,13 @@ public class RepairHandler {
 		}
 		return false;
 	}
+	
+	private boolean landRepairableBuilding(Building building) {
+		return building instanceof City || building instanceof Factory/* || building instanceof HQ*/;
+	}
 
 	private void repairUnit(Unit unit) {
+		UnitWorthCalculator unitWorthCalculator = new UnitWorthCalculator();
 		// restore hp to an even 10
 		int restoreHp = 10 - unit.getUnitHealth().getHP() % 10;
 		if (restoreHp < 10) {
@@ -54,7 +62,7 @@ public class RepairHandler {
 		for (int i = 0 ; i < 2 ; i++) {
 			if (heroHandler.getCurrentHero().getCash() >= repairCost && !unit.getUnitHealth().atFullHealth()) {
 				unit.getUnitHealth().heal(10);
-				heroHandler.getCurrentHero().manageCash(-repairCost);
+				heroHandler.getCurrentHero().spendCash(repairCost);
 			}
 		}
 	}

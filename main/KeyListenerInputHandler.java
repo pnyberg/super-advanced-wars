@@ -269,7 +269,7 @@ public class KeyListenerInputHandler {
 				int joinHp = unit.getUnitHealth().getShowHP() + gameState.getChosenObject().chosenUnit.getUnitHealth().getShowHP();
 				if (joinHp > 10) {
 					int joinFunds = (joinHp - 10) * unitWorthCalculator.getFullHealthUnitWorth(unit) / 10;
-					gameState.getHeroHandler().getCurrentHero().manageCash(joinFunds);
+					gameState.getHeroHandler().getCurrentHero().earnCash(joinFunds);
 				}
 				unit.getUnitHealth().heal(gameState.getChosenObject().chosenUnit.getUnitHealth().getHP());
 				gameState.getChosenObject().chosenUnit.getUnitHealth().kill();

@@ -3,7 +3,7 @@ package gameObjects;
 import java.util.ArrayList;
 
 import cursors.Cursor;
-import main.HeroHandler;
+import hero.HeroHandler;
 import map.buildings.Building;
 import map.structures.Structure;
 import menus.BuildingMenuState;

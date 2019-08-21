@@ -28,11 +28,15 @@ public class Hero {
 		troopHandler = new TroopHandler();
 	}
 
-	public void manageCash(int cashDiff) {
-		cash += cashDiff;
+	public void earnCash(int amount) {
+		cash += amount;
 		if (cash >= 1000000) {
 			cash = 999999;
 		}
+	}
+	
+	public void spendCash(int amount) {
+		cash -= amount;
 	}
 	
 	public void setPowerActive(boolean powerActive) {

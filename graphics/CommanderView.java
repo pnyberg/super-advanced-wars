@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import combat.AttackValueCalculator;
 import combat.DefenceValueCalculator;
 import gameObjects.MapDimension;
-import main.HeroHandler;
+import hero.HeroHandler;
 import unitUtils.UnitType;
 import units.Unit;
 import units.airMoving.BCopter;

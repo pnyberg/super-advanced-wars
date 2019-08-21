@@ -10,6 +10,7 @@ import graphics.images.units.APCImage;
 import unitUtils.AttackType;
 import unitUtils.MovementType;
 import unitUtils.UnitCategory;
+import unitUtils.UnitContainer;
 import unitUtils.UnitSupply;
 import unitUtils.UnitType;
 import units.Unit;
@@ -29,9 +30,11 @@ public class APC extends Unit {
 		attackType = AttackType.NONE;
 		unitClass = UnitCategory.VEHICLE;
 		unitSupply = new UnitSupply(70, 0);
-		containedUnit = null;
 		droppingOff = false;
 		
+		containedUnit = null; // TODO: remove
+		unitContainer = new UnitContainer(1);
+
 		unitImage = new APCImage(tileSize);
 	}
 

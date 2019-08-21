@@ -5,7 +5,6 @@ import units.airMoving.TCopter;
 import units.seaMoving.Lander;
 import units.treadMoving.APC;
 import hero.*;
-import main.HeroHandler;
 import main.StarPowerCalculator;
 import map.GameMap;
 import map.area.TerrainType;

@@ -11,6 +11,7 @@ import graphics.images.units.LanderImage;
 import unitUtils.AttackType;
 import unitUtils.MovementType;
 import unitUtils.UnitCategory;
+import unitUtils.UnitContainer;
 import unitUtils.UnitSupply;
 import unitUtils.UnitType;
 import units.Unit;
@@ -31,10 +32,12 @@ public class Lander extends Unit {
 		attackType = AttackType.NONE;
 		unitClass = UnitCategory.BOAT;
 		unitSupply = new UnitSupply(99, 0);
-		containedUnits = new ArrayList<Unit>();
 		droppingOff = false;
 		chosenIndex = -1;
-		
+
+		containedUnits = new ArrayList<Unit>(); // TODO: remove
+		unitContainer = new UnitContainer(2);
+
 		unitImage = new LanderImage(tileSize);
 	}
 

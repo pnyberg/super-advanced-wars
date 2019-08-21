@@ -5,10 +5,10 @@
  */
 package hero.heroPower;
 
+import hero.HeroHandler;
 import hero.heroAbilities.CommanderEffect;
 import hero.heroAbilities.DamageAll;
 import hero.heroAbilities.HealAll;
-import main.HeroHandler;
 import units.Unit;
 
 public class HeroPowerHandler {

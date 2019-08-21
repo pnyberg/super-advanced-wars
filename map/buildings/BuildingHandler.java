@@ -3,7 +3,7 @@ package map.buildings;
 import java.util.ArrayList;
 
 import gameObjects.GameState;
-import main.HeroHandler;
+import hero.HeroHandler;
 
 public class BuildingHandler {
 	private HeroHandler heroHandler;

@@ -10,7 +10,7 @@ import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.MapDimension;
 import hero.Hero;
-import main.HeroHandler;
+import hero.HeroHandler;
 import map.GameMap;
 import map.area.AreaChecker;
 import map.area.TerrainType;
