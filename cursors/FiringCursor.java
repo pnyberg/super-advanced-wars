@@ -8,11 +8,10 @@ import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.MapDimension;
 import hero.HeroHandler;
-import map.GameMap;
 import map.UnitGetter;
-import map.area.TerrainType;
 import map.structures.Structure;
 import map.structures.StructureHandler;
+import point.Point;
 import units.Unit;
 
 public class FiringCursor {
@@ -30,31 +29,15 @@ public class FiringCursor {
 		this.structureHandler = new StructureHandler(gameState, gameProperties.getMapDimension());
 	}
 	
-	// TODO: rewrite code to make it more readable
 	public void paint(Graphics g, Cursor cursor, Unit chosenUnit) {
+		paintTargetCircle(g, cursor);
+		paintDamageField(g, cursor, chosenUnit);
+	}
+	
+	private void paintTargetCircle(Graphics g, Cursor cursor) {
 		int tileSize = mapDimension.tileSize;
-
-		int xDiff = cursor.getX() - chosenUnit.getPoint().getX();
-		int yDiff = cursor.getY() - chosenUnit.getPoint().getY();
-
-		Unit targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(cursor.getX(), cursor.getY());
-		Structure targetStructure = structureHandler.getStructure(cursor.getX(), cursor.getY());
-		int damage = 0;
-		if (targetUnit != null) {
-			damage = damageHandler.getNonRNGDamageValue(chosenUnit, targetUnit);
-		} else if (targetStructure != null) {
-			damage = damageHandler.getStructureDamage(chosenUnit, heroHandler.getCurrentHero());
-		}
-
-		int damageFieldWidth = (damage <= 9 ? 3 * tileSize / 5 : 
-									(damage <= 99 ? 4 * tileSize / 5
-										: tileSize - 3));
-		int damageFieldHeight = 3 * tileSize / 5;
-
 		int paintX = cursor.getX() + 2;
 		int paintY = cursor.getY() + 2;
-		int dmgFieldX = cursor.getX(); // will be changed
-		int dmgFieldY = cursor.getY(); // will be changed
 
 		g.setColor(Color.black);
 		g.drawOval(paintX, paintY, tileSize - 4, tileSize - 4);
@@ -62,26 +45,62 @@ public class FiringCursor {
 
 		g.setColor(Color.white);
 		g.drawOval(paintX + 1, paintY + 1, tileSize - 6, tileSize - 6);
+	}
+	
+	// TODO: rewrite code to make it more readable
+	private void paintDamageField(Graphics g, Cursor cursor, Unit chosenUnit) {
+		int tileSize = mapDimension.tileSize;
+		int damage = getDamageToBeShown(cursor, chosenUnit);
+
+		int damageFieldWidth = (damage <= 9 ? 3 * tileSize / 5 : 
+			(damage <= 99 ? 4 * tileSize / 5
+				: tileSize - 3));
+		int damageFieldHeight = 3 * tileSize / 5;
+
+		Point damageFieldAnchorPoint = getDamageFieldAnchorPoint(cursor, chosenUnit, damageFieldWidth, damageFieldHeight);
+		int damageFieldX = damageFieldAnchorPoint.getX();
+		int damageFieldY = damageFieldAnchorPoint.getY();
+		g.setColor(Color.red);
+		g.fillRect(damageFieldX, damageFieldY, damageFieldWidth, damageFieldHeight);
+		g.setColor(Color.black);
+		g.drawRect(damageFieldX, damageFieldY, damageFieldWidth, damageFieldHeight);
+		g.setColor(Color.white);
+		g.drawString("" + damage + "%", damageFieldX + damageFieldWidth / 10, damageFieldY + 2 * damageFieldHeight / 3);
+	}
+	
+	private int getDamageToBeShown(Cursor cursor, Unit chosenUnit) {
+		int damage = 0;
+		Unit targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(cursor.getX(), cursor.getY());
+		Structure targetStructure = structureHandler.getStructure(cursor.getX(), cursor.getY());
+		if (targetUnit != null) {
+			damage = damageHandler.getNonRNGDamageValue(chosenUnit, targetUnit);
+		} else if (targetStructure != null) {
+			damage = damageHandler.getStructureDamage(chosenUnit, heroHandler.getCurrentHero());
+		}
+		return damage;
+	}
+	
+	// TODO: rewrite to make it more readable
+	private Point getDamageFieldAnchorPoint(Cursor cursor, Unit chosenUnit, int damageFieldWidth, int damageFieldHeight) {
+		int damageFieldX = cursor.getX(); // will be changed
+		int damageFieldY = cursor.getY(); // will be changed
+		int tileSize = mapDimension.tileSize;
+		int xDiff = cursor.getX() - chosenUnit.getPoint().getX();
+		int yDiff = cursor.getY() - chosenUnit.getPoint().getY();
 
 		if (yDiff == -tileSize) {
-			dmgFieldX += tileSize;
-			dmgFieldY += -damageFieldHeight;
+			damageFieldX += tileSize;
+			damageFieldY += -damageFieldHeight;
 		} else if (xDiff == tileSize) {
-			dmgFieldX += tileSize;
-			dmgFieldY += tileSize;
+			damageFieldX += tileSize;
+			damageFieldY += tileSize;
 		} else if (yDiff == tileSize) {
-			dmgFieldX += -damageFieldWidth;
-			dmgFieldY += tileSize;
+			damageFieldX += -damageFieldWidth;
+			damageFieldY += tileSize;
 		} else { // xDiff == -1
-			dmgFieldX += -damageFieldWidth;
-			dmgFieldY += -damageFieldHeight;
+			damageFieldX += -damageFieldWidth;
+			damageFieldY += -damageFieldHeight;
 		}
-
-		g.setColor(Color.red);
-		g.fillRect(dmgFieldX, dmgFieldY, damageFieldWidth, damageFieldHeight);
-		g.setColor(Color.black);
-		g.drawRect(dmgFieldX, dmgFieldY, damageFieldWidth, damageFieldHeight);
-		g.setColor(Color.white);
-		g.drawString("" + damage + "%", dmgFieldX + damageFieldWidth / 10, dmgFieldY + 2 * damageFieldHeight / 3);
+		return new Point(damageFieldX, damageFieldY);
 	}
 }

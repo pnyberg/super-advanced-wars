@@ -1,9 +1,7 @@
 package units.airMoving;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
-import graphics.images.units.BCopterImage;
 import graphics.images.units.BomberImage;
 import unitUtils.MovementType;
 import unitUtils.UnitCategory;

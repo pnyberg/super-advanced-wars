@@ -1,6 +1,6 @@
 /**
  * TODO:
- *  - implement ContainingUnit-interface
+ *  - implement ContainingUnit-interface (and change to unitContainer?)
  */
 package units.seaMoving;
 

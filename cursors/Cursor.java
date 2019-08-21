@@ -55,6 +55,7 @@ public class Cursor {
 		return y;
 	}
 
+	// TODO: replace with image
 	public void paint(Graphics g) {
 		// Get position for the cursor
 		g.setColor(fillColor);

@@ -1,7 +1,6 @@
 package units.airMoving;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
 import graphics.images.units.FighterImage;
 import unitUtils.MovementType;

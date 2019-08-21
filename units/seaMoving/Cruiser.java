@@ -1,3 +1,7 @@
+/**
+ * TODO:
+ *  - implement ContainingUnit-interface (and change to unitContainer?)
+ */
 package units.seaMoving;
 
 import java.awt.Color;
