@@ -1,7 +1,4 @@
 /**
- * Refactor-bug
- *  - HeroPortrait always in upper left corner
- * 
  * TODO-list
  * - only one action/unit per turn
  * - change POWER/SUPER-text, maybe use a pre-written text?

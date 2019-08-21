@@ -25,6 +25,7 @@ public class GameState {
 	private boolean[][] rangeMap;
 	private ArrayList<Point> arrowPoints;
 	private TurnState turnState;
+	private boolean heroPortraitLeftSide;
 	
 	public GameState(MapDimension mapDimension, HeroHandler heroHandler, ArrayList<Building> buildings, ArrayList<Structure> structures) {
 		this.heroHandler = heroHandler;
@@ -39,6 +40,7 @@ public class GameState {
 		rangeMap = new boolean[mapDimension.getTileWidth()][mapDimension.getTileHeight()];
 		arrowPoints = new ArrayList<Point>();
 		turnState = new TurnState();
+		heroPortraitLeftSide = true;
 	}
 	
 	public void addBuildings(ArrayList<Building> buildings) {
@@ -59,6 +61,14 @@ public class GameState {
 	
 	public void setMovementMap(MovementMap movementMap) {
 		this.movementMap = movementMap;
+	}
+	
+	public void setHeroPortraitOnLeftSide(boolean leftSide) {
+		this.heroPortraitLeftSide = leftSide;
+	}
+	
+	public boolean heroPortraitOnLeftSide() {
+		return heroPortraitLeftSide;
 	}
 	
 	public HeroHandler getHeroHandler() {
