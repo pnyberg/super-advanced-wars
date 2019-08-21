@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import combat.DamageHandler;
+import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.MapDimension;
 import main.HeroHandler;
@@ -15,23 +16,23 @@ import map.structures.StructureHandler;
 import units.Unit;
 
 public class FiringCursor {
-	private MapDimension mapDim;
+	private MapDimension mapDimension;
 	private UnitGetter unitGetter;
 	private HeroHandler heroHandler;
 	private DamageHandler damageHandler;
 	private StructureHandler structureHandler;
 
-	public FiringCursor(MapDimension mapDimension, GameState gameState, DamageHandler damageHandler) {
-		this.mapDim = mapDimension;
+	public FiringCursor(GameProperties gameProperties, GameState gameState) {
+		this.mapDimension = gameProperties.getMapDimension();
 		this.unitGetter = new UnitGetter(heroHandler);
 		this.heroHandler = gameState.getHeroHandler();
-		this.damageHandler = damageHandler;
-		this.structureHandler = new StructureHandler(gameState, mapDimension);
+		this.damageHandler = new DamageHandler(gameState.getHeroHandler(), gameProperties.getGameMap());
+		this.structureHandler = new StructureHandler(gameState, gameProperties.getMapDimension());
 	}
 	
 	// TODO: rewrite code to make it more readable
 	public void paint(Graphics g, Cursor cursor, Unit chosenUnit) {
-		int tileSize = mapDim.tileSize;
+		int tileSize = mapDimension.tileSize;
 
 		int xDiff = cursor.getX() - chosenUnit.getPoint().getX();
 		int yDiff = cursor.getY() - chosenUnit.getPoint().getY();

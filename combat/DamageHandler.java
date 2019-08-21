@@ -20,8 +20,8 @@ public class DamageHandler {
 	private GameMap gameMap;
 
 	// TODO: rewrite code to make it fewer parameters
-	public DamageHandler(HeroHandler heroHandler, GameMap gameMap, AttackValueCalculator attackValueCalculator, DefenceValueCalculator defenceValueCalculator) {
-		damageCalculator = new DamageCalculator(attackValueCalculator, defenceValueCalculator);
+	public DamageHandler(HeroHandler heroHandler, GameMap gameMap) {
+		damageCalculator = new DamageCalculator();
 		starPowerCalculator = new StarPowerCalculator();
 		this.heroHandler = heroHandler;
 		this.gameMap = gameMap;

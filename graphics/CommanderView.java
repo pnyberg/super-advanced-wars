@@ -35,11 +35,11 @@ public class CommanderView {
 	private DefenceValueCalculator defenceValueCalculator;
 	private Unit[] unitCollection;
 	
-	public CommanderView(MapDimension mapDim, HeroHandler heroHandler, AttackValueCalculator attackValueCalculator, DefenceValueCalculator defenceValueCalculator) {
+	public CommanderView(MapDimension mapDim, HeroHandler heroHandler) {
 		this.mapDim = mapDim;
 		this.heroHandler = heroHandler;
-		this.attackValueCalculator = attackValueCalculator;
-		this.defenceValueCalculator = defenceValueCalculator;
+		attackValueCalculator = new AttackValueCalculator();
+		defenceValueCalculator = new DefenceValueCalculator();
 		initUnitCollection();
 	}
 	

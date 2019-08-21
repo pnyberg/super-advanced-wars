@@ -2,6 +2,7 @@ package menus.map;
 
 import java.awt.Graphics;
 
+import gameObjects.GameState;
 import hero.heroPower.HeroPowerMeter;
 import main.HeroHandler;
 import menus.Menu;
@@ -17,9 +18,9 @@ public class MapMenu extends Menu {
 								};
 	private HeroHandler heroHandler;
 
-	public MapMenu(int tileSize, HeroHandler heroHandler) {
+	public MapMenu(int tileSize, GameState gameState) {
 		super(tileSize);
-		this.heroHandler = heroHandler;
+		this.heroHandler = gameState.getHeroHandler();
 	}
 
 	public int getNumberOfRows() {

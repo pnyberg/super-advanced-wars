@@ -6,11 +6,13 @@ import cursors.Cursor;
 import main.HeroHandler;
 import map.buildings.Building;
 import map.structures.Structure;
+import routing.MovementMap;
 
 public class GameState {
 	private HeroHandler heroHandler;
 	private ChosenObject chosenObject;
 	private Cursor cursor;
+	private MovementMap movementMap;
 	private ArrayList<Building> buildings;
 	private ArrayList<Structure> structures;
 	
@@ -18,6 +20,8 @@ public class GameState {
 		heroHandler = new HeroHandler();
 		chosenObject = new ChosenObject();
 		cursor = new Cursor(0, 0, tileSize);
+		buildings = new ArrayList<>();
+		structures = new ArrayList<>();
 	}
 	
 	public void addBuildings(ArrayList<Building> buildings) {
@@ -26,6 +30,10 @@ public class GameState {
 	
 	public void addStructures(ArrayList<Structure> structures) {
 		this.structures.addAll(structures);
+	}
+	
+	public void setMovementMap(MovementMap movementMap) {
+		this.movementMap = movementMap;
 	}
 	
 	public HeroHandler getHeroHandler() {
@@ -38,6 +46,10 @@ public class GameState {
 	
 	public Cursor getCursor() {
 		return cursor;
+	}
+	
+	public MovementMap getMovementMap() {
+		return movementMap;
 	}
 	
 	public ArrayList<Building> getBuildings() {

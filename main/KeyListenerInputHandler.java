@@ -8,12 +8,16 @@ import java.awt.event.KeyEvent;
 
 import combat.AttackHandler;
 import combat.AttackRangeHandler;
+import combat.AttackValueCalculator;
 import combat.DamageHandler;
+import combat.DefenceValueCalculator;
 import cursors.Cursor;
+import cursors.FiringCursor;
 import cursors.FiringCursorHandler;
 import gameObjects.GameMapAndCursor;
 import gameObjects.GameProperties;
 import gameObjects.GameState;
+import graphics.CommanderView;
 import graphics.MapViewType;
 import graphics.ViewPainter;
 import hero.Hero;
@@ -21,6 +25,7 @@ import hero.heroPower.HeroPowerHandler;
 import map.BuildingStructureHandlerObject;
 import map.GameMap;
 import map.UnitGetter;
+import map.area.AreaChecker;
 import map.area.TerrainType;
 import map.buildings.Building;
 import map.buildings.BuildingHandler;
@@ -31,6 +36,8 @@ import menus.building.BuildingMenu;
 import menus.map.MapMenu;
 import menus.unit.UnitMenuHandler;
 import point.Point;
+import routing.MoveabilityMatrixFactory;
+import routing.MovementCostCalculator;
 import routing.MovementMap;
 import routing.RouteChecker;
 import routing.RouteHandler;
@@ -61,7 +68,6 @@ public class KeyListenerInputHandler {
 	private RouteHandler routeHandler;
 	private RouteChecker routeChecker;
 	private DamageHandler damageHandler;
-	private HeroHandler heroHandler;
 	private CaptHandler captHandler;
 	private SupplyHandler supplyHandler;
 	private TurnHandler turnHandler;
@@ -69,31 +75,48 @@ public class KeyListenerInputHandler {
 	private HeroPowerHandler heroPowerHandler;
 	private UnitWorthCalculator unitWorthCalculator;
 	
-	public KeyListenerInputHandler(GameProperties gameProperties, GameState gameState, ViewPainter viewPainter, UnitMenuHandler unitMenuHandler, MapMenu mapMenu, BuildingMenu buildingMenu, ContUnitHandler containerUnitHandler, AttackHandler attackHandler, AttackRangeHandler attackRangeHandler, MovementMap movementMap, RouteHandler routeHandler, RouteChecker routeChecker, DamageHandler damageHandler, HeroHandler heroHandler, SupplyHandler supplyHandler, TurnHandler turnHandler) {
+	public KeyListenerInputHandler(GameProperties gameProperties, GameState gameState, MapMenu mapMenu, TurnHandler turnHandler) {
 		this.gameProp = gameProperties;
 		this.gameState = gameState;
 		this.gameMap = gameProperties.getGameMap();
-		this.viewPainter = viewPainter;
 		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
 		this.buildingHandler = new BuildingHandler(gameState);
 		this.structureHandler = new StructureHandler(gameState, gameProperties.getMapDimension());
 		this.cursor = gameState.getCursor();
-		this.unitMenuHandler = unitMenuHandler;
 		this.mapMenu = mapMenu;
-		this.buildingMenu = buildingMenu;
-		this.containerUnitHandler = containerUnitHandler;
-		this.attackHandler = attackHandler;
-		this.attackRangeHandler = attackRangeHandler;
-		this.movementMap = movementMap;
-		this.routeHandler = routeHandler;
-		this.routeChecker = routeChecker;
-		this.damageHandler = damageHandler;
-		this.heroHandler = heroHandler;
-		captHandler = new CaptHandler(heroHandler);
-		this.supplyHandler = supplyHandler;
+		captHandler = new CaptHandler(gameState.getHeroHandler());
 		this.turnHandler = turnHandler;
+	
+		int tileSize = gameProperties.getMapDimension().tileSize;
+		
+		attackRangeHandler = new AttackRangeHandler(gameProperties, gameState);
+		viewPainter = new ViewPainter(gameProperties, gameState);
+		routeChecker = new RouteChecker(gameProperties, gameState);
+		
+		// no previously required init
+		this.cursor = gameState.getCursor();
+		GameMap gameMap = gameProperties.getGameMap();
+		movementMap = gameState.getMovementMap();
+
+		// required init from first init-round
+		AreaChecker areaChecker = new AreaChecker(gameState.getHeroHandler(), gameMap);
+		buildingMenu = new BuildingMenu(tileSize, gameState.getHeroHandler(), gameMap);
+		damageHandler = new DamageHandler(gameState.getHeroHandler(), gameMap);
+		MovementCostCalculator movementCostCalculator = new MovementCostCalculator(gameMap);
+		supplyHandler = new SupplyHandler(gameState, tileSize);
+
+		// required init from second init-round
+		routeHandler = new RouteHandler(gameProperties.getMapDimension(), movementMap, movementCostCalculator);
+
+		// required init from third init-round
+		containerUnitHandler = new ContUnitHandler(gameProperties, gameState);
+
+		// required init from fourth init-round
+		attackHandler = new AttackHandler(gameProperties, gameState);
+		unitMenuHandler = new UnitMenuHandler(gameProperties, gameState, containerUnitHandler, supplyHandler, areaChecker, attackRangeHandler);
+
 		firingCursorHandler = new FiringCursorHandler(gameProperties, gameState, cursor, unitGetter, damageHandler);
-		heroPowerHandler = new HeroPowerHandler(heroHandler);
+		heroPowerHandler = new HeroPowerHandler(gameState.getHeroHandler());
 		unitWorthCalculator = new UnitWorthCalculator();
 	}
 	
@@ -246,7 +269,7 @@ public class KeyListenerInputHandler {
 				int joinHp = unit.getUnitHealth().getShowHP() + gameState.getChosenObject().chosenUnit.getUnitHealth().getShowHP();
 				if (joinHp > 10) {
 					int joinFunds = (joinHp - 10) * unitWorthCalculator.getFullHealthUnitWorth(unit) / 10;
-					heroHandler.getCurrentHero().manageCash(joinFunds);
+					gameState.getHeroHandler().getCurrentHero().manageCash(joinFunds);
 				}
 				unit.getUnitHealth().heal(gameState.getChosenObject().chosenUnit.getUnitHealth().getHP());
 				gameState.getChosenObject().chosenUnit.getUnitHealth().kill();
@@ -448,7 +471,7 @@ public class KeyListenerInputHandler {
 
 	private void removeUnitIfDead(Unit unit) {
 		if (unit.getUnitHealth().isDead()) {
-			Hero unitsHero = heroHandler.getHeroFromUnit(unit);
+			Hero unitsHero = gameState.getHeroHandler().getHeroFromUnit(unit);
 			unitsHero.getTroopHandler().removeTroop(unit);
 		}
 	}

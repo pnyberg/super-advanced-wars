@@ -3,6 +3,7 @@ package graphics;
 import java.awt.Graphics;
 
 import combat.AttackRangeHandler;
+import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.MapDimension;
 import main.HeroHandler;
@@ -12,6 +13,7 @@ import map.buildings.Building;
 import map.buildings.BuildingHandler;
 import map.structures.Structure;
 import map.structures.StructureHandler;
+import routing.MovementCostCalculator;
 import routing.RouteHandler;
 import units.Unit;
 
@@ -19,7 +21,7 @@ public class ViewPainter {
 	private MapViewType mapViewType;
 	private CommanderView commanderView;
 	private HeroHandler heroHandler;
-	private MapDimension mapDim;
+	private MapDimension mapDimension;
 	private GameMap gameMap;
 	private RouteHandler routeHandler;
 	private AttackRangeHandler attackRangeHandler;
@@ -27,14 +29,14 @@ public class ViewPainter {
 	private StructureHandler structureHandler;
 	
 	// TODO: rewrite with fewer parameters
-	public ViewPainter(CommanderView commanderView, MapDimension mapDimension, GameState gameState, GameMap gameMap, RouteHandler routeHandler, AttackRangeHandler attackRangeHandler) {
+	public ViewPainter(GameProperties gameProperties, GameState gameState) {
 		mapViewType = MapViewType.MAIN_MAP_MENU_VIEW;
-		this.commanderView = commanderView;
 		this.heroHandler = gameState.getHeroHandler();
-		this.mapDim = mapDimension;
-		this.gameMap = gameMap;
-		this.routeHandler = routeHandler;
-		this.attackRangeHandler = attackRangeHandler;
+		this.mapDimension = gameProperties.getMapDimension();
+		this.commanderView = new CommanderView(mapDimension, gameState.getHeroHandler());
+		this.gameMap = gameProperties.getGameMap();
+		this.routeHandler = new RouteHandler(mapDimension, gameState.getMovementMap(), new MovementCostCalculator(gameMap));
+		this.attackRangeHandler = new AttackRangeHandler(gameProperties, gameState);
 		this.buildingHandler = new BuildingHandler(gameState);
 		this.structureHandler = new StructureHandler(gameState, mapDimension);
 	}
@@ -65,8 +67,8 @@ public class ViewPainter {
 
 	private void paintArea(Graphics g, int tileX, int tileY) {
 		boolean rangeAttackableLocation = attackRangeHandler.getRangeMap()[tileX][tileY];
-		Structure structure = structureHandler.getFiringStructure(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
-		Building building = buildingHandler.getBuilding(tileX * mapDim.tileSize, tileY * mapDim.tileSize);
+		Structure structure = structureHandler.getFiringStructure(tileX * mapDimension.tileSize, tileY * mapDimension.tileSize);
+		Building building = buildingHandler.getBuilding(tileX * mapDimension.tileSize, tileY * mapDimension.tileSize);
 
 		if (structure != null && !rangeAttackableLocation) {
 			structure.paint(g);
@@ -85,7 +87,7 @@ public class ViewPainter {
 					Unit unit = heroHandler.getUnitFromHero(heroIndex, k);
 					if (unit != chosenUnit) {
 						if (!unit.isHidden()) {
-							unit.paint(g, mapDim.tileSize);
+							unit.paint(g, mapDimension.tileSize);
 						}
 					}
 				}

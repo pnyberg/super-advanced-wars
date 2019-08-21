@@ -17,8 +17,8 @@ public class TurnHandler {
 	private boolean firstHeroOfTheDay;
 
 	public TurnHandler(GameProperties gameProperties, GameState gameState) {
-		fuelHandler = new FuelHandler(gameProperties.fuelMaintenancePerTurn, heroHandler);
 		this.heroHandler = gameState.getHeroHandler();
+		fuelHandler = new FuelHandler(gameProperties.fuelMaintenancePerTurn, heroHandler);
 		this.structureHandler = new StructureHandler(gameState, gameProperties.getMapDimension());
 		BuildingHandler buildingHandler = new BuildingHandler(gameState);
 		cashHandler = new CashHandler(heroHandler, buildingHandler);

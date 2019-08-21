@@ -22,7 +22,7 @@ public class CashTester {
 	@Before
 	public void init() {
 		mapDimension = new MapDimension(0, 0, 0);
-		portrait = new HeroPortrait(mapDimension, new HeroHandler());
+		//portrait = new HeroPortrait(mapDimension, new HeroHandler());
 		heroFactory = new HeroFactory();
 		hero0 = heroFactory.createHero(0);
 		hero1 = heroFactory.createHero(1);

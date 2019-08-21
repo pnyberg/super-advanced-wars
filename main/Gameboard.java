@@ -1,4 +1,8 @@
 /**
+ * Refactor-bugs
+ *  - "pressing B on a structure/unit"
+ *  - "menu for buying new units"
+ * 
  * TODO-list
  * - only one action/unit per turn
  * - change POWER/SUPER-text, maybe use a pre-written text?
@@ -28,12 +32,15 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import combat.AttackHandler;
+import combat.AttackRangeHandler;
 import cursors.Cursor;
+import cursors.FiringCursor;
 import gameObjects.GameMapAndCursor;
 import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.GraphicMetrics;
 import gameObjects.MapDimension;
+import graphics.ViewPainter;
 import hero.HeroFactory;
 import hero.HeroPortrait;
 import map.GameMap;
@@ -41,8 +48,11 @@ import map.MapLoader;
 import map.MapLoadingObject;
 import map.buildings.Building;
 import map.structures.Structure;
+import menus.building.BuildingMenu;
 import menus.map.MapMenu;
 import menus.unit.UnitMenu;
+import routing.MovementCostCalculator;
+import routing.RouteHandler;
 import unitUtils.ContUnitHandler;
 import units.Unit;
 
@@ -52,10 +62,17 @@ public class Gameboard extends JPanel implements KeyListener {
 	private GameMap gameMap;
 	private MapDimension mapDimension;
 	private InfoBox infoBox;
-	private InternalStructureObject internalStructureObject;
 	private MapMenu mapMenu;
+	private UnitMenu unitMenu;
+	private BuildingMenu buildingMenu;
 	private HeroPortrait heroPortrait;
+	private FiringCursor firingCursor;
+	private ViewPainter mainViewPainter;
+	private AttackHandler attackHandler;
 	private TurnHandler turnHandler;
+	private ContUnitHandler contUnitHandler;
+	private RouteHandler routeHandler;
+	private AttackRangeHandler attackRangeHandler;
 	private KeyListenerInputHandler keyListenerInputHandler;
 
 	public Gameboard(int tileSize) {
@@ -77,30 +94,30 @@ public class Gameboard extends JPanel implements KeyListener {
 		gameState.addBuildings(buildings);
 		ArrayList<Structure> structures = mapLoadingObject.getStructureList();
 		gameState.addStructures(structures);
+		gameState.setMovementMap(mapLoadingObject.getMovementMap());
 		
 		// Game-properties
 		gameProperties = new GameProperties(mapDimension, gameMap);
 
+		// Create graphics 
 		infoBox = new InfoBox(gameProperties, gameState);
-		internalStructureObject = new InternalStructureObject(gameProperties, gameState);
-		mapMenu = new MapMenu(tileSize, heroHandler);
-		heroPortrait = new HeroPortrait(mapDimension, heroHandler);
+		mapMenu = new MapMenu(tileSize, gameState);
+		heroPortrait = new HeroPortrait(mapDimension, gameState);
+		firingCursor = new FiringCursor(gameProperties, gameState);
+		unitMenu = new UnitMenu(gameProperties.getTileSize());
+		buildingMenu = new BuildingMenu(gameProperties.getTileSize(), gameState.getHeroHandler(), gameMap);
+		mainViewPainter = new ViewPainter(gameProperties, gameState);
+
+		// Create handlers
+		attackHandler = new AttackHandler(gameProperties, gameState);
 		turnHandler = new TurnHandler(gameProperties, gameState);
+		contUnitHandler = new ContUnitHandler(gameProperties, gameState);
+		routeHandler = new RouteHandler(mapDimension, gameState.getMovementMap(), new MovementCostCalculator(gameMap));
+		attackRangeHandler = new AttackRangeHandler(gameProperties, gameState);
+
 		keyListenerInputHandler = new KeyListenerInputHandler(gameProperties, 
 											gameState,
-											internalStructureObject.getMainViewPainter(), 
-											internalStructureObject.getUnitMenuHandler(), 
 											mapMenu,
-											internalStructureObject.getBuildingMenu(), 
-											internalStructureObject.getContUnitHandler(), 
-											internalStructureObject.getAttackHandler(), 
-											internalStructureObject.getAttackRangeHandler(), 
-											internalStructureObject.getMovementMap(), 
-											internalStructureObject.getRouteHandler(), 
-											internalStructureObject.getRouteChecker(), 
-											internalStructureObject.getDamageHandler(), 
-											heroHandler, 
-											internalStructureObject.getSupplyHandler(), 
 											turnHandler);
 		addKeyListener(this);
 		init();
@@ -114,7 +131,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 	
 	private void updatePortraitSideChoice() {
-		Cursor cursor = internalStructureObject.getCursor();
+		Cursor cursor = gameState.getCursor();
 		heroPortrait.updateSideChoice(cursor);
 	}
 	
@@ -147,42 +164,37 @@ public class Gameboard extends JPanel implements KeyListener {
 	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		AttackHandler attackHandler = internalStructureObject.getAttackHandler();
 		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
-		UnitMenu unitMenu = internalStructureObject.getUnitMenuHandler().getUnitMenu();
-		ContUnitHandler contUnitHandler = internalStructureObject.getContUnitHandler();
-		internalStructureObject.getMainViewPainter().paint(g);
+		mainViewPainter.paint(g);
 		if (chosenUnit != null) {
 			if (!unitMenu.isVisible() && !contUnitHandler.unitIsDroppingOff() 
 									&& !attackHandler.unitWantsToFire(chosenUnit)) {
-				internalStructureObject.getRouteHandler().getRouteArrowPath().paintArrow(g);
+				routeHandler.getRouteArrowPath().paintArrow(g);
 			}
 
 			chosenUnit.paint(g, mapDimension.tileSize);
 		}
-		internalStructureObject.getAttackRangeHandler().paintRange(g);
-		internalStructureObject.getMainViewPainter().paintUnits(g, chosenUnit);
+		attackRangeHandler.paintRange(g);
+		mainViewPainter.paintUnits(g, chosenUnit);
 		paintMenusAndCursors(g);
 		heroPortrait.paint(g);
 		infoBox.paint(g);
 	}
 	
 	private void paintMenusAndCursors(Graphics g) {
-		UnitMenu unitMenu = internalStructureObject.getUnitMenuHandler().getUnitMenu();
-		AttackHandler attackHandler = internalStructureObject.getAttackHandler();
 		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
-		Cursor cursor = internalStructureObject.getCursor();
+		Cursor cursor = gameState.getCursor();
 		// when the mapMenu is open the cursor is hidden
 		if (mapMenu.isVisible()) {
 			mapMenu.paint(g);
 		} else if (unitMenu.isVisible()) {
 			unitMenu.paint(g);
-		} else if (internalStructureObject.getBuildingMenu().isVisible()) {
-			internalStructureObject.getBuildingMenu().paint(g);
+		} else if (buildingMenu.isVisible()) {
+			buildingMenu.paint(g);
 		} else if (attackHandler.unitWantsToFire(chosenUnit)) {
-			internalStructureObject.getFiringCursor().paint(g, cursor, chosenUnit);
+			firingCursor.paint(g, cursor, chosenUnit);
 		} else {
-			internalStructureObject.getCursor().paint(g);
+			gameState.getCursor().paint(g);
 		}
 	}
 }

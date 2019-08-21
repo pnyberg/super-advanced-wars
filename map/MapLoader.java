@@ -17,6 +17,7 @@ import map.buildings.Factory;
 import map.buildings.Port;
 import map.structures.MiniCannon;
 import point.Point;
+import routing.MovementMap;
 
 public class MapLoader {
 	public MapLoader() {
@@ -38,7 +39,9 @@ public class MapLoader {
 			int mapWidth = mapLines.get(0).split(" ").length;
 			int mapHeight = mapLines.size();
 			mapLoadingObject.setGameMap(new GameMap(mapWidth, mapHeight, tileSize));
-			mapLoadingObject.setMapDim(new MapDimension(mapWidth, mapHeight, tileSize));
+			MapDimension mapDimension = new MapDimension(mapWidth, mapHeight, tileSize);
+			mapLoadingObject.setMapDimension(mapDimension);
+			mapLoadingObject.setMovementMap(new MovementMap(mapDimension));
 			for (int tileY = 0 ; tileY < mapHeight ; tileY++) {
 				String nextLine = mapLines.get(tileY);
 				String[] tokens = nextLine.split(" ");

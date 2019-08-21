@@ -6,16 +6,19 @@ import gameObjects.MapDimension;
 import map.area.Area;
 import map.buildings.Building;
 import map.structures.Structure;
+import routing.MovementMap;
 
 public class MapLoadingObject {
 	private GameMap gameMap;
-	private MapDimension mapDim;
+	private MapDimension mapDimension;
+	private MovementMap movementMap;
 	private ArrayList<Building> buildings;
 	private ArrayList<Structure> structures;
 	
 	public MapLoadingObject() {
 		gameMap = null;
-		mapDim = null;
+		mapDimension = null;
+		movementMap = null;
 		buildings = new ArrayList<>();
 		structures = new ArrayList<>();
 	}
@@ -24,8 +27,12 @@ public class MapLoadingObject {
 		this.gameMap = gameMap;
 	}
 	
-	public void setMapDim(MapDimension mapDim) {
-		this.mapDim = mapDim;
+	public void setMapDimension(MapDimension mapDim) {
+		this.mapDimension = mapDim;
+	}
+	
+	public void setMovementMap(MovementMap movementMap) {
+		this.movementMap = movementMap;
 	}
 	
 	public void addBuilding(Building building) {
@@ -45,7 +52,11 @@ public class MapLoadingObject {
 	}
 	
 	public MapDimension getMapDimension() {
-		return mapDim;
+		return mapDimension;
+	}
+	
+	public MovementMap getMovementMap() {
+		return movementMap;
 	}
 	
 	public ArrayList<Building> getBuildingList() {

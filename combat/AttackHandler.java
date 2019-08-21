@@ -2,6 +2,7 @@ package combat;
 
 import cursors.Cursor;
 import gameObjects.Direction;
+import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.MapDimension;
 import map.UnitGetter;
@@ -12,18 +13,18 @@ import units.IndirectUnit;
 import units.Unit;
 
 public class AttackHandler {
-	private MapDimension mapDim;
+	private MapDimension mapDimension;
 	private UnitGetter unitGetter;
 	private AttackRangeHandler attackRangeHandler;
 	private DamageHandler damageHandler;
 	private StructureHandler structureHandler;
 	
 	// TODO: rewrite to have fewer parameters
-	public AttackHandler(MapDimension mapDimension, GameState gameState, AttackRangeHandler attackRangeHandler, DamageHandler damageHandler) {
-		this.mapDim = mapDimension;
+	public AttackHandler(GameProperties gameProperties, GameState gameState) {
+		this.mapDimension = gameProperties.getMapDimension();
 		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
-		this.attackRangeHandler = attackRangeHandler;
-		this.damageHandler = damageHandler;
+		attackRangeHandler = new AttackRangeHandler(gameProperties, gameState);
+		this.damageHandler = new DamageHandler(gameState.getHeroHandler(), gameProperties.getGameMap());
 		this.structureHandler = new StructureHandler(gameState, mapDimension);
 	}
 
@@ -46,26 +47,26 @@ public class AttackHandler {
 			boolean validTargetWest = validTarget(Direction.WEST, x, y, chosenUnit);
 			
 			if (validTargetNorth) {
-				attackRangeHandler.getRangeMap()[x / mapDim.tileSize][y / mapDim.tileSize - 1] = true;
+				attackRangeHandler.getRangeMap()[x / mapDimension.tileSize][y / mapDimension.tileSize - 1] = true;
 			}
 			if (validTargetEast) {
-				attackRangeHandler.getRangeMap()[x / mapDim.tileSize + 1][y / mapDim.tileSize] = true;
+				attackRangeHandler.getRangeMap()[x / mapDimension.tileSize + 1][y / mapDimension.tileSize] = true;
 			}
 			if (validTargetSouth) {
-				attackRangeHandler.getRangeMap()[x / mapDim.tileSize][y / mapDim.tileSize + 1] = true;
+				attackRangeHandler.getRangeMap()[x / mapDimension.tileSize][y / mapDimension.tileSize + 1] = true;
 			}
 			if (validTargetWest) {
-				attackRangeHandler.getRangeMap()[x / mapDim.tileSize - 1][y / mapDim.tileSize] = true;
+				attackRangeHandler.getRangeMap()[x / mapDimension.tileSize - 1][y / mapDimension.tileSize] = true;
 			}
 			
 			if (validTargetNorth) {
-				y -= mapDim.tileSize;
+				y -= mapDimension.tileSize;
 			} else if (validTargetEast) {
-				x += mapDim.tileSize;
+				x += mapDimension.tileSize;
 			} else if (validTargetSouth) {
-				y += mapDim.tileSize;
+				y += mapDimension.tileSize;
 			} else if (validTargetWest) {
-				x -= mapDim.tileSize;
+				x -= mapDimension.tileSize;
 			} else {
 				return; // 
 			}
@@ -81,16 +82,16 @@ public class AttackHandler {
 		boolean directionCondition = false;
 		
 		if (direction == Direction.NORTH) {
-			y -= mapDim.tileSize;
+			y -= mapDimension.tileSize;
 			directionCondition = y > 0;
 		} else if (direction == Direction.EAST) {
-			x += mapDim.tileSize;
-			directionCondition = x < (mapDim.getTileWidth() - 1) * mapDim.tileSize;
+			x += mapDimension.tileSize;
+			directionCondition = x < (mapDimension.getTileWidth() - 1) * mapDimension.tileSize;
 		} else if (direction == Direction.SOUTH) {
-			y += mapDim.tileSize;
-			directionCondition = y < (mapDim.getTileHeight() - 1) * mapDim.tileSize;
+			y += mapDimension.tileSize;
+			directionCondition = y < (mapDimension.getTileHeight() - 1) * mapDimension.tileSize;
 		} else if (direction == Direction.WEST) {
-			x -= mapDim.tileSize;
+			x -= mapDimension.tileSize;
 			directionCondition = x > 0;
 		}
 		targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(x, y);

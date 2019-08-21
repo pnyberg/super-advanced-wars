@@ -4,6 +4,7 @@ import hero.Hero;
 import main.HeroHandler;
 import map.GameMap;
 import map.UnitGetter;
+import routing.MoveabilityMatrixFactory;
 import unitUtils.UnitType;
 import units.Unit;
 
@@ -13,11 +14,11 @@ public class AreaChecker {
 	private GameMap gridMap;
 	private boolean[][] moveabilityMatrix;
 
-	public AreaChecker(HeroHandler heroHandler, GameMap gridMap, boolean[][] moveabilityMatrix) {
+	public AreaChecker(HeroHandler heroHandler, GameMap gridMap) {
 		this.heroHandler = heroHandler;
 		this.unitGetter = new UnitGetter(heroHandler);
 		this.gridMap = gridMap;
-		this.moveabilityMatrix = moveabilityMatrix;
+		moveabilityMatrix = new MoveabilityMatrixFactory().getMoveabilityMatrix();
 	}
 
 	public boolean isLand(int tileX, int tileY) {

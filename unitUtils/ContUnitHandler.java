@@ -36,14 +36,14 @@ public class ContUnitHandler {
 	private AreaChecker areaChecker;
 	private RouteChecker routeChecker;
 	
-	public ContUnitHandler(GameProperties gameProp, GameState gameState, GameMap gameMap, AreaChecker areaChecker, RouteChecker routeChecker) {
-		this.gameProp = gameProp;
+	public ContUnitHandler(GameProperties gameProperties, GameState gameState) {
+		this.gameProp = gameProperties;
 		this.gameState = gameState;
-		this.gameMap = gameMap;
+		this.gameMap = gameProperties.getGameMap();
 		this.cursor = gameState.getCursor();
 		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
-		this.areaChecker = areaChecker;
-		this.routeChecker = routeChecker;
+		this.areaChecker = new AreaChecker(gameState.getHeroHandler(), gameMap);
+		this.routeChecker = new RouteChecker(gameProperties, gameState);
 	}
 
 	public void handleDroppingOff() {
