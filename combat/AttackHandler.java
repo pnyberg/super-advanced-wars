@@ -45,44 +45,24 @@ public class AttackHandler {
 			boolean validTargetEast = validTarget(Direction.EAST, x, y, chosenUnit);
 			boolean validTargetSouth = validTarget(Direction.SOUTH, x, y, chosenUnit);
 			boolean validTargetWest = validTarget(Direction.WEST, x, y, chosenUnit);
+			int targetTileX = x / mapDimension.tileSize;
+			int targetTileY = y / mapDimension.tileSize;
 			if (validTargetNorth) {
-				attackRangeHandler.getRangeMap()[x / mapDimension.tileSize][y / mapDimension.tileSize - 1] = true;
-				int targetTileX = x / mapDimension.tileSize;
-				int targetTileY = y / mapDimension.tileSize - 1;
-				chosenUnit.addFiringLocation(new Point(targetTileX, targetTileY));
+				attackRangeHandler.getRangeMap()[targetTileX][targetTileY - 1] = true;
+				chosenUnit.addFiringLocation(new Point(x, y - mapDimension.tileSize));
 			}
 			if (validTargetEast) {
-				attackRangeHandler.getRangeMap()[x / mapDimension.tileSize + 1][y / mapDimension.tileSize] = true;
-				int targetTileX = x / mapDimension.tileSize + 1;
-				int targetTileY = y / mapDimension.tileSize;
-				chosenUnit.addFiringLocation(new Point(targetTileX, targetTileY));
+				attackRangeHandler.getRangeMap()[targetTileX + 1][targetTileY] = true;
+				chosenUnit.addFiringLocation(new Point(x + mapDimension.tileSize, y));
 			}
 			if (validTargetSouth) {
-				attackRangeHandler.getRangeMap()[x / mapDimension.tileSize][y / mapDimension.tileSize + 1] = true;
-				int targetTileX = x / mapDimension.tileSize;
-				int targetTileY = y / mapDimension.tileSize + 1;
-				chosenUnit.addFiringLocation(new Point(targetTileX, targetTileY));
+				attackRangeHandler.getRangeMap()[targetTileX][targetTileY + 1] = true;
+				chosenUnit.addFiringLocation(new Point(x, y + mapDimension.tileSize));
 			}
 			if (validTargetWest) {
-				attackRangeHandler.getRangeMap()[x / mapDimension.tileSize - 1][y / mapDimension.tileSize] = true;
-				int targetTileX = x / mapDimension.tileSize - 1;
-				int targetTileY = y / mapDimension.tileSize;
-				chosenUnit.addFiringLocation(new Point(targetTileX, targetTileY));
+				attackRangeHandler.getRangeMap()[targetTileX - 1][targetTileY] = true;
+				chosenUnit.addFiringLocation(new Point(x - mapDimension.tileSize, y));
 			}
-			
-			/*
-			if (validTargetNorth) {
-				y -= mapDimension.tileSize;
-			} else if (validTargetEast) {
-				x += mapDimension.tileSize;
-			} else if (validTargetSouth) {
-				y += mapDimension.tileSize;
-			} else if (validTargetWest) {
-				x -= mapDimension.tileSize;
-			} else {
-				return; // 
-			}
-			*/
 			Point p = chosenUnit.getNextFiringLocation();
 			x = p.getX();
 			y = p.getY();

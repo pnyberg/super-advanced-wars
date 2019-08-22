@@ -104,6 +104,15 @@ public class FiringCursor {
 			damageFieldX += -damageFieldWidth;
 			damageFieldY += -damageFieldHeight;
 		}
+		if (damageFieldY < 0) {
+			damageFieldY = 0;
+		} else if (damageFieldX >= mapDimension.getTileWidth() * tileSize) {
+			damageFieldX = mapDimension.getTileWidth() * tileSize - damageFieldWidth;
+		} else if (damageFieldY >= mapDimension.getTileHeight() * tileSize) {
+			damageFieldY = mapDimension.getTileHeight() * tileSize - damageFieldHeight;
+		} else if (damageFieldX < 0) {
+			damageFieldX = 0;
+		}
 		return new Point(damageFieldX, damageFieldY);
 	}
 }
