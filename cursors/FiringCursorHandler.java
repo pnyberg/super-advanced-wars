@@ -26,8 +26,8 @@ public class FiringCursorHandler {
 	public void moveFiringCursorClockwise() {
 		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
 		MapDimension mapDim = gameProp.getMapDimension();
-		int unitX = chosenUnit.getPoint().getX();
-		int unitY = chosenUnit.getPoint().getY();
+		int unitX = chosenUnit.getPosition().getX();
+		int unitY = chosenUnit.getPosition().getY();
 
 		int xDiff = (cursor.getX() - unitX) / mapDim.tileSize;
 		int yDiff = (cursor.getY() - unitY) / mapDim.tileSize;
@@ -82,8 +82,8 @@ public class FiringCursorHandler {
 	public void moveFiringCursorCounterclockwise() {
 		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
 		MapDimension mapDim = gameProp.getMapDimension();
-		int unitX = chosenUnit.getPoint().getX();
-		int unitY = chosenUnit.getPoint().getY();
+		int unitX = chosenUnit.getPosition().getX();
+		int unitY = chosenUnit.getPosition().getY();
 
 		int xDiff = (cursor.getX() - unitX) / mapDim.tileSize;
 		int yDiff = (cursor.getY() - unitY) / mapDim.tileSize;

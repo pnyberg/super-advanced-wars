@@ -89,8 +89,8 @@ public class CommanderView {
 	}
 	
 	private void paintPowerBar(Graphics g, Unit unit, int powerLevel) {
-		int x = unit.getPoint().getX() + 3 * mapDim.tileSize / 2;
-		int y = unit.getPoint().getY() + mapDim.tileSize / 3;
+		int x = unit.getPosition().getX() + 3 * mapDim.tileSize / 2;
+		int y = unit.getPosition().getY() + mapDim.tileSize / 3;
 		int width = 5 * mapDim.tileSize / 3;
 		int height = mapDim.tileSize / 3;
 		Color lightRed = new Color(255, 102, 102); // lightish red

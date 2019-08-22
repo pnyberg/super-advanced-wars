@@ -109,11 +109,11 @@ public class RouteArrowPath {
 	//        result: will get stuck
 	public void recountPath(Point newPosition, Unit chosenUnit) {
 		MovementType movementType = chosenUnit.getMovementType();
-		int diffTileX = (newPosition.getX() - chosenUnit.getPoint().getX()) / mapDimension.tileSize;
-		int diffTileY = (newPosition.getY() - chosenUnit.getPoint().getY()) / mapDimension.tileSize;
+		int diffTileX = (newPosition.getX() - chosenUnit.getPosition().getX()) / mapDimension.tileSize;
+		int diffTileY = (newPosition.getY() - chosenUnit.getPosition().getY()) / mapDimension.tileSize;
 
 		clear();
-		addArrowPoint(chosenUnit.getPoint());
+		addArrowPoint(chosenUnit.getPosition());
 
 		while(Math.abs(diffTileX) > 0 || Math.abs(diffTileY) > 0) {
 			int last = getNumberOfArrowPoints() - 1;

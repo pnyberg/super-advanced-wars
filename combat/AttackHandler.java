@@ -31,8 +31,8 @@ public class AttackHandler {
 	// TODO: rewrite code to make it simpler (if possible)
 	public void setUpFiringTargets(Unit chosenUnit, Cursor cursor) {
 		chosenUnit.regulateAttack(true);
-		int x = chosenUnit.getPoint().getX();
-		int y = chosenUnit.getPoint().getY();
+		int x = chosenUnit.getPosition().getX();
+		int y = chosenUnit.getPosition().getY();
 
 		if (chosenUnit instanceof IndirectUnit) {
 			IndirectUnit indirectUnit = (IndirectUnit)chosenUnit;
@@ -48,17 +48,30 @@ public class AttackHandler {
 			
 			if (validTargetNorth) {
 				attackRangeHandler.getRangeMap()[x / mapDimension.tileSize][y / mapDimension.tileSize - 1] = true;
+				int targetTileX = x / mapDimension.tileSize;
+				int targetTileY = y / mapDimension.tileSize - 1;
+				chosenUnit.addFiringLocation(new Point(targetTileX, targetTileY));
 			}
 			if (validTargetEast) {
 				attackRangeHandler.getRangeMap()[x / mapDimension.tileSize + 1][y / mapDimension.tileSize] = true;
+				int targetTileX = x / mapDimension.tileSize + 1;
+				int targetTileY = y / mapDimension.tileSize;
+				chosenUnit.addFiringLocation(new Point(targetTileX, targetTileY));
 			}
 			if (validTargetSouth) {
 				attackRangeHandler.getRangeMap()[x / mapDimension.tileSize][y / mapDimension.tileSize + 1] = true;
+				int targetTileX = x / mapDimension.tileSize;
+				int targetTileY = y / mapDimension.tileSize + 1;
+				chosenUnit.addFiringLocation(new Point(targetTileX, targetTileY));
 			}
 			if (validTargetWest) {
 				attackRangeHandler.getRangeMap()[x / mapDimension.tileSize - 1][y / mapDimension.tileSize] = true;
+				int targetTileX = x / mapDimension.tileSize - 1;
+				int targetTileY = y / mapDimension.tileSize;
+				chosenUnit.addFiringLocation(new Point(targetTileX, targetTileY));
 			}
 			
+			/*
 			if (validTargetNorth) {
 				y -= mapDimension.tileSize;
 			} else if (validTargetEast) {
@@ -70,6 +83,10 @@ public class AttackHandler {
 			} else {
 				return; // 
 			}
+			*/
+			Point p = chosenUnit.getNextFiringLocation();
+			x = p.getX();
+			y = p.getY();
 		}
 
 		cursor.setPosition(x, y);

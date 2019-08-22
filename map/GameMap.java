@@ -26,8 +26,8 @@ public class GameMap {
 	}
 	
 	public TerrainType getTerrainTypeAtUnitsPosition(Unit unit) {
-		int tileX = unit.getPoint().getX() / tileSize;
-		int tileY = unit.getPoint().getY() / tileSize;
+		int tileX = unit.getPosition().getX() / tileSize;
+		int tileY = unit.getPosition().getY() / tileSize;
 		return getTerrainType(tileX, tileY);
 	}
 	

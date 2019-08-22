@@ -37,8 +37,8 @@ public class RouteChecker {
 	}
 
 	public void findPossibleMovementLocations(Unit checkedUnit) {
-		int tileX = checkedUnit.getPoint().getX() / mapDimension.tileSize;
-		int tileY = checkedUnit.getPoint().getY() / mapDimension.tileSize;
+		int tileX = checkedUnit.getPosition().getX() / mapDimension.tileSize;
+		int tileY = checkedUnit.getPosition().getY() / mapDimension.tileSize;
 		findPossibleMovementLocations(tileX, tileY, checkedUnit.getMovement(), checkedUnit);
 	}
 

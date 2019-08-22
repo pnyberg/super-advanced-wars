@@ -30,7 +30,7 @@ public class RepairHandler {
 	}
 	
 	private boolean unitCanBeRepaired(Unit unit) {
-		Building building = buildingHandler.getBuilding(unit.getPoint().getX(), unit.getPoint().getY());
+		Building building = buildingHandler.getBuilding(unit.getPosition().getX(), unit.getPosition().getY());
 		return building != null && building.getOwner() == heroHandler.getCurrentHero() 
 				&& unitIsRepairableByBuilding(unit, building);
 	}

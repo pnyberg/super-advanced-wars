@@ -67,8 +67,8 @@ public class ContUnitHandler {
 			return;
 		}
 
-		int tileX = chosenUnit.getPoint().getX() / gameProp.getMapDimension().tileSize;
-		int tileY = chosenUnit.getPoint().getY() / gameProp.getMapDimension().tileSize;
+		int tileX = chosenUnit.getPosition().getX() / gameProp.getMapDimension().tileSize;
+		int tileY = chosenUnit.getPosition().getY() / gameProp.getMapDimension().tileSize;
 
 		if (tileY > 0 && validPosition(containedUnit, tileX, tileY - 1)) {
 			tileY--;
@@ -85,7 +85,7 @@ public class ContUnitHandler {
 		if (unitCanBeDroppedOff()) {
 			cursor.setPosition(tileX * gameProp.getMapDimension().tileSize, tileY * gameProp.getMapDimension().tileSize);
 		} else {
-			cursor.setPosition(chosenUnit.getPoint().getX(), chosenUnit.getPoint().getY());
+			cursor.setPosition(chosenUnit.getPosition().getX(), chosenUnit.getPosition().getY());
 		}
 	}
 
@@ -136,8 +136,8 @@ public class ContUnitHandler {
 			return false;
 		}
 		MapDimension mapDim = gameProp.getMapDimension();
-		int tileX = gameState.getChosenObject().chosenUnit.getPoint().getX() / gameProp.getMapDimension().tileSize;
-		int tileY = gameState.getChosenObject().chosenUnit.getPoint().getY() / gameProp.getMapDimension().tileSize;
+		int tileX = gameState.getChosenObject().chosenUnit.getPosition().getX() / gameProp.getMapDimension().tileSize;
+		int tileY = gameState.getChosenObject().chosenUnit.getPosition().getY() / gameProp.getMapDimension().tileSize;
 
 		if (tileY > 0 && validPosition(unit, tileX, tileY - 1)) {
 			return true;
@@ -169,8 +169,8 @@ public class ContUnitHandler {
 		MapDimension mapDim = gameProp.getMapDimension();
 		int cursorTileX = cursor.getX() / gameProp.getMapDimension().tileSize;
 		int cursorTileY = cursor.getY() / gameProp.getMapDimension().tileSize;
-		int unitTileX = chosenUnit.getPoint().getX() / gameProp.getMapDimension().tileSize;
-		int unitTileY = chosenUnit.getPoint().getY() / gameProp.getMapDimension().tileSize;
+		int unitTileX = chosenUnit.getPosition().getX() / gameProp.getMapDimension().tileSize;
+		int unitTileY = chosenUnit.getPosition().getY() / gameProp.getMapDimension().tileSize;
 		int xTileDiff = cursorTileX - unitTileX;
 		int yTileDiff = cursorTileY - unitTileY;
 		Unit containedUnit = null;
@@ -225,8 +225,8 @@ public class ContUnitHandler {
 	public void moveDroppingOffCursorCounterclockwise() {
 		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
 		MapDimension mapDim = gameProp.getMapDimension();
-		int unitTileX = chosenUnit.getPoint().getX() / gameProp.getMapDimension().tileSize;
-		int unitTileY = chosenUnit.getPoint().getY() / gameProp.getMapDimension().tileSize;
+		int unitTileX = chosenUnit.getPosition().getX() / gameProp.getMapDimension().tileSize;
+		int unitTileY = chosenUnit.getPosition().getY() / gameProp.getMapDimension().tileSize;
 		int cursorTileX = cursor.getX() / gameProp.getMapDimension().tileSize;
 		int cursorTileY = cursor.getY() / gameProp.getMapDimension().tileSize;
 		int xDiff = cursorTileX - unitTileX;

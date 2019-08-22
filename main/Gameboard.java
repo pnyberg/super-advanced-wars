@@ -1,4 +1,8 @@
 /**
+ * Refactor-bugs
+ *  - black-space when structure is destroyed
+ *  - firing-cursor (cursor on chosenUnit + missing targets)
+ *  
  * TODO-list
  * - only one action/unit per turn
  * - change POWER/SUPER-text, maybe use a pre-written text?

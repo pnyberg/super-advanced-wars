@@ -111,9 +111,9 @@ public class UnitMenuHandler {
 
 			unitMenu.openMenu(cursor.getX(), cursor.getY());
 			
-			if (chosenUnit.getPoint().getX() != cursor.getX() || chosenUnit.getPoint().getY() != cursor.getY()) {
+			if (chosenUnit.getPosition().getX() != cursor.getX() || chosenUnit.getPosition().getY() != cursor.getY()) {
 				if (chosenUnit.isCapting()) {
-					Point point = chosenUnit.getPoint();
+					Point point = chosenUnit.getPosition();
 					Building building = buildingHandler.getBuilding(point.getX(), point.getY());
 					building.resetCapting();
 				}

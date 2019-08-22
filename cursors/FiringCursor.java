@@ -16,15 +16,15 @@ import units.Unit;
 
 public class FiringCursor {
 	private MapDimension mapDimension;
-	private UnitGetter unitGetter;
 	private HeroHandler heroHandler;
+	private UnitGetter unitGetter;
 	private DamageHandler damageHandler;
 	private StructureHandler structureHandler;
 
 	public FiringCursor(GameProperties gameProperties, GameState gameState) {
 		this.mapDimension = gameProperties.getMapDimension();
-		this.unitGetter = new UnitGetter(heroHandler);
 		this.heroHandler = gameState.getHeroHandler();
+		this.unitGetter = new UnitGetter(heroHandler);
 		this.damageHandler = new DamageHandler(gameState.getHeroHandler(), gameProperties.getGameMap());
 		this.structureHandler = new StructureHandler(gameState, gameProperties.getMapDimension());
 	}
@@ -47,19 +47,15 @@ public class FiringCursor {
 		g.drawOval(paintX + 1, paintY + 1, tileSize - 6, tileSize - 6);
 	}
 	
-	// TODO: rewrite code to make it more readable
 	private void paintDamageField(Graphics g, Cursor cursor, Unit chosenUnit) {
 		int tileSize = mapDimension.tileSize;
 		int damage = getDamageToBeShown(cursor, chosenUnit);
-
-		int damageFieldWidth = (damage <= 9 ? 3 * tileSize / 5 : 
-			(damage <= 99 ? 4 * tileSize / 5
-				: tileSize - 3));
+		int damageFieldWidth = getDamageFieldWith(damage);
 		int damageFieldHeight = 3 * tileSize / 5;
-
 		Point damageFieldAnchorPoint = getDamageFieldAnchorPoint(cursor, chosenUnit, damageFieldWidth, damageFieldHeight);
 		int damageFieldX = damageFieldAnchorPoint.getX();
 		int damageFieldY = damageFieldAnchorPoint.getY();
+
 		g.setColor(Color.red);
 		g.fillRect(damageFieldX, damageFieldY, damageFieldWidth, damageFieldHeight);
 		g.setColor(Color.black);
@@ -80,13 +76,20 @@ public class FiringCursor {
 		return damage;
 	}
 	
-	// TODO: rewrite to make it more readable
-	private Point getDamageFieldAnchorPoint(Cursor cursor, Unit chosenUnit, int damageFieldWidth, int damageFieldHeight) {
-		int damageFieldX = cursor.getX(); // will be changed
-		int damageFieldY = cursor.getY(); // will be changed
+	private int getDamageFieldWith(int damage) {
 		int tileSize = mapDimension.tileSize;
-		int xDiff = cursor.getX() - chosenUnit.getPoint().getX();
-		int yDiff = cursor.getY() - chosenUnit.getPoint().getY();
+		int damageFieldWidth = (damage <= 9 ? 3 * tileSize / 5 : 
+			(damage <= 99 ? 4 * tileSize / 5
+					: tileSize - 3));
+		return damageFieldWidth;
+	}
+	
+	private Point getDamageFieldAnchorPoint(Cursor cursor, Unit chosenUnit, int damageFieldWidth, int damageFieldHeight) {
+		int damageFieldX = cursor.getX();
+		int damageFieldY = cursor.getY();
+		int tileSize = mapDimension.tileSize;
+		int xDiff = cursor.getX() - chosenUnit.getPosition().getX();
+		int yDiff = cursor.getY() - chosenUnit.getPosition().getY();
 
 		if (yDiff == -tileSize) {
 			damageFieldX += tileSize;

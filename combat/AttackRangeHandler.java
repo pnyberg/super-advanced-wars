@@ -57,12 +57,12 @@ public class AttackRangeHandler {
 	private boolean indirectUnitCanFire(Unit chosenUnit, Cursor cursor) {
 		IndirectUnit attackingUnit = (IndirectUnit)chosenUnit;
 
-		if (!attackingUnit.getPoint().isSamePosition(cursor.getX(), cursor.getY())) {
+		if (!attackingUnit.getPosition().isSamePosition(cursor.getX(), cursor.getY())) {
 			return false;
 		}
 
-		int unitTileX = attackingUnit.getPoint().getX() / mapDimension.tileSize;
-		int unitTileY = attackingUnit.getPoint().getY() / mapDimension.tileSize;
+		int unitTileX = attackingUnit.getPosition().getX() / mapDimension.tileSize;
+		int unitTileY = attackingUnit.getPosition().getY() / mapDimension.tileSize;
 		int minRange = attackingUnit.getMinRange();
 		int maxRange = attackingUnit.getMaxRange();
 
@@ -160,8 +160,8 @@ public class AttackRangeHandler {
 	
 	public void fillRangeAttackMap(Unit chosenUnit) {
 		IndirectUnit attackingUnit = (IndirectUnit)chosenUnit;
-		int unitTileX = attackingUnit.getPoint().getX() / mapDimension.tileSize;
-		int unitTileY = attackingUnit.getPoint().getY() / mapDimension.tileSize;
+		int unitTileX = attackingUnit.getPosition().getX() / mapDimension.tileSize;
+		int unitTileY = attackingUnit.getPosition().getY() / mapDimension.tileSize;
 		int minRange = attackingUnit.getMinRange();
 		int maxRange = attackingUnit.getMaxRange();
 		for (int tileY = unitTileY - maxRange ; tileY <= (unitTileY + maxRange) ; tileY++) {
@@ -185,8 +185,8 @@ public class AttackRangeHandler {
 	}
 
 	public void calculatePossibleRangeTargetLocations(IndirectUnit indirectUnit) {
-		int unitTileX = indirectUnit.getPoint().getX() / mapDimension.tileSize;
-		int unitTileY = indirectUnit.getPoint().getY() / mapDimension.tileSize;
+		int unitTileX = indirectUnit.getPosition().getX() / mapDimension.tileSize;
+		int unitTileY = indirectUnit.getPosition().getY() / mapDimension.tileSize;
 		int minRange = indirectUnit.getMinRange();
 		int maxRange = indirectUnit.getMaxRange();
 

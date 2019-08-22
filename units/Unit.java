@@ -2,6 +2,7 @@ package units;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import graphics.images.units.UnitImage;
 import point.Point;
@@ -17,7 +18,7 @@ public abstract class Unit {
 	protected static int price;
 	protected static String typeName;
 
-	protected Point point;
+	protected Point position;
 	protected UnitHealth unitHealth;
 	protected boolean hidden;
 	protected boolean attacking;
@@ -25,12 +26,15 @@ public abstract class Unit {
 	protected boolean capting;
 	protected UnitSupply unitSupply;
 	protected UnitContainer unitContainer;
-
-	protected int movement;
 	protected UnitType unitType;
 	protected UnitCategory unitClass;
-	protected AttackType attackType;
+
+	protected int movement;
 	protected MovementType movementType;
+
+	protected int firingIndex;
+	protected ArrayList<Point> possibleFiringLocationList;
+	protected AttackType attackType;
 	
 	protected Color color;
 	protected Color restingColor;
@@ -38,7 +42,7 @@ public abstract class Unit {
 
 	public Unit(UnitType unitType, int x, int y, Color color, int tileSize) {
 		this.unitType = unitType;
-		point = new Point(x, y);
+		position = new Point(x, y);
 		this.color = color;
 		restingColor = color.darker();
 
@@ -48,14 +52,16 @@ public abstract class Unit {
 		active = false;
 		capting = false;
 
+		firingIndex = -1;
+		possibleFiringLocationList = new ArrayList<Point>();
 		attackType = AttackType.DIRECT_ATTACK;
 	}
 
 	public void moveTo(int x, int y) {
-		if (point.getX() != x || point.getY() != y) {
+		if (position.getX() != x || position.getY() != y) {
 			capting = false;
 		}
-		point = new Point(x, y);
+		position = new Point(x, y);
 	}
 
 	public void regulateActive(boolean active) {
@@ -74,8 +80,32 @@ public abstract class Unit {
 		this.capting = capting;
 	}
 
-	public Point getPoint() {
-		return point;
+	public void addFiringLocation(Point p) {
+		possibleFiringLocationList.add(p);
+	}
+
+	public void clearFiringLocations() {
+		possibleFiringLocationList.clear();
+	}
+
+	public Point getNextFiringLocation() {
+		if (possibleFiringLocationList.isEmpty()) {
+			return null;
+		}
+		firingIndex = (firingIndex + 1) % possibleFiringLocationList.size();
+		return possibleFiringLocationList.get(firingIndex);
+	}
+
+	public Point getPreviousFiringLocation() {
+		if (possibleFiringLocationList.isEmpty()) {
+			return null;
+		}
+		firingIndex = (firingIndex + possibleFiringLocationList.size() - 1) % possibleFiringLocationList.size();
+		return possibleFiringLocationList.get(firingIndex);
+	}
+
+	public Point getPosition() {
+		return position;
 	}
 
 	public UnitHealth getUnitHealth() {
@@ -140,9 +170,9 @@ public abstract class Unit {
 
 	public void paint(Graphics g, int tileSize) {
 		paintUnit(g, tileSize);
-		unitHealth.paintHP(g, point.getX(), point.getY());
+		unitHealth.paintHP(g, position.getX(), position.getY());
 		if (capting) {
-			paintCaptFlag(g, point.getX(), point.getY(), tileSize);
+			paintCaptFlag(g, position.getX(), position.getY(), tileSize);
 		}
 	}
 	
@@ -164,6 +194,6 @@ public abstract class Unit {
 		} else {
 			unitColor = restingColor;
 		}
-		unitImage.paint(g, point.getX(), point.getY(), unitColor);
+		unitImage.paint(g, position.getX(), position.getY(), unitColor);
 	}
 }
