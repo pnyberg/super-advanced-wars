@@ -149,7 +149,7 @@ public class KeyListenerInputHandler {
 					containerUnitHandler.moveDroppingOffCursorClockwise();
 				}
 			} else if (attackHandler.unitWantsToFire(gameState.getChosenObject().chosenUnit)) {
-				Point point = ((IndirectUnit)gameState.getChosenObject().chosenUnit).getNextFiringLocation();
+				Point point = gameState.getChosenObject().chosenUnit.getNextFiringLocation();
 				cursor.setPosition(point.getX(), point.getY());
 			} else if (cursorY < (gameProp.getMapDimension().getTileHeight() - 1) * gameProp.getMapDimension().tileSize && !menuVisible) {
 				routeHandler.updateCurrentArrowPath(new Point(cursorX, cursorY + gameProp.getMapDimension().tileSize), gameState.getChosenObject().chosenUnit);

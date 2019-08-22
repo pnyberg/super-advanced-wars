@@ -45,7 +45,6 @@ public class AttackHandler {
 			boolean validTargetEast = validTarget(Direction.EAST, x, y, chosenUnit);
 			boolean validTargetSouth = validTarget(Direction.SOUTH, x, y, chosenUnit);
 			boolean validTargetWest = validTarget(Direction.WEST, x, y, chosenUnit);
-			
 			if (validTargetNorth) {
 				attackRangeHandler.getRangeMap()[x / mapDimension.tileSize][y / mapDimension.tileSize - 1] = true;
 				int targetTileX = x / mapDimension.tileSize;
@@ -97,22 +96,24 @@ public class AttackHandler {
 		Unit targetUnit = null;
 		Structure targetStructure = null;
 		boolean directionCondition = false;
+		int targetX = x;
+		int targetY = y;
 		
 		if (direction == Direction.NORTH) {
-			y -= mapDimension.tileSize;
 			directionCondition = y > 0;
+			targetY -= mapDimension.tileSize;
 		} else if (direction == Direction.EAST) {
-			x += mapDimension.tileSize;
 			directionCondition = x < (mapDimension.getTileWidth() - 1) * mapDimension.tileSize;
+			targetX += mapDimension.tileSize;
 		} else if (direction == Direction.SOUTH) {
-			y += mapDimension.tileSize;
 			directionCondition = y < (mapDimension.getTileHeight() - 1) * mapDimension.tileSize;
+			targetY += mapDimension.tileSize;
 		} else if (direction == Direction.WEST) {
-			x -= mapDimension.tileSize;
 			directionCondition = x > 0;
+			targetX -= mapDimension.tileSize;
 		}
-		targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(x, y);
-		targetStructure = structureHandler.getStructure(x, y);
+		targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(targetX, targetY);
+		targetStructure = structureHandler.getStructure(targetX, targetY);
 		
 		if (!directionCondition) {
 			return false;
