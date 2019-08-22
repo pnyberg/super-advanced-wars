@@ -148,6 +148,7 @@ public class KeyListenerInputHandler {
 		}
 	}
 	
+	// TODO: refactor later
 	private void handlePressedKeyA() {
 		int cursorX = cursor.getX();
 		int cursorY = cursor.getY();
@@ -249,10 +250,7 @@ public class KeyListenerInputHandler {
 				int x = gameState.getChosenObject().chosenUnit.getPosition().getX();
 				int y = gameState.getChosenObject().chosenUnit.getPosition().getY();
 
-				replentishIfUnitAtPosition(x, y - gameProp.getMapDimension().tileSize);
-				replentishIfUnitAtPosition(x + gameProp.getMapDimension().tileSize, y);
-				replentishIfUnitAtPosition(x, y + gameProp.getMapDimension().tileSize);
-				replentishIfUnitAtPosition(x - gameProp.getMapDimension().tileSize, y);
+				replentishSurroundingUnits(x, y);
 			}
 
 			if (!containerUnitHandler.unitIsDroppingOff() && !attackHandler.unitWantsToFire(gameState.getChosenObject().chosenUnit)) {
@@ -315,6 +313,8 @@ public class KeyListenerInputHandler {
 	
 	private void handlePressedKeyDown() {
 		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
+		int tileSize = gameProp.getMapDimension().tileSize;
+
 		if (containerUnitHandler.unitIsDroppingOff()) {
 			if (containerUnitHandler.unitCanBeDroppedOff()) {
 				containerUnitHandler.moveDroppingOffCursorClockwise();
@@ -328,7 +328,7 @@ public class KeyListenerInputHandler {
 		} else if (attackHandler.unitWantsToFire(chosenUnit)) {
 			Point point = chosenUnit.getNextFiringLocation();
 			cursor.setPosition(point.getX(), point.getY());
-		} else if (cursor.getY() < (gameProp.getMapDimension().getTileHeight() - 1) * gameProp.getMapDimension().tileSize) {
+		} else if (cursor.getY() < (gameProp.getMapDimension().getTileHeight() - 1) * tileSize) {
 			cursor.moveDown();
 			updateArrowPathWithNewCursorPosition();
 		}
@@ -368,13 +368,26 @@ public class KeyListenerInputHandler {
 		routeHandler.updateCurrentArrowPath(newArrowPathPosition, gameState.getChosenObject().chosenUnit);
 	}
 	
-	private void replentishIfUnitAtPosition(int x, int y) {
-		Unit unit = unitGetter.getFriendlyUnit(x, y);
-		if (unit != null) {
-			supplyHandler.replentishUnit(unit);
+	private void replentishSurroundingUnits(int x, int y) {
+		Unit unitToTheNorth = unitGetter.getFriendlyUnit(x, y - gameProp.getMapDimension().tileSize);
+		Unit unitToTheEast = unitGetter.getFriendlyUnit(x + gameProp.getMapDimension().tileSize, y);
+		Unit unitToTheSouth = unitGetter.getFriendlyUnit(x, y + gameProp.getMapDimension().tileSize);
+		Unit unitToTheWest = unitGetter.getFriendlyUnit(x - gameProp.getMapDimension().tileSize, y);
+		if (unitToTheNorth != null) {
+			supplyHandler.replentishUnit(unitToTheNorth);
+		}
+		if (unitToTheEast != null) {
+			supplyHandler.replentishUnit(unitToTheEast);
+		}
+		if (unitToTheSouth != null) {
+			supplyHandler.replentishUnit(unitToTheSouth);
+		}
+		if (unitToTheWest != null) {
+			supplyHandler.replentishUnit(unitToTheWest);
 		}
 	}
-	
+
+	// TODO: start refactoring here
 	private void handleDroppingOff() {
 		if (containerUnitHandler.unitCanBeDroppedOff()) {
 			if (gameState.getChosenObject().chosenUnit instanceof APC) {
