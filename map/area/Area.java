@@ -9,15 +9,18 @@ public class Area {
 	private TerrainType terrainType;
 	private Point point;
 	private AreaImage areaImage;
+	private int tileSize;
 	
 	public Area(TerrainType terrainType, Point point, int tileSize) {
 		this.terrainType = terrainType;
 		this.point = point;
+		this.tileSize = tileSize;
 		areaImage = new AreaImage(terrainType, tileSize);
 	}
 	
 	public void setTerrainType(TerrainType terrainType) {
 		this.terrainType = terrainType;
+		areaImage = new AreaImage(terrainType, tileSize);
 	}
 	
 	public Point getPoint() {
