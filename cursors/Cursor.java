@@ -7,6 +7,7 @@ package cursors;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import point.Point;;
 
 public class Cursor {
 	private final Color fillColor = Color.red;
@@ -40,6 +41,10 @@ public class Cursor {
 
 	public void moveRight() {
 		x += tileSize;
+	}
+	
+	public void setPosition(Point point) {
+		setPosition(point.getX(), point.getY());
 	}
 
 	public void setPosition(int x, int y) {
