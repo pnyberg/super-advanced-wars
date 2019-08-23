@@ -50,8 +50,6 @@ public class UnitContainedInfoBox {
 
 		if (unit.hasUnitContainer() && !unit.getUnitContainer().isEmpty()) {
 			paintContainerInfo(g);
-		} else if (unit instanceof Lander) {
-			paintLanderInfo(g);
 		} else if (unit instanceof Cruiser) {
 			// TODO: write code
 			// may hold two copters
@@ -63,37 +61,23 @@ public class UnitContainedInfoBox {
 		Point anchorPoint = unitContainedInfoBoxGraphicMetrics.anchorPoint;
 		int width = unitContainedInfoBoxGraphicMetrics.width;
 		int tileSize = unitContainedInfoBoxGraphicMetrics.tileSize;
-		Unit containedUnit = unit.getUnitContainer().getChosenUnit();
-		Color containedUnitColor = containedUnit.getColor();
-		int containedUnitPosX = anchorPoint.getX() + (width-tileSize)/2;
-		int containedUnitPosY = anchorPoint.getY() + 19;
 
-		containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
-		containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
-	}
-	
-	private void paintLanderInfo(Graphics g) {
-		Unit unit = unitGetter.getAnyUnit(cursor.getX(), cursor.getY());
-		Point anchorPoint = unitContainedInfoBoxGraphicMetrics.anchorPoint;
-		int width = unitContainedInfoBoxGraphicMetrics.width;
-		int tileSize = unitContainedInfoBoxGraphicMetrics.tileSize;
-
-		if (((Lander)unit).getNumberOfContainedUnits() > 1) {
-			Unit containedUnit = ((Lander)unit).getUnit(0);
+		if (unit.getUnitContainer().getNumberOfContainedUnits() > 1) {
+			Unit containedUnit = unit.getUnitContainer().getUnit(0);
 			Color containedUnitColor = containedUnit.getColor();
 			int containedUnitPosX = anchorPoint.getX() + (width-tileSize)/2;
 			int containedUnitPosY = anchorPoint.getY() + 15;
 			containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
 			containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
-			containedUnit = ((Lander)unit).getUnit(1);
-			containedUnitColor = containedUnit.getColor();
 
+			containedUnit = unit.getUnitContainer().getUnit(1);
+			containedUnitColor = containedUnit.getColor();
 			containedUnitPosX = anchorPoint.getX() + (width-tileSize)/2;
 			containedUnitPosY = anchorPoint.getY() + 20 + tileSize;
 			containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
 			containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
-		} else if (((Lander)unit).getNumberOfContainedUnits() > 0) {
-			Unit containedUnit = ((Lander)unit).getUnit(0);
+		} else if (unit.getUnitContainer().getNumberOfContainedUnits() == 1) {
+			Unit containedUnit = unit.getUnitContainer().getUnit(0);
 			Color containedUnitColor = containedUnit.getColor();
 			int containedUnitPosX = anchorPoint.getX() + (width-tileSize)/2;
 			int containedUnitPosY = anchorPoint.getY() + 15 + tileSize / 2;

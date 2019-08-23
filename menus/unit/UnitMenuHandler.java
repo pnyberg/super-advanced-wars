@@ -76,17 +76,15 @@ public class UnitMenuHandler {
 			} else if (chosenUnit.hasUnitContainer()) {
 				int cursorTileX = cursor.getX() / gameProp.getMapDimension().tileSize;
 				int cursorTileY = cursor.getY() / gameProp.getMapDimension().tileSize;
-				if (chosenUnit.getUnitContainer().isFull() && areaChecker.isLand(cursorTileX, cursorTileY)) {
-					Unit holdUnit = chosenUnit.getUnitContainer().getChosenUnit();
-					unitMenu.addContainedCargoRow(holdUnit);
-				}
-			} else if (chosenUnit instanceof Lander) {
 				if (containerUnitHandler.landerAtDroppingOffPosition(cursor.getX(), cursor.getY())) {
-					for (int i = 0 ; i < ((Lander)chosenUnit).getNumberOfContainedUnits() ; i++) {
-						Unit holdUnit = ((Lander)chosenUnit).getUnit(i);
+					for (int i = 0 ; i < chosenUnit.getUnitContainer().getNumberOfContainedUnits() ; i++) {
+						Unit holdUnit = chosenUnit.getUnitContainer().getUnit(i);
 						unitMenu.addContainedCargoRow(holdUnit);
 					}
-				}
+				} else if (chosenUnit.getUnitContainer().isFull() && areaChecker.isLand(cursorTileX, cursorTileY)) {
+					Unit holdUnit = chosenUnit.getUnitContainer().getChosenUnit();
+					unitMenu.addContainedCargoRow(holdUnit);
+				} 
 			} else if (chosenUnit instanceof Cruiser) {
 				for (int i = 0 ; i < ((Cruiser)chosenUnit).getNumberOfContainedUnits() ; i++) {
 					Unit holdUnit = ((Cruiser)chosenUnit).getUnit(i);

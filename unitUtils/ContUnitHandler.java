@@ -52,9 +52,6 @@ public class ContUnitHandler {
 		if (chosenUnit.hasUnitContainer()) {
 			chosenUnit.getUnitContainer().regulateDroppingOff(true);
 			containedUnit = chosenUnit.getUnitContainer().getChosenUnit();
-		} else if (chosenUnit instanceof Lander) {
-			((Lander)chosenUnit).regulateDroppingOff(true);
-			containedUnit = ((Lander)chosenUnit).getChosenUnit();
 		} else if (chosenUnit instanceof Cruiser) {
 			((Cruiser)chosenUnit).regulateDroppingOff(true);
 			containedUnit = ((Cruiser)chosenUnit).getChosenUnit();
@@ -92,10 +89,6 @@ public class ContUnitHandler {
 			if (chosenUnit.getUnitContainer().isDroppingOff()) {
 				return true;
 			}
-		} else if (chosenUnit instanceof Lander) {
-			if (((Lander)chosenUnit).isDroppingOff()) {
-				return true;
-			}
 		} else if (chosenUnit instanceof Cruiser) {
 			if (((Cruiser)chosenUnit).isDroppingOff()) {
 				return true;
@@ -110,9 +103,6 @@ public class ContUnitHandler {
 		if (chosenUnit.hasUnitContainer()) {
 			chosenUnit.getUnitContainer().regulateDroppingOff(true);
 			return unitCanBeDroppedOff(chosenUnit.getUnitContainer().getChosenUnit());
-		} else if (chosenUnit instanceof Lander) {
-			((Lander)chosenUnit).regulateDroppingOff(true);
-			return unitCanBeDroppedOff(((Lander)chosenUnit).getChosenUnit());
 		} else if (chosenUnit instanceof Cruiser) {
 			((Cruiser)chosenUnit).regulateDroppingOff(true);
 			return unitCanBeDroppedOff(((Cruiser)chosenUnit).getChosenUnit());
@@ -167,8 +157,6 @@ public class ContUnitHandler {
 
 		if (chosenUnit.hasUnitContainer()) {
 			containedUnit = chosenUnit.getUnitContainer().getChosenUnit();
-		} else if (chosenUnit instanceof Lander) {
-			containedUnit = ((Lander)chosenUnit).getChosenUnit();
 		} else if (chosenUnit instanceof Cruiser) {
 			containedUnit = ((Cruiser)chosenUnit).getChosenUnit();
 		} else {
@@ -223,8 +211,6 @@ public class ContUnitHandler {
 
 		if (chosenUnit.hasUnitContainer()) {
 			containedUnit = chosenUnit.getUnitContainer().getChosenUnit();
-		} else if (chosenUnit instanceof Lander) {
-			containedUnit = ((Lander)chosenUnit).getChosenUnit();
 		} else if (chosenUnit instanceof Cruiser) {
 			containedUnit = ((Cruiser)chosenUnit).getChosenUnit();
 		} else {
@@ -313,21 +299,17 @@ public class ContUnitHandler {
 
 	public boolean landbasedEnterableUnitAtPosition(int x, int y) {
 		Unit unit = unitGetter.getFriendlyUnit(x, y);
-
-		if (unit instanceof Lander && !((Lander)unit).isFull()) {
+		if (unit instanceof Lander && !unit.getUnitContainer().isFull()) {
 			return true;
-		} 
-
+		}
 		return false;
 	}
 	
 	public boolean copterEnterableUnitAtPosition(int x, int y) {
 		Unit unit = unitGetter.getFriendlyUnit(x, y);
-
 		if (unit instanceof Cruiser && !((Cruiser)unit).isFull()) {
 			return true;
 		} 
-
 		return false;
 	}
 }
