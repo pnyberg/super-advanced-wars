@@ -48,9 +48,7 @@ public class UnitContainedInfoBox {
 		g.setColor(Color.lightGray);
 		g.fillRect(anchorPoint.getX(), anchorPoint.getY(), width, height);
 
-		if (unit instanceof APC) {
-			paintAPCInfo(g);
-		} else if (unit.hasUnitContainer() && !unit.getUnitContainer().isEmpty()) {
+		if (unit.hasUnitContainer() && !unit.getUnitContainer().isEmpty()) {
 			paintContainerInfo(g);
 		} else if (unit instanceof Lander) {
 			paintLanderInfo(g);
@@ -58,20 +56,6 @@ public class UnitContainedInfoBox {
 			// TODO: write code
 			// may hold two copters
 		}
-	}
-	
-	private void paintAPCInfo(Graphics g) {
-		Unit unit = unitGetter.getAnyUnit(cursor.getX(), cursor.getY());
-		Point anchorPoint = unitContainedInfoBoxGraphicMetrics.anchorPoint;
-		int width = unitContainedInfoBoxGraphicMetrics.width;
-		int tileSize = unitContainedInfoBoxGraphicMetrics.tileSize;
-		Unit containedUnit = ((APC)unit).getContainedUnit();
-		Color containedUnitColor = containedUnit.getColor();
-		int containedUnitPosX = anchorPoint.getX() + (width-tileSize)/2;
-		int containedUnitPosY = anchorPoint.getY() + 19;
-
-		containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
-		containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
 	}
 	
 	private void paintContainerInfo(Graphics g) {

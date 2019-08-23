@@ -52,8 +52,4 @@ public class TCopter extends Unit {
 	public static String getTypeName() {
 		return typeName;
 	}
-
-	public UnitContainer getUnitContainer() {
-		return unitContainer;
-	}
 }

@@ -49,10 +49,7 @@ public class ContUnitHandler {
 	public void handleDroppingOff() {
 		Unit containedUnit = null;
 		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
-		if (chosenUnit instanceof APC) {
-			((APC)chosenUnit).regulateDroppingOff(true);
-			containedUnit = ((APC)chosenUnit).getContainedUnit();
-		} else if (chosenUnit.hasUnitContainer()) {
+		if (chosenUnit.hasUnitContainer()) {
 			chosenUnit.getUnitContainer().regulateDroppingOff(true);
 			containedUnit = chosenUnit.getUnitContainer().getChosenUnit();
 		} else if (chosenUnit instanceof Lander) {
@@ -91,11 +88,7 @@ public class ContUnitHandler {
 
 	public boolean unitIsDroppingOff() {
 		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
-		if (chosenUnit instanceof APC) {
-			if (((APC)chosenUnit).isDroppingOff()) {
-				return true;
-			}
-		} else if (chosenUnit != null && chosenUnit.hasUnitContainer()) {
+		if (chosenUnit != null && chosenUnit.hasUnitContainer()) {
 			if (chosenUnit.getUnitContainer().isDroppingOff()) {
 				return true;
 			}
@@ -114,10 +107,7 @@ public class ContUnitHandler {
 
 	public boolean unitCanBeDroppedOff() {
 		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
-		if (chosenUnit instanceof APC) {
-			((APC)chosenUnit).regulateDroppingOff(true);
-			return unitCanBeDroppedOff(((APC)chosenUnit).getContainedUnit());
-		} else if (chosenUnit.hasUnitContainer()) {
+		if (chosenUnit.hasUnitContainer()) {
 			chosenUnit.getUnitContainer().regulateDroppingOff(true);
 			return unitCanBeDroppedOff(chosenUnit.getUnitContainer().getChosenUnit());
 		} else if (chosenUnit instanceof Lander) {
@@ -175,9 +165,7 @@ public class ContUnitHandler {
 		int yTileDiff = cursorTileY - unitTileY;
 		Unit containedUnit = null;
 
-		if (chosenUnit instanceof APC) {
-			containedUnit = ((APC)chosenUnit).getContainedUnit();
-		} else if (chosenUnit.hasUnitContainer()) {
+		if (chosenUnit.hasUnitContainer()) {
 			containedUnit = chosenUnit.getUnitContainer().getChosenUnit();
 		} else if (chosenUnit instanceof Lander) {
 			containedUnit = ((Lander)chosenUnit).getChosenUnit();
@@ -233,9 +221,7 @@ public class ContUnitHandler {
 		int yDiff = cursorTileY - unitTileY;
 		Unit containedUnit = null;
 
-		if (chosenUnit instanceof APC) {
-			containedUnit = ((APC)chosenUnit).getContainedUnit();
-		} else if (chosenUnit.hasUnitContainer()) {
+		if (chosenUnit.hasUnitContainer()) {
 			containedUnit = chosenUnit.getUnitContainer().getChosenUnit();
 		} else if (chosenUnit instanceof Lander) {
 			containedUnit = ((Lander)chosenUnit).getChosenUnit();

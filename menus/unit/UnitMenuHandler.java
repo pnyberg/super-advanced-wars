@@ -69,9 +69,8 @@ public class UnitMenuHandler {
 				if (supplyHandler.apcMaySupply(cursor.getX(), cursor.getY())) {
 					unitMenu.enableSupplyOption();
 				}
-
-				if (((APC)chosenUnit).isFull()) {
-					Unit holdUnit = ((APC)chosenUnit).getContainedUnit();
+				if (chosenUnit.getUnitContainer().isFull()) {
+					Unit holdUnit = chosenUnit.getUnitContainer().getChosenUnit();
 					unitMenu.addContainedCargoRow(holdUnit);
 				}
 			} else if (chosenUnit.hasUnitContainer()) {

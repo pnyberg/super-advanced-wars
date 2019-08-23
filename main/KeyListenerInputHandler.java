@@ -187,19 +187,7 @@ public class KeyListenerInputHandler {
 			routeHandler.clearArrowPoints();
 			attackRangeHandler.clearRangeMap();
 		} else if (mapMenu.isVisible()) {
-			if (mapMenu.atCoRow()) {
-				viewPainter.setViewType(MapViewType.CO_MAP_MENU_VIEW);
-				mapMenu.closeMenu();
-			} else if (mapMenu.atPowerRow()) {
-				heroPowerHandler.activatePower();
-				mapMenu.closeMenu();
-			} else if (mapMenu.atSuperPowerRow()) {
-				heroPowerHandler.activateSuperPower();
-				mapMenu.closeMenu();
-			} else if (mapMenu.atEndRow()) {
-				mapMenu.closeMenu();
-				turnHandler.endTurn();
-			}
+			mapMenuRowPressed();
 		} else if (unitMenuHandler.getUnitMenu().isVisible()) {
 			if (unitMenuHandler.getUnitMenu().atUnitRow()) {
 				if (gameState.getChosenObject().chosenUnit instanceof Lander) {
@@ -225,9 +213,7 @@ public class KeyListenerInputHandler {
 				removeUnitIfDead(gameState.getChosenObject().chosenUnit);
 			} else if (unitMenuHandler.getUnitMenu().atEnterRow()) {
 				Unit entryUnit = unitGetter.getFriendlyUnitExceptSelf(gameState.getChosenObject().chosenUnit, cursorX, cursorY);
-				if (entryUnit instanceof APC) {
-					((APC)entryUnit).addUnit(gameState.getChosenObject().chosenUnit);
-				} else if (entryUnit.hasUnitContainer()) {
+				if (entryUnit.hasUnitContainer()) {
 					entryUnit.getUnitContainer().addUnit(gameState.getChosenObject().chosenUnit);
 				} else if (entryUnit instanceof Lander) {
 					((Lander)entryUnit).addUnit(gameState.getChosenObject().chosenUnit);
@@ -390,12 +376,7 @@ public class KeyListenerInputHandler {
 	// TODO: start refactoring here
 	private void handleDroppingOff() {
 		if (containerUnitHandler.unitCanBeDroppedOff()) {
-			if (gameState.getChosenObject().chosenUnit instanceof APC) {
-				((APC)gameState.getChosenObject().chosenUnit).regulateDroppingOff(false);
-				Unit exitingUnit = ((APC)gameState.getChosenObject().chosenUnit).removeUnit();
-				exitingUnit.moveTo(cursor.getX(), cursor.getY());
-				exitingUnit.regulateActive(false);
-			} else if (gameState.getChosenObject().chosenUnit.hasUnitContainer()) {
+			if (gameState.getChosenObject().chosenUnit.hasUnitContainer()) {
 				gameState.getChosenObject().chosenUnit.getUnitContainer().regulateDroppingOff(false);
 				Unit exitingUnit = gameState.getChosenObject().chosenUnit.getUnitContainer().removeChosenUnit();
 				exitingUnit.moveTo(cursor.getX(), cursor.getY());
@@ -424,6 +405,22 @@ public class KeyListenerInputHandler {
 		}
 	}
 
+	private void mapMenuRowPressed() {
+		if (mapMenu.atCoRow()) {
+			viewPainter.setViewType(MapViewType.CO_MAP_MENU_VIEW);
+			mapMenu.closeMenu();
+		} else if (mapMenu.atPowerRow()) {
+			heroPowerHandler.activatePower();
+			mapMenu.closeMenu();
+		} else if (mapMenu.atSuperPowerRow()) {
+			heroPowerHandler.activateSuperPower();
+			mapMenu.closeMenu();
+		} else if (mapMenu.atEndRow()) {
+			mapMenu.closeMenu();
+			turnHandler.endTurn();
+		}
+	}
+
 	private void handlePressedKeyB(Cursor cursor) {
 		if (viewPainter.getMapViewType() == MapViewType.CO_MAP_MENU_VIEW) {
 			viewPainter.setViewType(MapViewType.MAIN_MAP_MENU_VIEW);
@@ -433,9 +430,7 @@ public class KeyListenerInputHandler {
 			cursor.setPosition(x, y);
 			unitMenuHandler.handleOpenUnitMenu(cursor);
 	
-			if (gameState.getChosenObject().chosenUnit instanceof APC) {
-				((APC)gameState.getChosenObject().chosenUnit).regulateDroppingOff(false);
-			} else if (gameState.getChosenObject().chosenUnit.hasUnitContainer()) {
+			if (gameState.getChosenObject().chosenUnit.hasUnitContainer()) {
 				gameState.getChosenObject().chosenUnit.getUnitContainer().regulateDroppingOff(false);
 			} else if (gameState.getChosenObject().chosenUnit instanceof Lander) {
 				((Lander)gameState.getChosenObject().chosenUnit).regulateDroppingOff(false);
