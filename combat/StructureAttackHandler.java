@@ -19,18 +19,16 @@ public class StructureAttackHandler {
 		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
 	}
 
-	// TODO: rewrite code to be more readable
 	public List<Unit> getPossibleTargets(FiringStructure firingStructure) {
 		List<Unit> targetUnits = new ArrayList<>();
-		Hero owningHero = firingStructure.getOwner(); 
-		
-		boolean[][] firingRangeMap = new boolean[mapDim.getTileWidth()][mapDim.getTileHeight()];
-		firingStructure.importRangeMap(firingRangeMap);
-		
+		Hero owningHero = firingStructure.getOwner();
+		boolean[][] firingRangeMap = firingStructure.getFiringRangeMap(mapDim.getTileWidth(), mapDim.getTileHeight());
 		for (int tileY = 0 ; tileY < mapDim.getTileHeight() ; tileY++) {
 			for (int tileX = 0 ; tileX < mapDim.getTileWidth() ; tileX++) {
-				if (firingRangeMap[tileX][tileY]) {
-					Unit potentialTarget = unitGetter.getNonFriendlyUnit(tileX * mapDim.tileSize, tileY * mapDim.tileSize, owningHero);
+				if (firingRangeMap[tileX][tileY]) { // attackable location
+					int x = tileX * mapDim.tileSize;
+					int y = tileY * mapDim.tileSize;
+					Unit potentialTarget = unitGetter.getNonFriendlyUnit(x, y, owningHero);
 					if (potentialTarget != null) {
 						targetUnits.add(potentialTarget);
 					}

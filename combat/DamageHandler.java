@@ -1,57 +1,51 @@
 package combat;
 
 import units.*;
-import units.airMoving.TCopter;
-import units.seaMoving.Lander;
-import units.treadMoving.APC;
 import hero.*;
 import main.StarPowerCalculator;
 import map.GameMap;
-import map.area.TerrainType;
 import map.structures.Structure;
+import unitUtils.AttackType;
 import unitUtils.UnitType;
-import unitUtils.UnitWorthCalculator;
 
 public class DamageHandler {
 	private DamageCalculator damageCalculator;
 	private StarPowerCalculator starPowerCalculator;
 	private HeroHandler heroHandler;
-	private GameMap gameMap;
 
-	// TODO: rewrite code to make it fewer parameters
 	public DamageHandler(HeroHandler heroHandler, GameMap gameMap) {
-		damageCalculator = new DamageCalculator();
+		damageCalculator = new DamageCalculator(heroHandler, gameMap);
 		starPowerCalculator = new StarPowerCalculator();
 		this.heroHandler = heroHandler;
-		this.gameMap = gameMap;
 	}
 
 	public void handleAttackingUnit(Unit attackingUnit, Unit defendingUnit) {
 		// deal damage from attacker to defender
-		performDamageCalculation(attackingUnit, defendingUnit);
+		performDamageCalculations(attackingUnit, defendingUnit);
 		if (canCounterAttack(attackingUnit, defendingUnit)) {
-			// deal counterattack-damage from defender to attacker (counterattack)
-			performDamageCalculation(defendingUnit, attackingUnit);
+			// deal counter-attack-damage from defender to attacker (counter-attack)
+			performDamageCalculations(defendingUnit, attackingUnit);
 		}
 	}
 
-	private void performDamageCalculation(Unit attackingUnit, Unit defendingUnit) {
-		TerrainType defendingTerrainType = gameMap.getTerrainTypeAtUnitsPosition(defendingUnit);
-		int damageValue = damageCalculator.calculateRNGDamage(heroHandler, attackingUnit, defendingUnit, defendingTerrainType);
+	private void performDamageCalculations(Unit attackingUnit, Unit defendingUnit) {
+		int damageValue = damageCalculator.calculateRNGDamage(attackingUnit, defendingUnit);
+
 		defendingUnit.getUnitHealth().takeDamage(damageValue);
 		Hero attackingHero = heroHandler.getHeroFromUnit(attackingUnit);
-		Hero defendingHero = heroHandler.getHeroFromUnit(defendingUnit); 
+		Hero defendingHero = heroHandler.getHeroFromUnit(defendingUnit);
 		starPowerCalculator.calculateStarPowerOpponent(attackingHero, defendingUnit, damageValue);
 		starPowerCalculator.calculateStarPowerSelf(defendingHero, defendingUnit, damageValue);
 	}
 	
-	private boolean canCounterAttack(Unit attacking, Unit defending) {
-		return defending.getUnitHealth().getHP() > 0 && 
-				!(attacking instanceof IndirectUnit
-					|| defending instanceof IndirectUnit
-					|| defending instanceof APC
-					|| defending instanceof Lander
-					|| defending instanceof TCopter);
+	private boolean canCounterAttack(Unit attackingUnit, Unit defendingUnit) {
+		if (defendingUnit.getUnitHealth().getHP() == 0) {
+			return false;
+		}
+		if (attackingUnit instanceof IndirectUnit) {
+			return false;
+		}
+		return defendingUnit.getAttackType() == AttackType.DIRECT_ATTACK;
 	}
 	
 	/*
@@ -66,17 +60,24 @@ public class DamageHandler {
 	}
 	
 	public int getNonRNGDamageValue(Unit attackingUnit, Unit defendingUnit) {
-		TerrainType defendingTerrainType = gameMap.getTerrainTypeAtUnitsPosition(defendingUnit);
-		return damageCalculator.calculateNonRNGDamage(heroHandler, attackingUnit, defendingUnit, defendingTerrainType);
+		return damageCalculator.calculateNonRNGDamage(attackingUnit, defendingUnit);
 	}
 
-	// TODO: rename method?
-	public boolean validTarget(Unit attackingUnit, Unit targetUnit) {
-		int attUnitType = UnitType.getTypeFromUnit(attackingUnit);
+	public boolean unitCanAttackTargetUnit(Unit attackingUnit, Unit targetUnit) {
+		int attackingUnitType = UnitType.getTypeFromUnit(attackingUnit);
 		int targetUnitType = UnitType.getTypeFromUnit(targetUnit);
-		boolean canFireMainWeapon = attackingUnit.getUnitSupply().hasAmmo() && getBaseDamageValue(attUnitType, targetUnitType, 0) > -1;
-		boolean canFireSecondaryWeapon = getBaseDamageValue(attUnitType, targetUnitType, 1) > -1;
+		boolean canFireMainWeapon = canFireMainWeapon(attackingUnit, targetUnit);
+		boolean canFireSecondaryWeapon = getBaseDamageValue(attackingUnitType, targetUnitType, 1) > -1;
 		return canFireMainWeapon || canFireSecondaryWeapon;
+	}
+	
+	private boolean canFireMainWeapon(Unit attackingUnit, Unit targetUnit) {
+		int attackingUnitType = UnitType.getTypeFromUnit(attackingUnit);
+		int targetUnitType = UnitType.getTypeFromUnit(targetUnit);
+		if (!attackingUnit.getUnitSupply().hasAmmo()) {
+			return false;
+		}
+		return getBaseDamageValue(attackingUnitType, targetUnitType, 0) > -1;
 	}
 
 	public int getBaseDamageValue(int attType, int defType, int gunNumber) {

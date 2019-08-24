@@ -1,49 +1,45 @@
-/**
- * TODO:
- *  - rewrite code to be more readable
- */
 package combat;
 
 import hero.Hero;
-import hero.heroAbilities.AttackIncrease;
 import hero.heroAbilities.CommanderEffect;
 import hero.heroAbilities.DefenceIncrease;
 import map.area.TerrainType;
 import unitUtils.MovementType;
 
 public class DefenceValueCalculator {
+	private int powerDefenceBoost;
 
-	public DefenceValueCalculator() {}
-	
-	public int calculateDefenceValue(Hero defendingHero, int defendingUnitIndex) {
-		int normalDefenceValue = defendingHero.getPassiveHeroAbilities().getDefenceValue(defendingUnitIndex);
-		int powerDefenceValue = calculatePowerDefenceValue(defendingHero, defendingUnitIndex);
-		int superPowerDefenceValue = calculateSuperPowerDefenceValue(defendingHero, defendingUnitIndex);;
-		return normalDefenceValue + powerDefenceValue + superPowerDefenceValue;
+	public DefenceValueCalculator() {
+		powerDefenceBoost = 10;
 	}
 	
-	private int calculatePowerDefenceValue(Hero hero, int unitIndex) {
-		int defenceValue = 0;
-		if (hero.isPowerActive()) {
-			defenceValue = 10;
-			for (CommanderEffect commanderEffect : hero.getHeroPower().getPowerEffects()) {
-				if (commanderEffect instanceof DefenceIncrease) {
-					defenceValue += ((DefenceIncrease)commanderEffect).getDefenceIncrease(unitIndex);
-				}
+	public int calculateDefenceValue(Hero defendingHero, int defendingUnitIndex) {
+		int normalDefenceValue = defendingHero.getStandardDefenceValue(defendingUnitIndex);
+		if (defendingHero.isPowerActive()) {
+			int powerDefenceValue = calculatePowerDefenceValue(defendingHero, defendingUnitIndex);
+			return normalDefenceValue + powerDefenceValue;
+		} else if (defendingHero.isSuperPowerActive()) {
+			int superPowerDefenceValue = calculateSuperPowerDefenceValue(defendingHero, defendingUnitIndex);
+			return normalDefenceValue + superPowerDefenceValue;
+		}
+		return normalDefenceValue;
+	}
+	
+	private int calculatePowerDefenceValue(Hero defendingHero, int unitIndex) {
+		int defenceValue = powerDefenceBoost;
+		for (CommanderEffect commanderEffect : defendingHero.getHeroPower().getPowerEffects()) {
+			if (commanderEffect instanceof DefenceIncrease) {
+				defenceValue += ((DefenceIncrease)commanderEffect).getDefenceIncrease(unitIndex);
 			}
-			
 		}
 		return defenceValue;
 	}
 
-	private int calculateSuperPowerDefenceValue(Hero hero, int unitIndex) {
-		int defenceValue = 0;
-		if (hero.isSuperPowerActive()) {
-			defenceValue = 10;
-			for (CommanderEffect commanderEffect : hero.getHeroPower().getSuperPowerEffects()) {
-				if (commanderEffect instanceof DefenceIncrease) {
-					defenceValue += ((DefenceIncrease)commanderEffect).getDefenceIncrease(unitIndex);
-				}
+	private int calculateSuperPowerDefenceValue(Hero defendingHero, int unitIndex) {
+		int defenceValue = powerDefenceBoost;
+		for (CommanderEffect commanderEffect : defendingHero.getHeroPower().getSuperPowerEffects()) {
+			if (commanderEffect instanceof DefenceIncrease) {
+				defenceValue += ((DefenceIncrease)commanderEffect).getDefenceIncrease(unitIndex);
 			}
 		}
 		return defenceValue;

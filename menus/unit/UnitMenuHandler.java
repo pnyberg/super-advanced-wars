@@ -1,5 +1,6 @@
 package menus.unit;
 
+import combat.AttackHandler;
 import combat.AttackRangeHandler;
 import cursors.Cursor;
 import gameObjects.GameProperties;
@@ -28,9 +29,9 @@ public class UnitMenuHandler {
 	private UnitGetter unitGetter;
 	private AreaChecker areaChecker;
 	private BuildingHandler buildingHandler;
-	private AttackRangeHandler attackRangeHandler;
+	private AttackHandler attackHandler;
 
-	public UnitMenuHandler(GameProperties gameProp, GameState gameState, ContUnitHandler containerUnitHandler, SupplyHandler supplyHandler, AreaChecker areaChecker, AttackRangeHandler attackRangeHandler) {
+	public UnitMenuHandler(GameProperties gameProp, GameState gameState, ContUnitHandler containerUnitHandler, SupplyHandler supplyHandler, AreaChecker areaChecker, AttackHandler attackHandler) {
 		unitMenu = new UnitMenu(gameProp.getMapDimension().tileSize, gameState);
 		this.gameProp = gameProp;
 		this.gameState = gameState;
@@ -39,7 +40,7 @@ public class UnitMenuHandler {
 		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
 		this.areaChecker = areaChecker;
 		this.buildingHandler = new BuildingHandler(gameState);
-		this.attackRangeHandler = attackRangeHandler;
+		this.attackHandler = attackHandler;
 		this.containerUnitHandler = containerUnitHandler; 
 	}
 
@@ -52,7 +53,7 @@ public class UnitMenuHandler {
 				|| containerUnitHandler.unitEntryingContainerUnit(chosenUnit, cursor.getX(), cursor.getY())) {
 			if (hurtAtSamePosition) {
 				unitMenu.enableJoinOption();
-			} else if (attackRangeHandler.unitCanFire(chosenUnit, cursor)) {
+			} else if (attackHandler.unitCanFire(chosenUnit, cursor)) {
 				unitMenu.enableFireOption();
 			}
 

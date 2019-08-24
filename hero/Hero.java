@@ -53,6 +53,14 @@ public class Hero {
 		this.superPowerActive = superPowerActive;
 	}
 
+	public int getStandardAttackValue(int unitIndex) {
+		return passiveHeroAbilities.getAttackValue(unitIndex);
+	}
+
+	public int getStandardDefenceValue(int unitIndex) {
+		return passiveHeroAbilities.getDefenceValue(unitIndex);
+	}
+
 	public boolean isPowerActive() {
 		return powerActive;
 	}
@@ -67,10 +75,6 @@ public class Hero {
 
 	public Color getColor() {
 		return color;
-	}
-	
-	public PassiveHeroAbilities getPassiveHeroAbilities() {
-		return passiveHeroAbilities;
 	}
 	
 	public HeroPower getHeroPower() {

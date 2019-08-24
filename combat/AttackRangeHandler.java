@@ -3,8 +3,6 @@ package combat;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import cursors.Cursor;
-import gameObjects.Direction;
 import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.MapDimension;
@@ -17,121 +15,29 @@ import routing.MovementMap;
 import routing.RouteChecker;
 import units.IndirectUnit;
 import units.Unit;
-import units.airMoving.TCopter;
-import units.seaMoving.Lander;
-import units.treadMoving.APC;
 
 public class AttackRangeHandler {
+	private GameState gameState;
 	private MapDimension mapDimension;
 	private UnitGetter unitGetter;
 	private DamageHandler damageHandler;
 	private StructureHandler structureHandler; 
 	private RouteChecker routeChecker;
-	private GameState gameState;
 
 	public AttackRangeHandler(GameProperties gameProperties, GameState gameState) {
-		this.mapDimension = gameProperties.getMapDimension();
-		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
-		this.damageHandler = new DamageHandler(gameState.getHeroHandler(), gameProperties.getGameMap());
-		this.structureHandler = new StructureHandler(gameState, mapDimension);
-		routeChecker = new RouteChecker(gameProperties, gameState);
 		this.gameState = gameState;
+		mapDimension = gameProperties.getMapDimension();
+		unitGetter = new UnitGetter(gameState.getHeroHandler());
+		damageHandler = new DamageHandler(gameState.getHeroHandler(), gameProperties.getGameMap());
+		structureHandler = new StructureHandler(gameState, mapDimension);
+		routeChecker = new RouteChecker(gameProperties, gameState);
 	}
 	
 	public void clearRangeMap() {
 		gameState.resetRangeMap();
 	}
 
-	public boolean unitCanFire(Unit chosenUnit, Cursor cursor) {
-		if (chosenUnit instanceof IndirectUnit) {
-			return indirectUnitCanFire(chosenUnit, cursor);
-		} else if (chosenUnit instanceof APC
-					|| chosenUnit instanceof Lander
-					|| chosenUnit instanceof TCopter) {
-			return false;
-		}
-
-		return directUnitCanFire(chosenUnit, cursor);
-	}
-
-	private boolean indirectUnitCanFire(Unit chosenUnit, Cursor cursor) {
-		IndirectUnit attackingUnit = (IndirectUnit)chosenUnit;
-
-		if (!attackingUnit.getPosition().isSamePosition(cursor.getX(), cursor.getY())) {
-			return false;
-		}
-
-		int unitTileX = attackingUnit.getPosition().getX() / mapDimension.tileSize;
-		int unitTileY = attackingUnit.getPosition().getY() / mapDimension.tileSize;
-		int minRange = attackingUnit.getMinRange();
-		int maxRange = attackingUnit.getMaxRange();
-
-		for (int tileY = unitTileY - maxRange ; tileY <= (unitTileY + maxRange) ; tileY++) {
-			if (tileY < 0) {
-				continue;
-			} else if (tileY >= mapDimension.getTileHeight()) {
-				break;
-			}
-			for (int tileX = unitTileX - maxRange ; tileX <= (unitTileX + maxRange) ; tileX++) {
-				if (tileX < 0) {
-					continue;
-				} else if (tileX >= mapDimension.getTileWidth()) {
-					break;
-				}
-				int distanceFromUnit = Math.abs(unitTileX - tileX) + Math.abs(unitTileY - tileY);
-				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
-					boolean attackableTarget = isInderectAttackableTarget(attackingUnit, tileX, tileY);
-					if (attackableTarget) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-	
-	private boolean isInderectAttackableTarget(IndirectUnit attackingUnit, int targetTileX, int targetTileY) {
-		Unit targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(targetTileX * mapDimension.tileSize, targetTileY * mapDimension.tileSize);
-		if (targetUnit != null && damageHandler.validTarget(attackingUnit, targetUnit)) {
-			return true;
-		}
-		Structure targetStructure = structureHandler.getStructure(targetTileX * mapDimension.tileSize, targetTileY * mapDimension.tileSize);
-		if (targetStructure != null && structureHandler.unitCanAttackStructure(attackingUnit, targetStructure)) {
-			return true;
-		}
-		return false;
-	}
-
-	private boolean directUnitCanFire(Unit chosenUnit, Cursor cursor) {
-		return canDirectAttackInDirection(chosenUnit, cursor, Direction.NORTH) 
-			|| canDirectAttackInDirection(chosenUnit, cursor, Direction.EAST)
-			|| canDirectAttackInDirection(chosenUnit, cursor, Direction.SOUTH)
-			|| canDirectAttackInDirection(chosenUnit, cursor, Direction.WEST);
-	}
-	
-	private boolean canDirectAttackInDirection(Unit chosenUnit, Cursor cursor, Direction direction) {
-		int x = cursor.getX();
-		int y = cursor.getY();
-		if (direction == Direction.NORTH) {
-			y -= mapDimension.tileSize;
-		} else if (direction == Direction.EAST) {
-			x += mapDimension.tileSize;
-		} else if (direction == Direction.SOUTH) {
-			y += mapDimension.tileSize;
-		} else if (direction == Direction.WEST) {
-			x -= mapDimension.tileSize;
-		}
-		Unit targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(x, y);
-		if ((targetUnit != null && damageHandler.validTarget(chosenUnit, targetUnit))) {
-			return true;
-		}
-		Structure targetStructure = structureHandler.getStructure(x, y);
-		if (targetStructure != null && structureHandler.unitCanAttackStructure(chosenUnit, targetStructure)) {
-			return true;
-		}
-		return false;
-	}
-
+	// TODO: refactor from here
 	public void findPossibleDirectAttackLocations(Unit chosenUnit) {
 		MovementMap movementMap = gameState.getMovementMap();
 		// TODO: change so that this call returns a map?
@@ -206,7 +112,7 @@ public class AttackRangeHandler {
 				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
 					Unit targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(tileX * mapDimension.tileSize, tileY * mapDimension.tileSize);
 					Structure targetStructure = structureHandler.getStructure(tileX * mapDimension.tileSize, tileY * mapDimension.tileSize);
-					if (targetUnit != null && damageHandler.validTarget(indirectUnit, targetUnit)) {
+					if (targetUnit != null && damageHandler.unitCanAttackTargetUnit(indirectUnit, targetUnit)) {
 						Point p = new Point(tileX * mapDimension.tileSize, tileY * mapDimension.tileSize);
 						indirectUnit.addFiringLocation(p);
 						gameState.enableRangeMapLocation(tileX, tileY);
@@ -221,7 +127,10 @@ public class AttackRangeHandler {
 	}
 	
 	public void importStructureAttackLocations(FiringStructure firingStructure) {
-		firingStructure.importRangeMap(gameState.getRangeMap());
+		int mapTileWidth = mapDimension.getTileWidth();
+		int mapTileHeight = mapDimension.getTileHeight();
+		boolean [][] firingStructureRangeMap = firingStructure.getFiringRangeMap(mapTileWidth, mapTileHeight);
+		gameState.setRangeMap(firingStructureRangeMap);
 	}
 	
 	public boolean[][] getRangeMap() {

@@ -96,9 +96,9 @@ public class UnitBattleInteractionHandler {
 	 */
 	private void testXvsY(Unit att, Unit def, boolean expectedSuccess) {
 		if (expectedSuccess) {
-			assertTrue(att.getClass() + " should be able to attack " + def.getClass(), damageHandler.validTarget(att, def));
+			assertTrue(att.getClass() + " should be able to attack " + def.getClass(), damageHandler.unitCanAttackTargetUnit(att, def));
 		} else {
-			assertFalse(att.getClass() + " shouldn't be able to attack " + def.getClass(), damageHandler.validTarget(att, def));
+			assertFalse(att.getClass() + " shouldn't be able to attack " + def.getClass(), damageHandler.unitCanAttackTargetUnit(att, def));
 		}
 	}
 	

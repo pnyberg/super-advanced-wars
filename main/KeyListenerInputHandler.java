@@ -99,7 +99,7 @@ public class KeyListenerInputHandler {
 		routeHandler = new RouteHandler(gameProperties, gameState);
 		containerUnitHandler = new ContUnitHandler(gameProperties, gameState);
 		attackHandler = new AttackHandler(gameProperties, gameState);
-		unitMenuHandler = new UnitMenuHandler(gameProperties, gameState, containerUnitHandler, supplyHandler, areaChecker, attackRangeHandler);
+		unitMenuHandler = new UnitMenuHandler(gameProperties, gameState, containerUnitHandler, supplyHandler, areaChecker, attackHandler);
 
 		heroPowerHandler = new HeroPowerHandler(gameState.getHeroHandler());
 		unitWorthCalculator = new UnitWorthCalculator();
@@ -219,7 +219,11 @@ public class KeyListenerInputHandler {
 
 				// @TODO cargo-unit enters other unit
 			} else if (unitMenuHandler.getUnitMenu().atFireRow()) {
-				attackHandler.setUpFiringTargets(gameState.getChosenObject().chosenUnit, cursor);
+				Unit chosenUnit = gameState.getChosenObject().chosenUnit;
+				chosenUnit.regulateAttack(true);
+				attackHandler.setUpFiringTargets(chosenUnit);
+				Point startFiringLocation = chosenUnit.getNextFiringLocation();
+				cursor.setPosition(startFiringLocation);
 			} else if (unitMenuHandler.getUnitMenu().atCaptRow()) {
 				Building building = buildingHandler.getBuilding(cursor.getX(), cursor.getY());
 				captHandler.captBuilding(gameState.getChosenObject().chosenUnit, building);

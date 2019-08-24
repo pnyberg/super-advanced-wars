@@ -59,6 +59,10 @@ public class GameState {
 		rangeMap = new boolean[rangeMap.length][rangeMap[0].length];
 	}
 	
+	public void setRangeMap(boolean[][] rangeMap) {
+		this.rangeMap = rangeMap;
+	}
+	
 	public void setMovementMap(MovementMap movementMap) {
 		this.movementMap = movementMap;
 	}
