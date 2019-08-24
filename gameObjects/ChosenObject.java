@@ -9,4 +9,8 @@ public class ChosenObject {
 	public Unit rangeUnit;
 	public Building selectedBuilding;
 	public FiringStructure rangeStructure;
+
+	public boolean rangeShooterChosen() {
+		return (rangeUnit != null || rangeStructure != null);
+	}
 }

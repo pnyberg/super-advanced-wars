@@ -43,6 +43,8 @@ public abstract class Building {
 	public void resetCapting() {
 		captingValue = maxCaptingValue;
 	}
+	
+	public abstract boolean isBuildableBuilding();
 
 	public boolean captingIsActive() {
 		return 0 < captingValue && captingValue < maxCaptingValue;

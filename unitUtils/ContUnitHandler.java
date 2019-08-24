@@ -103,9 +103,6 @@ public class ContUnitHandler {
 		if (chosenUnit.hasUnitContainer()) {
 			chosenUnit.getUnitContainer().regulateDroppingOff(true);
 			return unitCanBeDroppedOff(chosenUnit.getUnitContainer().getChosenUnit());
-		} else if (chosenUnit instanceof Cruiser) {
-			((Cruiser)chosenUnit).regulateDroppingOff(true);
-			return unitCanBeDroppedOff(((Cruiser)chosenUnit).getChosenUnit());
 		}
 
 		return false;

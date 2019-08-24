@@ -80,7 +80,7 @@ public class UnitMenu extends Menu {
 		((UnitMenuState)menuState).setWaitOption(true);
 	}
 
-	public int getNumberOfRows() {
+	public int getNumberOfActiveRows() {
 		return ((UnitMenuState)menuState).getNumberOfExistingRows();
 	}
 

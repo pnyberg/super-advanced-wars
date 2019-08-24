@@ -1,10 +1,13 @@
 /**
+ * BUG-list
+ *  - APC with unit inside tries to supply when moving to neighbour-area
+ *  - APC with unit inside cannot enter Lander
+ * 
  * TODO-list
  * - only one action/unit per turn
  * - change POWER/SUPER-text, maybe use a pre-written text?
  * - add so that MiniCannons can be attacked/destroyed
  *   - indirects fixed, need to fix directs
- * - fix so that the firing-damage-window doesn't go off screen when attacking top row or leftmost column
  * - why does the tanks movementmap-hang up?
  * - enter classes for HQ, ev Silo
  * - FOG
@@ -13,8 +16,6 @@
  * - fix so not crashing on recalculating route
  * - first attack take ages to calculate
  * - refactor so that methods have "maximum" of three parameters
- * - can an APC enter a Lander?
- * - can a T-Copter enter a Cruiser?
  *
  * @TODO: substitute ArrayList with HashMap for better performance
  */

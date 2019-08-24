@@ -51,7 +51,7 @@ public class BuildingMenu extends Menu {
 		((BuildingMenuState)menuState).resetBuildingMenuType();
 	}
 
-	public int getNumberOfRows() {
+	public int getNumberOfActiveRows() {
 		BuildingItem[] menuItems = getMenuItems();
 		if (menuItems == null) {
 			return 0;

@@ -12,4 +12,8 @@ public class Factory extends Building {
 		super(x, y, tileSize);
 		buildingImage = new FactoryImage(tileSize);
 	}
+
+	public boolean isBuildableBuilding() {
+		return true;
+	}
 }

@@ -13,4 +13,8 @@ public class Port extends Building {
 		super(x, y, tileSize);		
 		buildingImage = new PortImage(tileSize);
 	}
+
+	public boolean isBuildableBuilding() {
+		return true;
+	}
 }

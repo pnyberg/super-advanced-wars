@@ -42,27 +42,23 @@ public abstract class Menu {
 	}
 
 	public void moveArrowDown() {
-		menuState.incrementMenuIndexIfPossible(getNumberOfRows());
+		menuState.incrementMenuIndexIfPossible(getNumberOfActiveRows());
 	}
 
 	public int getMenuIndex() {
 		return menuState.getMenuIndex();
 	}
 	
-	public abstract int getNumberOfRows();
+	public abstract int getNumberOfActiveRows();
 
 	public boolean isVisible() {
 		return menuState.isVisible();
 	}
 	
-	public boolean atEndRow() {
-		return getMenuIndex() == getNumberOfRows()-1;
-	}
-
 	protected void paintMenuBackground(Graphics g) {
 		int x = menuState.getX();
 		int y = menuState.getY();
-		int menuHeight = getNumberOfRows() * dimensionValues.getMenuRowHeight() + 10;
+		int menuHeight = getNumberOfActiveRows() * dimensionValues.getMenuRowHeight() + 10;
 		int xAlign = dimensionValues.getTileSize() / 2;
 		int yAlign = dimensionValues.getTileSize() / 2;
 

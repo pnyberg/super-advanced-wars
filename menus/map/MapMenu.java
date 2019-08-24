@@ -23,13 +23,21 @@ public class MapMenu extends Menu {
 		this.heroHandler = gameState.getHeroHandler();
 	}
 
-	public int getNumberOfRows() {
+	public int getNumberOfActiveRows() {
+		return menuTexts.length - 2 + getNumberOfPowerRows();
+	}
+	
+	private int getNumberOfPowerRows() {
 		HeroPowerMeter heroPowerMeter = heroHandler.getCurrentHero().getHeroPower().getHeroPowerMeter();
-		return menuTexts.length + (heroPowerMeter.powerUsable() ? 0 : -1) + (heroPowerMeter.superPowerUsable() ? 0 : -1);
+		return (heroPowerMeter.powerUsable() ? 1 : 0) + (heroPowerMeter.superPowerUsable() ? 1 : 0);
 	}
 	
 	public boolean atCoRow() {
 		return menuState.getMenuIndex() == 0;
+	}
+	
+	public boolean atIntelRow() {
+		return menuState.getMenuIndex() == 1;
 	}
 	
 	public boolean atPowerRow() {
@@ -44,6 +52,18 @@ public class MapMenu extends Menu {
 			return false;
 		}
 		return menuState.getMenuIndex() == 3;
+	}
+	
+	public boolean atOptionsRow() {
+		return getMenuIndex() == (getNumberOfActiveRows() - 3);
+	}
+
+	public boolean atSaveRow() {
+		return getMenuIndex() == (getNumberOfActiveRows() - 2);
+	}
+
+	public boolean atEndRow() {
+		return getMenuIndex() == (getNumberOfActiveRows() - 1);
 	}
 
 	public void paint(Graphics g) {

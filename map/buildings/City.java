@@ -7,4 +7,8 @@ public class City extends Building {
 		super(x, y, tileSize);
 		buildingImage = new CityImage(tileSize);
 	}
+
+	public boolean isBuildableBuilding() {
+		return false;
+	}
 }

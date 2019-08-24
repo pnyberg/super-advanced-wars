@@ -12,4 +12,8 @@ public class Airport extends Building {
 		super(x, y, tileSize);
 		buildingImage = new AirportImage(tileSize);
 	}
+
+	public boolean isBuildableBuilding() {
+		return true;
+	}
 }
