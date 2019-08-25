@@ -5,16 +5,21 @@ import java.util.ArrayList;
 import cursors.Cursor;
 import hero.HeroHandler;
 import map.buildings.Building;
+import map.structures.FiringStructure;
 import map.structures.Structure;
 import menus.BuildingMenuState;
 import menus.MenuState;
 import menus.UnitMenuState;
 import point.Point;
 import routing.MovementMap;
+import units.Unit;
 
 public class GameState {
 	private HeroHandler heroHandler;
-	private ChosenObject chosenObject;
+	private Unit chosenUnit;
+	private Unit rangeUnit;
+	private Building selectedBuilding;
+	private FiringStructure rangeStructure;
 	private Cursor cursor;
 	private MovementMap movementMap;
 	private ArrayList<Building> buildings;
@@ -31,7 +36,10 @@ public class GameState {
 		this.heroHandler = heroHandler;
 		this.buildings = buildings;
 		this.structures = structures;
-		chosenObject = new ChosenObject();
+		chosenUnit = null;
+		rangeUnit = null;
+		selectedBuilding = null;
+		rangeStructure = null;
 		cursor = new Cursor(0, 0, mapDimension.tileSize);
 		buildingMenuState = new BuildingMenuState();
 		mapMenuState = new MenuState();
@@ -59,6 +67,22 @@ public class GameState {
 		rangeMap = new boolean[rangeMap.length][rangeMap[0].length];
 	}
 	
+	public void setChosenUnit(Unit chosenUnit) {
+		this.chosenUnit = chosenUnit;
+	}
+	
+	public void setChosenRangeUnit(Unit rangeUnit) {
+		this.rangeUnit = rangeUnit;
+	}
+	
+	public void setSelectedBuilding(Building selectedBuilding) {
+		this.selectedBuilding = selectedBuilding;
+	}
+	
+	public void setChosenRangeStructure(FiringStructure rangeStructure) {
+		this.rangeStructure = rangeStructure;
+	}
+	
 	public void setRangeMap(boolean[][] rangeMap) {
 		this.rangeMap = rangeMap;
 	}
@@ -71,6 +95,10 @@ public class GameState {
 		this.heroPortraitLeftSide = leftSide;
 	}
 	
+	public boolean rangeShooterChosen() {
+		return (rangeUnit != null || rangeStructure != null);
+	}
+
 	public boolean heroPortraitOnLeftSide() {
 		return heroPortraitLeftSide;
 	}
@@ -79,12 +107,16 @@ public class GameState {
 		return heroHandler;
 	}
 	
-	public ChosenObject getChosenObject() {
-		return chosenObject;
-	}
-	
 	public Cursor getCursor() {
 		return cursor;
+	}
+	
+	public Unit getChosenUnit() {
+		return chosenUnit;
+	}
+	
+	public Unit getChosenRangeUnit() {
+		return rangeUnit;
 	}
 	
 	public MovementMap getMovementMap() {

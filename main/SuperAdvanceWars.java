@@ -1,7 +1,6 @@
 package main;
 import javax.swing.JFrame;
 
-import gameObjects.ChosenObject;
 import gameObjects.GameProperties;
 import gameObjects.MapDimension;
 import hero.HeroFactory;

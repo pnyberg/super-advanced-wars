@@ -46,7 +46,7 @@ public class UnitMenuHandler {
 
 	// TODO: rewrite code to make it more readable
 	public void handleOpenUnitMenu(Cursor cursor) {
-		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
+		Unit chosenUnit = gameState.getChosenUnit();
 		boolean hurtAtSamePosition = unitGetter.hurtSameTypeUnitAtPosition(chosenUnit, cursor.getX(), cursor.getY());
 		
 		if (!areaChecker.areaOccupiedByFriendly(chosenUnit, cursor.getX(), cursor.getY()) || hurtAtSamePosition

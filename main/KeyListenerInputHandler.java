@@ -13,7 +13,6 @@ import combat.DamageHandler;
 import combat.DefenceValueCalculator;
 import cursors.Cursor;
 import cursors.FiringCursor;
-import gameObjects.GameMapAndCursor;
 import gameObjects.GameProperties;
 import gameObjects.GameState;
 import graphics.CommanderView;
@@ -129,7 +128,7 @@ public class KeyListenerInputHandler {
 		} else if (e.getKeyCode() == KeyEvent.VK_S) {
 			if (mapMenu.isVisible()) {
 				mapMenu.closeMenu();
-			} else if (gameState.getChosenObject().chosenUnit == null) {
+			} else if (gameState.getChosenUnit() == null) {
 				mapMenu.openMenu(cursorX, cursorY);
 			}
 		}
@@ -137,9 +136,9 @@ public class KeyListenerInputHandler {
 	
 	public void manageKeyReleasedInput(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_B) {
-			if (gameState.getChosenObject().rangeShooterChosen()) {
-				gameState.getChosenObject().rangeUnit = null;
-				gameState.getChosenObject().rangeStructure = null;
+			if (gameState.rangeShooterChosen()) {
+				gameState.setChosenRangeUnit(null);
+				gameState.setChosenRangeStructure(null);
 				attackRangeHandler.clearRangeMap();
 			}
 		}
@@ -149,37 +148,37 @@ public class KeyListenerInputHandler {
 	private void handlePressedKeyA() {
 		int cursorX = cursor.getX();
 		int cursorY = cursor.getY();
-		boolean unitSelected = gameState.getChosenObject().chosenUnit != null || gameState.getChosenObject().rangeUnit != null;
+		boolean unitSelected = gameState.getChosenUnit() != null || gameState.getChosenRangeUnit() != null;
 
 		if (containerUnitHandler.unitIsDroppingOff()) {
 			handleDroppingOff();
-		} else if (attackHandler.unitWantsToFire(gameState.getChosenObject().chosenUnit)) {
+		} else if (attackHandler.unitWantsToFire(gameState.getChosenUnit())) {
 			Unit defendingUnit = unitGetter.getNonFriendlyUnitForCurrentHero(cursor.getX(), cursor.getY());
 			Structure targetStructure = structureHandler.getStructure(cursor.getX(), cursor.getY());
 			if (defendingUnit != null) {
-				damageHandler.handleAttackingUnit(gameState.getChosenObject().chosenUnit, defendingUnit);
+				damageHandler.handleAttackingUnit(gameState.getChosenUnit(), defendingUnit);
 				removeUnitIfDead(defendingUnit);
 			} else if (targetStructure != null){
-				damageHandler.handleAttackingStructure(gameState.getChosenObject().chosenUnit, targetStructure);
+				damageHandler.handleAttackingStructure(gameState.getChosenUnit(), targetStructure);
 				removeStructureIfDestroyed(targetStructure);
 			} else {
 				System.err.println("No legal target to attack was used!");
 			}
 
-			gameState.getChosenObject().chosenUnit.regulateAttack(false);
+			gameState.getChosenUnit().regulateAttack(false);
 
-			int x = gameState.getChosenObject().chosenUnit.getPosition().getX();
-			int y = gameState.getChosenObject().chosenUnit.getPosition().getY();
+			int x = gameState.getChosenUnit().getPosition().getX();
+			int y = gameState.getChosenUnit().getPosition().getY();
 			cursor.setPosition(x, y);
 
-			removeUnitIfDead(gameState.getChosenObject().chosenUnit);
+			removeUnitIfDead(gameState.getChosenUnit());
 
-			int fuelUse = routeHandler.getFuelFromArrows(gameState.getChosenObject().chosenUnit);
-			gameState.getChosenObject().chosenUnit.getUnitSupply().useFuel(fuelUse);
+			int fuelUse = routeHandler.getFuelFromArrows(gameState.getChosenUnit());
+			gameState.getChosenUnit().getUnitSupply().useFuel(fuelUse);
 
-			gameState.getChosenObject().chosenUnit.regulateActive(false);
-			gameState.getChosenObject().chosenUnit.clearFiringLocations();
-			gameState.getChosenObject().chosenUnit = null;
+			gameState.getChosenUnit().regulateActive(false);
+			gameState.getChosenUnit().clearFiringLocations();
+			gameState.setChosenUnit(null);
 			movementMap.clearMovementMap();
 			routeHandler.clearArrowPoints();
 			attackRangeHandler.clearRangeMap();
@@ -187,64 +186,64 @@ public class KeyListenerInputHandler {
 			mapMenuRowPressed();
 		} else if (unitMenuHandler.getUnitMenu().isVisible()) {
 			if (unitMenuHandler.getUnitMenu().atUnitRow()) {
-				if (gameState.getChosenObject().chosenUnit instanceof Lander) {
+				if (gameState.getChosenUnit() instanceof Lander) {
 					int index = unitMenuHandler.getUnitMenu().getMenuIndex();
-					gameState.getChosenObject().chosenUnit.getUnitContainer().chooseUnit(index);
-				} else if (gameState.getChosenObject().chosenUnit instanceof Cruiser) {
+					gameState.getChosenUnit().getUnitContainer().chooseUnit(index);
+				} else if (gameState.getChosenUnit() instanceof Cruiser) {
 					int index = unitMenuHandler.getUnitMenu().getMenuIndex();
-					((Cruiser)gameState.getChosenObject().chosenUnit).chooseUnit(index);
+					((Cruiser)gameState.getChosenUnit()).chooseUnit(index);
 				}
 				containerUnitHandler.handleDroppingOff();
 			} else if (unitMenuHandler.getUnitMenu().atJoinRow()) {
-				int x = gameState.getChosenObject().chosenUnit.getPosition().getX();
-				int y = gameState.getChosenObject().chosenUnit.getPosition().getY();
-				Unit unit = unitGetter.getFriendlyUnitExceptSelf(gameState.getChosenObject().chosenUnit, x, y);
+				int x = gameState.getChosenUnit().getPosition().getX();
+				int y = gameState.getChosenUnit().getPosition().getY();
+				Unit unit = unitGetter.getFriendlyUnitExceptSelf(gameState.getChosenUnit(), x, y);
 				
-				int joinHp = unit.getUnitHealth().getShowHP() + gameState.getChosenObject().chosenUnit.getUnitHealth().getShowHP();
+				int joinHp = unit.getUnitHealth().getShowHP() + gameState.getChosenUnit().getUnitHealth().getShowHP();
 				if (joinHp > 10) {
 					int joinFunds = (joinHp - 10) * unitWorthCalculator.getFullHealthUnitWorth(unit) / 10;
 					gameState.getHeroHandler().getCurrentHero().earnCash(joinFunds);
 				}
-				unit.getUnitHealth().heal(gameState.getChosenObject().chosenUnit.getUnitHealth().getHP());
-				gameState.getChosenObject().chosenUnit.getUnitHealth().kill();
-				removeUnitIfDead(gameState.getChosenObject().chosenUnit);
+				unit.getUnitHealth().heal(gameState.getChosenUnit().getUnitHealth().getHP());
+				gameState.getChosenUnit().getUnitHealth().kill();
+				removeUnitIfDead(gameState.getChosenUnit());
 			} else if (unitMenuHandler.getUnitMenu().atEnterRow()) {
-				Unit entryUnit = unitGetter.getFriendlyUnitExceptSelf(gameState.getChosenObject().chosenUnit, cursorX, cursorY);
+				Unit entryUnit = unitGetter.getFriendlyUnitExceptSelf(gameState.getChosenUnit(), cursorX, cursorY);
 				if (entryUnit.hasUnitContainer()) {
-					entryUnit.getUnitContainer().addUnit(gameState.getChosenObject().chosenUnit);
+					entryUnit.getUnitContainer().addUnit(gameState.getChosenUnit());
 				} else if (entryUnit instanceof Cruiser) {
-					((Cruiser)entryUnit).addUnit(gameState.getChosenObject().chosenUnit);
+					((Cruiser)entryUnit).addUnit(gameState.getChosenUnit());
 				}
 
 				// @TODO cargo-unit enters other unit
 			} else if (unitMenuHandler.getUnitMenu().atFireRow()) {
-				Unit chosenUnit = gameState.getChosenObject().chosenUnit;
+				Unit chosenUnit = gameState.getChosenUnit();
 				chosenUnit.regulateAttack(true);
 				attackHandler.setUpFiringTargets(chosenUnit);
 				Point startFiringLocation = chosenUnit.getNextFiringLocation();
 				cursor.setPosition(startFiringLocation);
 			} else if (unitMenuHandler.getUnitMenu().atCaptRow()) {
 				Building building = buildingHandler.getBuilding(cursor.getX(), cursor.getY());
-				captHandler.captBuilding(gameState.getChosenObject().chosenUnit, building);
+				captHandler.captBuilding(gameState.getChosenUnit(), building);
 				if (building.captingIsActive()) {
-					gameState.getChosenObject().chosenUnit.regulateCapting(true);
-				} else if (gameState.getChosenObject().chosenUnit.isCapting()) {
-					gameState.getChosenObject().chosenUnit.regulateCapting(false);
+					gameState.getChosenUnit().regulateCapting(true);
+				} else if (gameState.getChosenUnit().isCapting()) {
+					gameState.getChosenUnit().regulateCapting(false);
 				}
 			} else if (unitMenuHandler.getUnitMenu().atSupplyRow()) {
-				int x = gameState.getChosenObject().chosenUnit.getPosition().getX();
-				int y = gameState.getChosenObject().chosenUnit.getPosition().getY();
+				int x = gameState.getChosenUnit().getPosition().getX();
+				int y = gameState.getChosenUnit().getPosition().getY();
 
 				replentishSurroundingUnits(x, y);
 			}
 
-			if (!containerUnitHandler.unitIsDroppingOff() && !attackHandler.unitWantsToFire(gameState.getChosenObject().chosenUnit)) {
+			if (!containerUnitHandler.unitIsDroppingOff() && !attackHandler.unitWantsToFire(gameState.getChosenUnit())) {
 				// using fuel
-				int fuelUse = routeHandler.getFuelFromArrows(gameState.getChosenObject().chosenUnit);
-				gameState.getChosenObject().chosenUnit.getUnitSupply().useFuel(fuelUse);
+				int fuelUse = routeHandler.getFuelFromArrows(gameState.getChosenUnit());
+				gameState.getChosenUnit().getUnitSupply().useFuel(fuelUse);
 
-				gameState.getChosenObject().chosenUnit.regulateActive(false);
-				gameState.getChosenObject().chosenUnit = null;
+				gameState.getChosenUnit().regulateActive(false);
+				gameState.setChosenUnit(null);
 				movementMap.clearMovementMap();
 				routeHandler.clearArrowPoints();
 			}
@@ -253,25 +252,25 @@ public class KeyListenerInputHandler {
 		} else if (buildingMenu.isVisible()) {
 			buildingMenu.buySelectedTroop();
 			buildingMenu.closeMenu();
-		} else if (gameState.getChosenObject().chosenUnit != null && movementMap.isAcceptedMove(cursorX / gameProperties.getMapDimension().tileSize, cursorY / gameProperties.getMapDimension().tileSize) && gameState.getChosenObject().rangeUnit == null) {
-			int x = gameState.getChosenObject().chosenUnit.getPosition().getX();
-			int y = gameState.getChosenObject().chosenUnit.getPosition().getY();
+		} else if (gameState.getChosenUnit() != null && movementMap.isAcceptedMove(cursorX / gameProperties.getMapDimension().tileSize, cursorY / gameProperties.getMapDimension().tileSize) && gameState.getChosenRangeUnit() == null) {
+			int x = gameState.getChosenUnit().getPosition().getX();
+			int y = gameState.getChosenUnit().getPosition().getY();
 			if (unitGetter.getFriendlyUnit(x, y) != null) {
 				unitMenuHandler.handleOpenUnitMenu(cursor);
 			}
 		} else if (!unitSelected && !unitSelectable(cursorX, cursorY)) {
-			gameState.getChosenObject().selectedBuilding = buildingHandler.getFriendlyBuilding(cursorX, cursorY);
-			Building chosenBuilding = gameState.getChosenObject().selectedBuilding; 
+			Building chosenBuilding = buildingHandler.getFriendlyBuilding(cursorX, cursorY);
+			gameState.setSelectedBuilding(chosenBuilding); 
 
 			if (chosenBuilding != null && chosenBuilding.isBuildableBuilding()) {
 				buildingMenu.openMenu(cursorX, cursorY);
 			}
 		} else if (!unitSelected) {
-			gameState.getChosenObject().chosenUnit = unitGetter.getAnyUnit(cursorX, cursorY);
+			gameState.setChosenUnit(unitGetter.getAnyUnit(cursorX, cursorY));
 
-			if (gameState.getChosenObject().chosenUnit != null) {
-				routeChecker.retrievePossibleMovementLocations(gameState.getChosenObject().chosenUnit);
-				routeHandler.addNewArrowPoint(gameState.getChosenObject().chosenUnit.getPosition());
+			if (gameState.getChosenUnit() != null) {
+				routeChecker.retrievePossibleMovementLocations(gameState.getChosenUnit());
+				routeHandler.addNewArrowPoint(gameState.getChosenUnit().getPosition());
 			}
 		}
 	}
@@ -281,30 +280,30 @@ public class KeyListenerInputHandler {
 		if (viewPainter.getMapViewType() == MapViewType.CO_MAP_MENU_VIEW) {
 			viewPainter.setViewType(MapViewType.MAIN_MAP_MENU_VIEW);
 		} else if (containerUnitHandler.unitIsDroppingOff()) {
-			int x = gameState.getChosenObject().chosenUnit.getPosition().getX();
-			int y = gameState.getChosenObject().chosenUnit.getPosition().getY();
+			int x = gameState.getChosenUnit().getPosition().getX();
+			int y = gameState.getChosenUnit().getPosition().getY();
 			cursor.setPosition(x, y);
 			unitMenuHandler.handleOpenUnitMenu(cursor);
 	
-			if (gameState.getChosenObject().chosenUnit.hasUnitContainer()) {
-				gameState.getChosenObject().chosenUnit.getUnitContainer().regulateDroppingOff(false);
-			} else if (gameState.getChosenObject().chosenUnit instanceof Cruiser) {
-				((Cruiser)gameState.getChosenObject().chosenUnit).regulateDroppingOff(false);
+			if (gameState.getChosenUnit().hasUnitContainer()) {
+				gameState.getChosenUnit().getUnitContainer().regulateDroppingOff(false);
+			} else if (gameState.getChosenUnit() instanceof Cruiser) {
+				((Cruiser)gameState.getChosenUnit()).regulateDroppingOff(false);
 			}
-		} else if (attackHandler.unitWantsToFire(gameState.getChosenObject().chosenUnit)) {
-			gameState.getChosenObject().chosenUnit.clearFiringLocations();
+		} else if (attackHandler.unitWantsToFire(gameState.getChosenUnit())) {
+			gameState.getChosenUnit().clearFiringLocations();
 			attackRangeHandler.clearRangeMap();
-			int x = gameState.getChosenObject().chosenUnit.getPosition().getX();
-			int y = gameState.getChosenObject().chosenUnit.getPosition().getY();
+			int x = gameState.getChosenUnit().getPosition().getX();
+			int y = gameState.getChosenUnit().getPosition().getY();
 			cursor.setPosition(x, y);
 			unitMenuHandler.handleOpenUnitMenu(cursor);
 	
-			gameState.getChosenObject().chosenUnit.regulateAttack(false);
+			gameState.getChosenUnit().regulateAttack(false);
 		} else if (mapMenu.isVisible()) {
 			mapMenu.closeMenu();
 		} else if (buildingMenu.isVisible()) {
 			buildingMenu.closeMenu();
-		} else if (gameState.getChosenObject().chosenUnit != null) {
+		} else if (gameState.getChosenUnit() != null) {
 			// the start-position of the unit before movement
 			Point unitStartPoint = routeHandler.getRouteArrowPath().getArrowPoint(0);
 			int unitStartX = unitStartPoint.getX();
@@ -312,33 +311,34 @@ public class KeyListenerInputHandler {
 	
 			if (unitMenuHandler.getUnitMenu().isVisible()) {
 				unitMenuHandler.getUnitMenu().closeMenu();
-				gameState.getChosenObject().chosenUnit.moveTo(unitStartX, unitStartY);
+				gameState.getChosenUnit().moveTo(unitStartX, unitStartY);
 			} else {
 				cursor.setPosition(unitStartX, unitStartY);
-				gameState.getChosenObject().chosenUnit.moveTo(unitStartX, unitStartY);
-				gameState.getChosenObject().chosenUnit = null;
+				gameState.getChosenUnit().moveTo(unitStartX, unitStartY);
+				gameState.setChosenUnit(null);
 				movementMap.clearMovementMap();
 				routeHandler.clearArrowPoints();
 			}
 		} else if (isFiringStructureAtCursorLocation()) {
 			FiringStructure firingStructure = structureHandler.getFiringStructure(cursor.getX(), cursor.getY());
-			gameState.getChosenObject().rangeStructure = firingStructure;
+			gameState.setChosenRangeStructure(firingStructure);
 			attackRangeHandler.importStructureAttackLocations(firingStructure);
 		} else {
-			gameState.getChosenObject().rangeUnit = unitGetter.getAnyUnit(cursor.getX(), cursor.getY());
+			Unit rangeUnit = unitGetter.getAnyUnit(cursor.getX(), cursor.getY());
+			gameState.setChosenRangeUnit(rangeUnit); 
 	
-			if (gameState.getChosenObject().rangeUnit != null) {
-				if (gameState.getChosenObject().rangeUnit.getAttackType() == AttackType.DIRECT_ATTACK) {
-					attackRangeHandler.findPossibleDirectAttackLocations(gameState.getChosenObject().rangeUnit);
-				} else if (gameState.getChosenObject().rangeUnit.getAttackType() == AttackType.INDIRECT_ATTACK) {
-					attackRangeHandler.fillRangeAttackMap(gameState.getChosenObject().rangeUnit);
+			if (gameState.getChosenRangeUnit() != null) {
+				if (gameState.getChosenRangeUnit().getAttackType() == AttackType.DIRECT_ATTACK) {
+					attackRangeHandler.findPossibleDirectAttackLocations(gameState.getChosenRangeUnit());
+				} else if (gameState.getChosenRangeUnit().getAttackType() == AttackType.INDIRECT_ATTACK) {
+					attackRangeHandler.fillRangeAttackMap(gameState.getChosenRangeUnit());
 				}
 			}
 		}
 	}
 
 	private void handlePressedKeyUp() {
-		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
+		Unit chosenUnit = gameState.getChosenUnit();
 		if (containerUnitHandler.unitIsDroppingOff()) {
 			if (containerUnitHandler.unitCanBeDroppedOff()) {
 				containerUnitHandler.moveDroppingOffCursorCounterclockwise();
@@ -359,7 +359,7 @@ public class KeyListenerInputHandler {
 	}
 	
 	private void handlePressedKeyDown() {
-		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
+		Unit chosenUnit = gameState.getChosenUnit();
 		int tileSize = gameProperties.getMapDimension().tileSize;
 
 		if (containerUnitHandler.unitIsDroppingOff()) {
@@ -404,7 +404,7 @@ public class KeyListenerInputHandler {
 		if (containerUnitHandler.unitIsDroppingOff()) {
 			return false;
 		}
-		if (attackHandler.unitWantsToFire(gameState.getChosenObject().chosenUnit)) {
+		if (attackHandler.unitWantsToFire(gameState.getChosenUnit())) {
 			return false;
 		}
 		return true;
@@ -419,7 +419,7 @@ public class KeyListenerInputHandler {
 	
 	private void updateArrowPathWithNewCursorPosition() {
 		Point newArrowPathPosition = new Point(cursor.getX(), cursor.getY());
-		routeHandler.updateCurrentArrowPath(newArrowPathPosition, gameState.getChosenObject().chosenUnit);
+		routeHandler.updateCurrentArrowPath(newArrowPathPosition, gameState.getChosenUnit());
 	}
 	
 	private void replentishSurroundingUnits(int x, int y) {
@@ -444,16 +444,16 @@ public class KeyListenerInputHandler {
 
 	private void handleDroppingOff() {
 		if (containerUnitHandler.unitCanBeDroppedOff()) {
-			gameState.getChosenObject().chosenUnit.getUnitContainer().regulateDroppingOff(false);
-			Unit exitingUnit = gameState.getChosenObject().chosenUnit.getUnitContainer().removeChosenUnit();
+			gameState.getChosenUnit().getUnitContainer().regulateDroppingOff(false);
+			Unit exitingUnit = gameState.getChosenUnit().getUnitContainer().removeChosenUnit();
 			exitingUnit.moveTo(cursor.getX(), cursor.getY());
 			exitingUnit.regulateActive(false);
 
-			int fuelUse = routeHandler.getFuelFromArrows(gameState.getChosenObject().chosenUnit);
-			gameState.getChosenObject().chosenUnit.getUnitSupply().useFuel(fuelUse);
+			int fuelUse = routeHandler.getFuelFromArrows(gameState.getChosenUnit());
+			gameState.getChosenUnit().getUnitSupply().useFuel(fuelUse);
 
-			gameState.getChosenObject().chosenUnit.regulateActive(false);
-			gameState.getChosenObject().chosenUnit = null;
+			gameState.getChosenUnit().regulateActive(false);
+			gameState.setChosenUnit(null);
 			movementMap.clearMovementMap();
 			routeHandler.clearArrowPoints();
 		} else {

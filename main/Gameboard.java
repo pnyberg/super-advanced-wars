@@ -117,7 +117,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		ViewPainter mainViewPainter = new ViewPainter(gameProperties, gameState);
-		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
+		Unit chosenUnit = gameState.getChosenUnit();
 		mainViewPainter.paint(g);
 		if (chosenUnit != null) {
 			paintChosenUnitGraphics(g);
@@ -134,7 +134,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 	
 	private void paintChosenUnitGraphics(Graphics g) {
-		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
+		Unit chosenUnit = gameState.getChosenUnit();
 		if (showRoutePath()) {
 			RouteArrowPath routeArrowPath = new RouteArrowPath(gameProperties, gameState);
 			routeArrowPath.paintArrow(g);
@@ -143,7 +143,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	}
 	
 	private boolean showRoutePath() {
-		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
+		Unit chosenUnit = gameState.getChosenUnit();
 		UnitMenu unitMenu = new UnitMenu(gameProperties.getTileSize(), gameState);
 		ContUnitHandler contUnitHandler = new ContUnitHandler(gameProperties, gameState);
 		AttackHandler attackHandler = new AttackHandler(gameProperties, gameState);
@@ -156,7 +156,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		UnitMenu unitMenu = new UnitMenu(gameProperties.getTileSize(), gameState);
 		BuildingMenu buildingMenu = new BuildingMenu(gameProperties, gameState);
 		AttackHandler attackHandler = new AttackHandler(gameProperties, gameState);
-		Unit chosenUnit = gameState.getChosenObject().chosenUnit;
+		Unit chosenUnit = gameState.getChosenUnit();
 		Cursor cursor = gameState.getCursor();
 		// when the mapMenu is open the cursor is hidden
 		if (mapMenu.isVisible()) {
