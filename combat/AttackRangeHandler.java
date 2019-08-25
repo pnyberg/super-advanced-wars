@@ -19,97 +19,11 @@ import units.Unit;
 
 public class AttackRangeHandler {
 	private GameState gameState;
-	private AttackHandler attackHandler;
 	private MapDimension mapDimension;
-	private UnitGetter unitGetter;
-	private DamageHandler damageHandler;
-	private StructureHandler structureHandler; 
-	private RouteChecker routeChecker;
 
 	public AttackRangeHandler(GameProperties gameProperties, GameState gameState) {
 		this.gameState = gameState;
-		attackHandler = new AttackHandler(gameProperties, gameState);
 		mapDimension = gameProperties.getMapDimension();
-		unitGetter = new UnitGetter(gameState.getHeroHandler());
-		damageHandler = new DamageHandler(gameState.getHeroHandler(), gameProperties.getGameMap());
-		structureHandler = new StructureHandler(gameState, mapDimension);
-		routeChecker = new RouteChecker(gameProperties, gameState);
-	}
-	
-	public void clearRangeMap() {
-		gameState.resetRangeMap();
-	}
-
-	public void findPossibleDirectAttackLocations(Unit chosenUnit) {
-		MovementMap movementMap = routeChecker.retrievePossibleMovementLocations(chosenUnit);
-		for (int tileY = 0 ; tileY < mapDimension.getTileHeight() ; tileY++) {
-			for (int tileX = 0 ; tileX < mapDimension.getTileWidth() ; tileX++) {
-				if (movementMap.isAcceptedMove(tileX, tileY)) {
-					// add possible attack-locations from "current position"
-					addRangeMapLocationIfValid(tileX, tileY, Direction.NORTH);
-					addRangeMapLocationIfValid(tileX, tileY, Direction.EAST);
-					addRangeMapLocationIfValid(tileX, tileY, Direction.SOUTH);
-					addRangeMapLocationIfValid(tileX, tileY, Direction.WEST);
-				}
-			}
-		}
-	}
-	
-	private void addRangeMapLocationIfValid(int tileX, int tileY, Direction direction) {
-		Point tilePoint = attackHandler.getNeighbourTileLocationForDirection(tileX, tileY, direction);
-		if (!tilePointOutOfBounds(tilePoint)) {
-			gameState.enableRangeMapLocation(tilePoint.getX(), tilePoint.getY());
-		}
-	}
-	
-	// TODO: move this to a proper class?
-	private boolean tilePointOutOfBounds(Point point) {
-		if (0 < point.getX() && point.getX() < (mapDimension.getTileWidth() - 1)) {
-			return true;
-		}
-		if (0 < point.getY() && point.getY() < (mapDimension.getTileHeight() - 1)) {
-			return true;
-		}
-		return false;
-	}
-	
-	public void fillRangeAttackMap(Unit chosenUnit) {
-		IndirectUnit attackingUnit = (IndirectUnit)chosenUnit;
-		int unitTileX = attackingUnit.getPosition().getX() / mapDimension.tileSize;
-		int unitTileY = attackingUnit.getPosition().getY() / mapDimension.tileSize;
-		int maxRange = attackingUnit.getMaxRange();
-		int startTileX = attackHandler.getMinTilePos(unitTileX, maxRange);
-		int startTileY = attackHandler.getMinTilePos(unitTileY, maxRange);
-
-		for (int tileY = startTileY ; tileY <= attackHandler.getMaxTileY(unitTileY, maxRange) ; tileY++) {
-			for (int tileX = startTileX ; tileX <= attackHandler.getMaxTileX(unitTileX, maxRange) ; tileX++) {
-				if (attackHandler.isValidRangeDistance(attackingUnit, tileX, tileY)) {
-					gameState.enableRangeMapLocation(tileX, tileY);
-				}
-			}
-		}
-	}
-
-	public void calculatePossibleRangeTargetLocations(IndirectUnit indirectUnit) {
-		int unitTileX = indirectUnit.getPosition().getX() / mapDimension.tileSize;
-		int unitTileY = indirectUnit.getPosition().getY() / mapDimension.tileSize;
-		int maxRange = indirectUnit.getMaxRange();
-		int startTileX = attackHandler.getMinTilePos(unitTileX, maxRange);
-		int startTileY = attackHandler.getMinTilePos(unitTileY, maxRange);
-
-		for (int tileY = startTileY ; tileY <= attackHandler.getMaxTileY(unitTileY, maxRange) ; tileY++) {
-			for (int tileX = startTileX ; tileX <= attackHandler.getMaxTileX(unitTileX, maxRange) ; tileX++) {
-				if (attackHandler.isValidRangeDistance(indirectUnit, tileX, tileY)) {
-					int x = tileX * mapDimension.tileSize;
-					int y = tileY * mapDimension.tileSize;
-					Point p = new Point(x, y);
-					if (attackHandler.attackableTargetAtLocation(indirectUnit, x, y)) {
-						indirectUnit.addFiringLocation(p);
-						gameState.enableRangeMapLocation(tileX, tileY);
-					}
-				}
-			}
-		}
 	}
 	
 	public void importStructureAttackLocations(FiringStructure firingStructure) {

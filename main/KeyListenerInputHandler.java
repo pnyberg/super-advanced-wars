@@ -139,7 +139,7 @@ public class KeyListenerInputHandler {
 			if (gameState.rangeShooterChosen()) {
 				gameState.setChosenRangeUnit(null);
 				gameState.setChosenRangeStructure(null);
-				attackRangeHandler.clearRangeMap();
+				gameState.resetRangeMap();
 			}
 		}
 	}
@@ -181,7 +181,7 @@ public class KeyListenerInputHandler {
 			gameState.setChosenUnit(null);
 			movementMap.clearMovementMap();
 			routeHandler.clearArrowPoints();
-			attackRangeHandler.clearRangeMap();
+			gameState.resetRangeMap();
 		} else if (mapMenu.isVisible()) {
 			mapMenuRowPressed();
 		} else if (unitMenuHandler.getUnitMenu().isVisible()) {
@@ -292,7 +292,7 @@ public class KeyListenerInputHandler {
 			}
 		} else if (attackHandler.unitWantsToFire(gameState.getChosenUnit())) {
 			gameState.getChosenUnit().clearFiringLocations();
-			attackRangeHandler.clearRangeMap();
+			gameState.resetRangeMap();
 			int x = gameState.getChosenUnit().getPosition().getX();
 			int y = gameState.getChosenUnit().getPosition().getY();
 			cursor.setPosition(x, y);
@@ -329,9 +329,9 @@ public class KeyListenerInputHandler {
 	
 			if (gameState.getChosenRangeUnit() != null) {
 				if (gameState.getChosenRangeUnit().getAttackType() == AttackType.DIRECT_ATTACK) {
-					attackRangeHandler.findPossibleDirectAttackLocations(gameState.getChosenRangeUnit());
+					attackHandler.findPossibleDirectAttackLocations(gameState.getChosenRangeUnit());
 				} else if (gameState.getChosenRangeUnit().getAttackType() == AttackType.INDIRECT_ATTACK) {
-					attackRangeHandler.fillRangeAttackMap(gameState.getChosenRangeUnit());
+					attackHandler.fillRangeAttackMap(gameState.getChosenRangeUnit());
 				}
 			}
 		}
