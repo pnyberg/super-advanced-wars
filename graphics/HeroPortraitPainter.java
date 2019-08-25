@@ -5,12 +5,13 @@ import java.awt.Graphics;
 
 import gameObjects.MapDimension;
 import hero.Hero;
+import point.PolygonPoints;
 
 public class HeroPortraitPainter {
-	private MapDimension mapDim;
+	private MapDimension mapDimension;
 	
-	public HeroPortraitPainter(MapDimension mapDim) {
-		this.mapDim = mapDim;
+	public HeroPortraitPainter(MapDimension mapDimension) {
+		this.mapDimension = mapDimension;
 	}
 
 	// TODO: replace with an image
@@ -20,20 +21,20 @@ public class HeroPortraitPainter {
 
 		// remove and make the array with newlines after every element
 		int ox1 = 0;
-		int ox2 = mapDim.tileSize * 4;
-		int ox3 = mapDim.tileSize * 4;
-		int ox4 = (15 * mapDim.tileSize) / 4;
-		int ox5 = (17 * mapDim.tileSize) / 5;
-		int ox6 = (11 * mapDim.tileSize) / 4;
+		int ox2 = mapDimension.tileSize * 4;
+		int ox3 = mapDimension.tileSize * 4;
+		int ox4 = (15 * mapDimension.tileSize) / 4;
+		int ox5 = (17 * mapDimension.tileSize) / 5;
+		int ox6 = (11 * mapDimension.tileSize) / 4;
 		int ox7 = 0;
 
 		int oy1 = 0;
 		int oy2 = 0;
-		int oy3 = mapDim.tileSize;
-		int oy4 = (4 * mapDim.tileSize) / 3;
-		int oy5 = (5 * mapDim.tileSize) / 3;
-		int oy6 = mapDim.tileSize * 2;
-		int oy7 = mapDim.tileSize * 2;
+		int oy3 = mapDimension.tileSize;
+		int oy4 = (4 * mapDimension.tileSize) / 3;
+		int oy5 = (5 * mapDimension.tileSize) / 3;
+		int oy6 = mapDimension.tileSize * 2;
+		int oy7 = mapDimension.tileSize * 2;
 
 		int[] outerBorderX = {ox1, ox2, ox3, ox4, ox5, ox6, ox7};
 		int[] outerBorderY = {oy1, oy2, oy3, oy4, oy5, oy6, oy7};
@@ -57,7 +58,9 @@ public class HeroPortraitPainter {
 		int[] innerBorderX = {ix1, ix2, ix3, ix4, ix5, ix6, ix7};
 		int[] innerBorderY = {iy1, iy2, iy3, iy4, iy5, iy6, iy7};
 
-		paintBorders(g, currentHero, outerBorderX, outerBorderY, innerBorderX, innerBorderY);
+		PolygonPoints outerBorder = new PolygonPoints(outerBorderX, outerBorderY);
+		PolygonPoints innerBorder = new PolygonPoints(innerBorderX, innerBorderY);
+		paintBorders(g, currentHero, outerBorder, innerBorder);
 		paintHeroAttributes(g, currentHero, outerBorderX, outerBorderY);
 	}
 
@@ -66,22 +69,22 @@ public class HeroPortraitPainter {
 		int borderThickness = 2;
 		int cashBarHeight = 25;
 
-		int rightMapBorder = mapDim.getTileWidth() * mapDim.tileSize;
-		int ox1 = rightMapBorder - (mapDim.tileSize * 4);
+		int rightMapBorder = mapDimension.getTileWidth() * mapDimension.tileSize;
+		int ox1 = rightMapBorder - (mapDimension.tileSize * 4);
 		int ox2 = rightMapBorder;
 		int ox3 = rightMapBorder;
-		int ox4 = rightMapBorder - mapDim.tileSize / 4;
-		int ox5 = rightMapBorder - (3 * mapDim.tileSize) / 5;
-		int ox6 = rightMapBorder - (5 * mapDim.tileSize) / 4;
-		int ox7 = rightMapBorder - (mapDim.tileSize * 4);
+		int ox4 = rightMapBorder - mapDimension.tileSize / 4;
+		int ox5 = rightMapBorder - (3 * mapDimension.tileSize) / 5;
+		int ox6 = rightMapBorder - (5 * mapDimension.tileSize) / 4;
+		int ox7 = rightMapBorder - (mapDimension.tileSize * 4);
 
 		int oy1 = 0;
 		int oy2 = 0;
-		int oy3 = mapDim.tileSize;
-		int oy4 = (4 * mapDim.tileSize) / 3;
-		int oy5 = (5 * mapDim.tileSize) / 3;
-		int oy6 = mapDim.tileSize * 2;
-		int oy7 = mapDim.tileSize * 2;
+		int oy3 = mapDimension.tileSize;
+		int oy4 = (4 * mapDimension.tileSize) / 3;
+		int oy5 = (5 * mapDimension.tileSize) / 3;
+		int oy6 = mapDimension.tileSize * 2;
+		int oy7 = mapDimension.tileSize * 2;
 
 		int[] outerBorderX = {ox1, ox2, ox3, ox4, ox5, ox6, ox7};
 		int[] outerBorderY = {oy1, oy2, oy3, oy4, oy5, oy6, oy7};
@@ -105,12 +108,17 @@ public class HeroPortraitPainter {
 		int[] innerBorderX = {ix1, ix2, ix3, ix4, ix5, ix6, ix7};
 		int[] innerBorderY = {iy1, iy2, iy3, iy4, iy5, iy6, iy7};
 
-		paintBorders(g, currentHero, outerBorderX, outerBorderY, innerBorderX, innerBorderY);
+		PolygonPoints outerBorder = new PolygonPoints(outerBorderX, outerBorderY);
+		PolygonPoints innerBorder = new PolygonPoints(innerBorderX, innerBorderY);
+		paintBorders(g, currentHero, outerBorder, innerBorder);
 		paintHeroAttributes(g, currentHero, outerBorderX, outerBorderY);
 	}
 	
-	// TODO: rewrite with fewer parameter
-	private void paintBorders(Graphics g, Hero currentHero, int[] outerBorderX, int[] outerBorderY, int[] innerBorderX, int[] innerBorderY) {
+	private void paintBorders(Graphics g, Hero currentHero, PolygonPoints outerBorder, PolygonPoints innerBorder) {
+		int[] outerBorderX = outerBorder.getXPoints();
+		int[] outerBorderY = outerBorder.getYPoints();
+		int[] innerBorderX = innerBorder.getXPoints();
+		int[] innerBorderY = innerBorder.getYPoints();
 		g.setColor(currentHero.getColor());
 		g.fillPolygon(outerBorderX, outerBorderY, 7);
 		g.setColor(Color.white);

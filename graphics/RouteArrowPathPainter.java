@@ -24,7 +24,6 @@ public class RouteArrowPathPainter {
 			int y1 = arrowPoints.get(i - 1).getY() + mapDimension.tileSize / 2;
 			int x2 = arrowPoints.get(i).getX() + mapDimension.tileSize / 2;
 			int y2 = arrowPoints.get(i).getY() + mapDimension.tileSize / 2;
-
 			g.setColor(Color.red);
 			g.drawLine(x1, y1, x2, y2);
 		}
@@ -36,6 +35,7 @@ public class RouteArrowPathPainter {
 		int yLastPos = yLast + mapDimension.tileSize / 2;
 		int xNext = arrowPoints.get(size - 2).getX();
 		int yNext = arrowPoints.get(size - 2).getY();
+
 		if (xNext == xLast && yNext > yLast) {
 			paintArrowHead(g, xLastPos, yLastPos, Direction.NORTH);
 		} else if (xNext < xLast && yNext == yLast) {
@@ -48,18 +48,19 @@ public class RouteArrowPathPainter {
 	}
 	
 	private void paintArrowHead(Graphics g, int x, int y, Direction direction) {
+		int arrowHeadLength = 3;
 		if (direction == Direction.SOUTH) {
-			g.drawLine(x - 3, y - 3, x, y);
-			g.drawLine(x + 3, y - 3, x, y);
+			g.drawLine(x - arrowHeadLength, y - arrowHeadLength, x, y);
+			g.drawLine(x + arrowHeadLength, y - arrowHeadLength, x, y);
 		} else if (direction == Direction.NORTH) {
-			g.drawLine(x - 3, y + 3, x, y);
-			g.drawLine(x + 3, y + 3, x, y);
+			g.drawLine(x - arrowHeadLength, y + arrowHeadLength, x, y);
+			g.drawLine(x + arrowHeadLength, y + arrowHeadLength, x, y);
 		} else if (direction == Direction.EAST) {
-			g.drawLine(x - 3, y - 3, x, y);
-			g.drawLine(x - 3, y + 3, x, y);
+			g.drawLine(x - arrowHeadLength, y - arrowHeadLength, x, y);
+			g.drawLine(x - arrowHeadLength, y + arrowHeadLength, x, y);
 		} else if (direction == Direction.WEST) {
-			g.drawLine(x + 3, y - 3, x, y);
-			g.drawLine(x + 3, y + 3, x, y);
+			g.drawLine(x + arrowHeadLength, y - arrowHeadLength, x, y);
+			g.drawLine(x + arrowHeadLength, y + arrowHeadLength, x, y);
 		}
 	}
 }

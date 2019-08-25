@@ -51,7 +51,6 @@ import units.treadMoving.*;
 public class KeyListenerInputHandler {
 	private GameProperties gameProperties;
 	private GameState gameState;
-	private ViewPainter viewPainter;
 	private UnitGetter unitGetter;
 	private BuildingHandler buildingHandler;
 	private StructureHandler structureHandler;
@@ -86,7 +85,6 @@ public class KeyListenerInputHandler {
 		int tileSize = gameProperties.getMapDimension().tileSize;
 		
 		attackRangeHandler = new AttackRangeHandler(gameProperties, gameState);
-		viewPainter = new ViewPainter(gameProperties, gameState);
 		routeChecker = new RouteChecker(gameProperties, gameState);
 		GameMap gameMap = gameProperties.getGameMap();
 		movementMap = gameState.getMovementMap();
@@ -260,8 +258,6 @@ public class KeyListenerInputHandler {
 			}
 		} else if (!unitSelected && !unitSelectable(cursorX, cursorY)) {
 			Building chosenBuilding = buildingHandler.getFriendlyBuilding(cursorX, cursorY);
-			gameState.setSelectedBuilding(chosenBuilding); 
-
 			if (chosenBuilding != null && chosenBuilding.isBuildableBuilding()) {
 				buildingMenu.openMenu(cursorX, cursorY);
 			}
@@ -277,8 +273,8 @@ public class KeyListenerInputHandler {
 	
 	// TODO: refactor later
 	private void handlePressedKeyB(Cursor cursor) {
-		if (viewPainter.getMapViewType() == MapViewType.CO_MAP_MENU_VIEW) {
-			viewPainter.setViewType(MapViewType.MAIN_MAP_MENU_VIEW);
+		if (gameState.getMapViewType() == MapViewType.CO_MAP_MENU_VIEW) {
+			gameState.setViewType(MapViewType.MAIN_MAP_MENU_VIEW);
 		} else if (containerUnitHandler.unitIsDroppingOff()) {
 			int x = gameState.getChosenUnit().getPosition().getX();
 			int y = gameState.getChosenUnit().getPosition().getY();
@@ -463,7 +459,7 @@ public class KeyListenerInputHandler {
 
 	private void mapMenuRowPressed() {
 		if (mapMenu.atCoRow()) {
-			viewPainter.setViewType(MapViewType.CO_MAP_MENU_VIEW);
+			gameState.setViewType(MapViewType.CO_MAP_MENU_VIEW);
 		} else if (mapMenu.atIntelRow()) {
 			// TODO:
 		} else if (mapMenu.atPowerRow()) {

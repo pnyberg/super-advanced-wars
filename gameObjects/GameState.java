@@ -3,6 +3,7 @@ package gameObjects;
 import java.util.ArrayList;
 
 import cursors.Cursor;
+import graphics.MapViewType;
 import hero.HeroHandler;
 import map.buildings.Building;
 import map.structures.FiringStructure;
@@ -18,7 +19,6 @@ public class GameState {
 	private HeroHandler heroHandler;
 	private Unit chosenUnit;
 	private Unit rangeUnit;
-	private Building selectedBuilding;
 	private FiringStructure rangeStructure;
 	private Cursor cursor;
 	private MovementMap movementMap;
@@ -31,6 +31,7 @@ public class GameState {
 	private ArrayList<Point> arrowPoints;
 	private TurnState turnState;
 	private boolean heroPortraitLeftSide;
+	private MapViewType mapViewType;
 	
 	public GameState(MapDimension mapDimension, HeroHandler heroHandler, ArrayList<Building> buildings, ArrayList<Structure> structures) {
 		this.heroHandler = heroHandler;
@@ -38,7 +39,6 @@ public class GameState {
 		this.structures = structures;
 		chosenUnit = null;
 		rangeUnit = null;
-		selectedBuilding = null;
 		rangeStructure = null;
 		cursor = new Cursor(0, 0, mapDimension.tileSize);
 		buildingMenuState = new BuildingMenuState();
@@ -49,6 +49,7 @@ public class GameState {
 		arrowPoints = new ArrayList<Point>();
 		turnState = new TurnState();
 		heroPortraitLeftSide = true;
+		mapViewType = MapViewType.MAIN_MAP_MENU_VIEW;
 	}
 	
 	public void addBuildings(ArrayList<Building> buildings) {
@@ -75,10 +76,6 @@ public class GameState {
 		this.rangeUnit = rangeUnit;
 	}
 	
-	public void setSelectedBuilding(Building selectedBuilding) {
-		this.selectedBuilding = selectedBuilding;
-	}
-	
 	public void setChosenRangeStructure(FiringStructure rangeStructure) {
 		this.rangeStructure = rangeStructure;
 	}
@@ -93,6 +90,10 @@ public class GameState {
 	
 	public void setHeroPortraitOnLeftSide(boolean leftSide) {
 		this.heroPortraitLeftSide = leftSide;
+	}
+	
+	public void setViewType(MapViewType mapViewType) {
+		this.mapViewType = mapViewType;
 	}
 	
 	public boolean rangeShooterChosen() {
@@ -158,4 +159,8 @@ public class GameState {
 	public TurnState getTurnState() {
 		return turnState;
 	}
+
+	public MapViewType getMapViewType() {
+		return mapViewType;
+	}	
 }

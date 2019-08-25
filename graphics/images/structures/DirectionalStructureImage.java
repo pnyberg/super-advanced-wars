@@ -1,3 +1,7 @@
+/**
+ * TODO:
+ *  - make the DirectionalStructureImage-class an abstract class? 
+ */
 package graphics.images.structures;
 
 import java.awt.Color;

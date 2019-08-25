@@ -1,6 +1,5 @@
 package graphics;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 import combat.AttackRangeHandler;
@@ -8,18 +7,16 @@ import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.MapDimension;
 import hero.HeroHandler;
-import map.BuildingStructureHandlerObject;
 import map.GameMap;
 import map.buildings.Building;
 import map.buildings.BuildingHandler;
 import map.structures.Structure;
 import map.structures.StructureHandler;
-import routing.MovementCostCalculator;
 import routing.RouteHandler;
 import units.Unit;
 
 public class ViewPainter {
-	private MapViewType mapViewType;
+	private GameState gameState;
 	private CommanderView commanderView;
 	private HeroHandler heroHandler;
 	private MapDimension mapDimension;
@@ -29,31 +26,22 @@ public class ViewPainter {
 	private BuildingHandler buildingHandler;
 	private StructureHandler structureHandler;
 	
-	// TODO: rewrite with fewer parameters
 	public ViewPainter(GameProperties gameProperties, GameState gameState) {
-		mapViewType = MapViewType.MAIN_MAP_MENU_VIEW;
-		this.heroHandler = gameState.getHeroHandler();
-		this.mapDimension = gameProperties.getMapDimension();
-		this.commanderView = new CommanderView(mapDimension, gameState.getHeroHandler());
-		this.gameMap = gameProperties.getGameMap();
-		this.routeHandler = new RouteHandler(gameProperties, gameState);
-		this.attackRangeHandler = new AttackRangeHandler(gameProperties, gameState);
-		this.buildingHandler = new BuildingHandler(gameState);
-		this.structureHandler = new StructureHandler(gameState, mapDimension);
-	}
-	
-	public void setViewType(MapViewType mapViewType) {
-		this.mapViewType = mapViewType;
-	}
-	
-	public MapViewType getMapViewType() {
-		return mapViewType;
+		this.gameState = gameState;
+		heroHandler = gameState.getHeroHandler();
+		mapDimension = gameProperties.getMapDimension();
+		commanderView = new CommanderView(mapDimension, gameState.getHeroHandler());
+		gameMap = gameProperties.getGameMap();
+		routeHandler = new RouteHandler(gameProperties, gameState);
+		attackRangeHandler = new AttackRangeHandler(gameProperties, gameState);
+		buildingHandler = new BuildingHandler(gameState);
+		structureHandler = new StructureHandler(gameState, mapDimension);
 	}
 	
 	public void paint(Graphics g) {
-		if (mapViewType == MapViewType.MAIN_MAP_MENU_VIEW) {
+		if (gameState.getMapViewType() == MapViewType.MAIN_MAP_MENU_VIEW) {
 			paintMap(g);
-		} else if (mapViewType == MapViewType.CO_MAP_MENU_VIEW) {
+		} else if (gameState.getMapViewType() == MapViewType.CO_MAP_MENU_VIEW) {
 			commanderView.paintView(g);
 		}
 	}
@@ -82,7 +70,7 @@ public class ViewPainter {
 	}
 
 	public void paintUnits(Graphics g, Unit chosenUnit) {
-		if (mapViewType == MapViewType.MAIN_MAP_MENU_VIEW) {
+		if (gameState.getMapViewType() == MapViewType.MAIN_MAP_MENU_VIEW) {
 			for (int heroIndex = 0 ; heroIndex < heroHandler.getNumberOfHeroes() ; heroIndex++) {
 				for (int k = 0 ; k < heroHandler.getTroopSize(heroIndex) ; k++) {
 					Unit unit = heroHandler.getUnitFromHero(heroIndex, k);
