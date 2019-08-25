@@ -54,13 +54,17 @@ public class HeroPowerHandler {
 		if (enemyDamage > 0) {
 			for (int heroIndex = 0 ; heroIndex < heroHandler.getNumberOfHeroes() ; heroIndex++) {
 				if (heroHandler.getHero(heroIndex) != heroHandler.getCurrentHero()) {
-					int troopSize = heroHandler.getTroopSize(heroIndex);
-					for (int unitIndex = 0 ; unitIndex < troopSize ; unitIndex++) {
-						Unit enemyUnit = heroHandler.getUnitFromHero(heroIndex, unitIndex);
-						enemyUnit.getUnitHealth().takeNonLethalDamage(enemyDamage);
-					}
+					dealDamageToHerosUnits(heroIndex, enemyDamage);
 				}
 			}
+		}
+	}
+	
+	private void dealDamageToHerosUnits(int heroIndex, int damage) {
+		int troopSize = heroHandler.getTroopSize(heroIndex);
+		for (int unitIndex = 0 ; unitIndex < troopSize ; unitIndex++) {
+			Unit enemyUnit = heroHandler.getUnitFromHero(heroIndex, unitIndex);
+			enemyUnit.getUnitHealth().takeNonLethalDamage(damage);
 		}
 	}
 	
