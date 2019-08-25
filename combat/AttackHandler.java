@@ -41,8 +41,8 @@ public class AttackHandler {
 	private void setUpDirectAttackFiringTargets(Unit chosenUnit) {
 		int x = chosenUnit.getPosition().getX();
 		int y = chosenUnit.getPosition().getY();
-		Direction[] directions = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
-		for (Direction direction : directions) {
+		Direction[] allDirections = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+		for (Direction direction : allDirections) {
 			Point neighbourLocation = getNeighbourLocationForDirection(x, y, direction);
 			boolean validTargetInDirection = validTargetAtLocation(neighbourLocation, chosenUnit);
 			if (validTargetInDirection) {
@@ -75,17 +75,26 @@ public class AttackHandler {
 	}
 
 	// TODO: move this to a proper class?
-	private Point getNeighbourLocationForDirection(int x, int y, Direction direction) {
+	public Point getNeighbourTileLocationForDirection(int tileX, int tileY, Direction direction) {
 		if (direction == Direction.NORTH) {
-			y -= mapDimension.tileSize;
+			tileY--;
 		} else if (direction == Direction.EAST) {
-			x += mapDimension.tileSize;
+			tileX++;
 		} else if (direction == Direction.SOUTH) {
-			y += mapDimension.tileSize;
+			tileY++;
 		} else if (direction == Direction.WEST) {
-			x -= mapDimension.tileSize;
+			tileX--;
 		}
-		return new Point(x, y);
+		return new Point(tileX, tileY);
+	}
+	
+	public Point getNeighbourLocationForDirection(int x, int y, Direction direction) {
+		int tileX = x / mapDimension.tileSize;
+		int tileY = y / mapDimension.tileSize;
+		Point tilePoint = getNeighbourTileLocationForDirection(tileX, tileY, direction);
+		int posX = tilePoint.getX() * mapDimension.tileSize;
+		int posY = tilePoint.getY() * mapDimension.tileSize;
+		return new Point(posX, posY);
 	}
 	
 	public boolean unitCanFire(Unit chosenUnit, Cursor cursor) {
@@ -120,7 +129,8 @@ public class AttackHandler {
 		return false;
 	}
 	
-	private int getMinTilePos(int unitTilePos, int maxRange) {
+	// TODO: move this to a proper class?
+	public int getMinTilePos(int unitTilePos, int maxRange) {
 		int minTilePos = unitTilePos - maxRange;
 		if (minTilePos < 0) {
 			return 0;
@@ -128,7 +138,8 @@ public class AttackHandler {
 		return minTilePos;
 	}
 	
-	private int getMaxTileX(int unitTileX, int maxRange) {
+	// TODO: move this to a proper class?
+	public int getMaxTileX(int unitTileX, int maxRange) {
 		int maxTileX = unitTileX + maxRange;
 		if (maxTileX >= mapDimension.getTileWidth()) {
 			return mapDimension.getTileWidth() - 1;
@@ -136,7 +147,8 @@ public class AttackHandler {
 		return maxTileX;
 	}
 	
-	private int getMaxTileY(int unitTileY, int maxRange) {
+	// TODO: move this to a proper class?
+	public int getMaxTileY(int unitTileY, int maxRange) {
 		int maxTileY = unitTileY + maxRange;
 		if (maxTileY >= mapDimension.getTileHeight()) {
 			return mapDimension.getTileHeight() - 1;
@@ -144,13 +156,14 @@ public class AttackHandler {
 		return maxTileY;
 	}
 	
-	private boolean isValidIndirectAttackableTarget(IndirectUnit attackingUnit, int tileX, int tileY) {
+	// TODO: move this to a proper class?
+	public boolean isValidIndirectAttackableTarget(IndirectUnit attackingUnit, int tileX, int tileY) {
 		boolean validRangeDistance =  isValidRangeDistance(attackingUnit, tileX, tileY);
 		boolean attackableTarget = isIndirectAttackableTarget(attackingUnit, tileX, tileY);
 		return validRangeDistance && attackableTarget;
 	}
 	
-	private boolean isValidRangeDistance(IndirectUnit attackingUnit, int tileX, int tileY) {
+	public boolean isValidRangeDistance(IndirectUnit attackingUnit, int tileX, int tileY) {
 		int unitTileX = attackingUnit.getPosition().getX() / mapDimension.tileSize;
 		int unitTileY = attackingUnit.getPosition().getY() / mapDimension.tileSize;
 		int minRange = attackingUnit.getMinRange();
@@ -179,7 +192,7 @@ public class AttackHandler {
 		return attackableTargetAtLocation(attackingUnit, x, y);
 	}
 	
-	private boolean attackableTargetAtLocation(Unit attackingUnit, int x, int y) {
+	public boolean attackableTargetAtLocation(Unit attackingUnit, int x, int y) {
 		Unit targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(x, y);
 		if ((targetUnit != null && damageHandler.unitCanAttackTargetUnit(attackingUnit, targetUnit))) {
 			return true;

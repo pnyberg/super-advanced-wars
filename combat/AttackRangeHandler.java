@@ -3,6 +3,7 @@ package combat;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import gameObjects.Direction;
 import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.MapDimension;
@@ -18,6 +19,7 @@ import units.Unit;
 
 public class AttackRangeHandler {
 	private GameState gameState;
+	private AttackHandler attackHandler;
 	private MapDimension mapDimension;
 	private UnitGetter unitGetter;
 	private DamageHandler damageHandler;
@@ -26,6 +28,7 @@ public class AttackRangeHandler {
 
 	public AttackRangeHandler(GameProperties gameProperties, GameState gameState) {
 		this.gameState = gameState;
+		attackHandler = new AttackHandler(gameProperties, gameState);
 		mapDimension = gameProperties.getMapDimension();
 		unitGetter = new UnitGetter(gameState.getHeroHandler());
 		damageHandler = new DamageHandler(gameState.getHeroHandler(), gameProperties.getGameMap());
@@ -37,53 +40,50 @@ public class AttackRangeHandler {
 		gameState.resetRangeMap();
 	}
 
-	// TODO: refactor from here
 	public void findPossibleDirectAttackLocations(Unit chosenUnit) {
-		MovementMap movementMap = gameState.getMovementMap();
-		// TODO: change so that this call returns a map?
-		routeChecker.findPossibleMovementLocations(chosenUnit);
+		MovementMap movementMap = routeChecker.retrievePossibleMovementLocations(chosenUnit);
 		for (int tileY = 0 ; tileY < mapDimension.getTileHeight() ; tileY++) {
 			for (int tileX = 0 ; tileX < mapDimension.getTileWidth() ; tileX++) {
 				if (movementMap.isAcceptedMove(tileX, tileY)) {
 					// add possible attack-locations from "current position"
-					if (tileX > 0) {
-						gameState.enableRangeMapLocation(tileX - 1, tileY);
-					}
-					if (tileX < (mapDimension.getTileWidth() - 1)) {
-						gameState.enableRangeMapLocation(tileX + 1, tileY);
-					}
-					if (tileY > 0) {
-						gameState.enableRangeMapLocation(tileX, tileY - 1);
-					}
-					if (tileY < (mapDimension.getTileHeight() - 1)) {
-						gameState.enableRangeMapLocation(tileX, tileY + 1);
-					}
+					addRangeMapLocationIfValid(tileX, tileY, Direction.NORTH);
+					addRangeMapLocationIfValid(tileX, tileY, Direction.EAST);
+					addRangeMapLocationIfValid(tileX, tileY, Direction.SOUTH);
+					addRangeMapLocationIfValid(tileX, tileY, Direction.WEST);
 				}
 			}
 		}
-		movementMap.clearMovementMap();
+	}
+	
+	private void addRangeMapLocationIfValid(int tileX, int tileY, Direction direction) {
+		Point tilePoint = attackHandler.getNeighbourTileLocationForDirection(tileX, tileY, direction);
+		if (!tilePointOutOfBounds(tilePoint)) {
+			gameState.enableRangeMapLocation(tilePoint.getX(), tilePoint.getY());
+		}
+	}
+	
+	// TODO: move this to a proper class?
+	private boolean tilePointOutOfBounds(Point point) {
+		if (0 < point.getX() && point.getX() < (mapDimension.getTileWidth() - 1)) {
+			return true;
+		}
+		if (0 < point.getY() && point.getY() < (mapDimension.getTileHeight() - 1)) {
+			return true;
+		}
+		return false;
 	}
 	
 	public void fillRangeAttackMap(Unit chosenUnit) {
 		IndirectUnit attackingUnit = (IndirectUnit)chosenUnit;
 		int unitTileX = attackingUnit.getPosition().getX() / mapDimension.tileSize;
 		int unitTileY = attackingUnit.getPosition().getY() / mapDimension.tileSize;
-		int minRange = attackingUnit.getMinRange();
 		int maxRange = attackingUnit.getMaxRange();
-		for (int tileY = unitTileY - maxRange ; tileY <= (unitTileY + maxRange) ; tileY++) {
-			if (tileY < 0) {
-				continue;
-			} else if (tileY >= mapDimension.getTileHeight()) {
-				break;
-			}
-			for (int tileX = unitTileX - maxRange ; tileX <= (unitTileX + maxRange) ; tileX++) {
-				if (tileX < 0) {
-					continue;
-				} else if (tileX >= mapDimension.getTileWidth()) {
-					break;
-				}
-				int distanceFromUnit = Math.abs(unitTileX - tileX) + Math.abs(unitTileY - tileY);
-				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
+		int startTileX = attackHandler.getMinTilePos(unitTileX, maxRange);
+		int startTileY = attackHandler.getMinTilePos(unitTileY, maxRange);
+
+		for (int tileY = startTileY ; tileY <= attackHandler.getMaxTileY(unitTileY, maxRange) ; tileY++) {
+			for (int tileX = startTileX ; tileX <= attackHandler.getMaxTileX(unitTileX, maxRange) ; tileX++) {
+				if (attackHandler.isValidRangeDistance(attackingUnit, tileX, tileY)) {
 					gameState.enableRangeMapLocation(tileX, tileY);
 				}
 			}
@@ -93,31 +93,17 @@ public class AttackRangeHandler {
 	public void calculatePossibleRangeTargetLocations(IndirectUnit indirectUnit) {
 		int unitTileX = indirectUnit.getPosition().getX() / mapDimension.tileSize;
 		int unitTileY = indirectUnit.getPosition().getY() / mapDimension.tileSize;
-		int minRange = indirectUnit.getMinRange();
 		int maxRange = indirectUnit.getMaxRange();
+		int startTileX = attackHandler.getMinTilePos(unitTileX, maxRange);
+		int startTileY = attackHandler.getMinTilePos(unitTileY, maxRange);
 
-		for (int tileY = unitTileY - maxRange ; tileY <= (unitTileY + maxRange) ; tileY++) {
-			if (tileY < 0) {
-				continue;
-			} else if (tileY >= mapDimension.getTileHeight()) {
-				break;
-			}
-			for (int tileX = unitTileX - maxRange ; tileX <= (unitTileX + maxRange) ; tileX++) {
-				if (tileX < 0) {
-					continue;
-				} else if (tileX >= mapDimension.getTileWidth()) {
-					break;
-				}
-				int distanceFromUnit = Math.abs(unitTileX - tileX) + Math.abs(unitTileY - tileY);
-				if (minRange <= distanceFromUnit && distanceFromUnit <= maxRange) {
-					Unit targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(tileX * mapDimension.tileSize, tileY * mapDimension.tileSize);
-					Structure targetStructure = structureHandler.getStructure(tileX * mapDimension.tileSize, tileY * mapDimension.tileSize);
-					if (targetUnit != null && damageHandler.unitCanAttackTargetUnit(indirectUnit, targetUnit)) {
-						Point p = new Point(tileX * mapDimension.tileSize, tileY * mapDimension.tileSize);
-						indirectUnit.addFiringLocation(p);
-						gameState.enableRangeMapLocation(tileX, tileY);
-					} else if (targetStructure != null && structureHandler.unitCanAttackStructure(indirectUnit, targetStructure)) {
-						Point p = new Point(tileX * mapDimension.tileSize, tileY * mapDimension.tileSize);
+		for (int tileY = startTileY ; tileY <= attackHandler.getMaxTileY(unitTileY, maxRange) ; tileY++) {
+			for (int tileX = startTileX ; tileX <= attackHandler.getMaxTileX(unitTileX, maxRange) ; tileX++) {
+				if (attackHandler.isValidRangeDistance(indirectUnit, tileX, tileY)) {
+					int x = tileX * mapDimension.tileSize;
+					int y = tileY * mapDimension.tileSize;
+					Point p = new Point(x, y);
+					if (attackHandler.attackableTargetAtLocation(indirectUnit, x, y)) {
 						indirectUnit.addFiringLocation(p);
 						gameState.enableRangeMapLocation(tileX, tileY);
 					}
@@ -138,11 +124,11 @@ public class AttackRangeHandler {
 	}
 	
 	public void paintRange(Graphics g) {
-		for (int n = 0 ; n < mapDimension.getTileHeight() ; n++) {
-			for (int i = 0 ; i < mapDimension.getTileWidth() ; i++) {
-				if (gameState.getRangeMapLocation(i, n)) {
-					int paintX = i * mapDimension.tileSize;
-					int paintY = n * mapDimension.tileSize;
+		for (int y = 0 ; y < mapDimension.getTileHeight() ; y++) {
+			for (int x = 0 ; x < mapDimension.getTileWidth() ; x++) {
+				if (gameState.getRangeMapLocation(x, y)) {
+					int paintX = x * mapDimension.tileSize;
+					int paintY = y * mapDimension.tileSize;
 
 					g.setColor(Color.red);
 					g.fillRect(paintX, paintY, mapDimension.tileSize, mapDimension.tileSize);

@@ -36,10 +36,11 @@ public class RouteChecker {
 		this.movementCostCalculator = new MovementCostCalculator(gameProperties.getGameMap());
 	}
 
-	public void findPossibleMovementLocations(Unit checkedUnit) {
+	public MovementMap retrievePossibleMovementLocations(Unit checkedUnit) {
 		int tileX = checkedUnit.getPosition().getX() / mapDimension.tileSize;
 		int tileY = checkedUnit.getPosition().getY() / mapDimension.tileSize;
 		findPossibleMovementLocations(tileX, tileY, checkedUnit.getMovement(), checkedUnit);
+		return movementMap;
 	}
 
 	public void findPossibleMovementLocations(int tileX, int tileY, int movementSteps, Unit checkedUnit) {

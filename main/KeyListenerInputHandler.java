@@ -271,7 +271,7 @@ public class KeyListenerInputHandler {
 			gameState.getChosenObject().chosenUnit = unitGetter.getAnyUnit(cursorX, cursorY);
 
 			if (gameState.getChosenObject().chosenUnit != null) {
-				routeChecker.findPossibleMovementLocations(gameState.getChosenObject().chosenUnit);
+				routeChecker.retrievePossibleMovementLocations(gameState.getChosenObject().chosenUnit);
 				routeHandler.addNewArrowPoint(gameState.getChosenObject().chosenUnit.getPosition());
 			}
 		}
