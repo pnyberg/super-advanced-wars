@@ -40,7 +40,7 @@ public class BuildingMenu extends Menu {
 		super.openMenu(x, y);
 		int tileX = x / tileSize;
 		int tileY = y / tileSize;
-		TerrainType terrainType = gameMap.getMap()[tileX][tileY].getTerrainType();
+		TerrainType terrainType = gameMap.getTerrainType(tileX, tileY);
 		if (terrainType == TerrainType.FACTORY || terrainType == TerrainType.AIRPORT || terrainType == TerrainType.PORT) {
 			((BuildingMenuState)menuState).setBuildingMenuType(terrainType);
 		}

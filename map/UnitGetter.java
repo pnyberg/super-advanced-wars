@@ -12,27 +12,23 @@ public class UnitGetter {
 	}
 
 	public Unit getAnyUnit(int x, int y) {
-		for (int h = 0 ; h < heroHandler.getNumberOfHeroes() ; h++) {
-			for (int k = 0 ; k < heroHandler.getHero(h).getTroopHandler().getTroopSize() ; k++) {
-				Unit unit = heroHandler.getUnitFromHero(h, k);
-				if (unit.getPosition().getX() == x && unit.getPosition().getY() == y && !unit.isHidden()) {
-					return unit;
-				}
+		for (int heroIndex = 0 ; heroIndex < heroHandler.getNumberOfHeroes() ; heroIndex++) {
+			Unit unit = getUnitForHero(x, y, heroIndex);
+			if (unit != null) {
+				return unit;
 			}
 		}
 		return null;
 	}
 
 	public Unit getNonFriendlyUnit(int x, int y, Hero hero) {
-		for (int h = 0 ; h < heroHandler.getNumberOfHeroes() ; h++) {
-			if (heroHandler.getHero(h) == hero) {
+		for (int heroIndex = 0 ; heroIndex < heroHandler.getNumberOfHeroes() ; heroIndex++) {
+			if (heroHandler.getHero(heroIndex) == hero) {
 				continue;
 			}
-			for (int k = 0 ; k < heroHandler.getHero(h).getTroopHandler().getTroopSize() ; k++) {
-				Unit unit = heroHandler.getUnitFromHero(h, k);
-				if (unit.getPosition().getX() == x && unit.getPosition().getY() == y && !unit.isHidden()) {
-					return unit;
-				}
+			Unit unit = getUnitForHero(x, y, heroIndex);
+			if (unit != null) {
+				return unit;
 			}
 		}
 		return null;
@@ -41,11 +37,27 @@ public class UnitGetter {
 	public Unit getNonFriendlyUnitForCurrentHero(int x, int y) {
 		return getNonFriendlyUnit(x, y, heroHandler.getCurrentHero());
 	}
+	
+	private Unit getUnitForHero(int x, int y, int heroIndex) {
+		for (int k = 0 ; k < heroHandler.getTroopSize(heroIndex) ; k++) {
+			Unit unit = heroHandler.getUnitFromHero(heroIndex, k);
+			if (unit.getPosition().getX() == x && unit.getPosition().getY() == y) {
+				if (unit.isHidden()) {
+					return null;
+				}
+				return unit;
+			}
+		}
+		return null;
+	}
 
 	public Unit getFriendlyUnit(int x, int y) {
-		for (int k = 0 ; k < heroHandler.getCurrentHeroTroopSize() ; k++) {
-			Unit unit = heroHandler.getUnitFromCurrentHero(k);
-			if (unit.getPosition().getX() == x && unit.getPosition().getY() == y && !unit.isHidden()) {
+		for (int heroIndex = 0 ; heroIndex < heroHandler.getCurrentHeroTroopSize() ; heroIndex++) {
+			Unit unit = heroHandler.getUnitFromCurrentHero(heroIndex);
+			if (unit.getPosition().getX() == x && unit.getPosition().getY() == y) {
+				if (unit.isHidden()) {
+					return null;
+				}
 				return unit;
 			}
 		}
@@ -55,7 +67,10 @@ public class UnitGetter {
 	public Unit getFriendlyUnitExceptSelf(Unit notUnit, int x, int y) {
 		for (int k = 0 ; k < heroHandler.getCurrentHeroTroopSize() ; k++) {
 			Unit unit = heroHandler.getUnitFromCurrentHero(k);
-			if (unit.getPosition().getX() == x && unit.getPosition().getY() == y && unit != notUnit && !unit.isHidden()) {
+			if (unit.getPosition().getX() == x && unit.getPosition().getY() == y) {
+				if (unit.isHidden() || unit == notUnit) {
+					return null;
+				}
 				return unit;
 			}
 		}
@@ -64,6 +79,9 @@ public class UnitGetter {
 
 	public boolean hurtSameTypeUnitAtPosition(Unit unit, int x, int y) {
 		Unit testUnit = getFriendlyUnitExceptSelf(unit, x, y);
-		return testUnit != null && testUnit.getUnitHealth().isVisiblyHurt() && testUnit.getClass().equals(unit.getClass());
+		if (testUnit == null) {
+			return false;
+		}
+		return testUnit.getUnitHealth().isVisiblyHurt() && testUnit.getClass().equals(unit.getClass());
 	}
 }

@@ -9,20 +9,18 @@ import unitUtils.UnitType;
 import units.Unit;
 
 public class AreaChecker {
-	private HeroHandler heroHandler;
 	private UnitGetter unitGetter;
-	private GameMap gridMap;
+	private GameMap gameMap;
 	private boolean[][] moveabilityMatrix;
 
 	public AreaChecker(HeroHandler heroHandler, GameMap gridMap) {
-		this.heroHandler = heroHandler;
 		this.unitGetter = new UnitGetter(heroHandler);
-		this.gridMap = gridMap;
+		this.gameMap = gridMap;
 		moveabilityMatrix = new MoveabilityMatrixFactory().getMoveabilityMatrix();
 	}
 
 	public boolean isLand(int tileX, int tileY) {
-		TerrainType terrainType = gridMap.getMap()[tileX][tileY].getTerrainType();
+		TerrainType terrainType = gameMap.getTerrainType(tileX, tileY);
 		return moveabilityMatrix[UnitType.INFANTRY.unitIndex()][terrainType.terrainTypeIndex()];
 	}
 
@@ -45,9 +43,5 @@ public class AreaChecker {
 	public boolean areaOccupiedByNonFriendly(int x, int y, Hero hero) {
 		Unit testAnyUnit = unitGetter.getNonFriendlyUnit(x, y, hero);
 		return testAnyUnit != null;
-	}
-
-	public boolean areaOccupiedByNonFriendly(int x, int y) {
-		return areaOccupiedByNonFriendly(x, y, heroHandler.getCurrentHero());
 	}
 }

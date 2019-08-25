@@ -52,16 +52,16 @@ public class HeroHandler {
 		return null;
 	}
 
-	public Unit getUnitFromHero(int hero, int index) {
-		return getHero(hero).getTroopHandler().getTroop(index);
+	public Unit getUnitFromHero(int heroIndex, int index) {
+		return getHero(heroIndex).getTroopHandler().getTroop(index);
 	}
 
 	public Unit getUnitFromCurrentHero(int index) {
 		return getCurrentHero().getTroopHandler().getTroop(index);
 	}
 
-	public int getTroopSize(int hero) {
-		return getHero(hero).getTroopHandler().getTroopSize();
+	public int getTroopSize(int heroIndex) {
+		return getHero(heroIndex).getTroopHandler().getTroopSize();
 	}
 
 	public int getCurrentHeroTroopSize() {

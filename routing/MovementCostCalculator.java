@@ -14,7 +14,7 @@ public class MovementCostCalculator {
 	}
 	
 	public int movementCost(int tileX, int tileY, MovementType movementType) {
-		TerrainType terrainType = gameMap.getMap()[tileX][tileY].getTerrainType();
+		TerrainType terrainType = gameMap.getTerrainType(tileX, tileY);
 		return movementCostMatrix[movementType.movementTypeIndex()][terrainType.terrainTypeIndex()];
 	}
 }

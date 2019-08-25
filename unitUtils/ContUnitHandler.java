@@ -132,7 +132,7 @@ public class ContUnitHandler {
 	public boolean landerAtDroppingOffPosition(int x, int y) {
 		int tileX = x / gameProp.getMapDimension().tileSize;
 		int tileY = y / gameProp.getMapDimension().tileSize;
-		TerrainType areaValue = gameMap.getMap()[tileX][tileY].getTerrainType();
+		TerrainType areaValue = gameMap.getTerrainType(tileX, tileY);
 
 		if (areaValue == TerrainType.SHOAL || areaValue == TerrainType.PORT) {
 			return true;

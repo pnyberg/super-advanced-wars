@@ -3,6 +3,7 @@ package map.buildings;
 import java.util.ArrayList;
 
 import gameObjects.GameState;
+import hero.Hero;
 import hero.HeroHandler;
 
 public class BuildingHandler {
@@ -19,8 +20,14 @@ public class BuildingHandler {
 		return building != null && building.getOwner() != heroHandler.getCurrentHero();
 	}
 	
-	public ArrayList<Building> getAllBuildings() {
-		return buildings;
+	public int getNumberOfCashgeneratingBuildings(Hero owner) {
+		int numberOfCashgivingBuildings = 0;
+		for (Building building : buildings) {
+			if (building.getOwner() == owner) {
+				numberOfCashgivingBuildings++;
+			}
+		}
+		return numberOfCashgivingBuildings;
 	}
 
 	public Building getBuilding(int x, int y) {

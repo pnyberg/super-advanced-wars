@@ -41,8 +41,4 @@ public class GameMap {
 		}
 		return map[0].length;
 	}
-	
-	public Area[][] getMap() {
-		return map;
-	}
 }

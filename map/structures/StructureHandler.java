@@ -34,7 +34,14 @@ public class StructureHandler {
 	}
 	
 	private void fireMiniCannon(MiniCannon miniCannon) {
-		List<Unit> possibleTargets = structureAttackHandler.getPossibleTargets(miniCannon);
+		Unit targetUnit = findMostValuableTarget(miniCannon);
+		if (targetUnit != null) {
+			targetUnit.getUnitHealth().takeNonLethalDamage(miniCannon.getDamage());
+		}
+	}
+	
+	private Unit findMostValuableTarget(FiringStructure firingStructure) {
+		List<Unit> possibleTargets = structureAttackHandler.getPossibleTargets(firingStructure);
 		Unit targetUnit = null;
 		double highestMoneyValue = 0;
 		for (Unit possibleTarget : possibleTargets) {
@@ -44,9 +51,7 @@ public class StructureHandler {
 				highestMoneyValue = moneyValue;
 			}
 		}
-		if (targetUnit != null) {
-			targetUnit.getUnitHealth().takeNonLethalDamage(miniCannon.getDamage());
-		}
+		return targetUnit;
 	}
 	
 	public void removeStructure(Structure structure) {

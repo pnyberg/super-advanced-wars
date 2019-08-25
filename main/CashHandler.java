@@ -15,13 +15,8 @@ public class CashHandler {
 	}
 	
 	public void updateCash() {
-		int numberOfCashgivingBuildings = 0;
 		Hero hero = heroHandler.getCurrentHero();
-		for (Building building : buildingHandler.getAllBuildings()) {
-			if (building.getOwner() == hero) {
-				numberOfCashgivingBuildings++;
-			}
-		}
+		int numberOfCashgivingBuildings = buildingHandler.getNumberOfCashgeneratingBuildings(hero);
 		int newCash = Building.getIncome() * numberOfCashgivingBuildings;
 		hero.earnCash(newCash);
 	}

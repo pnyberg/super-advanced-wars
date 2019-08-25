@@ -68,7 +68,7 @@ public class RouteChecker {
 
 	// TODO: what's the difference? - are both useful?
 	public boolean allowedMovementPosition(int tileX, int tileY, MovementType movementType, Hero hero) {
-		TerrainType terrainType = gameMap.getMap()[tileX][tileY].getTerrainType();
+		TerrainType terrainType = gameMap.getTerrainType(tileX, tileY);
 
 		if (areaChecker.areaOccupiedByNonFriendly(tileX * mapDimension.tileSize, tileY * mapDimension.tileSize, hero)) {
 			return false;

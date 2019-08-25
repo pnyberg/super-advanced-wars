@@ -20,7 +20,7 @@ public class MiniCannon extends FiringStructure {
 		structureImage = new DirectionalStructureImage(direction, tileSize);
 	}
 	
-	// TODO: rewrite code to make it readable
+	// TODO: can this code be rewritten to make it more readable?
 	public boolean[][] getFiringRangeMap(int mapTileWidth, int mapTileHeight) {
 		boolean[][] rangeMap = new boolean[mapTileWidth][mapTileHeight];
 		if (direction == Direction.SOUTH) {
@@ -73,10 +73,6 @@ public class MiniCannon extends FiringStructure {
 			}
 		}
 		return rangeMap;
-	}
-	
-	public Direction getDirection() {
-		return direction;
 	}
 	
 	public int getDamage() {
