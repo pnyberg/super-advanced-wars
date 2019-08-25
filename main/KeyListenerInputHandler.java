@@ -13,7 +13,6 @@ import combat.DamageHandler;
 import combat.DefenceValueCalculator;
 import cursors.Cursor;
 import cursors.FiringCursor;
-import cursors.FiringCursorHandler;
 import gameObjects.GameMapAndCursor;
 import gameObjects.GameProperties;
 import gameObjects.GameState;

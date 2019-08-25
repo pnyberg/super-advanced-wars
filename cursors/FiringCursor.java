@@ -78,13 +78,16 @@ public class FiringCursor {
 	
 	private int getDamageFieldWith(int damage) {
 		int tileSize = mapDimension.tileSize;
-		int damageFieldWidth = (damage <= 9 ? 3 * tileSize / 5 : 
-			(damage <= 99 ? 4 * tileSize / 5
-					: tileSize - 3));
-		return damageFieldWidth;
+		if (damage <= 9) {
+			return 3 * tileSize / 5;
+		} else if (damage <= 99) {
+			return 4 * tileSize / 5;
+		}
+		return tileSize - 3;
 	}
 	
-	private Point getDamageFieldAnchorPoint(Cursor cursor, Unit chosenUnit, int damageFieldWidth, int damageFieldHeight) {
+	// TODO: rewrite this code to make it more readable
+	private Point getDamageFieldAnchorPoint(Cursor cursor, Unit chosenUnit, int dmgFieldWidth, int dmgFieldHeight) {
 		int damageFieldX = cursor.getX();
 		int damageFieldY = cursor.getY();
 		int tileSize = mapDimension.tileSize;
@@ -93,23 +96,23 @@ public class FiringCursor {
 
 		if (yDiff == -tileSize) {
 			damageFieldX += tileSize;
-			damageFieldY += -damageFieldHeight;
+			damageFieldY += -dmgFieldHeight;
 		} else if (xDiff == tileSize) {
 			damageFieldX += tileSize;
 			damageFieldY += tileSize;
 		} else if (yDiff == tileSize) {
-			damageFieldX += -damageFieldWidth;
+			damageFieldX += -dmgFieldWidth;
 			damageFieldY += tileSize;
 		} else { // xDiff == -1
-			damageFieldX += -damageFieldWidth;
-			damageFieldY += -damageFieldHeight;
+			damageFieldX += -dmgFieldWidth;
+			damageFieldY += -dmgFieldHeight;
 		}
 		if (damageFieldY < 0) {
 			damageFieldY = 0;
 		} else if (damageFieldX >= mapDimension.getTileWidth() * tileSize) {
-			damageFieldX = mapDimension.getTileWidth() * tileSize - damageFieldWidth;
+			damageFieldX = mapDimension.getTileWidth() * tileSize - dmgFieldWidth;
 		} else if (damageFieldY >= mapDimension.getTileHeight() * tileSize) {
-			damageFieldY = mapDimension.getTileHeight() * tileSize - damageFieldHeight;
+			damageFieldY = mapDimension.getTileHeight() * tileSize - dmgFieldHeight;
 		} else if (damageFieldX < 0) {
 			damageFieldX = 0;
 		}
