@@ -64,16 +64,16 @@ public class DamageHandler {
 	}
 
 	public boolean unitCanAttackTargetUnit(Unit attackingUnit, Unit targetUnit) {
-		int attackingUnitType = UnitType.getTypeFromUnit(attackingUnit);
-		int targetUnitType = UnitType.getTypeFromUnit(targetUnit);
+		int attackingUnitType = UnitType.getUnitIndexFromUnit(attackingUnit);
+		int targetUnitType = UnitType.getUnitIndexFromUnit(targetUnit);
 		boolean canFireMainWeapon = canFireMainWeapon(attackingUnit, targetUnit);
 		boolean canFireSecondaryWeapon = getBaseDamageValue(attackingUnitType, targetUnitType, 1) > -1;
 		return canFireMainWeapon || canFireSecondaryWeapon;
 	}
 	
 	private boolean canFireMainWeapon(Unit attackingUnit, Unit targetUnit) {
-		int attackingUnitType = UnitType.getTypeFromUnit(attackingUnit);
-		int targetUnitType = UnitType.getTypeFromUnit(targetUnit);
+		int attackingUnitType = UnitType.getUnitIndexFromUnit(attackingUnit);
+		int targetUnitType = UnitType.getUnitIndexFromUnit(targetUnit);
 		if (!attackingUnit.getUnitSupply().hasAmmo()) {
 			return false;
 		}

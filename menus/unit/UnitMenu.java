@@ -10,8 +10,10 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import gameObjects.GameState;
+import map.UnitGetter;
 import menus.Menu;
 import menus.UnitMenuState;
+import unitUtils.UnitType;
 
 public class UnitMenu extends Menu {
 	private final String[] unitMenuRowEntryText = {	"Join", 
@@ -24,9 +26,11 @@ public class UnitMenu extends Menu {
 													"Supply", 
 													"Wait"
 												};
+	private int iconSize;
 
 	public UnitMenu(int tileSize, GameState gameState) {
 		super(gameState.getUnitMenuState(), tileSize);
+		iconSize = tileSize / 4;
 	}
 
 	public void closeMenu() {
@@ -122,16 +126,25 @@ public class UnitMenu extends Menu {
 		for (int k = 0 ; k < unitMenuRowEntryBooleans.length ; k++) {
 			if (k == 2 && cargo.size() > 0) {
 				for (int i = 0 ; i < cargo.size() ; i++) {
-					// TODO: write the actual unit (type)
-					g.drawString("Unit" + (i+1), x + xAlign, y + yAlign + dimensionValues.getMenuRowHeight() * rowHelpIndex);
+					int unitMenuItemPosY = y + yAlign + dimensionValues.getMenuRowHeight() * rowHelpIndex;
+					paintUnitIcon(g, cargo.get(i), x + xAlign, unitMenuItemPosY - iconSize);
+					g.drawString("Drop", x + xAlign + iconSize + 2, unitMenuItemPosY);
 					rowHelpIndex++;
 				}
 			}
 			if (unitMenuRowEntryBooleans[k]) {
-				g.drawString(unitMenuRowEntryText[k], x + xAlign, y + yAlign + dimensionValues.getMenuRowHeight() * rowHelpIndex);
+				int unitMenuItemPosY = y + yAlign + dimensionValues.getMenuRowHeight() * rowHelpIndex;
+				g.drawString(unitMenuRowEntryText[k], x + xAlign + iconSize + 2, unitMenuItemPosY);
 				rowHelpIndex++;
 			}
 		}
 		paintArrow(g);
+	}
+	
+	private void paintUnitIcon(Graphics g, Unit unit, int x, int y) {
+		String unitTypeName = UnitType.getUnitTypeNameFromUnit(unit);
+		UnitCreatingFactory unitCreatingFactory = new UnitCreatingFactory(iconSize);
+		Unit iconUnit = unitCreatingFactory.createUnit(unitTypeName, x, y, unit.getColor());
+		iconUnit.paint(g, iconSize);
 	}
 }

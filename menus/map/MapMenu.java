@@ -24,12 +24,15 @@ public class MapMenu extends Menu {
 	}
 
 	public int getNumberOfActiveRows() {
-		return menuTexts.length - 2 + getNumberOfPowerRows();
-	}
-	
-	private int getNumberOfPowerRows() {
-		HeroPowerMeter heroPowerMeter = heroHandler.getCurrentHero().getHeroPower().getHeroPowerMeter();
-		return (heroPowerMeter.powerUsable() ? 1 : 0) + (heroPowerMeter.superPowerUsable() ? 1 : 0);
+		HeroPowerMeter heroPowerMeter = heroHandler.getCurrentHero().getHeroPowerMeter();
+		int numberOfActiveRows = menuTexts.length - 2; // all rows except the power-rows
+		if (heroPowerMeter.powerUsable()) {
+			numberOfActiveRows++;
+		}
+		if (heroPowerMeter.superPowerUsable()) {
+			numberOfActiveRows++;
+		}
+		return numberOfActiveRows;
 	}
 	
 	public boolean atCoRow() {
@@ -41,14 +44,14 @@ public class MapMenu extends Menu {
 	}
 	
 	public boolean atPowerRow() {
-		if (!heroHandler.getCurrentHero().getHeroPower().getHeroPowerMeter().powerUsable()) {
+		if (!heroHandler.getCurrentHero().getHeroPowerMeter().powerUsable()) {
 			return false;
 		}
 		return menuState.getMenuIndex() == 2;
 	}
 	
 	public boolean atSuperPowerRow() {
-		if (!heroHandler.getCurrentHero().getHeroPower().getHeroPowerMeter().superPowerUsable()) {
+		if (!heroHandler.getCurrentHero().getHeroPowerMeter().superPowerUsable()) {
 			return false;
 		}
 		return menuState.getMenuIndex() == 3;
@@ -73,7 +76,7 @@ public class MapMenu extends Menu {
 	}
 	
 	private void paintMenuForeground(Graphics g) {
-		HeroPowerMeter heroPowerMeter = heroHandler.getCurrentHero().getHeroPower().getHeroPowerMeter();
+		HeroPowerMeter heroPowerMeter = heroHandler.getCurrentHero().getHeroPowerMeter();
 		int x = menuState.getX();
 		int y = menuState.getY();
 		int xAlign = dimensionValues.getTileSize() / 2 + dimensionValues.getAlignX();
@@ -86,7 +89,8 @@ public class MapMenu extends Menu {
 			if (k == 3 && !heroPowerMeter.superPowerUsable()) {
 				continue;
 			}
-			g.drawString(menuTexts[k], x + xAlign, y + yAlign + dimensionValues.getMenuRowHeight() * rowHelpIndex);
+			int textPosY = y + yAlign + dimensionValues.getMenuRowHeight() * rowHelpIndex;
+			g.drawString(menuTexts[k], x + xAlign, textPosY);
 			rowHelpIndex++;
 		}
 	}

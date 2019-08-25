@@ -68,21 +68,21 @@ public class UnitContainedInfoBox {
 			int containedUnitPosX = anchorPoint.getX() + (width-tileSize)/2;
 			int containedUnitPosY = anchorPoint.getY() + 15;
 			containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
-			containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
+			containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY, tileSize);
 
 			containedUnit = unit.getUnitContainer().getUnit(1);
 			containedUnitColor = containedUnit.getColor();
 			containedUnitPosX = anchorPoint.getX() + (width-tileSize)/2;
 			containedUnitPosY = anchorPoint.getY() + 20 + tileSize;
 			containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
-			containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
+			containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY, tileSize);
 		} else if (unit.getUnitContainer().getNumberOfContainedUnits() == 1) {
 			Unit containedUnit = unit.getUnitContainer().getUnit(0);
 			Color containedUnitColor = containedUnit.getColor();
 			int containedUnitPosX = anchorPoint.getX() + (width-tileSize)/2;
 			int containedUnitPosY = anchorPoint.getY() + 15 + tileSize / 2;
 			containedUnit.getUnitImage().paint(g, containedUnitPosX, containedUnitPosY, containedUnitColor);
-			containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY);
+			containedUnit.getUnitHealth().paintHP(g, containedUnitPosX, containedUnitPosY, tileSize);
 		}
 	}
 }

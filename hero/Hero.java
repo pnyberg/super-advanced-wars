@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import hero.heroPower.HeroPower;
+import hero.heroPower.HeroPowerMeter;
 
 public class Hero {
 	private int cash;
@@ -79,6 +80,10 @@ public class Hero {
 	
 	public HeroPower getHeroPower() {
 		return heroPower;
+	}
+	
+	public HeroPowerMeter getHeroPowerMeter() {
+		return heroPower.getHeroPowerMeter();
 	}
 	
 	public TroopHandler getTroopHandler() {

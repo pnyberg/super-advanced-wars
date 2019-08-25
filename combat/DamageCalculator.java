@@ -55,7 +55,7 @@ public class DamageCalculator {
 	
 	public int calculateStructureDamage(Unit attackingUnit, Hero attackingHero) {
 		AttackValueCalculator attackValueCalculator = new AttackValueCalculator();
-		int attackingUnitIndex = UnitType.getTypeFromUnit(attackingUnit);
+		int attackingUnitIndex = UnitType.getUnitIndexFromUnit(attackingUnit);
 		int baseDamage = getBaseStructureDamage(attackingUnit);
 		int heroAttackValue = attackValueCalculator.calculateAttackValue(attackingHero, attackingUnitIndex);
 		int attackingAffect = attackingUnit.getUnitHealth().getHP() / 10 * ((baseDamage * heroAttackValue) / 100) / 10;
@@ -68,15 +68,15 @@ public class DamageCalculator {
 	}
 
 	private int getBaseUnitDamage(Unit attackingUnit, Unit defendingUnit) {
-		int attackingUnitIndex = UnitType.getTypeFromUnit(attackingUnit);
-		int defendingUnitIndex = UnitType.getTypeFromUnit(defendingUnit);
+		int attackingUnitIndex = UnitType.getUnitIndexFromUnit(attackingUnit);
+		int defendingUnitIndex = UnitType.getUnitIndexFromUnit(defendingUnit);
 		int weaponIndex = weaponIndexChooser.getWeaponIndex(attackingUnit, defendingUnit); // 0 or 1
 		int baseDamage = damageMatrix[attackingUnitIndex][defendingUnitIndex][weaponIndex];
 		return baseDamage;
 	}
 	
 	private int getBaseStructureDamage(Unit attackingUnit) {
-		int attackingUnitIndex = UnitType.getTypeFromUnit(attackingUnit);
+		int attackingUnitIndex = UnitType.getUnitIndexFromUnit(attackingUnit);
 		int weaponIndex = weaponIndexChooser.getWeaponIndexAgainstStructure(attackingUnit); // 0 or 1
 		int baseDamage = damageMatrix[attackingUnitIndex][UnitType.NEOTANK.unitIndex()][weaponIndex];
 		return baseDamage;
@@ -85,7 +85,7 @@ public class DamageCalculator {
 	private int getHeroAttackValue(Unit attackingUnit) {
 		AttackValueCalculator attackValueCalculator = new AttackValueCalculator();
 		Hero attackingHero = heroHandler.getHeroFromUnit(attackingUnit);
-		int attackingUnitIndex = UnitType.getTypeFromUnit(attackingUnit);
+		int attackingUnitIndex = UnitType.getUnitIndexFromUnit(attackingUnit);
 		int heroAttackValue = attackValueCalculator.calculateAttackValue(attackingHero, attackingUnitIndex);
 		return heroAttackValue;
 	}
@@ -99,7 +99,7 @@ public class DamageCalculator {
 	
 	private int getHeroDefenceValue(Unit defendingUnit) {
 		Hero defendingHero = heroHandler.getHeroFromUnit(defendingUnit); 
-		int defendingUnitIndex = UnitType.getTypeFromUnit(defendingUnit);
+		int defendingUnitIndex = UnitType.getUnitIndexFromUnit(defendingUnit);
 		int heroDefenceValue = defenceValueCalculator.calculateDefenceValue(defendingHero, defendingUnitIndex);
 		return heroDefenceValue;
 	}

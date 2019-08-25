@@ -61,7 +61,8 @@ public class BuildingMenu extends Menu {
 
 	public void buySelectedTroop() {
 		Hero currentHero = heroHandler.getCurrentHero();
-		currentHero.spendCash(getMenuItems()[menuState.getMenuIndex()].getPrice());
+		BuildingItem selectedMenuItem = getMenuItems()[menuState.getMenuIndex()];
+		currentHero.spendCash(selectedMenuItem.getPrice());
 		Unit unit = createUnitFromIndex(currentHero);
 		currentHero.getTroopHandler().addTroop(unit);
 	}
@@ -93,7 +94,6 @@ public class BuildingMenu extends Menu {
 		if (items == null) {
 			items = new BuildingItem[0];
 		}
-
 		paintMenuBackground(g);
 		buildingMenuPainter.paint(g, x, y + yAdjust, items);
 		paintArrow(g);

@@ -70,7 +70,7 @@ public enum UnitType {
 			|| unitIndex == LANDER.unitIndex;
 	}
 
-	public static int getTypeFromUnit(Unit unit) {
+	public static int getUnitIndexFromUnit(Unit unit) {
 		if (unit instanceof Infantry) {
 			return UnitType.INFANTRY.unitIndex();
 		} else if (unit instanceof Mech) {
@@ -111,5 +111,48 @@ public enum UnitType {
 			return UnitTypes.SUB.unitIndex();*/
 		}
 		return -1;
+	}
+
+	public static String getUnitTypeNameFromUnit(Unit unit) {
+		if (unit instanceof Infantry) {
+			return UnitType.INFANTRY.unitTypeName();
+		} else if (unit instanceof Mech) {
+			return UnitType.MECH.unitTypeName();
+		} else if (unit instanceof Recon) {
+			return UnitType.RECON.unitTypeName();
+		} else if (unit instanceof Tank) {
+			return UnitType.TANK.unitTypeName();
+		} else if (unit instanceof MDTank) {
+			return UnitType.MDTANK.unitTypeName();
+		} else if (unit instanceof Neotank) {
+			return UnitType.NEOTANK.unitTypeName();
+		} else if (unit instanceof APC) {
+			return UnitType.APC.unitTypeName();
+		} else if (unit instanceof Artillery) {
+			return UnitType.ARTILLERY.unitTypeName();
+		} else if (unit instanceof Rocket) {
+			return UnitType.ROCKET.unitTypeName();
+		} else if (unit instanceof AAir) {
+			return UnitType.A_AIR.unitTypeName();
+		} else if (unit instanceof Missiles) {
+			return UnitType.MISSILES.unitTypeName();
+		} else if (unit instanceof Fighter) {
+			return UnitType.FIGHTER.unitTypeName();
+		} else if (unit instanceof Bomber) {
+			return UnitType.BOMBER.unitTypeName();
+		} else if (unit instanceof BCopter) {
+			return UnitType.BCOPTER.unitTypeName();
+		} else if (unit instanceof TCopter) {
+			return UnitType.TCOPTER.unitTypeName();
+		} else if (unit instanceof Battleship) {
+			return UnitType.BATTLESHIP.unitTypeName();
+		} else if (unit instanceof Cruiser) {
+			return UnitType.CRUISER.unitTypeName();
+		} else if (unit instanceof Lander) {
+			return UnitType.LANDER.unitTypeName();
+/*		} else if (unit instanceof Sub) {
+			return UnitTypes.SUB.unitTypeName();*/
+		}
+		return null;
 	}
 }

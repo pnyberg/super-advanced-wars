@@ -6,11 +6,9 @@ import java.awt.Graphics;
 
 public class UnitHealth {
 	private int hp;
-	private int tileSize;
 	
-	public UnitHealth(int tileSize) {
+	public UnitHealth() {
 		hp = 100;
-		this.tileSize = tileSize; 
 	}
 
 	public void heal(int health) {
@@ -56,7 +54,7 @@ public class UnitHealth {
 		return (hp + 9) / 10;
 	}
 
-	public void paintHP(Graphics g, int x, int y) {
+	public void paintHP(Graphics g, int x, int y, int tileSize) {
 		if (getShowHP() == 10) {
 			return;
 		}

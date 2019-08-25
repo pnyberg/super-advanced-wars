@@ -1,3 +1,7 @@
+/**
+ * TODO:
+ *  - should menuIndex be "overflowing"?
+ */
 package menus;
 
 public class MenuState {

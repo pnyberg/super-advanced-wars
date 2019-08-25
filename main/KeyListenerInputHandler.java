@@ -242,7 +242,7 @@ public class KeyListenerInputHandler {
 		} else if (gameState.getChosenUnit() != null && movementMap.isAcceptedMove(cursorX / gameProperties.getMapDimension().tileSize, cursorY / gameProperties.getMapDimension().tileSize) && gameState.getChosenRangeUnit() == null) {
 			int x = gameState.getChosenUnit().getPosition().getX();
 			int y = gameState.getChosenUnit().getPosition().getY();
-			if (unitGetter.getFriendlyUnit(x, y) != null) {
+			if (unitGetter.getFriendlyUnit(x, y) != null && unitMenuHandler.unitCanMoveToPosition(x, y)) {
 				unitMenuHandler.handleOpenUnitMenu(cursor);
 			}
 		} else if (!unitSelected && !unitSelectable(cursorX, cursorY)) {

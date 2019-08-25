@@ -2,6 +2,7 @@
  * BUG-list
  *  - APC with unit inside tries to supply when moving to neighbour-area
  *  - APC with unit inside cannot enter Lander
+ *  - Unit entering a Transport-Unit generates an error
  * 
  * TODO-list
  * - only one action/unit per turn

@@ -19,7 +19,8 @@ public class BuildingMenuPainter {
 
 	public void paint(Graphics g, int x, int y, BuildingItem[] items) {
 		for (int k = 0 ; k < items.length ; k++) {
-			paintMenuItem(g, x, y + dimensionValues.getMenuRowHeight() * (k + 1), items[k].getName(), items[k].getPrice());
+			int menuItemY = y + dimensionValues.getMenuRowHeight() * (k + 1);
+			paintMenuItem(g, x, menuItemY, items[k].getName(), items[k].getPrice());
 		}
 	}
 

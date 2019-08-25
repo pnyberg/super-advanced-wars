@@ -46,7 +46,7 @@ public abstract class Unit {
 		this.color = color;
 		restingColor = color.darker();
 
-		unitHealth = new UnitHealth(tileSize);
+		unitHealth = new UnitHealth();
 		hidden = false;
 		attacking = false;
 		active = false;
@@ -170,7 +170,7 @@ public abstract class Unit {
 
 	public void paint(Graphics g, int tileSize) {
 		paintUnit(g, tileSize);
-		unitHealth.paintHP(g, position.getX(), position.getY());
+		unitHealth.paintHP(g, position.getX(), position.getY(), tileSize);
 		if (capting) {
 			paintCaptFlag(g, position.getX(), position.getY(), tileSize);
 		}
