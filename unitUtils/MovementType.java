@@ -10,7 +10,6 @@ public enum MovementType {
 	AIR(6);
 
 	public static final int numberOfMovementTypes = 7;
-	
 	private int movementTypeIndex;
 
 	MovementType(int movementTypeIndex) {

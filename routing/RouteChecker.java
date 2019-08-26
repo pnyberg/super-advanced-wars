@@ -1,19 +1,21 @@
 /**
  * TODO:
  *  - enable allowed movement in team-play
- *  - create and return the movementMap (instead of taking it as a parameter)
- *  - check if both allowedMovementPosition-methods are useful
  */
 package routing;
 
+import gameObjects.Direction;
 import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.MapDimension;
 import hero.Hero;
 import hero.HeroHandler;
+import map.BoundsChecker;
 import map.GameMap;
+import map.LocationGetter;
 import map.area.AreaChecker;
 import map.area.TerrainType;
+import point.Point;
 import unitUtils.MovementType;
 import units.Unit;
 
@@ -23,8 +25,7 @@ public class RouteChecker {
 	private GameMap gameMap;
 	private MovementMap movementMap;
 	private boolean[][] moveabilityMatrix;
-	private AreaChecker areaChecker;
-	private MovementCostCalculator movementCostCalculator;
+	private int[][] maxMovementSteps;
 	
 	public RouteChecker(GameProperties gameProperties, GameState gameState) {
 		this.mapDimension = gameProperties.getMapDimension();
@@ -32,33 +33,48 @@ public class RouteChecker {
 		this.gameMap = gameProperties.getGameMap();
 		this.movementMap = gameState.getMovementMap();
 		moveabilityMatrix = new MoveabilityMatrixFactory().getMoveabilityMatrix();
-		areaChecker = new AreaChecker(gameState.getHeroHandler(), gameProperties.getGameMap());
-		this.movementCostCalculator = new MovementCostCalculator(gameProperties.getGameMap());
 	}
 
 	public MovementMap retrievePossibleMovementLocations(Unit checkedUnit) {
+		maxMovementSteps = new int[mapDimension.getTileWidth()][mapDimension.getTileHeight()];
 		int tileX = checkedUnit.getPosition().getX() / mapDimension.tileSize;
 		int tileY = checkedUnit.getPosition().getY() / mapDimension.tileSize;
 		findPossibleMovementLocations(tileX, tileY, checkedUnit.getMovement(), checkedUnit);
 		return movementMap;
 	}
 
-	public void findPossibleMovementLocations(int tileX, int tileY, int movementSteps, Unit checkedUnit) {
+	private void findPossibleMovementLocations(int tileX, int tileY, int movementSteps, Unit checkedUnit) {
+		LocationGetter locationGetter = new LocationGetter(mapDimension.tileSize);
+		maxMovementSteps[tileX][tileY] = movementSteps;
 		movementMap.setAcceptedMove(tileX, tileY);		
-		checkPath(tileX + 1, tileY, movementSteps, checkedUnit);
-		checkPath(tileX, tileY + 1, movementSteps, checkedUnit);
-		checkPath(tileX - 1, tileY, movementSteps, checkedUnit);
-		checkPath(tileX, tileY - 1, movementSteps, checkedUnit);
+
+		Direction[] allDirections = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+		for (Direction direction : allDirections) {
+			Point neighbourTileLocation = locationGetter.getNeighbourTileLocationForDirection(tileX, tileY, direction);
+			int neighbourTileX = neighbourTileLocation.getX();
+			int neighbourTileY = neighbourTileLocation.getY();
+			if (shouldCheckThisTileForPath(neighbourTileX, neighbourTileY, movementSteps)) {
+				checkPath(neighbourTileX, neighbourTileY, movementSteps, checkedUnit);
+			}
+		}
+	}
+	
+	private boolean shouldCheckThisTileForPath(int tileX, int tileY, int movementSteps) {
+		BoundsChecker boundsChecker = new BoundsChecker(mapDimension);
+		if (boundsChecker.tilePointOutOfBounds(tileX, tileY)) {
+			return false;
+		}
+		if (movementSteps <= maxMovementSteps[tileX][tileY]) {
+			return false;
+		}
+		return true;
 	}
 
 	private void checkPath(int tileX, int tileY, int movementSteps, Unit checkedUnit) {
-		if (tileX < 0 || tileY < 0 || tileX >= mapDimension.getTileWidth() || tileY >= mapDimension.getTileHeight()) {
-			return;
-		}
-
 		Hero hero = heroHandler.getHeroFromUnit(checkedUnit);
 		// TODO: enable allowed movement in team-play
 		if (allowedMovementPosition(tileX, tileY, checkedUnit.getMovementType(), hero)) {
+			MovementCostCalculator movementCostCalculator = new MovementCostCalculator(gameMap);
 			movementSteps -= movementCostCalculator.movementCost(tileX, tileY, checkedUnit.getMovementType());
 			if (movementSteps >= 0) {
 				findPossibleMovementLocations(tileX, tileY, movementSteps, checkedUnit);
@@ -66,19 +82,15 @@ public class RouteChecker {
 		}
 	}
 
-	// TODO: what's the difference? - are both useful?
 	public boolean allowedMovementPosition(int tileX, int tileY, MovementType movementType, Hero hero) {
 		TerrainType terrainType = gameMap.getTerrainType(tileX, tileY);
+		AreaChecker areaChecker = new AreaChecker(heroHandler, gameMap);
+		int tileSize = mapDimension.tileSize;
 
-		if (areaChecker.areaOccupiedByNonFriendly(tileX * mapDimension.tileSize, tileY * mapDimension.tileSize, hero)) {
+		if (areaChecker.areaOccupiedByNonFriendly(tileX * tileSize, tileY * tileSize, hero)) {
 			return false;
 		}
 
 		return moveabilityMatrix[movementType.movementTypeIndex()][terrainType.terrainTypeIndex()];
-	}
-
-	// TODO: what's the difference? - are both useful?
-	public boolean allowedMovementPosition(int tileX, int tileY, MovementType movementType) {
-		return allowedMovementPosition(tileX, tileY, movementType, heroHandler.getCurrentHero());
 	}
 }

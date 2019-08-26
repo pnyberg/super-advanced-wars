@@ -173,12 +173,9 @@ public class KeyListenerInputHandler {
 			mapMenuRowPressed();
 		} else if (unitMenuHandler.getUnitMenu().isVisible()) {
 			if (unitMenuHandler.getUnitMenu().atUnitRow()) {
-				if (gameState.getChosenUnit() instanceof Lander) {
+				if (gameState.getChosenUnit().hasUnitContainer()) {
 					int index = unitMenuHandler.getUnitMenu().getMenuIndex();
 					gameState.getChosenUnit().getUnitContainer().chooseUnit(index);
-				} else if (gameState.getChosenUnit() instanceof Cruiser) {
-					int index = unitMenuHandler.getUnitMenu().getMenuIndex();
-					((Cruiser)gameState.getChosenUnit()).chooseUnit(index);
 				}
 				containerUnitHandler.handleDroppingOff();
 			} else if (unitMenuHandler.getUnitMenu().atJoinRow()) {
@@ -198,10 +195,7 @@ public class KeyListenerInputHandler {
 				Unit entryUnit = unitGetter.getFriendlyUnitExceptSelf(gameState.getChosenUnit(), cursorX, cursorY);
 				if (entryUnit.hasUnitContainer()) {
 					entryUnit.getUnitContainer().addUnit(gameState.getChosenUnit());
-				} else if (entryUnit instanceof Cruiser) {
-					((Cruiser)entryUnit).addUnit(gameState.getChosenUnit());
 				}
-
 				// @TODO cargo-unit enters other unit
 			} else if (unitMenuHandler.getUnitMenu().atFireRow()) {
 				Unit chosenUnit = gameState.getChosenUnit();
@@ -272,6 +266,7 @@ public class KeyListenerInputHandler {
 	
 			if (gameState.getChosenUnit().hasUnitContainer()) {
 				gameState.getChosenUnit().getUnitContainer().regulateDroppingOff(false);
+				gameState.getChosenUnit().getUnitContainer().clearDropOffLocations();
 			} else if (gameState.getChosenUnit() instanceof Cruiser) {
 				((Cruiser)gameState.getChosenUnit()).regulateDroppingOff(false);
 			}
@@ -325,8 +320,9 @@ public class KeyListenerInputHandler {
 	private void handlePressedKeyUp() {
 		Unit chosenUnit = gameState.getChosenUnit();
 		if (containerUnitHandler.unitIsDroppingOff()) {
-			if (containerUnitHandler.unitCanBeDroppedOff()) {
-				containerUnitHandler.moveDroppingOffCursorCounterclockwise();
+			if (containerUnitHandler.unitCanDropOffUnit()) {
+				Point point = chosenUnit.getUnitContainer().getPreviousDropOffLocation();
+				cursor.setPosition(point.getX(), point.getY());
 			}
 		} else if (mapMenu.isVisible()) {
 			mapMenu.moveArrowUp();
@@ -348,8 +344,9 @@ public class KeyListenerInputHandler {
 		int tileSize = gameProperties.getMapDimension().tileSize;
 
 		if (containerUnitHandler.unitIsDroppingOff()) {
-			if (containerUnitHandler.unitCanBeDroppedOff()) {
-				containerUnitHandler.moveDroppingOffCursorClockwise();
+			if (containerUnitHandler.unitCanDropOffUnit()) {
+				Point point = chosenUnit.getUnitContainer().getNextDropOffLocation();
+				cursor.setPosition(point.getX(), point.getY());
 			}
 		} else if (mapMenu.isVisible()) {
 			mapMenu.moveArrowDown();
@@ -428,8 +425,9 @@ public class KeyListenerInputHandler {
 	}
 
 	private void handleDroppingOff() {
-		if (containerUnitHandler.unitCanBeDroppedOff()) {
+		if (containerUnitHandler.unitCanDropOffUnit()) {
 			gameState.getChosenUnit().getUnitContainer().regulateDroppingOff(false);
+			gameState.getChosenUnit().getUnitContainer().clearDropOffLocations();
 			Unit exitingUnit = gameState.getChosenUnit().getUnitContainer().removeChosenUnit();
 			exitingUnit.moveTo(cursor.getX(), cursor.getY());
 			exitingUnit.regulateActive(false);

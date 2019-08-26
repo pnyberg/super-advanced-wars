@@ -5,6 +5,8 @@ import gameObjects.Direction;
 import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.MapDimension;
+import map.BoundsChecker;
+import map.LocationGetter;
 import map.UnitGetter;
 import map.structures.Structure;
 import map.structures.StructureHandler;
@@ -67,11 +69,12 @@ public class AttackHandler {
 	
 	// TODO: change from direction-loop to four sub-method calls?
 	private void setUpDirectAttackFiringTargets(Unit chosenUnit) {
+		LocationGetter locationGetter = new LocationGetter(mapDimension.tileSize);
 		int x = chosenUnit.getPosition().getX();
 		int y = chosenUnit.getPosition().getY();
 		Direction[] allDirections = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
 		for (Direction direction : allDirections) {
-			Point neighbourLocation = getNeighbourLocationForDirection(x, y, direction);
+			Point neighbourLocation = locationGetter.getNeighbourLocationForDirection(x, y, direction);
 			boolean validTargetInDirection = validTargetAtLocation(neighbourLocation, chosenUnit);
 			if (validTargetInDirection) {
 				int targetTileX = neighbourLocation.getX() / mapDimension.tileSize;
@@ -83,11 +86,11 @@ public class AttackHandler {
 	}
 	
 	private boolean validTargetAtLocation(Point targetLocation, Unit chosenUnit) {
+		BoundsChecker boundsChecker = new BoundsChecker(mapDimension);
 		int targetX = targetLocation.getX();
 		int targetY = targetLocation.getY();
-		// TODO: use a general out-of-bounds-checking-method (in a proper class)
-		if (targetX < 0 || targetX >= mapDimension.getTileWidth() * mapDimension.tileSize
-			|| targetY < 0 || targetY >= mapDimension.getTileHeight() * mapDimension.tileSize) {
+
+		if (boundsChecker.pointOutOfBounds(targetX, targetY)) {
 			return false;
 		}
 		Unit targetUnit = unitGetter.getNonFriendlyUnitForCurrentHero(targetX, targetY);
@@ -119,21 +122,12 @@ public class AttackHandler {
 	}
 	
 	private void addRangeMapLocationIfValid(int tileX, int tileY, Direction direction) {
-		Point tilePoint = getNeighbourTileLocationForDirection(tileX, tileY, direction);
-		if (!tilePointOutOfBounds(tilePoint)) {
+		BoundsChecker boundsChecker = new BoundsChecker(mapDimension);
+		LocationGetter locationGetter = new LocationGetter(mapDimension.tileSize);
+		Point tilePoint = locationGetter.getNeighbourTileLocationForDirection(tileX, tileY, direction);
+		if (!boundsChecker.tilePointOutOfBounds(tilePoint.getX(), tilePoint.getY())) {
 			gameState.enableRangeMapLocation(tilePoint.getX(), tilePoint.getY());
 		}
-	}
-	
-	// TODO: move this to a proper class?
-	private boolean tilePointOutOfBounds(Point point) {
-		if (point.getX() < 0 || mapDimension.getTileWidth() <= point.getX()) {
-			return true;
-		}
-		if (point.getY()< 0 || mapDimension.getTileHeight() <= point.getY()) {
-			return true;
-		}
-		return false;
 	}
 	
 	public void fillRangeAttackMap(Unit chosenUnit) {
@@ -153,29 +147,6 @@ public class AttackHandler {
 		}
 	}
 
-	// TODO: move this to a proper class?
-	public Point getNeighbourTileLocationForDirection(int tileX, int tileY, Direction direction) {
-		if (direction == Direction.NORTH) {
-			tileY--;
-		} else if (direction == Direction.EAST) {
-			tileX++;
-		} else if (direction == Direction.SOUTH) {
-			tileY++;
-		} else if (direction == Direction.WEST) {
-			tileX--;
-		}
-		return new Point(tileX, tileY);
-	}
-	
-	public Point getNeighbourLocationForDirection(int x, int y, Direction direction) {
-		int tileX = x / mapDimension.tileSize;
-		int tileY = y / mapDimension.tileSize;
-		Point tilePoint = getNeighbourTileLocationForDirection(tileX, tileY, direction);
-		int posX = tilePoint.getX() * mapDimension.tileSize;
-		int posY = tilePoint.getY() * mapDimension.tileSize;
-		return new Point(posX, posY);
-	}
-	
 	public boolean unitCanFire(Unit chosenUnit, Cursor cursor) {
 		if (chosenUnit instanceof IndirectUnit) {
 			return indirectUnitCanFire(chosenUnit, cursor);
@@ -265,7 +236,8 @@ public class AttackHandler {
 	}
 	
 	private boolean canDirectAttackInDirection(Unit attackingUnit, Cursor cursor, Direction direction) {
-		Point neighbourLocation = getNeighbourLocationForDirection(cursor.getX(), cursor.getY(), direction);
+		LocationGetter locationGetter = new LocationGetter(mapDimension.tileSize);
+		Point neighbourLocation = locationGetter.getNeighbourLocationForDirection(cursor.getX(), cursor.getY(), direction);
 		int x = neighbourLocation.getX();
 		int y = neighbourLocation.getY();
 		return attackableTargetAtLocation(attackingUnit, x, y);

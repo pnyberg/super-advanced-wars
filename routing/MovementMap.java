@@ -4,15 +4,15 @@ import gameObjects.MapDimension;
 
 public class MovementMap {
 	private boolean[][] movementMap;
-	private MapDimension mapDim;
+	private MapDimension mapDimension;
 	
-	public MovementMap(MapDimension mapDim) {
-		this.mapDim = mapDim;
+	public MovementMap(MapDimension mapDimension) {
+		this.mapDimension = mapDimension;
 		clearMovementMap();
 	}
 
 	public void clearMovementMap() {
-		movementMap = new boolean[mapDim.getTileWidth()][mapDim.getTileHeight()];
+		movementMap = new boolean[mapDimension.getTileWidth()][mapDimension.getTileHeight()];
 	}
 
 	public void setAcceptedMove(int tileX, int tileY) {

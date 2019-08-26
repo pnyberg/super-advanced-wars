@@ -43,7 +43,7 @@ public class UnitGetter {
 			Unit unit = heroHandler.getUnitFromHero(heroIndex, k);
 			if (unit.getPosition().getX() == x && unit.getPosition().getY() == y) {
 				if (unit.isHidden()) {
-					return null;
+					continue;
 				}
 				return unit;
 			}
@@ -69,7 +69,7 @@ public class UnitGetter {
 			Unit unit = heroHandler.getUnitFromCurrentHero(k);
 			if (unit.getPosition().getX() == x && unit.getPosition().getY() == y) {
 				if (unit.isHidden() || unit == notUnit) {
-					return null;
+					continue;
 				}
 				return unit;
 			}

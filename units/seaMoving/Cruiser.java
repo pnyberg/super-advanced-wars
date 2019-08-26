@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import graphics.images.units.CruiserImage;
 import unitUtils.MovementType;
 import unitUtils.UnitCategory;
+import unitUtils.UnitContainer;
 import unitUtils.UnitSupply;
 import unitUtils.UnitType;
 import units.Unit;
@@ -32,6 +33,7 @@ public class Cruiser extends Unit {
 		containedUnits = new ArrayList<Unit>();
 		droppingOff = false;
 		chosenIndex = -1;
+		unitContainer = new UnitContainer(2);
 		
 		unitImage = new CruiserImage(tileSize);
 	}

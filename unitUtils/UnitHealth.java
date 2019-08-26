@@ -17,17 +17,11 @@ public class UnitHealth {
 	}
 	
 	public void takeDamage(int damage) {
-		hp -= damage;
-		if (hp < 0) {
-			hp = 0;
-		}
+		hp = Math.max(hp - damage, 0);
 	}
 	
 	public void takeNonLethalDamage(int damage) {
-		hp -= damage;
-		if (hp <= 0) {
-			hp = 1;
-		}
+		hp = Math.max(hp - damage, 1);
 	}
 	
 	public void kill() {

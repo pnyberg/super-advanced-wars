@@ -71,87 +71,60 @@ public enum UnitType {
 	}
 
 	public static int getUnitIndexFromUnit(Unit unit) {
-		if (unit instanceof Infantry) {
-			return UnitType.INFANTRY.unitIndex();
-		} else if (unit instanceof Mech) {
-			return UnitType.MECH.unitIndex();
-		} else if (unit instanceof Recon) {
-			return UnitType.RECON.unitIndex();
-		} else if (unit instanceof Tank) {
-			return UnitType.TANK.unitIndex();
-		} else if (unit instanceof MDTank) {
-			return UnitType.MDTANK.unitIndex();
-		} else if (unit instanceof Neotank) {
-			return UnitType.NEOTANK.unitIndex();
-		} else if (unit instanceof APC) {
-			return UnitType.APC.unitIndex();
-		} else if (unit instanceof Artillery) {
-			return UnitType.ARTILLERY.unitIndex();
-		} else if (unit instanceof Rocket) {
-			return UnitType.ROCKET.unitIndex();
-		} else if (unit instanceof AAir) {
-			return UnitType.A_AIR.unitIndex();
-		} else if (unit instanceof Missiles) {
-			return UnitType.MISSILES.unitIndex();
-		} else if (unit instanceof Fighter) {
-			return UnitType.FIGHTER.unitIndex();
-		} else if (unit instanceof Bomber) {
-			return UnitType.BOMBER.unitIndex();
-		} else if (unit instanceof BCopter) {
-			return UnitType.BCOPTER.unitIndex();
-		} else if (unit instanceof TCopter) {
-			return UnitType.TCOPTER.unitIndex();
-		} else if (unit instanceof Battleship) {
-			return UnitType.BATTLESHIP.unitIndex();
-		} else if (unit instanceof Cruiser) {
-			return UnitType.CRUISER.unitIndex();
-		} else if (unit instanceof Lander) {
-			return UnitType.LANDER.unitIndex();
-/*		} else if (unit instanceof Sub) {
-			return UnitTypes.SUB.unitIndex();*/
+		UnitType unitType = getUnitTypeFromUnit(unit);
+		if (unitType == null) {
+			return -1;
 		}
-		return -1;
+		return unitType.unitIndex();
 	}
 
 	public static String getUnitTypeNameFromUnit(Unit unit) {
+		UnitType unitType = getUnitTypeFromUnit(unit);
+		if (unitType == null) {
+			return null;
+		}
+		return unitType.unitTypeName();
+	}
+	
+	private static UnitType getUnitTypeFromUnit(Unit unit) {
 		if (unit instanceof Infantry) {
-			return UnitType.INFANTRY.unitTypeName();
+			return UnitType.INFANTRY;
 		} else if (unit instanceof Mech) {
-			return UnitType.MECH.unitTypeName();
+			return UnitType.MECH;
 		} else if (unit instanceof Recon) {
-			return UnitType.RECON.unitTypeName();
+			return UnitType.RECON;
 		} else if (unit instanceof Tank) {
-			return UnitType.TANK.unitTypeName();
+			return UnitType.TANK;
 		} else if (unit instanceof MDTank) {
-			return UnitType.MDTANK.unitTypeName();
+			return UnitType.MDTANK;
 		} else if (unit instanceof Neotank) {
-			return UnitType.NEOTANK.unitTypeName();
+			return UnitType.NEOTANK;
 		} else if (unit instanceof APC) {
-			return UnitType.APC.unitTypeName();
+			return UnitType.APC;
 		} else if (unit instanceof Artillery) {
-			return UnitType.ARTILLERY.unitTypeName();
+			return UnitType.ARTILLERY;
 		} else if (unit instanceof Rocket) {
-			return UnitType.ROCKET.unitTypeName();
+			return UnitType.ROCKET;
 		} else if (unit instanceof AAir) {
-			return UnitType.A_AIR.unitTypeName();
+			return UnitType.A_AIR;
 		} else if (unit instanceof Missiles) {
-			return UnitType.MISSILES.unitTypeName();
+			return UnitType.MISSILES;
 		} else if (unit instanceof Fighter) {
-			return UnitType.FIGHTER.unitTypeName();
+			return UnitType.FIGHTER;
 		} else if (unit instanceof Bomber) {
-			return UnitType.BOMBER.unitTypeName();
+			return UnitType.BOMBER;
 		} else if (unit instanceof BCopter) {
-			return UnitType.BCOPTER.unitTypeName();
+			return UnitType.BCOPTER;
 		} else if (unit instanceof TCopter) {
-			return UnitType.TCOPTER.unitTypeName();
+			return UnitType.TCOPTER;
 		} else if (unit instanceof Battleship) {
-			return UnitType.BATTLESHIP.unitTypeName();
+			return UnitType.BATTLESHIP;
 		} else if (unit instanceof Cruiser) {
-			return UnitType.CRUISER.unitTypeName();
+			return UnitType.CRUISER;
 		} else if (unit instanceof Lander) {
-			return UnitType.LANDER.unitTypeName();
+			return UnitType.LANDER;
 /*		} else if (unit instanceof Sub) {
-			return UnitTypes.SUB.unitTypeName();*/
+			return UnitTypes.SUB;*/
 		}
 		return null;
 	}

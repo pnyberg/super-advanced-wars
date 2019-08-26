@@ -31,22 +31,14 @@ public class APC extends Unit {
 		unitClass = UnitCategory.VEHICLE;
 		unitSupply = new UnitSupply(70, 0);
 		droppingOff = false;
-		
-		containedUnit = null; // TODO: remove
 		unitContainer = new UnitContainer(1);
 
 		unitImage = new APCImage(tileSize);
 	}
 
-	public void addUnit(Unit unit) {
-		containedUnit = unit;
-
-		containedUnit.regulateHidden(true);
-	}
-
 	public void moveTo(int x, int y) {
 		super.moveTo(x, y);
-
+		// TODO: move unitContainer-units
 		if (containedUnit != null) {
 			containedUnit.moveTo(x, y);
 		}
@@ -66,19 +58,6 @@ public class APC extends Unit {
 
 	public static String getTypeName() {
 		return typeName;
-	}
-
-	public Unit getContainedUnit() {
-		return containedUnit;
-	}
-
-	public Unit removeUnit() {
-		Unit unit = containedUnit;
-
-		containedUnit.regulateHidden(false);
-		containedUnit = null;
-
-		return unit;
 	}
 
 	public boolean isFull() {

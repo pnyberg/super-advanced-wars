@@ -39,12 +39,14 @@ public class RouteArrowPath {
 	
 	public void updateArrowPath(Point newPosition, Unit chosenUnit, MovementMap movementMap) {
 		int repeatedPositionIndex = getRepeatedPositionIndex(newPosition);
+		int newPosTileX = newPosition.getX() / mapDimension.tileSize;
+		int newPosTileY = newPosition.getY() / mapDimension.tileSize;
 
 		if (repeatedPositionIndex > -1) {
 			for (int i = arrowPoints.size() - 1 ; i > repeatedPositionIndex ; i--) {
 				removeArrowPoint(i);
 			}
-		} else if (movementMap.isAcceptedMove(newPosition.getX() / mapDimension.tileSize, newPosition.getY() / mapDimension.tileSize)) {
+		} else if (movementMap.isAcceptedMove(newPosTileX, newPosTileY)) {
 			addArrowPoint(newPosition);
 
 			if (newPointNotConnectedToPreviousPoint()) {
@@ -64,7 +66,7 @@ public class RouteArrowPath {
 	 * @param point the new position that might already be present
 	 * @return index for point with that position (-1 if not present)
 	 */
-	public int getRepeatedPositionIndex(Point point) {
+	private int getRepeatedPositionIndex(Point point) {
 		for (int i = 0 ; i < arrowPoints.size() ; i++) {
 			if (arrowPoints.get(i).isSamePosition(point)) {
 				return i;
@@ -90,12 +92,14 @@ public class RouteArrowPath {
 			int tileX = arrowPoints.get(i).getX() / mapDimension.tileSize;
 			int tileY = arrowPoints.get(i).getY() / mapDimension.tileSize;
 			currentMovementValue += movementCostCalculator.movementCost(tileX, tileY, chosenUnit.getMovementType());
+			if (currentMovementValue > maximumMovement) {
+				return true;
+			}
 		}
-
-		return currentMovementValue > maximumMovement;
+		return false;
 	}
 	
-	public void removeArrowPoint(int index) {
+	private void removeArrowPoint(int index) {
 		arrowPoints.remove(index);
 	}
 	
@@ -103,24 +107,23 @@ public class RouteArrowPath {
 		arrowPoints.clear();
 	}
 	
+	// TODO: rewrite code as a recursive search
 	// @TODO: what happens if a tank want to go round a wood (U-movement) = will give it endless loop
 	// @TODO: also, if (+2,0) is wood, (+3,0) is wood, if (+2,+1) is wood, (+3,+1) is wood and the 
 	//        rest is road, what happens if you try to move the cursor from (+4,+2)->(+4,+1)->(+3,+1)
 	//        result: will get stuck
-	public void recountPath(Point newPosition, Unit chosenUnit) {
+	private void recountPath(Point newPosition, Unit chosenUnit) {
 		MovementType movementType = chosenUnit.getMovementType();
-		int diffTileX = (newPosition.getX() - chosenUnit.getPosition().getX()) / mapDimension.tileSize;
-		int diffTileY = (newPosition.getY() - chosenUnit.getPosition().getY()) / mapDimension.tileSize;
+		int tileSize = mapDimension.tileSize;
+		int diffTileX = (newPosition.getX() - chosenUnit.getPosition().getX()) / tileSize;
+		int diffTileY = (newPosition.getY() - chosenUnit.getPosition().getY()) / tileSize;
 
 		clear();
 		addArrowPoint(chosenUnit.getPosition());
 
 		while(Math.abs(diffTileX) > 0 || Math.abs(diffTileY) > 0) {
 			int last = getNumberOfArrowPoints() - 1;
-			int prevX = arrowPoints.get(last).getX() / mapDimension.tileSize;
-			int prevY = arrowPoints.get(last).getY() / mapDimension.tileSize;
-
-			if (prevX / mapDimension.tileSize == newPosition.getX() / mapDimension.tileSize && prevY / mapDimension.tileSize == newPosition.getY() / mapDimension.tileSize) {
+			if (arrowPoints.get(last).isSamePosition(newPosition)) {
 				break;
 			}
 
@@ -133,15 +136,18 @@ public class RouteArrowPath {
 				xAxle = 0;
 			}
 
+			int prevTileX = arrowPoints.get(last).getX() / tileSize;
+			int prevTileY = arrowPoints.get(last).getY() / tileSize;
+
 			if (xAxle == 1) {
 				int diff = diffTileX / Math.abs(diffTileX);
-				addArrowPoint(new Point((prevX + diff) * mapDimension.tileSize, prevY * mapDimension.tileSize));
-				int movementCost = movementCostCalculator.movementCost(prevX + diff, prevY, movementType);
+				addArrowPoint(new Point((prevTileX + diff) * tileSize, prevTileY * tileSize));
+				int movementCost = movementCostCalculator.movementCost(prevTileX + diff, prevTileY, movementType);
 				diffTileX -= diff * movementCost;
 			} else { // yAxle
 				int diff = diffTileY / Math.abs(diffTileY);
-				addArrowPoint(new Point(prevX * mapDimension.tileSize, (prevY + diff) * mapDimension.tileSize));
-				int movementCost = movementCostCalculator.movementCost(prevX, prevY + diff, movementType);
+				addArrowPoint(new Point(prevTileX * tileSize, (prevTileY + diff) * tileSize));
+				int movementCost = movementCostCalculator.movementCost(prevTileX, prevTileY + diff, movementType);
 				diffTileY -= diff * movementCost;
 			}
 		}
@@ -150,8 +156,9 @@ public class RouteArrowPath {
 	public int calculateFuelUsed(MovementType movementType) {
 		int fuelUsed = 0;
 		for (int i = 1 ; i < arrowPoints.size() ; i++) {
-			Point arrowPoint = arrowPoints.get(i);
-			fuelUsed += movementCostCalculator.movementCost(arrowPoint.getX()/mapDimension.tileSize, arrowPoint.getY()/mapDimension.tileSize, movementType);
+			int arrowTileX = arrowPoints.get(i).getX() / mapDimension.tileSize;
+			int arrowTileY = arrowPoints.get(i).getY() / mapDimension.tileSize;
+			fuelUsed += movementCostCalculator.movementCost(arrowTileX, arrowTileY, movementType);
 		}
 		return fuelUsed;
 	}
@@ -160,7 +167,7 @@ public class RouteArrowPath {
 		return arrowPoints.get(index);
 	}
 	
-	public int getNumberOfArrowPoints() {
+	private int getNumberOfArrowPoints() {
 		return arrowPoints.size();
 	}
 	

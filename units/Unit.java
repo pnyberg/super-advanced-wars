@@ -160,7 +160,7 @@ public abstract class Unit {
 		return unitType;
 	}
 
-	public UnitCategory getUnitClass() {
+	public UnitCategory getUnitCategory() {
 		return unitClass;
 	}
 	

@@ -1,8 +1,5 @@
 /**
  * Handles the route-calculation
- * 
- * TODO:
- *  - check which of the addNewArrowPoint-methods should stay (or if they do different things)
  */
 package routing;
 
@@ -10,7 +7,6 @@ import point.*;
 import units.*;
 import gameObjects.GameProperties;
 import gameObjects.GameState;
-import gameObjects.MapDimension;
 
 public class RouteHandler {
 	private RouteArrowPath routeArrowPath;

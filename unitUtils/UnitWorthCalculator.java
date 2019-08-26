@@ -49,9 +49,7 @@ public class UnitWorthCalculator {
 			worth = Lander.getPrice();
 /*		} else if (unit instanceof Sub) {
 			worth = Sub.getPrice();
-*/
-		}
-		
+*/		}
 		return worth;
 	}
 	
