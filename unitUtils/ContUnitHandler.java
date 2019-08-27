@@ -166,7 +166,8 @@ public class ContUnitHandler {
 	
 	public boolean copterEnterableUnitAtPosition(int x, int y) {
 		Unit unit = unitGetter.getFriendlyUnit(x, y);
-		if (unit instanceof Cruiser && !unit.getUnitContainer().isFull()) {
+		Unit chosenUnit = gameState.getChosenUnit();
+		if (unit instanceof Cruiser && !unit.getUnitContainer().isFull() && unit != chosenUnit) {
 			return true;
 		} 
 		return false;

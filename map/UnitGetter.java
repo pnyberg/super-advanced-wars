@@ -56,7 +56,7 @@ public class UnitGetter {
 			Unit unit = heroHandler.getUnitFromCurrentHero(heroIndex);
 			if (unit.getPosition().getX() == x && unit.getPosition().getY() == y) {
 				if (unit.isHidden()) {
-					return null;
+					continue;
 				}
 				return unit;
 			}

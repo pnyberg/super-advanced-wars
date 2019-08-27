@@ -14,7 +14,7 @@ public class AAir extends Unit {
 	private static String typeName = "A-Air";
 
 	public AAir(int x, int y, Color color, int tileSize) {
-		super(UnitType.A_AIR, x, y, color, tileSize);
+		super(UnitType.AAIR_unit, x, y, color, tileSize);
 
 		movement = 6;
 		movementType = MovementType.TREAD;

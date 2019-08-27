@@ -14,10 +14,10 @@ public enum UnitType {
 	TANK ("Tank", "Tank", 7000, 3),
 	MDTANK ("Md Tank", "Md Tank", 16000, 4),
 	NEOTANK ("Neotank", "Neo", 22000, 5),
-	APC ("APC", "APC", 5000, 6),
+	APC_unit ("APC", "APC", 5000, 6),
 	ARTILLERY ("Artillery", "Artly", 6000, 7),
 	ROCKET ("Rocket", "Rckts", 15000, 8),
-	A_AIR ("A-Air", "A-Air", 8000, 9),
+	AAIR_unit ("A-Air", "A-Air", 8000, 9),
 	MISSILES ("Missiles", "Mssls", 12000, 10),
 	FIGHTER ("Fighter", "Fghtr", 20000, 11),
 	BOMBER ("Bomber", "Bmbr", 22000, 12),
@@ -30,8 +30,8 @@ public enum UnitType {
 
 	public static final int numberOfUnitTypes = 18;
 	public static final UnitType[] allUnitTypes = { INFANTRY, MECH, RECON,
-													TANK, MDTANK, NEOTANK, APC,
-													ARTILLERY, ROCKET, A_AIR, MISSILES,
+													TANK, MDTANK, NEOTANK, APC_unit,
+													ARTILLERY, ROCKET, AAIR_unit, MISSILES,
 													FIGHTER, BOMBER, BCOPTER, TCOPTER,
 													BATTLESHIP, CRUISER, LANDER};
 
@@ -64,7 +64,7 @@ public enum UnitType {
 	}
 	
 	public boolean isTransportUnit() {
-		return unitIndex == APC.unitIndex
+		return unitIndex == APC_unit.unitIndex
 			|| unitIndex == TCOPTER.unitIndex
 			|| unitIndex == CRUISER.unitIndex
 			|| unitIndex == LANDER.unitIndex;
@@ -78,14 +78,6 @@ public enum UnitType {
 		return unitType.unitIndex();
 	}
 
-	public static String getUnitTypeNameFromUnit(Unit unit) {
-		UnitType unitType = getUnitTypeFromUnit(unit);
-		if (unitType == null) {
-			return null;
-		}
-		return unitType.unitTypeName();
-	}
-	
 	private static UnitType getUnitTypeFromUnit(Unit unit) {
 		if (unit instanceof Infantry) {
 			return UnitType.INFANTRY;
@@ -100,13 +92,13 @@ public enum UnitType {
 		} else if (unit instanceof Neotank) {
 			return UnitType.NEOTANK;
 		} else if (unit instanceof APC) {
-			return UnitType.APC;
+			return UnitType.APC_unit;
 		} else if (unit instanceof Artillery) {
 			return UnitType.ARTILLERY;
 		} else if (unit instanceof Rocket) {
 			return UnitType.ROCKET;
 		} else if (unit instanceof AAir) {
-			return UnitType.A_AIR;
+			return UnitType.AAIR_unit;
 		} else if (unit instanceof Missiles) {
 			return UnitType.MISSILES;
 		} else if (unit instanceof Fighter) {
@@ -128,4 +120,47 @@ public enum UnitType {
 		}
 		return null;
 	}
+
+	public static String getUnitTypeNameFromUnit(Unit unit) {
+		if (unit instanceof Infantry) {
+			return Infantry.getTypeName();
+		} else if (unit instanceof Mech) {
+			return Mech.getTypeName();
+		} else if (unit instanceof Recon) {
+			return Recon.getTypeName();
+		} else if (unit instanceof Tank) {
+			return Tank.getTypeName();
+		} else if (unit instanceof MDTank) {
+			return MDTank.getTypeName();
+		} else if (unit instanceof Neotank) {
+			return Neotank.getTypeName();
+		} else if (unit instanceof APC) {
+			return APC.getTypeName();
+		} else if (unit instanceof Artillery) {
+			return Artillery.getTypeName();
+		} else if (unit instanceof Rocket) {
+			return Rocket.getTypeName();
+		} else if (unit instanceof AAir) {
+			return AAir.getTypeName();
+		} else if (unit instanceof Missiles) {
+			return Missiles.getTypeName();
+		} else if (unit instanceof Fighter) {
+			return Fighter.getTypeName();
+		} else if (unit instanceof Bomber) {
+			return Bomber.getTypeName();
+		} else if (unit instanceof BCopter) {
+			return BCopter.getTypeName();
+		} else if (unit instanceof TCopter) {
+			return TCopter.getTypeName();
+		} else if (unit instanceof Battleship) {
+			return Battleship.getTypeName();
+		} else if (unit instanceof Cruiser) {
+			return Cruiser.getTypeName();
+		} else if (unit instanceof Lander) {
+			return Lander.getTypeName();
+/*		} else if (unit instanceof Sub) {
+			return Sub.getTypeName();*/
+		}
+		return null;
+	}	
 }

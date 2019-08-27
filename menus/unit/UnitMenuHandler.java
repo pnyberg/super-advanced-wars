@@ -62,7 +62,7 @@ public class UnitMenuHandler {
 				unitMenu.enableCaptOption();
 			}
 		} else if (chosenUnit instanceof APC) {
-			// should only be allowed this when close to a friendly unit
+			// TODO: fix when supply is allowed
 			if (supplyHandler.apcMaySupply(cursor.getX(), cursor.getY())) {
 				unitMenu.enableSupplyOption();
 			}
@@ -73,30 +73,29 @@ public class UnitMenuHandler {
 		} else if (chosenUnit.hasUnitContainer()) {
 			int cursorTileX = cursor.getX() / gameProp.getMapDimension().tileSize;
 			int cursorTileY = cursor.getY() / gameProp.getMapDimension().tileSize;
+			// TODO: rewrite so it covers TCopter, APC, Lander, Cruiser
 			if (containerUnitHandler.landerAtDroppingOffPosition(cursor.getX(), cursor.getY())) {
 				for (int i = 0 ; i < chosenUnit.getUnitContainer().getNumberOfContainedUnits() ; i++) {
 					Unit holdUnit = chosenUnit.getUnitContainer().getUnit(i);
 					unitMenu.addContainedCargoRow(holdUnit);
 				}
 			} else if (chosenUnit.getUnitContainer().isFull() && areaChecker.isLand(cursorTileX, cursorTileY)) {
-				Unit holdUnit = chosenUnit.getUnitContainer().getChosenUnit();
-				unitMenu.addContainedCargoRow(holdUnit);
+				for (int i = 0 ; i < chosenUnit.getUnitContainer().getNumberOfContainedUnits() ; i++) {
+					Unit holdUnit = chosenUnit.getUnitContainer().getUnit(i);
+					unitMenu.addContainedCargoRow(holdUnit);
+				}
+			} else if (chosenUnit instanceof Cruiser) {
+				for (int i = 0 ; i < chosenUnit.getUnitContainer().getNumberOfContainedUnits() ; i++) {
+					Unit holdUnit = chosenUnit.getUnitContainer().getUnit(i);
+					unitMenu.addContainedCargoRow(holdUnit);
+				}
 			} 
-		} else if (chosenUnit instanceof Cruiser) { // TODO: can this be removed?
-			for (int i = 0 ; i < ((Cruiser)chosenUnit).getNumberOfContainedUnits() ; i++) {
-				Unit holdUnit = ((Cruiser)chosenUnit).getUnit(i);
-				unitMenu.addContainedCargoRow(holdUnit);
-			}
 		}
 
 		if (containerUnitHandler.landbasedEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
-			if (!(chosenUnit instanceof Lander)) {
-				unitMenu.enableEnterOption();
-			}
+			unitMenu.enableEnterOption();
 		} else if (containerUnitHandler.copterEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
-			if (!(chosenUnit instanceof Cruiser)) {
-				unitMenu.enableEnterOption();
-			}
+			unitMenu.enableEnterOption();
 		}
 
 		if (!areaChecker.areaOccupiedByFriendly(chosenUnit, cursor.getX(), cursor.getY())) {

@@ -196,7 +196,6 @@ public class KeyListenerInputHandler {
 				if (entryUnit.hasUnitContainer()) {
 					entryUnit.getUnitContainer().addUnit(gameState.getChosenUnit());
 				}
-				// @TODO cargo-unit enters other unit
 			} else if (unitMenuHandler.getUnitMenu().atFireRow()) {
 				Unit chosenUnit = gameState.getChosenUnit();
 				chosenUnit.regulateAttack(true);
@@ -214,7 +213,6 @@ public class KeyListenerInputHandler {
 			} else if (unitMenuHandler.getUnitMenu().atSupplyRow()) {
 				int x = gameState.getChosenUnit().getPosition().getX();
 				int y = gameState.getChosenUnit().getPosition().getY();
-
 				replentishSurroundingUnits(x, y);
 			}
 
@@ -222,13 +220,11 @@ public class KeyListenerInputHandler {
 				// using fuel
 				int fuelUse = routeHandler.getFuelFromArrows(gameState.getChosenUnit());
 				gameState.getChosenUnit().getUnitSupply().useFuel(fuelUse);
-
 				gameState.getChosenUnit().regulateActive(false);
 				gameState.setChosenUnit(null);
 				movementMap.clearMovementMap();
 				routeHandler.clearArrowPoints();
 			}
-
 			unitMenuHandler.getUnitMenu().closeMenu();
 		} else if (buildingMenu.isVisible()) {
 			buildingMenu.buySelectedTroop();
@@ -267,8 +263,6 @@ public class KeyListenerInputHandler {
 			if (gameState.getChosenUnit().hasUnitContainer()) {
 				gameState.getChosenUnit().getUnitContainer().regulateDroppingOff(false);
 				gameState.getChosenUnit().getUnitContainer().clearDropOffLocations();
-			} else if (gameState.getChosenUnit() instanceof Cruiser) {
-				((Cruiser)gameState.getChosenUnit()).regulateDroppingOff(false);
 			}
 		} else if (attackHandler.unitWantsToFire(gameState.getChosenUnit())) {
 			gameState.getChosenUnit().clearFiringLocations();

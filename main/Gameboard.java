@@ -1,11 +1,11 @@
 /**
  * BUG-list
- *  - APC with unit inside tries to supply when moving to neighbour-area
- *  - APC with unit inside cannot enter Lander
- *  - Cruiser cannot drop of units
- *  - Cruiser cannot be moved to Port
- *  - Lander cannot be moved
- *  - TCopter cannot be moved from Airport
+ *  - Cruiser going to port where TCopter is
+ *  - Infantry enter Cruiser
+ *  - TCopter with Infantry cannot enter Cruiser
+ *  - Lander with APC in port gets Enter-option
+ *  - APC with Infantry cannot enter Lander
+ *  - Lander in Port with APC in it and Infantry blocking drop of gets Enter-option
  * 
  * TODO-list
  * - only one action/unit per turn

@@ -35,10 +35,6 @@ public class TCopter extends Unit {
 
 	public void moveTo(int x, int y) {
 		super.moveTo(x, y);
-
-		if (unitContainer != null) {
-			unitContainer.moveContainedUnits(x, y);
-		}
 	}
 
 	public static void setPrice(int price) {

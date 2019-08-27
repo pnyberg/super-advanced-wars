@@ -1,7 +1,3 @@
-/**
- * TODO:
- *  - implement ContainingUnit-interface (and change to unitContainer?)
- */
 package units.treadMoving;
 
 import java.awt.Color;
@@ -19,11 +15,10 @@ public class APC extends Unit {
 	private static int price = 6000;
 	private static String typeName = "APC";
 
-	private Unit containedUnit;
 	private boolean droppingOff;
 
 	public APC(int x, int y, Color color, int tileSize) {
-		super(UnitType.APC, x, y, color, tileSize);
+		super(UnitType.APC_unit, x, y, color, tileSize);
 
 		movement = 6;
 		movementType = MovementType.TREAD;
@@ -34,14 +29,6 @@ public class APC extends Unit {
 		unitContainer = new UnitContainer(1);
 
 		unitImage = new APCImage(tileSize);
-	}
-
-	public void moveTo(int x, int y) {
-		super.moveTo(x, y);
-		// TODO: move unitContainer-units
-		if (containedUnit != null) {
-			containedUnit.moveTo(x, y);
-		}
 	}
 
 	public void regulateDroppingOff(boolean droppingOff) {
@@ -61,7 +48,7 @@ public class APC extends Unit {
 	}
 
 	public boolean isFull() {
-		return containedUnit != null;
+		return unitContainer.getContainerSize() == 1;
 	}
 
 	public boolean isDroppingOff() {

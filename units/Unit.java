@@ -51,6 +51,7 @@ public abstract class Unit {
 		attacking = false;
 		active = false;
 		capting = false;
+		unitContainer = new UnitContainer(0);
 
 		firingIndex = -1;
 		possibleFiringLocationList = new ArrayList<Point>();
@@ -62,6 +63,12 @@ public abstract class Unit {
 			capting = false;
 		}
 		position = new Point(x, y);
+
+		// move contained units
+		for (int i = 0 ; i < unitContainer.getNumberOfContainedUnits() ; i++) {
+			Unit containedUnit = unitContainer.getUnit(i);
+			containedUnit.moveTo(x, y);
+		}
 	}
 
 	public void regulateActive(boolean active) {
@@ -129,7 +136,7 @@ public abstract class Unit {
 	}
 	
 	public boolean hasUnitContainer() {
-		return unitContainer != null;
+		return unitContainer.getContainerSize() > 0;
 	}
 
 	public UnitSupply getUnitSupply() {

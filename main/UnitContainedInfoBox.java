@@ -50,9 +50,6 @@ public class UnitContainedInfoBox {
 
 		if (unit.hasUnitContainer() && !unit.getUnitContainer().isEmpty()) {
 			paintContainerInfo(g);
-		} else if (unit instanceof Cruiser) {
-			// TODO: write code
-			// may hold two copters
 		}
 	}
 	
