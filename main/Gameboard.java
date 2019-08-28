@@ -2,7 +2,6 @@
  * BUG-list
  *  - Cruiser going to port where TCopter is
  *  - Infantry enter Cruiser
- *  - TCopter with Infantry cannot enter Cruiser
  *  - Lander with APC in port gets Enter-option
  *  - APC with Infantry cannot enter Lander
  *  - Lander in Port with APC in it and Infantry blocking drop of gets Enter-option

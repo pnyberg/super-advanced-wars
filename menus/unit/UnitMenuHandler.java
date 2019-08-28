@@ -12,6 +12,7 @@ import map.buildings.BuildingHandler;
 import point.Point;
 import unitUtils.ContUnitHandler;
 import units.Unit;
+import units.airMoving.TCopter;
 import units.footMoving.Infantry;
 import units.footMoving.Mech;
 import units.seaMoving.Cruiser;
@@ -70,7 +71,7 @@ public class UnitMenuHandler {
 				Unit holdUnit = chosenUnit.getUnitContainer().getChosenUnit();
 				unitMenu.addContainedCargoRow(holdUnit);
 			}
-		} else if (chosenUnit.hasUnitContainer()) {
+		} else if (unitCanDropOffUnits(cursor)) {
 			int cursorTileX = cursor.getX() / gameProp.getMapDimension().tileSize;
 			int cursorTileY = cursor.getY() / gameProp.getMapDimension().tileSize;
 			// TODO: rewrite so it covers TCopter, APC, Lander, Cruiser
@@ -112,6 +113,17 @@ public class UnitMenuHandler {
 			}
 			chosenUnit.moveTo(cursor.getX(), cursor.getY());
 		}
+	}
+	
+	private boolean unitCanDropOffUnits(Cursor cursor) {
+		Unit chosenUnit = gameState.getChosenUnit();
+		if (!chosenUnit.hasUnitContainer()) {
+			return false;
+		}
+		if (chosenUnit instanceof TCopter && containerUnitHandler.copterEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
+			return false;
+		}
+		return true;
 	}
 	
 	public boolean unitCanMoveToPosition(int x, int y) {
