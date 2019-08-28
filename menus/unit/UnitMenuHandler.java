@@ -55,23 +55,22 @@ public class UnitMenuHandler {
 			unitMenu.enableFireOption();
 		}
 
+		if (allowEnterOption(cursor)) {
+			unitMenu.enableEnterOption();
+		}
+
 		if (chosenUnit instanceof Infantry || chosenUnit instanceof Mech) {
-			if (containerUnitHandler.footsoldierEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
-				unitMenu.enableEnterOption();
-			}
 			if (unitCanCaptAtPosition(chosenUnit, cursor.getX(), cursor.getY())) {
 				unitMenu.enableCaptOption();
 			}
-		} else if (chosenUnit instanceof APC) {
+		}
+		if (chosenUnit instanceof APC) {
 			// TODO: fix when supply is allowed
 			if (supplyHandler.apcMaySupply(cursor.getX(), cursor.getY())) {
 				unitMenu.enableSupplyOption();
 			}
-			if (chosenUnit.getUnitContainer().isFull()) {
-				Unit holdUnit = chosenUnit.getUnitContainer().getChosenUnit();
-				unitMenu.addContainedCargoRow(holdUnit);
-			}
-		} else if (unitCanDropOffUnits(cursor)) {
+		} 
+		if (unitCanDropOffUnits(cursor)) {
 			int cursorTileX = cursor.getX() / gameProp.getMapDimension().tileSize;
 			int cursorTileY = cursor.getY() / gameProp.getMapDimension().tileSize;
 			// TODO: rewrite so it covers TCopter, APC, Lander, Cruiser
@@ -90,13 +89,7 @@ public class UnitMenuHandler {
 					Unit holdUnit = chosenUnit.getUnitContainer().getUnit(i);
 					unitMenu.addContainedCargoRow(holdUnit);
 				}
-			} 
-		}
-
-		if (containerUnitHandler.landbasedEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
-			unitMenu.enableEnterOption();
-		} else if (containerUnitHandler.copterEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
-			unitMenu.enableEnterOption();
+			}
 		}
 
 		if (!areaChecker.areaOccupiedByFriendly(chosenUnit, cursor.getX(), cursor.getY())) {
@@ -115,12 +108,31 @@ public class UnitMenuHandler {
 		}
 	}
 	
+	private boolean allowEnterOption(Cursor cursor) {
+		Unit chosenUnit = gameState.getChosenUnit();
+		if (chosenUnit instanceof Infantry || chosenUnit instanceof Mech) {
+			if (containerUnitHandler.footsoldierEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
+				return true;
+			}
+		}
+		if (containerUnitHandler.landbasedEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
+			return true;
+		}
+		if (containerUnitHandler.copterEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
+			return true;
+		}
+		return false;
+	}
+	
 	private boolean unitCanDropOffUnits(Cursor cursor) {
 		Unit chosenUnit = gameState.getChosenUnit();
 		if (!chosenUnit.hasUnitContainer()) {
 			return false;
 		}
 		if (chosenUnit instanceof TCopter && containerUnitHandler.copterEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
+			return false;
+		}
+		if (chosenUnit instanceof APC && containerUnitHandler.landbasedEnterableUnitAtPosition(cursor.getX(), cursor.getY())) {
 			return false;
 		}
 		return true;

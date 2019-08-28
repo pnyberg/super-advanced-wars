@@ -150,6 +150,9 @@ public class ContUnitHandler {
 			return true;
 		}
 		Unit unit = unitGetter.getFriendlyUnit(x, y);
+		if (unit instanceof Cruiser) {
+			return false;
+		}
 		if (unit != null && unit.hasUnitContainer() && !unit.getUnitContainer().isFull()) {
 			return true;
 		}
@@ -167,6 +170,9 @@ public class ContUnitHandler {
 	public boolean copterEnterableUnitAtPosition(int x, int y) {
 		Unit unit = unitGetter.getFriendlyUnit(x, y);
 		Unit chosenUnit = gameState.getChosenUnit();
+		if (chosenUnit.getUnitCategory() != UnitCategory.COPTER) {
+			return false;
+		}
 		if (unit instanceof Cruiser && !unit.getUnitContainer().isFull() && unit != chosenUnit) {
 			return true;
 		} 
