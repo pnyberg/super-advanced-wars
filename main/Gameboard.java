@@ -2,7 +2,6 @@
  * BUG-list
  *  - Boat going to port where Unit is
  *  - Infantry moving to Port when Cruiser is there
- *  - Lander can enter Lander
  * 
  * TODO-list
  * - only one action/unit per turn

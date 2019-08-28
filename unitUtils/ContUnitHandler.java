@@ -161,6 +161,10 @@ public class ContUnitHandler {
 
 	public boolean landbasedEnterableUnitAtPosition(int x, int y) {
 		Unit unit = unitGetter.getFriendlyUnit(x, y);
+		Unit chosenUnit = gameState.getChosenUnit();
+		if (chosenUnit instanceof Lander) {
+			return false;
+		}
 		if (unit instanceof Lander && !unit.getUnitContainer().isFull()) {
 			return true;
 		}
