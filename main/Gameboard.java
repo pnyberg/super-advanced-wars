@@ -1,7 +1,7 @@
 /**
  * BUG-list
- *  - Boat going to port where Unit is
- *  - Infantry moving to Port when Cruiser is there
+ *  - Unit going to position where Unit is (non-enterable) (should not be A-pressable)
+ *  - APC can supply on wrong occasions (like moving to the neighbour-tile)
  * 
  * TODO-list
  * - only one action/unit per turn
