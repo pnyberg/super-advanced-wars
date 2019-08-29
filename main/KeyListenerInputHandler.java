@@ -228,7 +228,7 @@ public class KeyListenerInputHandler {
 				movementMap.isAcceptedMove(cursorX / gameProperties.getMapDimension().tileSize, 
 											cursorY / gameProperties.getMapDimension().tileSize) && 
 				gameState.getChosenRangeUnit() == null) {
-			if (unitMenuHandler.unitCanMoveToPosition(cursorX, cursorY)) {
+			if (unitGetter.getFriendlyUnit(cursorX, cursorY) != null && unitMenuHandler.unitCanMoveToPosition(cursorX, cursorY)) {
 				unitMenuHandler.handleOpenUnitMenu(cursor);
 			}
 		} else if (!unitSelected && !unitSelectable(cursorX, cursorY)) {

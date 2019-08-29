@@ -1,7 +1,6 @@
 /**
  * BUG-list
  *  - if a infantry is killed while capting, does the capt-score reset?
- *  - can move other players units (should not get menu)
  * 
  * TODO-list
  * - only one action/unit per turn
