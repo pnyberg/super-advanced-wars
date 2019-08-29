@@ -16,7 +16,7 @@ public class Mech extends Unit {
 	public Mech(int x, int y, Color color, int tileSize) {
 		super(UnitType.MECH, x, y, color, tileSize);
 
-		movement = 2;
+		movementSteps = 2;
 		movementType = MovementType.MECH;
 		unitClass = UnitCategory.FOOTMAN;
 		unitSupply = new UnitSupply(70, 3);

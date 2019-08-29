@@ -16,7 +16,7 @@ public class Rocket extends IndirectUnit {
 	public Rocket(int x, int y, Color color, int tileSize) {
 		super(UnitType.ROCKET, x, y, color, tileSize);
 
-		movement = 5;
+		movementSteps = 5;
 		movementType = MovementType.TIRE;
 		unitClass = UnitCategory.VEHICLE;
 		minimumRange = 3;

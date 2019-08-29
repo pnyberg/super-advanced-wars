@@ -20,7 +20,7 @@ public class APC extends Unit {
 	public APC(int x, int y, Color color, int tileSize) {
 		super(UnitType.APC_unit, x, y, color, tileSize);
 
-		movement = 6;
+		movementSteps = 6;
 		movementType = MovementType.TREAD;
 		attackType = AttackType.NONE;
 		unitClass = UnitCategory.VEHICLE;

@@ -17,7 +17,7 @@ public class Recon extends Unit {
 	public Recon(int x, int y, Color color, int tileSize) {
 		super(UnitType.RECON, x, y, color, tileSize);
 
-		movement = 8;
+		movementSteps = 8;
 		movementType = MovementType.TIRE;
 		unitClass = UnitCategory.VEHICLE;
 		unitSupply = new UnitSupply(80, 0);

@@ -55,7 +55,6 @@ public class KeyListenerInputHandler {
 	private RouteChecker routeChecker;
 	private DamageHandler damageHandler;
 	private CaptHandler captHandler;
-	private SupplyHandler supplyHandler;
 	private TurnHandler turnHandler;
 	private HeroPowerHandler heroPowerHandler;
 	private UnitWorthCalculator unitWorthCalculator;
@@ -71,20 +70,16 @@ public class KeyListenerInputHandler {
 		captHandler = new CaptHandler(gameState.getHeroHandler());
 		turnHandler = new TurnHandler(gameProperties, gameState);
 	
-		int tileSize = gameProperties.getMapDimension().tileSize;
-		
 		attackRangeHandler = new AttackRangeHandler(gameProperties, gameState);
 		routeChecker = new RouteChecker(gameProperties, gameState);
 		GameMap gameMap = gameProperties.getGameMap();
 		movementMap = gameState.getMovementMap();
-		AreaChecker areaChecker = new AreaChecker(gameState.getHeroHandler(), gameMap);
 		buildingMenu = new BuildingMenu(gameProperties, gameState);
 		damageHandler = new DamageHandler(gameState.getHeroHandler(), gameMap);
-		supplyHandler = new SupplyHandler(gameState, tileSize);
 		routeHandler = new RouteHandler(gameProperties, gameState);
 		containerUnitHandler = new ContUnitHandler(gameProperties, gameState);
 		attackHandler = new AttackHandler(gameProperties, gameState);
-		unitMenuHandler = new UnitMenuHandler(gameProperties, gameState, containerUnitHandler, supplyHandler, areaChecker, attackHandler);
+		unitMenuHandler = new UnitMenuHandler(gameProperties, gameState, attackHandler);
 
 		heroPowerHandler = new HeroPowerHandler(gameState.getHeroHandler());
 		unitWorthCalculator = new UnitWorthCalculator();
@@ -400,6 +395,8 @@ public class KeyListenerInputHandler {
 	}
 	
 	private void replentishSurroundingUnits(int x, int y) {
+		SupplyHandler supplyHandler = new SupplyHandler(gameState, gameProperties.getMapDimension().tileSize);
+
 		Unit unitToTheNorth = unitGetter.getFriendlyUnit(x, y - gameProperties.getMapDimension().tileSize);
 		Unit unitToTheEast = unitGetter.getFriendlyUnit(x + gameProperties.getMapDimension().tileSize, y);
 		Unit unitToTheSouth = unitGetter.getFriendlyUnit(x, y + gameProperties.getMapDimension().tileSize);

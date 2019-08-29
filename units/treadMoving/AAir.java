@@ -16,7 +16,7 @@ public class AAir extends Unit {
 	public AAir(int x, int y, Color color, int tileSize) {
 		super(UnitType.AAIR_unit, x, y, color, tileSize);
 
-		movement = 6;
+		movementSteps = 6;
 		movementType = MovementType.TREAD;
 		unitClass = UnitCategory.VEHICLE;
 		unitSupply = new UnitSupply(60, 9);

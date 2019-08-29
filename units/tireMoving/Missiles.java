@@ -16,7 +16,7 @@ public class Missiles extends IndirectUnit {
 	public Missiles(int x, int y, Color color, int tileSize) {
 		super(UnitType.MISSILES, x, y, color, tileSize);
 
-		movement = 4;
+		movementSteps = 4;
 		movementType = MovementType.TIRE;
 		unitClass = UnitCategory.VEHICLE;
 		minimumRange = 3;

@@ -16,7 +16,7 @@ public class BCopter extends Unit {
 	public BCopter(int x, int y, Color color, int tileSize) {
 		super(UnitType.BCOPTER, x, y, color, tileSize);
 
-		movement = 6;
+		movementSteps = 6;
 		movementType = MovementType.AIR;
 		unitClass = UnitCategory.COPTER;
 		unitSupply = new UnitSupply(99, 6);

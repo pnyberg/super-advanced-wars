@@ -16,7 +16,7 @@ public class MDTank extends Unit {
 	public MDTank(int x, int y, Color color, int tileSize) {
 		super(UnitType.MDTANK, x, y, color, tileSize);
 
-		movement = 5;
+		movementSteps = 5;
 		movementType = MovementType.TREAD;
 		unitClass = UnitCategory.VEHICLE;
 		unitSupply = new UnitSupply(50, 8);

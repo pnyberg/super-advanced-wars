@@ -16,7 +16,7 @@ public class Tank extends Unit {
 	public Tank(int x, int y, Color color, int tileSize) {
 		super(UnitType.TANK, x, y, color, tileSize);
 
-		movement = 6;
+		movementSteps = 6;
 		movementType = MovementType.TREAD;
 		unitClass = UnitCategory.VEHICLE;
 

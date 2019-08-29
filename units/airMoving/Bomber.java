@@ -16,7 +16,7 @@ public class Bomber extends Unit {
 	public Bomber(int x, int y, Color color, int tileSize) {
 		super(UnitType.BOMBER, x, y, color, tileSize);
 
-		movement = 7;
+		movementSteps = 7;
 		movementType = MovementType.AIR;
 		unitClass = UnitCategory.PLANE;
 		unitSupply = new UnitSupply(99, 9);

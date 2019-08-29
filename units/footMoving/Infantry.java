@@ -17,7 +17,7 @@ public class Infantry extends Unit {
 	public Infantry(int x, int y, Color color, int tileSize) {
 		super(UnitType.INFANTRY, x, y, color, tileSize);
 
-		movement = 3;
+		movementSteps = 3;
 		movementType = MovementType.INFANTRY;
 		unitClass = UnitCategory.FOOTMAN;
 		unitSupply = new UnitSupply(99, 0);

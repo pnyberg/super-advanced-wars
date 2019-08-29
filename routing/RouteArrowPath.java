@@ -1,21 +1,15 @@
-/**
- * @TODO:
- *  - what happens if a tank want to go round a wood (U-movement) = will give it endless loop
- *  - also, if (+2,0) is wood, (+3,0) is wood, if (+2,+1) is wood, (+3,+1) is wood and the 
- *    rest is road, what happens if you try to move the cursor from (+4,+2)->(+4,+1)->(+3,+1)
- * 	  result: will get stuck
- *  - fix it so that recountPath() doesn't need the invalidCurrentPath()-while-loop (in method updateArrowPath())
- *     that is, rewrite recountPath()
- */
 package routing;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.MapDimension;
 import graphics.RouteArrowPathPainter;
+import hero.HeroHandler;
+import map.area.AreaChecker;
 import point.Point;
 import unitUtils.MovementType;
 import units.Unit;
@@ -25,12 +19,16 @@ public class RouteArrowPath {
 	private ArrayList<Point> arrowPoints;
 	private RouteArrowPathPainter routeArrowPathPainter;
 	private MovementCostCalculator movementCostCalculator;
+	private AreaChecker areaChecker;
+	private HeroHandler heroHandler;
 
 	public RouteArrowPath(GameProperties gameProperties, GameState gameState) {
 		this.mapDimension = gameProperties.getMapDimension();
 		arrowPoints = gameState.getArrowPoints();
 		routeArrowPathPainter = new RouteArrowPathPainter(mapDimension);
-		this.movementCostCalculator = new MovementCostCalculator(gameProperties.getGameMap());
+		movementCostCalculator = new MovementCostCalculator(gameProperties.getGameMap());
+		areaChecker = new AreaChecker(gameState.getHeroHandler(), gameProperties.getGameMap());
+		heroHandler = gameState.getHeroHandler();
 	}
 	
 	public void addArrowPoint(Point point) {
@@ -49,13 +47,7 @@ public class RouteArrowPath {
 		} else if (movementMap.isAcceptedMove(newPosTileX, newPosTileY)) {
 			addArrowPoint(newPosition);
 
-			if (newPointNotConnectedToPreviousPoint()) {
-				recountPath(newPosition, chosenUnit);
-				// @TODO: add what happens when you make a "jump" between accepted locations
-			}
-
-			// @TODO: if movement is changed due to for example mountains, what happens?
-			while (invalidCurrentPath(chosenUnit)) {
+			if (newPointNotConnectedToPreviousPoint() || pathCostsToMuchMovement(chosenUnit)) {
 				recountPath(newPosition, chosenUnit);
 			}
 		}
@@ -83,22 +75,20 @@ public class RouteArrowPath {
 		int tiley2 = arrowPoints.get(size - 1).getY() / mapDimension.tileSize;
 		return Math.abs(tilex1 - tilex2) + Math.abs(tiley1 - tiley2) > 1;
 	}
-
-	private boolean invalidCurrentPath(Unit chosenUnit) {
-		int maximumMovement = chosenUnit.getMovement();
-		int currentMovementValue = 0;
-
+	
+	private boolean pathCostsToMuchMovement(Unit chosenUnit) {
+		int movementSteps = chosenUnit.getMovementSteps();
 		for (int i = 1 ; i < arrowPoints.size() ; i++) {
 			int tileX = arrowPoints.get(i).getX() / mapDimension.tileSize;
 			int tileY = arrowPoints.get(i).getY() / mapDimension.tileSize;
-			currentMovementValue += movementCostCalculator.movementCost(tileX, tileY, chosenUnit.getMovementType());
-			if (currentMovementValue > maximumMovement) {
+			movementSteps -= movementCostCalculator.movementCost(tileX, tileY, chosenUnit.getMovementType());
+			if (movementSteps < 0) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	private void removeArrowPoint(int index) {
 		arrowPoints.remove(index);
 	}
@@ -120,7 +110,7 @@ public class RouteArrowPath {
 
 		clear();
 		addArrowPoint(chosenUnit.getPosition());
-
+		/*
 		while(Math.abs(diffTileX) > 0 || Math.abs(diffTileY) > 0) {
 			int last = getNumberOfArrowPoints() - 1;
 			if (arrowPoints.get(last).isSamePosition(newPosition)) {
@@ -151,6 +141,60 @@ public class RouteArrowPath {
 				diffTileY -= diff * movementCost;
 			}
 		}
+		*/
+		int[][] maximumStepsLeftWhenPositionReached = new int[mapDimension.getTileWidth()][mapDimension.getTileHeight()];
+		Point[][] previousTilePosition = new Point[mapDimension.getTileWidth()][mapDimension.getTileHeight()];
+		Point lastTilePosition = null;
+		int tileX = chosenUnit.getPosition().getX() / mapDimension.tileSize;
+		int tileY = chosenUnit.getPosition().getY() / mapDimension.tileSize;
+		int numberOfMovementStepsLeft = chosenUnit.getMovementSteps();
+		checkPathViaTile(maximumStepsLeftWhenPositionReached, previousTilePosition, lastTilePosition, chosenUnit, tileX, tileY, numberOfMovementStepsLeft);
+		
+		Stack<Point> reversedTilePath = new Stack<>();
+		Point tilePosition = new Point(newPosition.getX() / mapDimension.tileSize, newPosition.getY() / mapDimension.tileSize);
+		while(true) {
+			reversedTilePath.add(tilePosition);
+			tilePosition = previousTilePosition[tilePosition.getX()][tilePosition.getY()];
+			if (tilePosition.getX() == chosenUnit.getPosition().getX() / mapDimension.tileSize
+					&& tilePosition.getY() == chosenUnit.getPosition().getY() / mapDimension.tileSize) {
+				break;
+			}
+		}
+		while (!reversedTilePath.isEmpty()) {
+			Point nextTilePosition = reversedTilePath.pop();
+			int x = nextTilePosition.getX() * mapDimension.tileSize;
+			int y = nextTilePosition.getY() * mapDimension.tileSize;
+			addArrowPoint(new Point(x, y));
+		}
+	}
+	
+	private void checkPathViaTile(int[][] maximumStepsLeftWhenPositionReached, Point[][] previousTilePosition, Point lastTilePosition, Unit chosenUnit, int tileX, int tileY, int numberOfMovementStepsLeft) {
+		if (numberOfMovementStepsLeft < 0) {
+			return;
+		}
+		if (tileX < 0 || tileX >= mapDimension.getTileWidth() || tileY < 0 || tileY >= mapDimension.getTileHeight()) {
+			return;
+		}
+		if (maximumStepsLeftWhenPositionReached[tileX][tileY] > numberOfMovementStepsLeft) {
+			return;
+		}
+		if (maximumStepsLeftWhenPositionReached[tileX][tileY] == numberOfMovementStepsLeft
+				&& previousTilePosition[tileX][tileY] != null) {
+			return;
+		}
+		if (areaChecker.areaOccupiedByNonFriendly(tileX * mapDimension.tileSize, tileY * mapDimension.tileSize, heroHandler.getHeroFromUnit(chosenUnit))) {
+			return;
+		}
+
+		maximumStepsLeftWhenPositionReached[tileX][tileY] = numberOfMovementStepsLeft;
+		previousTilePosition[tileX][tileY] = lastTilePosition;
+		Point currentTilePosition = new Point(tileX, tileY);
+		int movementCost = movementCostCalculator.movementCost(tileX, tileY, chosenUnit.getMovementType());
+
+		checkPathViaTile(maximumStepsLeftWhenPositionReached, previousTilePosition, currentTilePosition, chosenUnit, tileX+1, tileY, numberOfMovementStepsLeft - movementCost);
+		checkPathViaTile(maximumStepsLeftWhenPositionReached, previousTilePosition, currentTilePosition, chosenUnit, tileX, tileY+1, numberOfMovementStepsLeft - movementCost);
+		checkPathViaTile(maximumStepsLeftWhenPositionReached, previousTilePosition, currentTilePosition, chosenUnit, tileX-1, tileY, numberOfMovementStepsLeft - movementCost);
+		checkPathViaTile(maximumStepsLeftWhenPositionReached, previousTilePosition, currentTilePosition, chosenUnit, tileX, tileY-1, numberOfMovementStepsLeft - movementCost);
 	}
 	
 	public int calculateFuelUsed(MovementType movementType) {

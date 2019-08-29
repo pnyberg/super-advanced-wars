@@ -16,7 +16,7 @@ public class Fighter extends Unit {
 	public Fighter(int x, int y, Color color, int tileSize) {
 		super(UnitType.FIGHTER, x, y, color, tileSize);
 
-		movement = 9;
+		movementSteps = 9;
 		movementType = MovementType.AIR;
 		unitClass = UnitCategory.PLANE;
 		unitSupply = new UnitSupply(99, 9);

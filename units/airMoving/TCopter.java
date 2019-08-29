@@ -22,7 +22,7 @@ public class TCopter extends Unit {
 	public TCopter(int x, int y, Color color, int tileSize) {
 		super(UnitType.TCOPTER, x, y, color, tileSize);
 
-		movement = 6;
+		movementSteps = 6;
 		movementType = MovementType.AIR;
 		attackType = AttackType.NONE;
 		unitClass = UnitCategory.COPTER;

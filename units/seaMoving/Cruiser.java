@@ -19,7 +19,7 @@ public class Cruiser extends Unit {
 	public Cruiser(int x, int y, Color color, int tileSize) {
 		super(UnitType.CRUISER, x, y, color, tileSize);
 
-		movement = 6;
+		movementSteps = 6;
 		movementType = MovementType.SHIP;
 		unitClass = UnitCategory.BOAT;
 		unitSupply = new UnitSupply(99, 9);

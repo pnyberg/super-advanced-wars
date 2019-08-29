@@ -29,7 +29,7 @@ public abstract class Unit {
 	protected UnitType unitType;
 	protected UnitCategory unitClass;
 
-	protected int movement;
+	protected int movementSteps;
 	protected MovementType movementType;
 
 	protected int firingIndex;
@@ -151,8 +151,8 @@ public abstract class Unit {
 		return color;
 	}
 	
-	public int getMovement() {
-		return movement;
+	public int getMovementSteps() {
+		return movementSteps;
 	}
 
 	public MovementType getMovementType() {

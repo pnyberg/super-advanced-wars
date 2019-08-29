@@ -16,13 +16,12 @@ import units.airMoving.TCopter;
 import units.footMoving.Infantry;
 import units.footMoving.Mech;
 import units.seaMoving.Cruiser;
-import units.seaMoving.Lander;
 import units.treadMoving.APC;
 
 public class UnitMenuHandler {
-	private UnitMenu unitMenu;
-	private GameProperties gameProp;
+	private GameProperties gameProperties;
 	private GameState gameState;
+	private UnitMenu unitMenu;
 	private ContUnitHandler containerUnitHandler;
 	private SupplyHandler supplyHandler;
 	private UnitGetter unitGetter;
@@ -31,20 +30,18 @@ public class UnitMenuHandler {
 	private AttackHandler attackHandler;
 
 	// TODO: rewrite with fewer parameters
-	public UnitMenuHandler(GameProperties gameProp, GameState gameState, ContUnitHandler containerUnitHandler, SupplyHandler supplyHandler, AreaChecker areaChecker, AttackHandler attackHandler) {
-		unitMenu = new UnitMenu(gameProp.getMapDimension().tileSize, gameState);
-		this.gameProp = gameProp;
+	public UnitMenuHandler(GameProperties gameProperties, GameState gameState, AttackHandler attackHandler) {
+		this.gameProperties = gameProperties;
 		this.gameState = gameState;
-		this.containerUnitHandler = containerUnitHandler;
-		this.supplyHandler = supplyHandler;
-		this.unitGetter = new UnitGetter(gameState.getHeroHandler());
-		this.areaChecker = areaChecker;
-		this.buildingHandler = new BuildingHandler(gameState);
 		this.attackHandler = attackHandler;
-		this.containerUnitHandler = containerUnitHandler; 
+		unitMenu = new UnitMenu(gameProperties.getMapDimension().tileSize, gameState);
+		containerUnitHandler = new ContUnitHandler(gameProperties, gameState);
+		supplyHandler = new SupplyHandler(gameState, gameProperties.getMapDimension().tileSize);
+		unitGetter = new UnitGetter(gameState.getHeroHandler());
+		areaChecker = new AreaChecker(gameState.getHeroHandler(), gameProperties.getGameMap());
+		buildingHandler = new BuildingHandler(gameState);
 	}
 
-	// TODO: rewrite code to make it more readable
 	public void handleOpenUnitMenu(Cursor cursor) {
 		Unit chosenUnit = gameState.getChosenUnit();
 		boolean hurtAtSamePosition = unitGetter.hurtSameTypeUnitAtPosition(chosenUnit, cursor.getX(), cursor.getY());
@@ -68,8 +65,8 @@ public class UnitMenuHandler {
 			unitMenu.enableSupplyOption();
 		} 
 		if (unitCanDropOffUnits(cursor)) {
-			int cursorTileX = cursor.getX() / gameProp.getMapDimension().tileSize;
-			int cursorTileY = cursor.getY() / gameProp.getMapDimension().tileSize;
+			int cursorTileX = cursor.getX() / gameProperties.getMapDimension().tileSize;
+			int cursorTileY = cursor.getY() / gameProperties.getMapDimension().tileSize;
 			// TODO: rewrite so it covers TCopter, APC, Lander, Cruiser
 			if (containerUnitHandler.landerAtDroppingOffPosition(cursor.getX(), cursor.getY())) {
 				for (int i = 0 ; i < chosenUnit.getUnitContainer().getNumberOfContainedUnits() ; i++) {

@@ -1,20 +1,12 @@
 /**
- * BUG-list
- *  - APC can supply on wrong occasions (like moving to the neighbour-tile)
- * 
  * TODO-list
  * - only one action/unit per turn
  * - change POWER/SUPER-text, maybe use a pre-written text?
- * - add so that MiniCannons can be attacked/destroyed
- *   - indirects fixed, need to fix directs
  * - why does the tanks movementmap-hang up?
  * - enter classes for HQ, ev Silo
  * - FOG
- * - removed recalculating route which also removes movement-control within accepted area (infantrys may take more than three steps)
- *   - infantry may go over two mountains (very bad)
  * - fix so not crashing on recalculating route
  * - first attack take ages to calculate
- * - refactor so that methods have "maximum" of three parameters
  *
  * @TODO: substitute ArrayList with HashMap for better performance
  */

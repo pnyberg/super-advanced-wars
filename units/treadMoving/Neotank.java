@@ -16,7 +16,7 @@ public class Neotank extends Unit {
 	public Neotank(int x, int y, Color color, int tileSize) {
 		super(UnitType.NEOTANK, x, y, color, tileSize);
 
-		movement = 6;
+		movementSteps = 6;
 		movementType = MovementType.TREAD;
 		unitClass = UnitCategory.VEHICLE;
 		unitSupply = new UnitSupply(99, 9);

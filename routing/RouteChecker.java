@@ -39,7 +39,7 @@ public class RouteChecker {
 		maxMovementSteps = new int[mapDimension.getTileWidth()][mapDimension.getTileHeight()];
 		int tileX = checkedUnit.getPosition().getX() / mapDimension.tileSize;
 		int tileY = checkedUnit.getPosition().getY() / mapDimension.tileSize;
-		findPossibleMovementLocations(tileX, tileY, checkedUnit.getMovement(), checkedUnit);
+		findPossibleMovementLocations(tileX, tileY, checkedUnit.getMovementSteps(), checkedUnit);
 		return movementMap;
 	}
 

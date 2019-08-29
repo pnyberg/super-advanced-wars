@@ -16,7 +16,7 @@ public class Artillery extends IndirectUnit {
 	public Artillery(int x, int y, Color color, int tileSize) {
 		super(UnitType.ARTILLERY, x, y, color, tileSize);
 
-		movement = 5;
+		movementSteps = 5;
 		movementType = MovementType.TREAD;
 		unitClass = UnitCategory.VEHICLE;
 		minimumRange = 2;

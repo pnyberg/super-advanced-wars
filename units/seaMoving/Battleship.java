@@ -16,7 +16,7 @@ public class Battleship extends IndirectUnit {
 	public Battleship(int x, int y, Color color, int tileSize) {
 		super(UnitType.BATTLESHIP, x, y, color, tileSize);
 
-		movement = 5;
+		movementSteps = 5;
 		movementType = MovementType.SHIP;
 		unitClass = UnitCategory.BOAT;
 		minimumRange = 2;

@@ -27,7 +27,7 @@ public class Lander extends Unit {
 	public Lander(int x, int y, Color color, int tileSize) {
 		super(UnitType.LANDER, x, y, color, tileSize);
 
-		movement = 6;
+		movementSteps = 6;
 		movementType = MovementType.TRANSPORT;
 		attackType = AttackType.NONE;
 		unitClass = UnitCategory.BOAT;
