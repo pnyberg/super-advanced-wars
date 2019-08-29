@@ -1,12 +1,13 @@
 /**
+ * BUG-list
+ *  - if a infantry is killed while capting, does the capt-score reset?
+ *  - can move other players units (should not get menu)
+ * 
  * TODO-list
  * - only one action/unit per turn
  * - change POWER/SUPER-text, maybe use a pre-written text?
- * - why does the tanks movementmap-hang up?
  * - enter classes for HQ, ev Silo
  * - FOG
- * - fix so not crashing on recalculating route
- * - first attack take ages to calculate
  *
  * @TODO: substitute ArrayList with HashMap for better performance
  */
@@ -52,7 +53,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		
 		// Load game
 		GameLoader gameLoader = new GameLoader(heroHandler, tileSize);
-		GameLoadingObject gameLoadingObject = gameLoader.loadMap("map-files/test_map.txt");
+		GameLoadingObject gameLoadingObject = gameLoader.loadMap("map-files/test_play_map.txt");
 		gameProperties = gameLoadingObject.getGameProperties();
 		gameState = gameLoadingObject.getInitalGameState();
 		
