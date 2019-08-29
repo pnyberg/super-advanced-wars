@@ -228,7 +228,7 @@ public class KeyListenerInputHandler {
 				movementMap.isAcceptedMove(cursorX / gameProperties.getMapDimension().tileSize, 
 											cursorY / gameProperties.getMapDimension().tileSize) && 
 				gameState.getChosenRangeUnit() == null) {
-			if (unitGetter.getFriendlyUnit(cursorX, cursorY) != null && unitMenuHandler.unitCanMoveToPosition(cursorX, cursorY)) {
+			if (/*unitGetter.getFriendlyUnit(cursorX, cursorY) != null &&*/ unitMenuHandler.unitCanMoveToPosition(cursorX, cursorY)) {
 				unitMenuHandler.handleOpenUnitMenu(cursor);
 			}
 		} else if (!unitSelected && !unitSelectable(cursorX, cursorY)) {
@@ -457,6 +457,13 @@ public class KeyListenerInputHandler {
 
 	private void removeUnitIfDead(Unit unit) {
 		if (unit.getUnitHealth().isDead()) {
+			// reset capting if active
+			Point point = unit.getPosition();
+			Building building = buildingHandler.getBuilding(point.getX(), point.getY());
+			if (building != null) {
+				building.resetCapting();
+			}
+			// remove unit
 			Hero unitsHero = gameState.getHeroHandler().getHeroFromUnit(unit);
 			unitsHero.getTroopHandler().removeTroop(unit);
 		}
