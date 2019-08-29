@@ -8,16 +8,20 @@ import gameObjects.MapDimension;
 import map.BoundsChecker;
 import map.LocationGetter;
 import map.UnitGetter;
+import map.area.AreaChecker;
 import map.structures.Structure;
 import map.structures.StructureHandler;
+import menus.unit.UnitMenuHandler;
 import point.Point;
 import routing.MovementMap;
 import routing.RouteChecker;
 import unitUtils.AttackType;
+import unitUtils.ContUnitHandler;
 import units.IndirectUnit;
 import units.Unit;
 
 public class AttackHandler {
+	private GameProperties gameProperties;
 	private GameState gameState;
 	private MapDimension mapDimension;
 	private UnitGetter unitGetter;
@@ -27,6 +31,7 @@ public class AttackHandler {
 	private RouteChecker routeChecker;
 	
 	public AttackHandler(GameProperties gameProperties, GameState gameState) {
+		this.gameProperties = gameProperties;
 		this.gameState = gameState;
 		mapDimension = gameProperties.getMapDimension();
 		unitGetter = new UnitGetter(gameState.getHeroHandler());
@@ -109,7 +114,9 @@ public class AttackHandler {
 		MovementMap movementMap = routeChecker.retrievePossibleMovementLocations(chosenUnit);
 		for (int tileY = 0 ; tileY < mapDimension.getTileHeight() ; tileY++) {
 			for (int tileX = 0 ; tileX < mapDimension.getTileWidth() ; tileX++) {
-				if (movementMap.isAcceptedMove(tileX, tileY)) {
+				int x = tileX * mapDimension.tileSize;
+				int y = tileY * mapDimension.tileSize;
+				if (movementMap.isAcceptedMove(tileX, tileY) && unitCanMoveToPosition(chosenUnit, x, y)) {
 					// add possible attack-locations from "current position"
 					addRangeMapLocationIfValid(tileX, tileY, Direction.NORTH);
 					addRangeMapLocationIfValid(tileX, tileY, Direction.EAST);
@@ -119,6 +126,18 @@ public class AttackHandler {
 			}
 		}
 		movementMap.clearMovementMap();
+	}
+	
+	private boolean unitCanMoveToPosition(Unit chosenUnit, int x, int y) {
+		AreaChecker areaChecker = new AreaChecker(gameState.getHeroHandler(), gameProperties.getGameMap());
+		ContUnitHandler containerUnitHandler = new ContUnitHandler(gameProperties, gameState);
+		if (!areaChecker.areaOccupiedByFriendly(chosenUnit, x, y)) {
+			return true;
+		}
+		if (containerUnitHandler.unitEntryingContainerUnit(chosenUnit, x, y)) {
+			return true;
+		}
+		return unitGetter.hurtSameTypeUnitAtPosition(chosenUnit, x, y);
 	}
 	
 	private void addRangeMapLocationIfValid(int tileX, int tileY, Direction direction) {

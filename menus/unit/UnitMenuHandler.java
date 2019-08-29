@@ -141,7 +141,6 @@ public class UnitMenuHandler {
 	public boolean unitCanMoveToPosition(int x, int y) {
 		Unit chosenUnit = gameState.getChosenUnit();
 		if (!areaChecker.areaOccupiedByFriendly(chosenUnit, x, y)) {
-System.out.println("here");
 			return true;
 		}
 		if (containerUnitHandler.unitEntryingContainerUnit(chosenUnit, x, y)) {
