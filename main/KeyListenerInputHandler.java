@@ -229,7 +229,7 @@ public class KeyListenerInputHandler {
 		} else if (buildingMenu.isVisible()) {
 			buildingMenu.buySelectedTroop();
 			buildingMenu.closeMenu();
-		} else if (gameState.getChosenUnit() != null && 
+		} else if (gameState.getChosenUnit() != null && // TODO: rewrite this guard
 				movementMap.isAcceptedMove(cursorX / gameProperties.getMapDimension().tileSize, 
 											cursorY / gameProperties.getMapDimension().tileSize) && 
 				gameState.getChosenRangeUnit() == null) {

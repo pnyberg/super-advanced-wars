@@ -64,11 +64,8 @@ public class UnitMenuHandler {
 				unitMenu.enableCaptOption();
 			}
 		}
-		if (chosenUnit instanceof APC) {
-			// TODO: fix when supply is allowed
-			if (supplyHandler.apcMaySupply(cursor.getX(), cursor.getY())) {
-				unitMenu.enableSupplyOption();
-			}
+		if (chosenUnit instanceof APC && supplyHandler.apcMaySupply(chosenUnit, cursor.getX(), cursor.getY())) {
+			unitMenu.enableSupplyOption();
 		} 
 		if (unitCanDropOffUnits(cursor)) {
 			int cursorTileX = cursor.getX() / gameProp.getMapDimension().tileSize;

@@ -17,10 +17,10 @@ public class SupplyHandler {
 		unit.getUnitSupply().replentish();
 	}
 
-	public boolean apcMaySupply(int x, int y) {
-		return unitGetter.getFriendlyUnit(x + tileSize, y) != null 
-				|| unitGetter.getFriendlyUnit(x, y + tileSize) != null
-				|| unitGetter.getFriendlyUnit(x - tileSize, y) != null
-				|| unitGetter.getFriendlyUnit(x, y - tileSize) != null;
+	public boolean apcMaySupply(Unit unit, int x, int y) {
+		return unitGetter.getFriendlyUnitExceptSelf(unit, x + tileSize, y) != null 
+				|| unitGetter.getFriendlyUnitExceptSelf(unit, x, y + tileSize) != null
+				|| unitGetter.getFriendlyUnitExceptSelf(unit, x - tileSize, y) != null
+				|| unitGetter.getFriendlyUnitExceptSelf(unit, x, y - tileSize) != null;
 	}
 }

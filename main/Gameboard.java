@@ -1,6 +1,5 @@
 /**
  * BUG-list
- *  - Unit going to position where Unit is (non-enterable) (should not be A-pressable)
  *  - APC can supply on wrong occasions (like moving to the neighbour-tile)
  * 
  * TODO-list
