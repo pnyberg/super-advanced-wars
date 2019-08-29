@@ -13,9 +13,9 @@ public class AreaChecker {
 	private GameMap gameMap;
 	private boolean[][] moveabilityMatrix;
 
-	public AreaChecker(HeroHandler heroHandler, GameMap gridMap) {
+	public AreaChecker(HeroHandler heroHandler, GameMap gameMap) {
 		this.unitGetter = new UnitGetter(heroHandler);
-		this.gameMap = gridMap;
+		this.gameMap = gameMap;
 		moveabilityMatrix = new MoveabilityMatrixFactory().getMoveabilityMatrix();
 	}
 
@@ -33,10 +33,7 @@ public class AreaChecker {
 	}
 
 	public boolean areaOccupiedByFriendly(Unit chosenUnit, int x, int y) {
-		Unit testFriendlyUnit = unitGetter.getFriendlyUnit(x, y);
-		if (chosenUnit == testFriendlyUnit) {
-			return false;
-		}
+		Unit testFriendlyUnit = unitGetter.getFriendlyUnitExceptSelf(chosenUnit, x, y);
 		return testFriendlyUnit != null;
 	}
 

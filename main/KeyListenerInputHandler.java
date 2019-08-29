@@ -229,10 +229,11 @@ public class KeyListenerInputHandler {
 		} else if (buildingMenu.isVisible()) {
 			buildingMenu.buySelectedTroop();
 			buildingMenu.closeMenu();
-		} else if (gameState.getChosenUnit() != null && movementMap.isAcceptedMove(cursorX / gameProperties.getMapDimension().tileSize, cursorY / gameProperties.getMapDimension().tileSize) && gameState.getChosenRangeUnit() == null) {
-			int x = gameState.getChosenUnit().getPosition().getX();
-			int y = gameState.getChosenUnit().getPosition().getY();
-			if (unitGetter.getFriendlyUnit(x, y) != null && unitMenuHandler.unitCanMoveToPosition(x, y)) {
+		} else if (gameState.getChosenUnit() != null && 
+				movementMap.isAcceptedMove(cursorX / gameProperties.getMapDimension().tileSize, 
+											cursorY / gameProperties.getMapDimension().tileSize) && 
+				gameState.getChosenRangeUnit() == null) {
+			if (unitMenuHandler.unitCanMoveToPosition(cursorX, cursorY)) {
 				unitMenuHandler.handleOpenUnitMenu(cursor);
 			}
 		} else if (!unitSelected && !unitSelectable(cursorX, cursorY)) {
