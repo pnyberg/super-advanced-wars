@@ -58,9 +58,7 @@ public class UnitInfoBox {
 		int x = anchorPoint.getX() + (width-tileSize)/2;
 		int y = anchorPoint.getY() + 19;
 		unit.getUnitImage().paint(g, x, y, unitColor);
-		if (unit.isCapting()) {
-			unit.paintCaptFlag(g, x, y, tileSize);
-		}
+		unit.paintFlags(g, x, y, tileSize);
 	}
 	
 	// TODO: replace code with image

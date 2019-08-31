@@ -1,14 +1,26 @@
 /**
  * BUG-list
- *  - can move enemies units
- * 
+ *  - Infantry can Fire while entering APC
+ *  
  * TODO-list
  * - only one action/unit per turn
  * - change POWER/SUPER-text, maybe use a pre-written text?
  * - enter classes for HQ, ev Silo
  * - FOG
+ * - Subs
+ * - implement a UnitContainer-interface for transport units?
+ * - possibly move damage-box to info-row?
+ * - show health structures
+ * - implement Intel-page
+ * - fix cursor on CO-unit-view
+ * - implement so user can flip between CO-unit-views
+ * - implement Unit-info-view (Weapon with effectiveness both Main and Secondary, Move, Vision, Fuel, General info)
+ * - implement Terrain-info-view (Defence, Funds and Repair if feasible, Movement-icons, General info)
+ * - implement Mini-map view (Select-view)
+ * - implement holding B while on terrain makes units more transparent
+ * - implement "Tab" to next active unit
  *
- * @TODO: substitute ArrayList with HashMap for better performance
+ * @TODO: substitute ArrayList with HashMap for better performance?
  */
 package main;
 
@@ -52,7 +64,7 @@ public class Gameboard extends JPanel implements KeyListener {
 		
 		// Load game
 		GameLoader gameLoader = new GameLoader(heroHandler, tileSize);
-		GameLoadingObject gameLoadingObject = gameLoader.loadMap("map-files/test_play_map.txt");
+		GameLoadingObject gameLoadingObject = gameLoader.loadMap("map-files/test_map.txt");
 		gameProperties = gameLoadingObject.getGameProperties();
 		gameState = gameLoadingObject.getInitalGameState();
 		
@@ -90,6 +102,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	 * KeyListener-methods
 	 */
 	public void keyPressed(KeyEvent e) {
+System.out.println("pressed");
 		keyListenerInputHandler.manageKeyPressedInput(e);
 		updatePortraitSideChoice();
 		repaint();

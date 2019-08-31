@@ -178,20 +178,40 @@ public abstract class Unit {
 	public void paint(Graphics g, int tileSize) {
 		paintUnit(g, tileSize);
 		unitHealth.paintHP(g, position.getX(), position.getY(), tileSize);
+		paintFlags(g, position.getX(), position.getY(), tileSize);
+	}
+	
+	public void paintFlags(Graphics g, int unitX, int unitY, int tileSize) {
 		if (capting) {
-			paintCaptFlag(g, position.getX(), position.getY(), tileSize);
+			paintCaptFlag(g, unitX, unitY, tileSize);
+		}
+		if (unitContainer.getNumberOfContainedUnits() > 0) {
+			paintContainFlag(g, unitX, unitY, tileSize);
 		}
 	}
 	
-	public void paintCaptFlag(Graphics g, int unitX, int unitY, int tileSize) {
+	private void paintCaptFlag(Graphics g, int unitX, int unitY, int tileSize) {
+		paintUnitBox(g, unitX, unitY, tileSize);
+		
+		g.fillRect(unitX + tileSize / 4, unitY + 17 * tileSize / 25, tileSize / 8, 4);
+		g.drawLine(unitX + tileSize / 4, unitY + 11 * tileSize / 15, unitX + tileSize / 4, unitY + 12 * tileSize / 15);
+		g.fillRect(unitX + tileSize / 5, unitY + 13 * tileSize / 15, tileSize / 6, 2);
+	}
+	
+	private void paintContainFlag(Graphics g, int unitX, int unitY, int tileSize) {
+		paintUnitBox(g, unitX, unitY, tileSize);
+
+		g.fillRect(unitX + 6 * tileSize / 25, unitY + 17 * tileSize / 25, tileSize / 12, 2);
+		g.fillRect(unitX + 4 * tileSize / 25, unitY + 2 + 17 * tileSize / 25, tileSize / 12, 2);
+		g.fillRect(unitX + 8 * tileSize / 25, unitY + 2 + 17 * tileSize / 25, tileSize / 12, 2);
+		g.fillRect(unitX + 4 * tileSize / 25, unitY + 1 + 19 * tileSize / 25, 3 * tileSize / 12 - 1, tileSize / 8);
+	}
+	
+	private void paintUnitBox(Graphics g, int unitX, int unitY, int tileSize) {
 		g.setColor(Color.white);
 		g.fillRect(unitX + tileSize / 10, unitY + 3 * tileSize / 5, tileSize / 3, tileSize / 3);
 		g.setColor(Color.black);
 		g.drawRect(unitX + tileSize / 10, unitY + 3 * tileSize / 5, tileSize / 3, tileSize / 3);
-
-		g.fillRect(unitX + tileSize / 4, unitY + 17 * tileSize / 25, tileSize / 8, tileSize / 12);
-		g.drawLine(unitX + tileSize / 4, unitY + 11 * tileSize / 15, unitX + tileSize / 4, unitY + 12 * tileSize / 15);
-		g.fillRect(unitX + tileSize / 5, unitY + 12 * tileSize / 15, tileSize / 6, tileSize / 12);
 	}
 
 	protected void paintUnit(Graphics g, int tileSize) {
