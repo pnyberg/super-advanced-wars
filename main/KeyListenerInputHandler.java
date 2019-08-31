@@ -12,7 +12,7 @@ import combat.DamageHandler;
 import cursors.Cursor;
 import gameObjects.GameProperties;
 import gameObjects.GameState;
-import graphics.MapViewType;
+import graphics.ViewType;
 import hero.Hero;
 import hero.heroPower.HeroPowerHandler;
 import map.GameMap;
@@ -38,6 +38,17 @@ import units.*;
 import units.seaMoving.*;
 
 public class KeyListenerInputHandler {
+	private final int upArrowKeyEventIndex = KeyEvent.VK_UP;
+	private final int rightArrowKeyEventIndex = KeyEvent.VK_RIGHT;
+	private final int downArrowKeyEventIndex = KeyEvent.VK_DOWN;
+	private final int leftArrowKeyEventIndex = KeyEvent.VK_LEFT;
+	private final int aButtonKeyEventIndex = KeyEvent.VK_A;
+	private final int bButtonKeyEventIndex = KeyEvent.VK_B;
+	private final int startButtonKeyEventIndex = KeyEvent.VK_S;
+	private final int selectButtonKeyEventIndex = KeyEvent.VK_F;
+	private final int leftBumberKeyEventIndex = KeyEvent.VK_Q;
+	private final int rightBumberKeyEventIndex = KeyEvent.VK_W;
+	
 	private GameProperties gameProperties;
 	private GameState gameState;
 	private UnitGetter unitGetter;
@@ -89,35 +100,37 @@ public class KeyListenerInputHandler {
 		int cursorX = cursor.getX();
 		int cursorY = cursor.getY();
 
-		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			handlePressedKeyUp();
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			handlePressedKeyDown();
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+		if (e.getKeyCode() == upArrowKeyEventIndex) {
+			handlePressedUpArrow();
+		} else if (e.getKeyCode() == downArrowKeyEventIndex) {
+			handlePressedDownArrow();
+		} else if (e.getKeyCode() == leftArrowKeyEventIndex) {
 			if (cursorCanMoveLeft()) {
 				cursor.moveLeft();
 				updateArrowPathWithNewCursorPosition();
 			}
-		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		} else if (e.getKeyCode() == rightArrowKeyEventIndex) {
 			if (cursorCanMoveRight()) {
 				cursor.moveRight();
 				updateArrowPathWithNewCursorPosition();
 			}
-		} else if (e.getKeyCode() == KeyEvent.VK_A) {
-			handlePressedKeyA();
-		} else if (e.getKeyCode() == KeyEvent.VK_B) {
-			handlePressedKeyB(cursor);
-		} else if (e.getKeyCode() == KeyEvent.VK_S) {
+		} else if (e.getKeyCode() == aButtonKeyEventIndex) {
+			handlePressedButtonA();
+		} else if (e.getKeyCode() == bButtonKeyEventIndex) {
+			handlePressedButtonB(cursor);
+		} else if (e.getKeyCode() == startButtonKeyEventIndex) {
 			if (mapMenu.isVisible()) {
 				mapMenu.closeMenu();
 			} else if (gameState.getChosenUnit() == null) {
 				mapMenu.openMenu(cursorX, cursorY);
 			}
+		} else if (e.getKeyCode() == rightBumberKeyEventIndex) {
+			handlePressedRightBumber();
 		}
 	}
 	
 	public void manageKeyReleasedInput(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_B) {
+		if (e.getKeyCode() == bButtonKeyEventIndex) {
 			if (gameState.rangeShooterChosen()) {
 				gameState.setChosenRangeUnit(null);
 				gameState.setChosenRangeStructure(null);
@@ -126,8 +139,54 @@ public class KeyListenerInputHandler {
 		}
 	}
 	
+	private void handlePressedUpArrow() {
+		Unit chosenUnit = gameState.getChosenUnit();
+		if (containerUnitHandler.unitIsDroppingOff()) {
+			if (containerUnitHandler.unitCanDropOffUnit()) {
+				Point point = chosenUnit.getUnitContainer().getPreviousDropOffLocation();
+				cursor.setPosition(point.getX(), point.getY());
+			}
+		} else if (mapMenu.isVisible()) {
+			mapMenu.moveArrowUp();
+		} else if (unitMenuHandler.getUnitMenu().isVisible()) {
+			unitMenuHandler.getUnitMenu().moveArrowUp();
+		} else if (buildingMenu.isVisible()) {
+			buildingMenu.moveArrowUp();
+		} else if (attackHandler.unitWantsToFire(chosenUnit)) {
+			Point firingLocationPosition = chosenUnit.getPreviousFiringLocation();
+			cursor.setPosition(firingLocationPosition);
+		} else if (cursor.getY() > 0) {
+			cursor.moveUp();
+			updateArrowPathWithNewCursorPosition();
+		}
+	}
+	
+	private void handlePressedDownArrow() {
+		Unit chosenUnit = gameState.getChosenUnit();
+		int tileSize = gameProperties.getMapDimension().tileSize;
+
+		if (containerUnitHandler.unitIsDroppingOff()) {
+			if (containerUnitHandler.unitCanDropOffUnit()) {
+				Point point = chosenUnit.getUnitContainer().getNextDropOffLocation();
+				cursor.setPosition(point.getX(), point.getY());
+			}
+		} else if (mapMenu.isVisible()) {
+			mapMenu.moveArrowDown();
+		} else if (unitMenuHandler.getUnitMenu().isVisible()) {
+			unitMenuHandler.getUnitMenu().moveArrowDown();
+		} else if (buildingMenu.isVisible()) {
+			buildingMenu.moveArrowDown();
+		} else if (attackHandler.unitWantsToFire(chosenUnit)) {
+			Point point = chosenUnit.getNextFiringLocation();
+			cursor.setPosition(point.getX(), point.getY());
+		} else if (cursor.getY() < (gameProperties.getMapDimension().getTileHeight() - 1) * tileSize) {
+			cursor.moveDown();
+			updateArrowPathWithNewCursorPosition();
+		}
+	}
+	
 	// TODO: refactor later
-	private void handlePressedKeyA() {
+	private void handlePressedButtonA() {
 		int cursorX = cursor.getX();
 		int cursorY = cursor.getY();
 		boolean unitSelected = gameState.getChosenUnit() != null || gameState.getChosenRangeUnit() != null;
@@ -249,9 +308,9 @@ public class KeyListenerInputHandler {
 	}
 	
 	// TODO: refactor later
-	private void handlePressedKeyB(Cursor cursor) {
-		if (gameState.getMapViewType() == MapViewType.CO_MAP_MENU_VIEW) {
-			gameState.setViewType(MapViewType.MAIN_MAP_MENU_VIEW);
+	private void handlePressedButtonB(Cursor cursor) {
+		if (gameState.getMapViewType() == ViewType.CO_VIEW) {
+			gameState.setViewType(ViewType.MAP_VIEW);
 		} else if (containerUnitHandler.unitIsDroppingOff()) {
 			int x = gameState.getChosenUnit().getPosition().getX();
 			int y = gameState.getChosenUnit().getPosition().getY();
@@ -309,49 +368,12 @@ public class KeyListenerInputHandler {
 		}
 	}
 
-	private void handlePressedKeyUp() {
-		Unit chosenUnit = gameState.getChosenUnit();
-		if (containerUnitHandler.unitIsDroppingOff()) {
-			if (containerUnitHandler.unitCanDropOffUnit()) {
-				Point point = chosenUnit.getUnitContainer().getPreviousDropOffLocation();
-				cursor.setPosition(point.getX(), point.getY());
-			}
-		} else if (mapMenu.isVisible()) {
-			mapMenu.moveArrowUp();
-		} else if (unitMenuHandler.getUnitMenu().isVisible()) {
-			unitMenuHandler.getUnitMenu().moveArrowUp();
-		} else if (buildingMenu.isVisible()) {
-			buildingMenu.moveArrowUp();
-		} else if (attackHandler.unitWantsToFire(chosenUnit)) {
-			Point firingLocationPosition = chosenUnit.getPreviousFiringLocation();
-			cursor.setPosition(firingLocationPosition);
-		} else if (cursor.getY() > 0) {
-			cursor.moveUp();
-			updateArrowPathWithNewCursorPosition();
-		}
-	}
-	
-	private void handlePressedKeyDown() {
-		Unit chosenUnit = gameState.getChosenUnit();
-		int tileSize = gameProperties.getMapDimension().tileSize;
-
-		if (containerUnitHandler.unitIsDroppingOff()) {
-			if (containerUnitHandler.unitCanDropOffUnit()) {
-				Point point = chosenUnit.getUnitContainer().getNextDropOffLocation();
-				cursor.setPosition(point.getX(), point.getY());
-			}
-		} else if (mapMenu.isVisible()) {
-			mapMenu.moveArrowDown();
-		} else if (unitMenuHandler.getUnitMenu().isVisible()) {
-			unitMenuHandler.getUnitMenu().moveArrowDown();
-		} else if (buildingMenu.isVisible()) {
-			buildingMenu.moveArrowDown();
-		} else if (attackHandler.unitWantsToFire(chosenUnit)) {
-			Point point = chosenUnit.getNextFiringLocation();
-			cursor.setPosition(point.getX(), point.getY());
-		} else if (cursor.getY() < (gameProperties.getMapDimension().getTileHeight() - 1) * tileSize) {
-			cursor.moveDown();
-			updateArrowPathWithNewCursorPosition();
+	private void handlePressedRightBumber() {
+		Unit unit = unitGetter.getAnyUnit(cursor.getX(), cursor.getY());
+		if (unit != null) {
+			gameState.setViewType(ViewType.UNIT_INFO_VIEW);
+		} else {
+			gameState.setViewType(ViewType.TERRAIN_INFO_VIEW);
 		}
 	}
 	
@@ -440,7 +462,7 @@ public class KeyListenerInputHandler {
 
 	private void mapMenuRowPressed() {
 		if (mapMenu.atCoRow()) {
-			gameState.setViewType(MapViewType.CO_MAP_MENU_VIEW);
+			gameState.setViewType(ViewType.CO_VIEW);
 		} else if (mapMenu.atIntelRow()) {
 			// TODO:
 		} else if (mapMenu.atPowerRow()) {

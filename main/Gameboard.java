@@ -3,14 +3,11 @@
  *  - Infantry can Fire while entering APC
  *  
  * TODO-list
- * - only one action/unit per turn (fix later)
  * - change POWER/SUPER-text, maybe use a pre-written text?
  * - enter classes for HQ, ev Silo
  * - FOG
  * - Subs
- * - implement a UnitContainer-interface for transport units?
- * - possibly move damage-box to info-row?
- * - implement Intel-page
+ * - implement Intel-page (Status, Unit, Rules)
  * - fix cursor on CO-unit-view
  * - implement so user can flip between CO-unit-views
  * - implement Unit-info-view (Weapon with effectiveness both Main and Secondary, Move, Vision, Fuel, General info)
@@ -18,6 +15,9 @@
  * - implement Mini-map view (Select-view)
  * - implement holding B while on terrain makes units more transparent
  * - implement "Tab" to next active unit
+ * - only one action/unit per turn (fix later)
+ * - implement a UnitContainer-interface for transport units?
+ * - possibly move damage-box to info-row?
  *
  * @TODO: substitute ArrayList with HashMap for better performance?
  */

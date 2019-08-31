@@ -18,6 +18,7 @@ import units.Unit;
 public class ViewPainter {
 	private GameState gameState;
 	private CommanderView commanderView;
+	private UnitInfoView unitInfoView;
 	private HeroHandler heroHandler;
 	private MapDimension mapDimension;
 	private GameMap gameMap;
@@ -31,6 +32,7 @@ public class ViewPainter {
 		heroHandler = gameState.getHeroHandler();
 		mapDimension = gameProperties.getMapDimension();
 		commanderView = new CommanderView(mapDimension, gameState.getHeroHandler());
+		unitInfoView = new UnitInfoView();
 		gameMap = gameProperties.getGameMap();
 		routeHandler = new RouteHandler(gameProperties, gameState);
 		attackRangeHandler = new AttackRangeHandler(gameProperties, gameState);
@@ -39,10 +41,16 @@ public class ViewPainter {
 	}
 	
 	public void paint(Graphics g) {
-		if (gameState.getMapViewType() == MapViewType.MAIN_MAP_MENU_VIEW) {
+		if (gameState.getMapViewType() == ViewType.MAP_VIEW) {
 			paintMap(g);
-		} else if (gameState.getMapViewType() == MapViewType.CO_MAP_MENU_VIEW) {
+		} else if (gameState.getMapViewType() == ViewType.CO_VIEW) {
 			commanderView.paintView(g);
+		} else if (gameState.getMapViewType() == ViewType.UNIT_INFO_VIEW) {
+			paintMap(g);
+			unitInfoView.paintView(g);
+		} else if (gameState.getMapViewType() == ViewType.TERRAIN_INFO_VIEW) {
+			paintMap(g);
+			// TODO: add terrainInfoView
 		}
 	}
 	
@@ -70,7 +78,7 @@ public class ViewPainter {
 	}
 
 	public void paintUnits(Graphics g, Unit chosenUnit) {
-		if (gameState.getMapViewType() == MapViewType.MAIN_MAP_MENU_VIEW) {
+		if (gameState.getMapViewType() == ViewType.MAP_VIEW) {
 			for (int heroIndex = 0 ; heroIndex < heroHandler.getNumberOfHeroes() ; heroIndex++) {
 				for (int k = 0 ; k < heroHandler.getTroopSize(heroIndex) ; k++) {
 					Unit unit = heroHandler.getUnitFromHero(heroIndex, k);

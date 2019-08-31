@@ -3,7 +3,7 @@ package gameObjects;
 import java.util.ArrayList;
 
 import cursors.Cursor;
-import graphics.MapViewType;
+import graphics.ViewType;
 import hero.HeroHandler;
 import map.buildings.Building;
 import map.structures.FiringStructure;
@@ -31,7 +31,7 @@ public class GameState {
 	private ArrayList<Point> arrowPoints;
 	private TurnState turnState;
 	private boolean heroPortraitLeftSide;
-	private MapViewType mapViewType;
+	private ViewType mapViewType;
 	
 	public GameState(MapDimension mapDimension, HeroHandler heroHandler, ArrayList<Building> buildings, ArrayList<Structure> structures) {
 		this.heroHandler = heroHandler;
@@ -49,7 +49,7 @@ public class GameState {
 		arrowPoints = new ArrayList<Point>();
 		turnState = new TurnState();
 		heroPortraitLeftSide = true;
-		mapViewType = MapViewType.MAIN_MAP_MENU_VIEW;
+		mapViewType = ViewType.MAP_VIEW;
 	}
 	
 	public void addBuildings(ArrayList<Building> buildings) {
@@ -92,7 +92,7 @@ public class GameState {
 		this.heroPortraitLeftSide = leftSide;
 	}
 	
-	public void setViewType(MapViewType mapViewType) {
+	public void setViewType(ViewType mapViewType) {
 		this.mapViewType = mapViewType;
 	}
 	
@@ -160,7 +160,7 @@ public class GameState {
 		return turnState;
 	}
 
-	public MapViewType getMapViewType() {
+	public ViewType getMapViewType() {
 		return mapViewType;
 	}	
 }
