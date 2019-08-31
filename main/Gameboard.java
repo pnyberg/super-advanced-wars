@@ -3,14 +3,13 @@
  *  - Infantry can Fire while entering APC
  *  
  * TODO-list
- * - only one action/unit per turn
+ * - only one action/unit per turn (fix later)
  * - change POWER/SUPER-text, maybe use a pre-written text?
  * - enter classes for HQ, ev Silo
  * - FOG
  * - Subs
  * - implement a UnitContainer-interface for transport units?
  * - possibly move damage-box to info-row?
- * - show health structures
  * - implement Intel-page
  * - fix cursor on CO-unit-view
  * - implement so user can flip between CO-unit-views
@@ -102,7 +101,7 @@ public class Gameboard extends JPanel implements KeyListener {
 	 * KeyListener-methods
 	 */
 	public void keyPressed(KeyEvent e) {
-System.out.println("pressed");
+System.out.println("pressed"); // TODO: checking for key-freezes
 		keyListenerInputHandler.manageKeyPressedInput(e);
 		updatePortraitSideChoice();
 		repaint();
