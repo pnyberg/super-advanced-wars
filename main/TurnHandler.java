@@ -18,7 +18,7 @@ public class TurnHandler {
 
 	public TurnHandler(GameProperties gameProperties, GameState gameState) {
 		this.heroHandler = gameState.getHeroHandler();
-		fuelHandler = new FuelHandler(gameProperties.fuelMaintenancePerTurn, heroHandler);
+		fuelHandler = new FuelHandler(gameProperties.fuelMaintenancePerTurn);
 		this.structureHandler = new StructureHandler(gameState, gameProperties.getMapDimension());
 		BuildingHandler buildingHandler = new BuildingHandler(gameState);
 		cashHandler = new CashHandler(heroHandler, buildingHandler);
@@ -32,16 +32,18 @@ public class TurnHandler {
 	}
 
 	public void startTurnActions() {
+		Hero hero = heroHandler.getCurrentHero();
+
 		cashHandler.updateCash();
-		fuelHandler.fuelMaintenance();
+		fuelHandler.fuelMaintenance(hero);
 		repairHandler.repairUnits();
 
-		if (heroHandler.getCurrentHero().isPowerActive()) {
+		if(heroHandler.getCurrentHero().isPowerActive()) {
 			heroHandler.getCurrentHero().setPowerActive(false);
-		} else if (heroHandler.getCurrentHero().isSuperPowerActive()) {
+		} else if(heroHandler.getCurrentHero().isSuperPowerActive()) {
 			heroHandler.getCurrentHero().setSuperPowerActive(false);
 		}
-		if (turnState.isFirstHeroOfTheDay()) {
+		if(turnState.isFirstHeroOfTheDay()) {
 			turnState.incrementDay();
 			structureHandler.doStructureActions();
 			turnState.setFirstHeroOfTheDay(false);
@@ -51,14 +53,16 @@ public class TurnHandler {
 	private void endTurnActions() {
 		resetActiveVariable();
 		heroHandler.nextHero();
-		if (heroHandler.getCurrentHero() == heroHandler.getHero(0)) {
+
+		if(heroHandler.getCurrentHero() == heroHandler.getHero(0)) {
 			turnState.setFirstHeroOfTheDay(true);
 		}
 	}
 
 	private void resetActiveVariable() {
 		Hero hero = heroHandler.getCurrentHero();
-		for (int k = 0 ; k < hero.getTroopHandler().getTroopSize() ; k++) {
+
+		for(int k = 0 ; k < hero.getTroopHandler().getTroopSize() ; k++) {
 			hero.getTroopHandler().getTroop(k).regulateActive(true);
 		}
 	}
