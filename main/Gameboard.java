@@ -32,14 +32,15 @@ public class Gameboard extends JPanel implements KeyListener {
 
 	public Gameboard(int tileSize) {
 		// Init heroes
-		HeroHandler heroHandler = new HeroHandler();
-		HeroFactory heroFactory = new HeroFactory();
+		HeroHandler heroHandler	= new HeroHandler();
+		HeroFactory heroFactory	= new HeroFactory();
+
 		heroHandler.addHero(heroFactory.createHero(0));
 		heroHandler.addHero(heroFactory.createHero(1));
-		heroHandler.selectStartHero();
-		
+
 		// Load game
 		GameLoader gameLoader = new GameLoader(heroHandler, tileSize);
+
 		GameLoadingObject gameLoadingObject = gameLoader.loadMap("map-files/test_map.txt");
 		gameProperties = gameLoadingObject.getGameProperties();
 		gameState = gameLoadingObject.getInitalGameState();

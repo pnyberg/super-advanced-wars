@@ -6,22 +6,15 @@ import units.Unit;
 
 public class HeroHandler {
 	private ArrayList<Hero> heroes;
-	private Hero currentHero;
 	private int heroIndex;
 	
 	public HeroHandler() {
 		heroes = new ArrayList<Hero>();
-		currentHero = null;
 		heroIndex = 0;
-	}
-
-	public void selectStartHero() {
-		currentHero = heroes.get(heroIndex);
 	}
 
 	public void nextHero() {
 		heroIndex = (heroIndex + 1) % heroes.size();
-		currentHero = heroes.get(heroIndex);
 	}
 
 	public void addHero(Hero hero) {
@@ -37,7 +30,7 @@ public class HeroHandler {
 	}
 
 	public Hero getCurrentHero() {
-		return currentHero;
+		return heroes.get(heroIndex);
 	}
 
 	public Hero getHeroFromUnit(Unit testUnit) {
