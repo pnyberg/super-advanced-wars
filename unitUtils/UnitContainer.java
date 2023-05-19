@@ -27,6 +27,12 @@ public class UnitContainer {
 		containedUnits.add(unit);
 		unit.regulateHidden(true);
 	}
+
+	public void moveContainedUnits(int x, int y) {
+		for(Unit unit : containedUnits) {
+			unit.moveTo(x, y);
+		}
+	}
 	
 	public void chooseUnit(int index) {
 		chosenIndex = index;
@@ -93,6 +99,10 @@ public class UnitContainer {
 
 	public boolean isFull() {
 		return containedUnits.size() == size;
+	}
+
+	public int getNumContainedUnits() {
+		return containedUnits.size();
 	}
 
 	public boolean isDroppingOff() {

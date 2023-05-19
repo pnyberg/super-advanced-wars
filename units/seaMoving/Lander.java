@@ -5,7 +5,6 @@
 package units.seaMoving;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 import graphics.images.units.LanderImage;
 import unitUtils.AttackType;
@@ -20,7 +19,6 @@ public class Lander extends Unit {
 	private static int price = 12000;
 	private static String typeName = "Lander";
 
-	private ArrayList<Unit> containedUnits;
 	private boolean droppingOff;
 	private int chosenIndex;
 
@@ -35,18 +33,17 @@ public class Lander extends Unit {
 		droppingOff = false;
 		chosenIndex = -1;
 
-		containedUnits = new ArrayList<Unit>(); // TODO: remove
 		unitContainer = new UnitContainer(2);
 
 		unitImage = new LanderImage(tileSize);
 	}
 
 	public void addUnit(Unit unit) {
-		if (containedUnits.size() == 2) {
+		if(unitContainer.isFull()) {
 			return;
 		}
 
-		containedUnits.add(unit);
+		unitContainer.addUnit(unit);
 
 		unit.regulateHidden(true);
 	}
@@ -54,9 +51,7 @@ public class Lander extends Unit {
 	public void moveTo(int x, int y) {
 		super.moveTo(x, y);
 
-		for (Unit unit : containedUnits) {
-			unit.moveTo(x, y);
-		}
+		unitContainer.moveContainedUnits(x, y);
 	}
 
 	public void regulateDroppingOff(boolean droppingOff) {
@@ -80,15 +75,15 @@ public class Lander extends Unit {
 	}
 
 	public Unit getUnit(int index) {
-		return containedUnits.get(index);
+		return unitContainer.getUnit(index);
 	}
 
 	public Unit getChosenUnit() {
-		return containedUnits.get(chosenIndex);
+		return unitContainer.getUnit(chosenIndex);
 	}
 
 	public Unit removeChosenUnit() {
-		Unit unit = containedUnits.remove(chosenIndex);
+		Unit unit = unitContainer.getUnit(chosenIndex);
 
 		unit.regulateHidden(false);
 
@@ -96,11 +91,11 @@ public class Lander extends Unit {
 	}
 
 	public int getNumberOfContainedUnits() {
-		return containedUnits.size();
+		return unitContainer.getNumContainedUnits();
 	}
 
 	public boolean isFull() {
-		return containedUnits.size() == 2;
+		return unitContainer.isFull();
 	}
 
 	public boolean isDroppingOff() {
