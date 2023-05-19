@@ -66,12 +66,14 @@ public class Gameboard extends JPanel implements KeyListener {
 	
 	public int getBoardWidth() {
 		int mapTileWidth = gameProperties.getGameMap().getTileWidth();
+
 		return mapTileWidth * gameProperties.getTileSize();
 	}
 
 	public int getBoardHeight() {
 		int mapTileHeight = gameProperties.getGameMap().getTileHeight();
 		int infoBoxHeight = gameProperties.getInfoBoxGraphicMetrics().height;
+
 		return mapTileHeight * gameProperties.getTileSize() + infoBoxHeight;
 	}
 
@@ -97,6 +99,7 @@ System.out.println("pressed"); // TODO: checking for key-freezes
 	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+
 		ViewPainter mainViewPainter = new ViewPainter(gameProperties, gameState);
 		Unit chosenUnit = gameState.getChosenUnit();
 		mainViewPainter.paint(g);
@@ -106,6 +109,7 @@ System.out.println("pressed"); // TODO: checking for key-freezes
 		AttackRangeHandler attackRangeHandler = new AttackRangeHandler(gameProperties, gameState);
 		InfoBox infoBox = new InfoBox(gameProperties, gameState);
 		HeroPortrait heroPortrait = new HeroPortrait(gameProperties.getMapDimension(), gameState);
+
 		// paint general map-graphics
 		attackRangeHandler.paintRange(g);
 		mainViewPainter.paintUnits(g, chosenUnit);
@@ -116,7 +120,7 @@ System.out.println("pressed"); // TODO: checking for key-freezes
 	
 	private void paintChosenUnitGraphics(Graphics g) {
 		Unit chosenUnit = gameState.getChosenUnit();
-		if (showRoutePath()) {
+		if(showRoutePath()) {
 			RouteArrowPath routeArrowPath = new RouteArrowPath(gameProperties, gameState);
 			routeArrowPath.paintArrow(g);
 		}
@@ -128,7 +132,9 @@ System.out.println("pressed"); // TODO: checking for key-freezes
 		UnitMenu unitMenu = new UnitMenu(gameProperties.getTileSize(), gameState);
 		ContUnitHandler contUnitHandler = new ContUnitHandler(gameProperties, gameState);
 		AttackHandler attackHandler = new AttackHandler(gameProperties, gameState);
-		return !unitMenu.isVisible() && !contUnitHandler.unitIsDroppingOff() 
+
+		return !unitMenu.isVisible()
+				&& !contUnitHandler.unitIsDroppingOff() 
 				&& !attackHandler.unitWantsToFire(chosenUnit);
 	}
 	
@@ -139,14 +145,15 @@ System.out.println("pressed"); // TODO: checking for key-freezes
 		AttackHandler attackHandler = new AttackHandler(gameProperties, gameState);
 		Unit chosenUnit = gameState.getChosenUnit();
 		Cursor cursor = gameState.getCursor();
+
 		// when the mapMenu is open the cursor is hidden
-		if (mapMenu.isVisible()) {
+		if(mapMenu.isVisible()) {
 			mapMenu.paint(g);
-		} else if (unitMenu.isVisible()) {
+		} else if(unitMenu.isVisible()) {
 			unitMenu.paint(g);
-		} else if (buildingMenu.isVisible()) {
+		} else if(buildingMenu.isVisible()) {
 			buildingMenu.paint(g);
-		} else if (attackHandler.unitWantsToFire(chosenUnit)) {
+		} else if(attackHandler.unitWantsToFire(chosenUnit)) {
 			FiringCursor firingCursor = new FiringCursor(gameProperties, gameState);
 			firingCursor.paint(g, cursor, chosenUnit);
 		} else {

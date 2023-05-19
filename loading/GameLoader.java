@@ -27,48 +27,54 @@ import point.Point;
 public class GameLoader {
 	private HeroHandler heroHandler;
 	private int tileSize;
-	
+
 	public GameLoader(HeroHandler heroHandler, int tileSize) {
 		this.heroHandler = heroHandler;
 		this.tileSize = tileSize;
 	}
-	
+
 	public GameLoadingObject loadMap(String fileName) {
 		try {
+			// load map-file
 			Scanner scanner = new Scanner(new File(fileName));
 			ArrayList<String> mapLines = new ArrayList<>();
 			while(scanner.hasNext()) {
 				mapLines.add(scanner.nextLine());
 			}
 			scanner.close();
-			if (mapLines.isEmpty()) {
+			if(mapLines.isEmpty()) {
 				System.err.println("Map-file is empty!");
 				System.exit(1);
 			}
+
+			// setup map
 			int mapWidth = mapLines.get(0).split(" ").length;
 			int mapHeight = mapLines.size();
 			Area[][] map = new Area[mapWidth][mapHeight];
 			MapDimension mapDimension = new MapDimension(mapWidth, mapHeight, tileSize);
 			ArrayList<Building> buildings = new ArrayList<>();
 			ArrayList<Structure> structures = new ArrayList<>();
-			for (int tileY = 0 ; tileY < mapHeight ; tileY++) {
+			for(int tileY = 0 ; tileY < mapHeight ; tileY++) {
 				String nextLine = mapLines.get(tileY);
 				String[] tokens = nextLine.split(" ");
-				for (int tileX = 0 ; tileX < mapWidth ; tileX++) {
+				for(int tileX = 0 ; tileX < mapWidth ; tileX++) {
 					String tileCode = tokens[tileX];
 					MapTileObject mapTileObject = createMapTile(tileCode, new Point(tileX, tileY));
 					map[tileX][tileY] = mapTileObject.area;
-					if (mapTileObject.building != null) {
+
+					if(mapTileObject.building != null) {
 						buildings.add(mapTileObject.building);
-					} else if (mapTileObject.structure != null) {
+					} else if(mapTileObject.structure != null) {
 						structures.add(mapTileObject.structure);
 					}
 				}
 			}
+	
 			GameMap gameMap = new GameMap(map, tileSize);
 			GameProperties gameProperties = new GameProperties(mapDimension, gameMap);
 			GameState gameState = new GameState(mapDimension, heroHandler, buildings, structures);
 			GameLoadingObject gameLoadingObject = new GameLoadingObject(gameProperties, gameState);
+
 			return gameLoadingObject;
 		} catch (IOException e) {
 			System.err.println("Couldn't load file '" + fileName + "'.");

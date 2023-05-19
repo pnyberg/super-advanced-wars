@@ -1,4 +1,5 @@
 package main;
+
 import javax.swing.JFrame;
 
 import gameObjects.GameProperties;
@@ -13,8 +14,9 @@ public class SuperAdvanceWars extends JFrame {
 
 	public SuperAdvanceWars() {
 		board = new Gameboard(tileSize);
+
 		add(board);
-		
+
 		setSize(board.getBoardWidth() + widthExtension, board.getBoardHeight() + heightExtension);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);

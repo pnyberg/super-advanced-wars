@@ -1,14 +1,11 @@
 package gameObjects;
 
-import main.TerrainInfoBox;
-import main.UnitContainedInfoBox;
-import main.UnitInfoBox;
 import map.GameMap;
 import point.Point;
 
 public class GameProperties {
-	public final int fuelMaintenancePerTurn = 5;
-	public final int initialMoneyPerBuilding = 1000;
+	public final int fuelMaintenancePerTurn = 5; // nicetohave: configurable
+	public final int initialMoneyPerBuilding = 1000; // nicetohave: configurable
 
 	private MapDimension mapDimension;
 	private GameMap gameMap;
@@ -20,6 +17,7 @@ public class GameProperties {
 	public GameProperties(MapDimension mapDimension, GameMap gameMap) {
 		this.mapDimension = mapDimension;
 		this.gameMap = gameMap;
+
 		Point infoBoxAnchorPoint = new Point(0, gameMap.getTileHeight() * mapDimension.tileSize);
 		infoBoxGraphicMetrics = new GraphicMetrics(infoBoxAnchorPoint, mapDimension.getTileWidth() * mapDimension.tileSize, 3 * mapDimension.tileSize, mapDimension.tileSize);
 		terrainInfoBoxGraphicMetrics = createTerrainInfoBoxMetrics(infoBoxGraphicMetrics);
