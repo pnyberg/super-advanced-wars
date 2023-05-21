@@ -53,8 +53,8 @@ public class UnitCreatingFactory {
 			return new Cruiser(x, y, color, tileSize);
 		} else if (unitName.equals(Lander.getTypeName())) {
 			return new Lander(x, y, color, tileSize);
-//		} else if (unitName.equals("Sub")) {
-//			return new Sub(x, y, color, tileSize);
+		} else if (unitName.equals("Sub")) {
+			return new Sub(x, y, color, tileSize);
 		}
 		return null;
 	}

@@ -66,14 +66,14 @@ public class WeaponIndexChooser {
 		} else if (attacker instanceof Battleship) {
 			return 0;
 		} else if (attacker instanceof Cruiser) {
-/*			if (defender instanceof Sub) {
+			if (defender instanceof Sub) {
 				return 0;
-			}*/
+			}
 			return 1;
 		} else if (attacker instanceof Lander) {
 			// Do nothing
-/*		} else if (attacker instanceof Sub) {
-			return 1;*/
+		} else if (attacker instanceof Sub) {
+			return 0;
 		}
 
 		return -1;

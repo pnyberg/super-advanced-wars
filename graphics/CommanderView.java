@@ -18,6 +18,7 @@ import units.footMoving.Mech;
 import units.seaMoving.Battleship;
 import units.seaMoving.Cruiser;
 import units.seaMoving.Lander;
+import units.seaMoving.Sub;
 import units.tireMoving.Missiles;
 import units.tireMoving.Recon;
 import units.tireMoving.Rocket;
@@ -79,24 +80,24 @@ public class CommanderView {
 		TCopter tCopter = new TCopter(unitColPos[3], unitRowPos[3], heroColor, tileSize);
 		Battleship bship = new Battleship(unitColPos[0], unitRowPos[4], heroColor, tileSize);
 		Cruiser cruiser = new Cruiser(unitColPos[1], unitRowPos[4], heroColor, tileSize);
-		//Sub sub = new Sub(unitColPos[2], unitRowPos[4], heroColor, tileSize);
+		Sub sub = new Sub(unitColPos[2], unitRowPos[4], heroColor, tileSize);
 		Lander lander = new Lander(unitColPos[3], unitRowPos[4], heroColor, tileSize);
-		
+
 		unitCollection = new Unit[]{
 				infantry, mech, recon, apc, 
 				tank, mdTank, aair, neotank, 
 				artillery, rocket, missiles, 
 				fighter, bomber, bCopter, tCopter, 
-				bship, cruiser, /*sub,*/ lander
+				bship, cruiser, sub, lander
 		};
-		for (Unit unit : unitCollection) {
+		for(Unit unit : unitCollection) {
 			unit.regulateActive(true);
 		}
 	}
 	
 	public void paintView(Graphics g) {
 		paintLines(g);
-		for (UnitType unitType : UnitType.allUnitTypes) {
+		for(UnitType unitType : UnitType.allUnitTypes) {
 			paintUnitWithPowerBar(g, unitType.unitIndex());
 		}
 	}
@@ -109,7 +110,7 @@ public class CommanderView {
 		int lineStopX = unitColPos[unitColPos.length - 1] + 9 * mapDimension.tileSize / 2;
 		int lineLength = lineStopX - lineStartX;
 		g.setColor(lineColor);
-		for (int rowY : unitRowPos) {
+		for(int rowY : unitRowPos) {
 			g.fillRect(lineStartX, rowY + rowOffset, lineLength, lineHeight);
 		}
 	}
@@ -130,7 +131,7 @@ public class CommanderView {
 	
 		g.setColor(Color.gray);
 		g.fillRect(x + shadowOffset, y + shadowOffset, width, height);
-		if (powerLevel > 100) {
+		if(powerLevel > 100) {
 			int bonusPowerWidth = (powerLevel-100) * width / 100;
 			int bonusPowerHeight = mapDimension.tileSize / 4;
 			g.setColor(Color.yellow);

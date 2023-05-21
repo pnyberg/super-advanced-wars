@@ -25,15 +25,15 @@ public enum UnitType {
 	TCOPTER ("T Cptr", "T Cptr", 5000, 14),
 	BATTLESHIP ("B Ship", "B Shp", 28000, 15),
 	CRUISER ("Cruiser", "Crsr", 18000, 16),
-	LANDER ("Lander", "Lndr", 12000, 17);
-//	SUB ("Sub", "Sub", 20000, 18);
+	LANDER ("Lander", "Lndr", 12000, 17),
+	SUB ("Sub", "Sub", 20000, 18);
 
-	public static final int numberOfUnitTypes = 18;
+	public static final int numberOfUnitTypes = 19;
 	public static final UnitType[] allUnitTypes = { INFANTRY, MECH, RECON,
 													TANK, MDTANK, NEOTANK, APC_unit,
 													ARTILLERY, ROCKET, AAIR_unit, MISSILES,
 													FIGHTER, BOMBER, BCOPTER, TCOPTER,
-													BATTLESHIP, CRUISER, LANDER};
+													BATTLESHIP, CRUISER, LANDER, SUB};
 
 	private final String unitTypeName;
 	private final String unitTypeShowName;
@@ -115,8 +115,8 @@ public enum UnitType {
 			return UnitType.CRUISER;
 		} else if (unit instanceof Lander) {
 			return UnitType.LANDER;
-/*		} else if (unit instanceof Sub) {
-			return UnitTypes.SUB;*/
+		} else if (unit instanceof Sub) {
+			return UnitType.SUB;
 		}
 		return null;
 	}
@@ -158,8 +158,8 @@ public enum UnitType {
 			return Cruiser.getTypeName();
 		} else if (unit instanceof Lander) {
 			return Lander.getTypeName();
-/*		} else if (unit instanceof Sub) {
-			return Sub.getTypeName();*/
+		} else if (unit instanceof Sub) {
+			return Sub.getTypeName();
 		}
 		return null;
 	}	
