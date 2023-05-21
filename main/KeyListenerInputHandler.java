@@ -100,31 +100,39 @@ public class KeyListenerInputHandler {
 		int cursorX = cursor.getX();
 		int cursorY = cursor.getY();
 
-		if (e.getKeyCode() == upArrowKeyEventIndex) {
+		if(e.getKeyCode() == upArrowKeyEventIndex) {
 			handlePressedUpArrow();
-		} else if (e.getKeyCode() == downArrowKeyEventIndex) {
+		} else if(e.getKeyCode() == downArrowKeyEventIndex) {
 			handlePressedDownArrow();
-		} else if (e.getKeyCode() == leftArrowKeyEventIndex) {
-			if (cursorCanMoveLeft()) {
-				cursor.moveLeft();
-				updateArrowPathWithNewCursorPosition();
+		} else if(e.getKeyCode() == leftArrowKeyEventIndex) {
+			if(gameState.getMapViewType() == ViewType.CO_VIEW) {
+				gameState.getHeroHandler().prevCoViewHero();
+			} else if(gameState.getMapViewType() == ViewType.MAP_VIEW) {
+				if(cursorCanMoveLeft()) {
+					cursor.moveLeft();
+					updateArrowPathWithNewCursorPosition();
+				}
 			}
-		} else if (e.getKeyCode() == rightArrowKeyEventIndex) {
-			if (cursorCanMoveRight()) {
-				cursor.moveRight();
-				updateArrowPathWithNewCursorPosition();
+		} else if(e.getKeyCode() == rightArrowKeyEventIndex) {
+			if(gameState.getMapViewType() == ViewType.CO_VIEW) {
+				gameState.getHeroHandler().nextCoViewHero();
+			} else if(gameState.getMapViewType() == ViewType.MAP_VIEW) {
+				if(cursorCanMoveRight()) {
+					cursor.moveRight();
+					updateArrowPathWithNewCursorPosition();
+				}
 			}
-		} else if (e.getKeyCode() == aButtonKeyEventIndex) {
+		} else if(e.getKeyCode() == aButtonKeyEventIndex) {
 			handlePressedButtonA();
-		} else if (e.getKeyCode() == bButtonKeyEventIndex) {
+		} else if(e.getKeyCode() == bButtonKeyEventIndex) {
 			handlePressedButtonB(cursor);
-		} else if (e.getKeyCode() == startButtonKeyEventIndex) {
-			if (mapMenu.isVisible()) {
+		} else if(e.getKeyCode() == startButtonKeyEventIndex) {
+			if(mapMenu.isVisible()) {
 				mapMenu.closeMenu();
-			} else if (gameState.getChosenUnit() == null) {
+			} else if(gameState.getChosenUnit() == null) {
 				mapMenu.openMenu(cursorX, cursorY);
 			}
-		} else if (e.getKeyCode() == rightBumberKeyEventIndex) {
+		} else if(e.getKeyCode() == rightBumberKeyEventIndex) {
 			handlePressedRightBumber();
 		}
 	}
@@ -140,24 +148,28 @@ public class KeyListenerInputHandler {
 	}
 	
 	private void handlePressedUpArrow() {
-		Unit chosenUnit = gameState.getChosenUnit();
-		if (containerUnitHandler.unitIsDroppingOff()) {
-			if (containerUnitHandler.unitCanDropOffUnit()) {
-				Point point = chosenUnit.getUnitContainer().getPreviousDropOffLocation();
-				cursor.setPosition(point.getX(), point.getY());
+		if(gameState.getMapViewType() == ViewType.CO_VIEW) {
+			// do nothing
+		} else if(gameState.getMapViewType() == ViewType.MAP_VIEW) {
+			Unit chosenUnit = gameState.getChosenUnit();
+			if (containerUnitHandler.unitIsDroppingOff()) {
+				if (containerUnitHandler.unitCanDropOffUnit()) {
+					Point point = chosenUnit.getUnitContainer().getPreviousDropOffLocation();
+					cursor.setPosition(point.getX(), point.getY());
+				}
+			} else if (mapMenu.isVisible()) {
+				mapMenu.moveArrowUp();
+			} else if (unitMenuHandler.getUnitMenu().isVisible()) {
+				unitMenuHandler.getUnitMenu().moveArrowUp();
+			} else if (buildingMenu.isVisible()) {
+				buildingMenu.moveArrowUp();
+			} else if (attackHandler.unitWantsToFire(chosenUnit)) {
+				Point firingLocationPosition = chosenUnit.getPreviousFiringLocation();
+				cursor.setPosition(firingLocationPosition);
+			} else if (cursor.getY() > 0) {
+				cursor.moveUp();
+				updateArrowPathWithNewCursorPosition();
 			}
-		} else if (mapMenu.isVisible()) {
-			mapMenu.moveArrowUp();
-		} else if (unitMenuHandler.getUnitMenu().isVisible()) {
-			unitMenuHandler.getUnitMenu().moveArrowUp();
-		} else if (buildingMenu.isVisible()) {
-			buildingMenu.moveArrowUp();
-		} else if (attackHandler.unitWantsToFire(chosenUnit)) {
-			Point firingLocationPosition = chosenUnit.getPreviousFiringLocation();
-			cursor.setPosition(firingLocationPosition);
-		} else if (cursor.getY() > 0) {
-			cursor.moveUp();
-			updateArrowPathWithNewCursorPosition();
 		}
 	}
 	
@@ -165,23 +177,27 @@ public class KeyListenerInputHandler {
 		Unit chosenUnit = gameState.getChosenUnit();
 		int tileSize = gameProperties.getMapDimension().tileSize;
 
-		if (containerUnitHandler.unitIsDroppingOff()) {
-			if (containerUnitHandler.unitCanDropOffUnit()) {
-				Point point = chosenUnit.getUnitContainer().getNextDropOffLocation();
+		if(gameState.getMapViewType() == ViewType.CO_VIEW) {
+			// do nothing
+		} else if(gameState.getMapViewType() == ViewType.MAP_VIEW) {
+			if(containerUnitHandler.unitIsDroppingOff()) {
+				if (containerUnitHandler.unitCanDropOffUnit()) {
+					Point point = chosenUnit.getUnitContainer().getNextDropOffLocation();
+					cursor.setPosition(point.getX(), point.getY());
+				}
+			} else if(mapMenu.isVisible()) {
+				mapMenu.moveArrowDown();
+			} else if(unitMenuHandler.getUnitMenu().isVisible()) {
+				unitMenuHandler.getUnitMenu().moveArrowDown();
+			} else if(buildingMenu.isVisible()) {
+				buildingMenu.moveArrowDown();
+			} else if(attackHandler.unitWantsToFire(chosenUnit)) {
+				Point point = chosenUnit.getNextFiringLocation();
 				cursor.setPosition(point.getX(), point.getY());
+			} else if(cursor.getY() < (gameProperties.getMapDimension().getTileHeight() - 1) * tileSize) {
+				cursor.moveDown();
+				updateArrowPathWithNewCursorPosition();
 			}
-		} else if (mapMenu.isVisible()) {
-			mapMenu.moveArrowDown();
-		} else if (unitMenuHandler.getUnitMenu().isVisible()) {
-			unitMenuHandler.getUnitMenu().moveArrowDown();
-		} else if (buildingMenu.isVisible()) {
-			buildingMenu.moveArrowDown();
-		} else if (attackHandler.unitWantsToFire(chosenUnit)) {
-			Point point = chosenUnit.getNextFiringLocation();
-			cursor.setPosition(point.getX(), point.getY());
-		} else if (cursor.getY() < (gameProperties.getMapDimension().getTileHeight() - 1) * tileSize) {
-			cursor.moveDown();
-			updateArrowPathWithNewCursorPosition();
 		}
 	}
 	

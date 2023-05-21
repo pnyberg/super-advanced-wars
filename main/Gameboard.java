@@ -12,6 +12,7 @@ import cursors.FiringCursor;
 import gameObjects.GameProperties;
 import gameObjects.GameState;
 import graphics.ViewPainter;
+import graphics.ViewType;
 import hero.HeroFactory;
 import hero.HeroHandler;
 import hero.HeroPortrait;
@@ -114,8 +115,10 @@ System.out.println("pressed"); // TODO: checking for key-freezes
 		attackRangeHandler.paintRange(g);
 		mainViewPainter.paintUnits(g, chosenUnit);
 		paintMenusAndCursors(g);
-		heroPortrait.paint(g);
-		infoBox.paint(g);
+		if(gameState.getMapViewType() != ViewType.CO_VIEW) {
+			heroPortrait.paint(g);
+			infoBox.paint(g);
+		}
 	}
 	
 	private void paintChosenUnitGraphics(Graphics g) {
@@ -146,18 +149,22 @@ System.out.println("pressed"); // TODO: checking for key-freezes
 		Unit chosenUnit = gameState.getChosenUnit();
 		Cursor cursor = gameState.getCursor();
 
-		// when the mapMenu is open the cursor is hidden
-		if(mapMenu.isVisible()) {
-			mapMenu.paint(g);
-		} else if(unitMenu.isVisible()) {
-			unitMenu.paint(g);
-		} else if(buildingMenu.isVisible()) {
-			buildingMenu.paint(g);
-		} else if(attackHandler.unitWantsToFire(chosenUnit)) {
-			FiringCursor firingCursor = new FiringCursor(gameProperties, gameState);
-			firingCursor.paint(g, cursor, chosenUnit);
-		} else {
-			gameState.getCursor().paint(g);
+		if(gameState.getMapViewType() == ViewType.CO_VIEW) {
+			// don't show anything
+		} else if(gameState.getMapViewType() == ViewType.MAP_VIEW) {
+			// when the mapMenu is open the cursor is hidden
+			if(mapMenu.isVisible()) {
+				mapMenu.paint(g);
+			} else if(unitMenu.isVisible()) {
+				unitMenu.paint(g);
+			} else if(buildingMenu.isVisible()) {
+				buildingMenu.paint(g);
+			} else if(attackHandler.unitWantsToFire(chosenUnit)) {
+				FiringCursor firingCursor = new FiringCursor(gameProperties, gameState);
+				firingCursor.paint(g, cursor, chosenUnit);
+			} else {
+				gameState.getCursor().paint(g);
+			}
 		}
 	}
 }

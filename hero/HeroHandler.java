@@ -7,14 +7,28 @@ import units.Unit;
 public class HeroHandler {
 	private ArrayList<Hero> heroes;
 	private int heroIndex;
+	private int coViewHeroIndex;
 	
 	public HeroHandler() {
 		heroes = new ArrayList<Hero>();
 		heroIndex = 0;
+		coViewHeroIndex = 0;
 	}
 
 	public void nextHero() {
 		heroIndex = (heroIndex + 1) % heroes.size();
+	}
+
+	public void resetCoViewHero() {
+		coViewHeroIndex = 0;
+	}
+
+	public void prevCoViewHero() {
+		coViewHeroIndex = (coViewHeroIndex - 1 + heroes.size()) % heroes.size();
+	}
+
+	public void nextCoViewHero() {
+		coViewHeroIndex = (coViewHeroIndex + 1) % heroes.size();
 	}
 
 	public void addHero(Hero hero) {
@@ -31,6 +45,10 @@ public class HeroHandler {
 
 	public Hero getCurrentHero() {
 		return heroes.get(heroIndex);
+	}
+
+	public Hero getCoViewHero() {
+		return heroes.get(coViewHeroIndex);
 	}
 
 	public Hero getHeroFromUnit(Unit testUnit) {

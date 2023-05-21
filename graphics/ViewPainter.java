@@ -6,6 +6,7 @@ import combat.AttackRangeHandler;
 import gameObjects.GameProperties;
 import gameObjects.GameState;
 import gameObjects.MapDimension;
+import hero.Hero;
 import hero.HeroHandler;
 import map.GameMap;
 import map.buildings.Building;
@@ -31,7 +32,7 @@ public class ViewPainter {
 		this.gameState = gameState;
 		heroHandler = gameState.getHeroHandler();
 		mapDimension = gameProperties.getMapDimension();
-		commanderView = new CommanderView(mapDimension, gameState.getHeroHandler());
+		commanderView = new CommanderView(gameProperties, gameState);
 		unitInfoView = new UnitInfoView();
 		gameMap = gameProperties.getGameMap();
 		routeHandler = new RouteHandler(gameProperties, gameState);
@@ -41,14 +42,15 @@ public class ViewPainter {
 	}
 	
 	public void paint(Graphics g) {
-		if (gameState.getMapViewType() == ViewType.MAP_VIEW) {
+		if(gameState.getMapViewType() == ViewType.MAP_VIEW) {
 			paintMap(g);
-		} else if (gameState.getMapViewType() == ViewType.CO_VIEW) {
-			commanderView.paintView(g);
-		} else if (gameState.getMapViewType() == ViewType.UNIT_INFO_VIEW) {
+		} else if(gameState.getMapViewType() == ViewType.CO_VIEW) {
+			Hero coHero	= heroHandler.getCoViewHero();
+			commanderView.paintView(g, coHero);
+		} else if(gameState.getMapViewType() == ViewType.UNIT_INFO_VIEW) {
 			paintMap(g);
 			unitInfoView.paintView(g);
-		} else if (gameState.getMapViewType() == ViewType.TERRAIN_INFO_VIEW) {
+		} else if(gameState.getMapViewType() == ViewType.TERRAIN_INFO_VIEW) {
 			paintMap(g);
 			// TODO: add terrainInfoView
 		}
